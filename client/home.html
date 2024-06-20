@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home | PIC-MO</title>
+  <style src="styles/style.css"></style>
+</head>
+<body>
+  <h1> - Welcome to PIC-MO - </h1>
+  <div id="header">
+    <a href="/register">Register</a> <a href="/login">Login</a>
+  </div>
+  <ul id="list"></ul>
+  <div id="footer">
+  </div>
+  <script src="/scripts/utils.js"></script>
+  <script>
+      const list = document.querySelector('#list');
+    
+      (async () => {
+        const res = await fetch('/api/project/list');
+        const data = await res.json();
+        data.projects.map(projHTML(list));
+      })();
+      
+      const header = document.querySelector('#header');
+      const footer = document.querySelector('#footer');
+      (async ()=> {
+        const data = await getAuth();
+        if (!data.auth) return;
+        header.innerHTML = `
+          <p>Signed in as ${data.user.username}</p><br/>
+          <a href="/publish">Publish</a>
+          <a href="/profile">Profile</a>
+        `;
+        if (data.user.role === "Basic") {
+          header.innerHTML += `<a href="/basic">User List</a> <a href="/profile">Profile Settings"></a>`;
+        } else {
+          if (data.user.role === "Admin") {
+            header.innerHTML += `<a href="/admin">User List</a>`;
+          }
+        }
+        footer.innerHTML += `<button class="logout"> <a href="/logout">Log Out</a></button>`;
+      })();
+    </script>
+  </body>
+</body>
+</html>

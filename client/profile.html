@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Profile | PIC-Mo</title>
+		<style src="styles/style.css"></style>
+	</head>
+	<body>
+		<h1>Profile Settings</h1>
+		<div id="header">
+			<a href="/register">Register</a> <a href="/login">Login</a>
+			<a href="/chpass">Change Password</a>
+		</div>
+		<div id="footer"></div>
+
+		<script src="/scripts/utils.js"></script>
+		<script>
+			async () => {
+				const res = await fetch("/api/auth/check");
+				const data = await res.json();
+				if (!data.auth) return;
+				header.innerHTML = `
+					<p>Signed in as ${data.user.username}</p><br/>
+				`;
+
+				footer.innerHTML = `<button class="logout"> <a href="/logout">Log Out</a></button>`;
+			};
+		</script>
+	</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "name": "role_auth",
+  "version": "1.0.0",
+  "description": "User Role Authentication",
+  "main": "server.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "canvas": "^2.11.2",
+    "cookie-parser": "^1.4.6",
+    "cookieparser": "^0.1.0",
+    "cross-fetch": "^4.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.19.2",
+    "gtts": "^0.2.1",
+    "jsdom": "^24.1.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.13.0",
+    "nodemon": "^2.0.15"
+  }
+}

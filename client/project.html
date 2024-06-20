@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View | PIC-MO</title>
+  <style src="styles/style.css"></style>
+</head>
+<body>
+  <div class="topnav">
+    <a href="/">Home</a>
+  </div>
+  <iframe id="game" style="padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; display: block;"></iframe> <br>
+  <button id="favoritebtn" onclick="favbtnclick()">Loading...</button>
+  <div id="display">
+    Loading...
+  </div>
+  <script src="/scripts/utils.js"></script>
+  <script>
+    const display = document.querySelector('#display');
+    const favoritebtn = document.querySelector('#favoritebtn');
+    const game = document.querySelector('#game');
+    const pid = location.path[2];
+    (async() => {
+      try {
+        const res = await fetch('/api/project/data/'+pid);
+        const data = await res.json();
+        display.innerHTML = `
+          <b>Name</b> => ${data.name} <br>
+          <b>Poster</b> => <a href="/user/${data.poster}">${data.poster}</a> <br>
+          <b>Description</b> => ${data.desc} <br>
+          <b>URL</b> => <a href="${data.link}">${data.link}</a> <br>
+          <b>Score</b> => <span id="score">${data.score}</span> <br>
+          <b>Posted At</b> => ${new Date(data.postedAt).toUTCString()} <br>
+          <b>ID</b> => ${data.id} <br>`;
+        
+        console.log(`Extra Debug Info:\nIsCDO?: ${data.iscdo}\nPosterID: ${data.posterId}`);
+        
+        if (!data.iscdo) {
+          game.src = data.link;
+          game.style.width = "100vw";
+          game.style.height = "100vh";
+        } else {
+          //do magic
+          game.src = location.origin+"/turbowarp?u="+data.link;
+          game.style.width = "100vmin";
+          game.style.height = "100vmin";
+        }
+        
+        const tok = await getAuth();
+        if (!tok.auth) {
+          favoritebtn.outerHTML = "";
+          return;
+        }
+        favoritebtn.innerHTML = tok.user.favorites.includes(pid) ? "Unfavorite" : "Favorite";
+        if (tok.user.id !== data.posterId) return;
+        document.body.innerHTML += `<button class="edit"> <a href="/project/${pid}/edit">Edit</a></button>`;
+      } catch(e) {
+        alert(e);
+        console.error(e);
+      }
+    })();
+    
+    async function favbtnclick() {
+      const score = document.querySelector('#score');
+      if (favoritebtn.innerHTML === "Favorite") {
+        await fetch("/api/project/favorite/"+pid);
+        score.innerHTML = Number(score.textContent)+1;
+        favoritebtn.innerHTML = "Unfavorite";
+      } else if (favoritebtn.innerHTML === "Unfavorite") {
+        await fetch("/api/project/unfavorite/"+pid);
+        score.innerHTML = Number(score.textContent)-1;
+        favoritebtn.innerHTML = "Favorite";
+      }
+    };
+  </script>
+</body>
+</html>

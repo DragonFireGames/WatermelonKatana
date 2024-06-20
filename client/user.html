@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User | PIC-Mo</title>
+  <style src="styles/style.css"></style>
+</head>
+<body>
+  <!-- Navbar? (WIP) -->
+  <div class="topnav">
+    <a href="/">Home</a>
+  </div>
+
+  <!-- Main Content -->
+  <div id="display">
+    Loading...
+  </div>
+  Published
+  <ul id="list"></ul>
+  Favorites
+  <ul id="favlist"></ul>
+
+  <script src="/scripts/utils.js"></script>
+  <script>
+      const list = document.querySelector('#list');
+      const favlist = document.querySelector('#favlist');
+      const display = document.querySelector('#display');
+      location.path = location.pathname.split("/");
+      const name = location.path[2];
+    
+      (async () => {
+        try {
+          const res = await fetch('/api/project/list?poster='+name);
+          const data = await res.json();
+          data.projects.map(projHTML(list));
+        } catch(e) {
+          alert(e);
+          console.error(e);
+        }
+      })();
+    
+      (async() => {
+        try {
+          const res = await fetch('/api/auth/userdata?username='+name);
+          const data = await res.json();
+          if (res.status === 400 || res.status === 401) throw Error(data);
+          display.innerHTML = `<div>
+            <p class="usernameHeader">${data.username}</p>
+            <p class="role">${data.role}</p>
+            <i class="uidtext" title="Click to Copy">ID: ${data.id}</i>
+          </div>`;
+          await Promise.all(data.favorites.map(async pid => {
+            const res = await fetch('/api/project/data/'+pid);
+            const proj = await res.json();
+            projHTML(favlist)(proj);
+          }));
+        } catch(e) {
+          alert(e);
+          console.error(e);
+        }
+      })();
+    </script>
+  </body>
+</body>
+</html>
