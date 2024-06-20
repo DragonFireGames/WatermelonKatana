@@ -21,6 +21,7 @@
       (async () => {
         const res = await fetch('/api/project/list');
         const data = await res.json();
+        data.projects.sort((a,b)=>b.score-a.score);
         data.projects.map(projHTML(list));
       })();
       
