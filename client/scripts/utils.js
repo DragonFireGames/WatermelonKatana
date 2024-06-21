@@ -7,12 +7,14 @@ async function getAuth() {
 }
 function projHTML(list) {
   return function(proj) {
-    let li = `<li>
-      <b>Name</b> => ${proj.name} <br> 
-      <b>By</b> => <a href="/user/${proj.poster}">${proj.poster}</a><br>
-      <b>Score</b> => ${proj.score}<br>
-      <a class="projectplay" href="/project/${proj.id}">Open Page</a>
-    </li>`
-    list.innerHTML += li;
+    let div = `<div class="project-panel">
+    <a href="/project/${proj.id}">
+      <img class="project-thumbnail" src="${proj.thumbnail||"/images/placeholders/PLACEHOLDER_pfp.png"}"> <br>
+      ${proj.name}<br>
+      </a>
+      By: <a href="/user/${proj.poster}">${proj.poster}</a><br>
+      Score: ${proj.score} Views: ${proj.views} <br>
+    </div>`
+    list.innerHTML += div;
   };
 }

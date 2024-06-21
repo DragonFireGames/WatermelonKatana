@@ -31,11 +31,19 @@ const ProjectSchema = new Mongoose.Schema({
     minlength: 6,
     required: true,
   },
+  thumbnail: {
+    type: String,
+    default: "",
+  },
   desc: {
     type: String,
     default: "",
   },
   score: {
+    type: Number,
+    default: 0,
+  },
+  views: {
     type: Number,
     default: 0,
   },

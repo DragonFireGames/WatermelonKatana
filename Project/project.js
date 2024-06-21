@@ -6,7 +6,9 @@ function packProject(project) {
   container.name = project.name;
   container.link = project.link;
   container.desc = project.desc;
+  container.thumbnail = project.thumbnail;
   container.score = project.score;
+  container.views = project.views;
   container.iscdo = project.iscdo;
   container.postedAt = project.postedAt;
   container.id = project._id;
@@ -16,20 +18,22 @@ function packProject(project) {
 }
 
 exports.publish = async (req, res, next) => {
-  var { name, link, desc } = req.body;
+  var { name, link, desc, thumbnail } = req.body;
   console.log(name,link);
   try {
     const iscdo = link.match(/^https?:\/\/studio\.code\.org\/projects\/(applab|gamelab)\/([^/]+)/);
+    if (!thumbnail && iscdo) thumbnail = `https://studio.code.org/v3/files/${iscdo[2]}/.metadata/thumbnail.png`;
     if (iscdo) link = iscdo[0];
     const user = res.locals.userToken;
     const project = await Projects.create({
       name,
       link,
       desc,
+      thumbnail,
       iscdo: !!iscdo,
       postedAt: Date.now(),
       posterId: user.id,
-      poster: user.username,
+      poster: user.username, //convert to ref eventually
     });
     console.log(project);
     res.status(201).json({
@@ -48,7 +52,7 @@ exports.publish = async (req, res, next) => {
 };
 
 exports.update = async (req, res, next) => {
-  var { name, link, desc } = req.body;
+  var { name, link, desc, thumbnail } = req.body;
   console.log(name,link);
   try {
     const pid = req.params.id;
@@ -63,9 +67,11 @@ exports.update = async (req, res, next) => {
     });
     const iscdo = link.match(/^https?:\/\/studio\.code\.org\/projects\/(applab|gamelab)\/([^/]+)/);
     if (iscdo) link = iscdo[0];
+    if (!thumbnail && iscdo) thumbnail = `https://studio.code.org/v3/files/${iscdo[2]}/.metadata/thumbnail.png`;
     project.name = name;
     project.link = link;
     project.desc = desc;
+    project.thumbnail = thumbnail;
     project.iscdo = !!iscdo;
     await project.save();
     res.status(201).json({
@@ -115,7 +121,7 @@ exports.deleteProject = async (req, res, next) => {
 exports.list = async (req, res, next) => {
   try {
     var search = {};
-    const {poster, iscdo, before, after} = req.query;
+    const {poster, iscdo, before, after, customquery} = req.query;
     if (poster) search.poster = poster;
     if (iscdo == "0" || iscdo == "false") search.iscdo = false;
     else if (iscdo == "1" || iscdo == "true") search.iscdo = true;
@@ -124,6 +130,7 @@ exports.list = async (req, res, next) => {
       if (before) search.postedAt.$lte = before;
       if (after) search.postedAt.$gte = after;
     }
+    if (customquery) search = JSON.parse(customquery);
     var list = await Projects.find(search);
     list = list.map(packProject);
     res.status(200).json({ projects: list });
@@ -141,6 +148,8 @@ exports.data = async (req, res, next) => {
       message: "Fetch not successful",
       error: "Project not found",
     });
+    project.views++;
+    await project.save();
     project = packProject(project);
     res.status(200).json(project);
   } catch(err) {

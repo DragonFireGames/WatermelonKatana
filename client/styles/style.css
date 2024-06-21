@@ -17,6 +17,15 @@ body {
 .uidtext {
   font-size: 0.5em;
 }
-.projectplay {
+.project-panel {
+  color: #000000;
   text-decoration: none;
+  width: 17vmin;
+  height: 23vmin;
+  display: inline-block;
+}
+
+.thumbnail {
+  max-width: 16vmin;
+  max-height: 16vmin;
 }

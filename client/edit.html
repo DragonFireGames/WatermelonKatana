@@ -21,6 +21,8 @@
     <input type="text" id="link" required><br>
     <label for="desc">Description</label><br>
     <textarea id="desc"></textarea><br>
+    <label for="thumb">Thumbnail</label><br>
+    <input type="text" id="thumb"><br>
     <input type="submit" value="update"><br>
   </form>
   <button id="deletebtn">delete</button>
@@ -29,6 +31,7 @@
     const name = document.querySelector('#name');
     const desc = document.querySelector('#desc');
     const link = document.querySelector('#link');
+    const thumb = document.querySelector('#thumb');
     const display = document.querySelector('.error');
 
     location.path = location.pathname.split("/");
@@ -51,6 +54,7 @@
       name.value = data.name;
       desc.value = data.desc;
       link.value = data.link;
+      thumb.value = data.thumbnail || "";
     })();
     
     form.addEventListener('submit', async (e) => {
@@ -64,6 +68,7 @@
             name: name.value,
             link: link.value,
             desc: desc.value,
+            thumbnail: thumb.value,
           }),
           headers: { 'Content-Type': 'application/json' }
         });

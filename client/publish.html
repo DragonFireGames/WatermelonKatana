@@ -15,6 +15,8 @@
     <input type="text" id="link" required><br>
     <label for="desc">Description</label><br>
     <textarea id="desc"></textarea><br>
+    <label for="thumb">Thumbnail</label><br>
+    <input type="text" id="thumb"><br>
     <input type="submit" value="publish"><br>
   </form>
 
@@ -23,6 +25,7 @@
     const name = document.querySelector('#name');
     const desc = document.querySelector('#desc');
     const link = document.querySelector('#link');
+    const thumb = document.querySelector('#thumb');
     const display = document.querySelector('.error');
 
     form.addEventListener('submit', async (e) => {
@@ -36,6 +39,7 @@
             name: name.value,
             link: link.value,
             desc: desc.value,
+            thumbnail: thumb.value,
           }),
           headers: { 'Content-Type': 'application/json' }
         });
