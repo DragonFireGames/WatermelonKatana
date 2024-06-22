@@ -1,5 +1,5 @@
 // const fs = require("fs");
-const request = require('./requests');
+const request = require("./requests");
 const startPath = "https://studio.code.org";
 const soundLibrary = `${startPath}/api/v1/sound-library/`;
 const assetList = [];
@@ -14,27 +14,28 @@ async function exportProject(id) {
     let source = await getJSON(id);
     await getAssets(id);
     await getSounds(source.source);
-    resolve(await getHTML(id, getCode(source)))
-  })
+    resolve(await getHTML(id, getCode(source)));
+  });
 }
 
 async function getJSON(id) {
   return new Promise((resolve, reject) => {
-    request.send(`${startPath}/v3/sources/${id}/main.json`, "json")
-      .then(data => {
+    request
+      .send(`${startPath}/v3/sources/${id}/main.json`, "json")
+      .then((data) => {
         resolve(data);
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
-      })
-  })
+      });
+  });
 }
 
 async function getAssets(id) {
   let resources = await request.send(assets + id, "json");
   assets += `${id}/`;
   for (let resource of resources) {
-    assetList.push(resource.filename)
+    assetList.push(resource.filename);
   }
 }
 
@@ -42,7 +43,7 @@ function getCode(json) {
   let animationList = json.animations;
   let libraries = ``;
   json.libraries = json.libraries || [];
-  json.libraries.forEach(library => {
+  json.libraries.forEach((library) => {
     let lib = library.name;
     let src = library.source;
     let funcs = library.functions.join("|");
@@ -51,18 +52,35 @@ function getCode(json) {
     src = src.replace(pattern, `this.$1 = function`);
     src = src.replace(methods, `this.$1`);
     libraries += `var ${lib} = new (function ${lib}() {\n${src}\nreturn(this)\n})()\n`;
-  })
-  animationList.orderedKeys.forEach(key => {
+  });
+  animationList.orderedKeys.forEach((key) => {
     let animation = animationList.propsByKey[key];
-    animation.rootRelativePath = `${(animation.sourceUrl ? `/media?u=${startPath}/${animation.sourceUrl}` :
-      `/media?u=${animations + key}.png`)
-      }`;
-  })
+    animation.rootRelativePath = `${
+      animation.sourceUrl
+        ? `/media?u=${startPath}/${animation.sourceUrl}`
+        : `/media?u=${animations + key}.png`
+    }`;
+  });
   if (assetList.length > 0) {
     json.source = json.source.replace(
-      new RegExp(`["|'](?:sound://)(${assetList.join("|")})`, "g"), `"/media?u=${soundLibrary}$1"`)
+      new RegExp(`["|'](?:sound://)(${assetList.join("|")})["|']`, "g"),
+      `"/media?u=${soundLibrary}$1"`,
+    );
     json.source = json.source.replace(
-      new RegExp(`["|'](${assetList.join("|")})["|']`, "g"), `"/media?u=${assets}$1"`);
+      new RegExp(`["|'](${assetList.join("|")})["|']`, "g"),
+      `"/media?u=${assets}$1"`,
+    );
+  }
+  if (animationList.orderedKeys.length < 1) {
+    let prerequisites = ["setup", "preload"];
+    for (let req of prerequisites) {
+      if (
+        json.source.match(new RegExp(`^(\\s*function\\s*${req})`, "gm")) ===
+        null
+      ) {
+        json.source = `function ${req}() {}\n` + json.source;
+      }
+    }
   }
   return `var p5Inst = new p5(null, 'sketch');
 
@@ -97,7 +115,18 @@ window.preload = function () {
         return;
       }
     }
-
+    Object.defineProperty(Object.prototype, "slice", {
+      value: function(){
+       if(typeof this === "object" && "length" in this) {
+         return Array.prototype.slice.call(this,arguments);
+       } else if (Array.isArray(this)) {
+         return Array.prototype.slice.apply(this, arguments);
+        }
+       },
+       enumerable: false,
+       configurable: true,
+       writable: true
+    })
 ${libraries}
 // -----
 
@@ -121,14 +150,16 @@ ${json.source}
 window.setup = function () {
   window.wrappedExportedCode('setup');
 };
-  `
+  `;
 }
 
 async function getHTML(id, code) {
-  return Promise.resolve(await request.send(`${startPath}/v3/channels/${id}`, "json")
-    .then(async data => {
-      const dependency = "/turbowarp/gamelab"
-      return `<html>
+  return Promise.resolve(
+    await request
+      .send(`${startPath}/v3/channels/${id}`, "json")
+      .then(async (data) => {
+        const dependency = "/turbowarp/gamelab";
+        return `<html>
   <head>
     <title> ${data.name} </title>
       <meta charset="utf-8" />
@@ -198,23 +229,25 @@ async function getHTML(id, code) {
   <div id="studio-dpad-container" style="position:absolute; width:400px; bottom:5px; height:157px; overflow-y:hidden;">
   </div>
 </body>
-</html>`
-    }))
+</html>`;
+      }),
+  );
 }
 
 async function getSounds(json) {
   return new Promise(async (resolve, reject) => {
-    const soundRegex = /(\bsound:\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
+    const soundRegex =
+      /(\bsound:\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
     const soundPrefix = /^sound:\/\//;
     let sounds = [...new Set(json.match(soundRegex))];
     for (let sound of sounds) {
       sound = sound.replace(soundPrefix, "");
       assetList.push(sound);
     }
-    resolve(sounds)
-  })
+    resolve(sounds);
+  });
 }
 
 module.exports = {
-  exportProject
-}
+  exportProject,
+};

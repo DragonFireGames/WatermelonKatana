@@ -63,7 +63,29 @@ const ProjectSchema = new Mongoose.Schema({
     type: String,
     required: true,
   },
+  /*poster: {
+    type: Mongoose.ObjectId,
+    ref: "user",
+  },*/
   comments: [ CommentSchema ]
+},{
+  methods: {
+    pack: function() {
+      const container = {};
+      container.name = this.name;
+      container.link = this.link;
+      container.desc = this.desc;
+      container.thumbnail = this.thumbnail;
+      container.score = this.score;
+      container.views = this.views;
+      container.iscdo = this.iscdo;
+      container.postedAt = this.postedAt;
+      container.id = this._id;
+      container.posterId = this.posterId;
+      container.poster = this.poster;
+      return container;
+    }
+  }
 });
 
 const Projects = Mongoose.model("project", ProjectSchema);

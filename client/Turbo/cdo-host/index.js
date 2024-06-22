@@ -16,23 +16,28 @@ class Host {
     if (!initalized) {
       // Applabs patch for local use
       app.get("/xhr", (req, res) => {
-        dynamicRequest(decodeURIComponent(req.query.u), "text")
+        dynamicRequest(req.query.u, "text")
           .then(response => {
             res.set("Content-Type", response.type);
             res.send(response.data);
           })
+          .catch(err => {
+            res.status(400).send();
+          })
       })
       // Works for audio video or images
       app.get("/media", (req, res) => {
-        dynamicRequest(req.query.u, "blob")
-          .then(response => {
-            res.set("Content-Type", "blob")
-            response.data.stream().pipe(res)
-          })
-          .catch(err => {
-            res.status(err)
-            res.send();
-          })
+        (function recall() {
+          dynamicRequest(req.query.u, "blob")
+            .then(response => {
+              res.set("Content-Type", "blob")
+              response.data.stream().pipe(res)
+            })
+            .catch(err => {
+              if(err == 429) { setTimeout(recall,3e2); return}
+              res.status(400).send();
+            })
+        })()
       })
       // TTS Standin for Azure
       app.get("/speech", (req, res) => {
@@ -49,24 +54,24 @@ class Host {
     // this is here cuz i'm lazy af
     function dynamicRequest(url, type) {
       return new Promise((resolve, reject) => {
-        let passthrough = {};
-        fetch(url)
-          .then(response => {
-            if (response.status < 206) {
-              passthrough = { status: response.status, type: response.headers.get("Content-Type") };
-              return response[type]();
-            } else {
-              reject(response.status);
-            }
-          })
-          .then(data => {
-            passthrough.data = data;
-            resolve(passthrough);
-          })
-          .catch(err => {
-            reject(err);
-          })
-      })
+          let passthrough = {};
+          fetch(url)
+            .then(response => {
+              if (response.status < 206) {
+                passthrough = { status: response.status, type: response.headers.get("Content-Type") };
+                return response[type]();
+              } else {
+                reject(response.status);
+              }
+            })
+            .then(data => {
+              passthrough.data = data;
+              resolve(passthrough);
+            })
+            .catch(err => {
+              reject(err);
+            })
+        })
     }
 
     new Database(app, this.folder);

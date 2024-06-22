@@ -36,7 +36,7 @@
 
     location.path = location.pathname.split("/");
     const pid = location.path[2];
-    
+
     const deletebtn = document.querySelector('#deletebtn');
     deletebtn.onclick = async () => {
       if (!confirm("Warning, this is permanent! Are you sure you want to continue?")) return;
@@ -47,7 +47,7 @@
       });
       location.assign("/");
     }
-    
+
     (async() => {
       const res = await fetch('/api/project/data/'+pid);
       const data = await res.json();
@@ -56,7 +56,7 @@
       link.value = data.link;
       thumb.value = data.thumbnail || "";
     })();
-    
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       display.textContent = '';

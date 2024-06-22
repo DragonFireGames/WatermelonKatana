@@ -8,15 +8,19 @@ var Users =  require("./model/Users");
   
   //Projects.updateMany({ },{views:0,thumbnail:""}).then(console.log);
 
-  /*// Run when converting to ref
+  //* Run when converting to ref
   
-  var p = await Projects.find({ });
-  for (var i = 0; i < p.length; i++) {
-    var u = await Users.findById(p[0].posterId);
-    p[0].poster = u;
-    delete p[0].posterId;
+  var list = await Projects.find({ });
+  for (var p of list) {
+    //var u = await Users.findById(p[i].posterId);
+    //p[i].poster = u;
+    //delete p[i].posterId;
+    if (!p.iscdo) continue;
+    const iscdo = p.link.match(/^https?:\/\/studio\.code\.org\/projects\/(applab|gamelab)\/([^/]+)/);
+    p.thumbnail = `https://studio.code.org/v3/files/${iscdo[2]}/.metadata/thumbnail.png`;
+    await p.save();
   }
   //*/
   
-}catch(e){console.log(e);})();
+console.log("Done!")}catch(e){console.log(e);}})();
 

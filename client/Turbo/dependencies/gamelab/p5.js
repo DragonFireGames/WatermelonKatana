@@ -10198,7 +10198,6 @@ var p5 = function(sketch, node, sync) {
         this._registeredPreloadMethods[method] = obj[method];
         obj[method] = this._wrapPreload(obj, method);
       }
-
       userPreload();
       this._runIfPreloadsAreDone();
     } else {
@@ -19684,7 +19683,6 @@ p5.prototype.loadImage = function(path, successCallback, failureCallback) {
   var img = new Image();
   var pImg = new p5.Image(1, 1, this);
   var decrementPreload = p5._getDecrementPreload.apply(this, arguments);
-
   img.onload = function() {
     pImg.width = pImg.canvas.width = img.width;
     pImg.height = pImg.canvas.height = img.height;
@@ -19713,12 +19711,13 @@ p5.prototype.loadImage = function(path, successCallback, failureCallback) {
   //see https://developer.mozilla.org/en-US/docs/HTML/CORS_Enabled_Image
   // When using data-uris the file will be loaded locally
   // so we don't need to worry about crossOrigin with base64 file types
-  if(path.indexOf('data:image/') !== 0) {
-    img.crossOrigin = 'Anonymous';
-  }
+    if(path.indexOf('data:image/') !== 0) {
+        img.crossOrigin = 'Anonymous';
+        path = path.match(/^(assets|\/media)/) !== null ? path: "/media?u=" + path;
+      }
 
-  //start loading the image
-  img.src = path.match(/^(assets|\/media)/) !== null ? path: "/media?u=" + path;
+      //start loading the image
+      img.src = path;
 
   return pImg;
 };

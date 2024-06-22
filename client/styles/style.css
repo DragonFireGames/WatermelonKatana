@@ -1,5 +1,5 @@
 body {
-	font-family: Tahoma, sans-serif;
+  font-family: Tahoma, sans-serif;
 }
 .topnav {
   background-color: #ffffff;
@@ -20,12 +20,12 @@ body {
 .project-panel {
   color: #000000;
   text-decoration: none;
-  width: 17vmin;
-  height: 23vmin;
+  width: 200px;
+  height: 300px;
   display: inline-block;
 }
 
-.thumbnail {
-  max-width: 16vmin;
-  max-height: 16vmin;
+.project-thumbnail {
+  max-width: 200px;
+  max-height: 200px;
 }

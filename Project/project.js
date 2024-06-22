@@ -1,22 +1,6 @@
 const Projects = require("../model/Projects");
 const Users = require("../model/Users");
 
-function packProject(project) {
-  const container = {};
-  container.name = project.name;
-  container.link = project.link;
-  container.desc = project.desc;
-  container.thumbnail = project.thumbnail;
-  container.score = project.score;
-  container.views = project.views;
-  container.iscdo = project.iscdo;
-  container.postedAt = project.postedAt;
-  container.id = project._id;
-  container.posterId = project.posterId;
-  container.poster = project.poster;
-  return container;
-}
-
 exports.publish = async (req, res, next) => {
   var { name, link, desc, thumbnail } = req.body;
   console.log(name,link);
@@ -132,7 +116,7 @@ exports.list = async (req, res, next) => {
     }
     if (customquery) search = JSON.parse(customquery);
     var list = await Projects.find(search);
-    list = list.map(packProject);
+    list = list.map(e=>e.pack());
     res.status(200).json({ projects: list });
   } catch(err) {
     res.status(401).json({ message: "Not successful", error: err.message });
@@ -150,8 +134,7 @@ exports.data = async (req, res, next) => {
     });
     project.views++;
     await project.save();
-    project = packProject(project);
-    res.status(200).json(project);
+    res.status(200).json(project.pack());
   } catch(err) {
     res.status(401).json({ message: "Not successful", error: err.message });
     console.log(err.message);

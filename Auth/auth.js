@@ -2,15 +2,6 @@ const Users = require("../model/Users");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-function packUser(user) {
-  const container = {};
-  container.username = user.username;
-  container.role = user.role;
-  container.id = user._id;
-  container.favorites = user.favorites;
-  return container;
-}
-
 const jwtSecret = process.env["JWT_SECRET"];
 exports.register = async (req, res, next) => {
   const { username, password } = req.body;
@@ -135,7 +126,7 @@ exports.getUsers = async (req, res, next) => {
     var search = {};
     if (req.query.role) search.role = req.query.role;
     var users = await Users.find(search);
-    const list = users.map(packUser);
+    const list = users.map(e=>e.pack());
     res.status(200).json({ user: list });
   } catch(err) {
     res.status(401).json({ message: "Not successful", error: err.message });
@@ -151,7 +142,7 @@ exports.check = async (req, res, next) => {
       message: "Fetch not successful",
       error: "User not found",
     });
-    user = packUser(user);
+    user = user.pack();
     res.status(200).json({auth:true,user});
   } catch(err) {
     res.status(401).json({ message: "Not successful", error: err.message });
