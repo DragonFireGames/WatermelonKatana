@@ -153,6 +153,8 @@ window.setup = function () {
   `;
 }
 
+//* Old Code
+
 async function getHTML(id, code) {
   return Promise.resolve(
     await request
@@ -233,6 +235,68 @@ async function getHTML(id, code) {
       }),
   );
 }
+
+/*/// Breaks Translations, but I think this might be the way to go?
+
+async function getHTML(id, code) {
+  return Promise.resolve(
+    await request
+      .send(`${startPath}/v3/channels/${id}`, "json")
+      .then(async (data) => {
+        const dependency = "/turbowarp/gamelab";
+        return `<html>
+  <head>
+    <title> ${data.name} </title>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link href="${dependency}/gamelab.css" rel="stylesheet" type="text/css">
+      <script src="${dependency}/p5.js"></script>
+      <script src="${dependency}/p5.play.js"></script>
+      <script>
+        window.fconfig = { channel: "${id}" };
+        function setExportConfig(config) { fconfig = Object.assign(fconfig, config) }
+      </script>
+      <script src="https://studio.code.org/projects/gamelab/${id}/export_config?script_call=setExportConfig"></script>
+      <script src="https://code.jquery.com/jquery-1.12.1.min.js"></script>
+      <script src="${dependency}/gamelab-api.js"></script>
+      <script>
+        window.addEventListener("load", () => {
+          Object.assign(window, fconfig);
+          eval.apply(window, [${JSON.stringify(code)}]);
+        });
+    </script>
+    <style>
+      body.expo {
+        background-color: black;
+      }
+  
+      #sketch.expo.no-controls {
+        top: 82px;
+      }
+    </style>
+  </head>
+  <body class="web"
+  style="margin:0; overflow:hidden; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; position:fixed; top:0; left:0; width:400px; height:565px;">
+  <div id="sketch" class="web" style="position:absolute;"></div>
+  <div id="soft-buttons" style="display: none">
+    <button id="leftButton" disabled className="arrow">
+    </button>
+    <button id="rightButton" disabled className="arrow">
+    </button>
+    <button id="upButton" disabled className="arrow">
+    </button>
+    <button id="downButton" disabled className="arrow">
+    </button>
+  </div>
+  <div id="studio-dpad-container" style="position:absolute; width:400px; bottom:5px; height:157px; overflow-y:hidden;">
+  </div>
+</body>
+</html>`;
+      }),
+  );
+}
+
+//*/
 
 async function getSounds(json) {
   return new Promise(async (resolve, reject) => {
