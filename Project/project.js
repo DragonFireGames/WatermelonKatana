@@ -215,3 +215,40 @@ exports.unfavorite = async (req, res, next) => {
     console.log(error.message);
   }
 };
+
+exports.comment = async (req, res, next) => {
+  var { content, rating } = req.body;
+  console.log(name,link);
+  try {
+    const pid = req.params.id;
+    const project = await Projects.findOne({ _id: pid });
+    if (!project) return res.status(404).json({
+      message: "Fetch not successful",
+      error: "Project not found",
+    });
+    const user = res.locals.userToken;
+    if (project.posterId !== user.id && user.role !== "Admin") return res.status(403).json({
+      message: "Not Authorized. You do not own this project",
+    });
+    project.comments.push({
+      content,
+      rating,
+      poster: user.username,
+      posterId: user.id,
+      postedAt: Date.now(),
+    });
+    await project.save();
+    res.status(201).json({
+      message: "Project successfully updated",
+      id: project._id,
+      name: project.name,
+    });
+    console.log("done!");
+  } catch(error) {
+    res.status(400).json({
+      message: "Project not successfully updated",
+      error: error.message,
+    });
+    console.log(error.message);
+  }
+};

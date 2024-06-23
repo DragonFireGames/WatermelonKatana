@@ -6,6 +6,9 @@ const CommentSchema = new Mongoose.Schema({
     minlength: 1,
     required: true,
   },
+  rating: {
+    type: Number,
+  },
   postedAt: {
     type: Number,
     required: true,

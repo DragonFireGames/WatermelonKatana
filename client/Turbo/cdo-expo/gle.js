@@ -236,7 +236,7 @@ async function getHTML(id, code) {
   );
 }
 
-/*/// Breaks Translations, but I think this might be the way to go?
+/*/// Breaks stuff for now, but I think this might be the way to go?
 
 async function getHTML(id, code) {
   return Promise.resolve(
