@@ -218,7 +218,7 @@ exports.unfavorite = async (req, res, next) => {
 
 exports.comment = async (req, res, next) => {
   var { content, rating } = req.body;
-  console.log(name,link);
+  console.log(content,rating);
   try {
     const pid = req.params.id;
     const project = await Projects.findOne({ _id: pid });
@@ -227,9 +227,6 @@ exports.comment = async (req, res, next) => {
       error: "Project not found",
     });
     const user = res.locals.userToken;
-    if (project.posterId !== user.id && user.role !== "Admin") return res.status(403).json({
-      message: "Not Authorized. You do not own this project",
-    });
     project.comments.push({
       content,
       rating,

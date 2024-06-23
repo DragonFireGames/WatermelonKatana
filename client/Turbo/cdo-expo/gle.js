@@ -132,10 +132,12 @@ window.preload = function () {
 eval.apply(window,[${JSON.stringify(`
 ${libraries}
 // -----
+
 ${json.source}
-`)}]);
 
 // -----
+`)}]);
+
     try { window.draw = draw; } catch (e) {}
     switch (stage) {
       case 'preload':
