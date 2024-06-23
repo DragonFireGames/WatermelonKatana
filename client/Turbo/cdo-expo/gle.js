@@ -127,10 +127,13 @@ window.preload = function () {
        configurable: true,
        writable: true
     })
+
+// My shitty fix;
+eval.apply(window,[${JSON.stringify(`
 ${libraries}
 // -----
-
 ${json.source}
+`)}]);
 
 // -----
     try { window.draw = draw; } catch (e) {}
