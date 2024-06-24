@@ -5,13 +5,22 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>View | PIC-MO</title>
-  <style src="styles/style.css"></style>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+    #display, .topnav {
+      margin: 5px;
+      padding: 5px;
+    }
+  </style>
 </head>
 <body>
   <div class="topnav">
     <a href="/">Home</a>
   </div>
-  <iframe id="game" style="padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; display: block;"></iframe> <br>
+  <iframe id="game" style="display: block; margin-left: auto; margin-right: auto;"></iframe> <br>
   <button id="favoritebtn" onclick="favbtnclick()">Loading...</button>
   <div id="display">
     Loading...
@@ -39,13 +48,13 @@
         
         if (!data.iscdo) {
           game.src = data.link;
-          game.style.width = "100vw";
-          game.style.height = "100vh";
+          game.style.width = "calc(100vw - 30px)";
+          game.style.height = "calc(100vh - 15px)";
         } else {
           //do magic
           game.src = location.origin+"/turbowarp?u="+data.link;
-          game.style.width = "100vmin";
-          game.style.height = "100vmin";
+          game.style.width = "calc(100vmin - 15px)";
+          game.style.height = "calc(100vmin - 15px)";
         }
         
         const tok = await getAuth();

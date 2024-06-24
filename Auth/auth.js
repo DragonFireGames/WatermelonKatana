@@ -164,7 +164,7 @@ exports.userdata = async (req, res, next) => {
       message: "Fetch not successful",
       error: "User not found",
     });
-    user = packUser(user);
+    user = user.pack();
     res.status(200).json(user);
   } catch(err) {
     res.status(401).json({ message: "Not successful", error: err.message });
