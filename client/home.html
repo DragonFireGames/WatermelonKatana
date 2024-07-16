@@ -15,7 +15,9 @@
   <div id="list"></div>
   <div id="footer">
   </div>
+  <script src="/scripts/HtmlSanitizer.js"></script>
   <script src="/scripts/utils.js"></script>
+  
   <script>
       const list = document.querySelector('#list');
     
@@ -37,7 +39,7 @@
           <a href="/profile">Profile</a>
         `;
         if (data.user.role === "Basic") {
-          header.innerHTML += `<a href="/basic">User List</a> <a href="/profile">Profile Settings"></a>`;
+          header.innerHTML += `<a href="/basic">User List</a> <a href="/profile">Profile Settings</a>`;
         } else {
           if (data.user.role === "Admin") {
             header.innerHTML += `<a href="/admin">User List</a>`;

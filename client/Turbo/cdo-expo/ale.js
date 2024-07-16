@@ -72,6 +72,9 @@ async function getHTML(html, id, code) {
       script.text=${JSON.stringify(code)};
 script.setAttribute('namespace','Global');
 iframe.contentDocument.head.appendChild(script);
+let element = document.getElementById("divApplab");
+      element.style["transform"] = "scale(" + (Math.min(window.innerWidth, window.innerHeight) / 450) + ")";
+      element.style["transform-origin"] = "top left";
 });
 document.head.appendChild(iframe);
       }

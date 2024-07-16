@@ -16,28 +16,29 @@ class Host {
     if (!initalized) {
       // Applabs patch for local use
       app.get("/xhr", (req, res) => {
-        dynamicRequest(req.query.u, "text")
+        recall(req.query.u, "text")
           .then(response => {
             res.set("Content-Type", response.type);
             res.send(response.data);
           })
           .catch(err => {
-            res.status(400).send();
+            res.status(err).send();
           })
       })
       // Works for audio video or images
       app.get("/media", (req, res) => {
-        (function recall() {
-          dynamicRequest(req.query.u, "blob")
-            .then(response => {
-              res.set("Content-Type", "blob")
-              response.data.stream().pipe(res)
-            })
-            .catch(err => {
-              if(err == 429) { setTimeout(recall,3e2); return}
-              res.status(400).send();
-            })
-        })()
+        recall(req.query.u, "blob")
+        .then(response => {
+          let contentType = response.type;
+          if(!contentType.startsWith("image") && !contentType.startsWith("audio")){
+            throw new Error("unsupported media type")
+          }
+          res.set("Content-Type", contentType)
+          response.data.stream().pipe(res)
+        })
+        .catch(err => {
+          res.status(err).send();
+        })
       })
       // TTS Standin for Azure
       app.get("/speech", (req, res) => {
@@ -52,26 +53,43 @@ class Host {
       initalized = true;
     }
     // this is here cuz i'm lazy af
-    function dynamicRequest(url, type) {
+    function recall(url, type) {
       return new Promise((resolve, reject) => {
-          let passthrough = {};
-          fetch(url)
+        (function call() {
+          dynamicRequest(url, type)
             .then(response => {
-              if (response.status < 206) {
-                passthrough = { status: response.status, type: response.headers.get("Content-Type") };
-                return response[type]();
-              } else {
-                reject(response.status);
-              }
-            })
-            .then(data => {
-              passthrough.data = data;
-              resolve(passthrough);
+              resolve(response);
             })
             .catch(err => {
-              reject(err);
+              if (err == 429) {
+                setTimeout(call, 2e3);
+                return;
+              }
+              reject(400);
             })
-        })
+        })()
+      })
+    }
+    function dynamicRequest(url, type) {
+      return new Promise((resolve, reject) => {
+        let passthrough = {};
+        fetch(url)
+          .then(response => {
+            if (response.status < 206) {
+              passthrough = { status: response.status, type: response.headers.get("Content-Type") };
+              return response[type]();
+            } else {
+              reject(response.status);
+            }
+          })
+          .then(data => {
+            passthrough.data = data;
+            resolve(passthrough);
+          })
+          .catch(err => {
+            reject(err);
+          })
+      })
     }
 
     new Database(app, this.folder);

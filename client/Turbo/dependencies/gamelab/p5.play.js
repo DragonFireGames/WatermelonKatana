@@ -624,7 +624,7 @@ p5.prototype.mouseDidMove = function() {
 };
 
 p5.prototype.mouseIsOver = function(sprite) {
-  if (!sprite) {
+  if (typeof sprite !== "object" && sprite !== null) {
     return false;
   }
 
@@ -1808,14 +1808,14 @@ function Sprite(pInst, _x, _y, _w, _h) {
     get: function() {
       if (this._internalWidth === undefined) {
         return 100;
-      } else if (this.animation && pInst._fixedSpriteAnimationFrameSizes) {
+      } else if (this.animation) {
         return this._internalWidth * this._horizontalStretch;
       } else {
         return this._internalWidth;
       }
     },
     set: function(value) {
-      if (this.animation && pInst._fixedSpriteAnimationFrameSizes) {
+      if (this.animation) {
         this._horizontalStretch = value / this._internalWidth;
       } else {
         this._internalWidth = value;
@@ -1843,14 +1843,14 @@ function Sprite(pInst, _x, _y, _w, _h) {
     get: function() {
       if (this._internalHeight === undefined) {
         return 100;
-      } else if (this.animation && pInst._fixedSpriteAnimationFrameSizes) {
+      } else if (this.animation) {
         return this._internalHeight * this._verticalStretch;
       } else {
         return this._internalHeight;
       }
     },
     set: function(value) {
-      if (this.animation && pInst._fixedSpriteAnimationFrameSizes) {
+      if (this.animation) {
         this._verticalStretch = value / this._internalHeight;
       } else {
         this._internalHeight = value;
@@ -2249,7 +2249,7 @@ function Sprite(pInst, _x, _y, _w, _h) {
       if(camera.active)
         mousePosition = createVector(camera.mouseX, camera.mouseY);
       else
-        mousePosition = createVector(pInst.mouseX, pInst.mouseY);
+        mousePosition = createVector(p5Inst.mouseX, p5Inst.mouseY);
 
       this.mouseIsOver = this.collider.overlap(new p5.PointCollider(mousePosition));
 
@@ -2416,7 +2416,7 @@ function Sprite(pInst, _x, _y, _w, _h) {
    */
   this._getScaleX = function()
   {
-    if (pInst._fixedSpriteAnimationFrameSizes) {
+    if (this.animation) {
       return this.scale * this._horizontalStretch;
     }
     return this.scale;
@@ -2431,7 +2431,7 @@ function Sprite(pInst, _x, _y, _w, _h) {
    */
   this._getScaleY = function()
   {
-    if (pInst._fixedSpriteAnimationFrameSizes) {
+    if (this.animation) {
       return this.scale * this._verticalStretch;
     }
     return this.scale;
@@ -2457,7 +2457,7 @@ function Sprite(pInst, _x, _y, _w, _h) {
       imageMode(CENTER);
 
       translate(this.position.x, this.position.y);
-      if (pInst._angleMode === pInst.RADIANS) {
+      if (p5Inst._angleMode === p5Inst.RADIANS) {
         rotate(radians(this.rotation));
       } else {
         rotate(this.rotation);
@@ -2521,12 +2521,14 @@ function Sprite(pInst, _x, _y, _w, _h) {
           push();
           tint(this.tint);
         }
-        if(this.alpha < 1) {
+        if(this.alpha < 1 && this.alpha > 0) {
           push();
           alphaTint(this.alpha);
         }
-        animations[currentAnimation].draw(0, 0, 0);
-        if(this.alpha < 1) {
+        if(this.alpha > 0) {
+          animations[currentAnimation].draw(0, 0, 0);
+        }
+        if(this.alpha < 1 && this.alpha > 0) {
           pop();
         }
         if(this.tint) {
@@ -2600,7 +2602,7 @@ function Sprite(pInst, _x, _y, _w, _h) {
   */
   this.getDirection = function() {
 
-    var direction = atan2(this.velocity.y, this.velocity.x);
+    var direction = p5Inst.atan2(this.velocity.y, this.velocity.x);
 
     if(isNaN(direction))
       direction = 0;
@@ -2609,7 +2611,7 @@ function Sprite(pInst, _x, _y, _w, _h) {
     // the current p5 angleMode is DEGREES, and radians if the p5 angleMode is
     // RADIANS.  This method should always return degrees (for now).
     // See https://github.com/molleindustria/p5.play/issues/94
-    if (pInst._angleMode === pInst.RADIANS) {
+    if (p5Inst._angleMode === p5Inst.RADIANS) {
       direction = degrees(direction);
     }
 
@@ -2664,16 +2666,16 @@ function Sprite(pInst, _x, _y, _w, _h) {
     var a;
     if (typeof angle === 'undefined') {
       if (this.velocity.x !== 0 || this.velocity.y !== 0) {
-        a = pInst.atan2(this.velocity.y, this.velocity.x);
+        a = p5Inst.atan2(this.velocity.y, this.velocity.x);
       } else {
-        if (pInst._angleMode === pInst.RADIANS) {
+        if (p5Inst._angleMode === p5Inst.RADIANS) {
           a = radians(this._rotation);
         } else {
           a = this._rotation;
         }
       }
     } else {
-      if (pInst._angleMode === pInst.RADIANS) {
+      if (p5Inst._angleMode === p5Inst.RADIANS) {
         a = radians(angle);
       } else {
         a = angle;
@@ -2797,7 +2799,7 @@ function Sprite(pInst, _x, _y, _w, _h) {
   */
   this.addSpeed = function(speed, angle) {
     var a;
-    if (pInst._angleMode === pInst.RADIANS) {
+    if (p5Inst._angleMode === p5Inst.RADIANS) {
       a = radians(angle);
     } else {
       a = angle;
@@ -2911,7 +2913,7 @@ function Sprite(pInst, _x, _y, _w, _h) {
       for(var i=1; i<arguments.length; i++)
         animFrames.push(arguments[i]);
 
-      anim = construct(pInst.Animation, animFrames);
+      anim = construct(p5Inst.Animation, animFrames);
       animations[label] = anim;
 
       if(currentAnimation === '')
@@ -2979,7 +2981,7 @@ function Sprite(pInst, _x, _y, _w, _h) {
       return;
     }
 
-    var animation = pInst._predefinedSpriteAnimations &&
+    var animation = p5Inst._predefinedSpriteAnimations &&
         pInst._predefinedSpriteAnimations[animationName];
     if (typeof animation === 'undefined') {
       throw new Error('Unable to find an animation named "' + animationName +
@@ -2987,7 +2989,7 @@ function Sprite(pInst, _x, _y, _w, _h) {
     }
     this.addAnimation(animationName, animation);
     this.changeAnimation(animationName);
-    if (pInst._pauseSpriteAnimationsByDefault) {
+    if (p5Inst._pauseSpriteAnimationsByDefault) {
       this.pause();
     }
   };
@@ -3244,8 +3246,8 @@ function Sprite(pInst, _x, _y, _w, _h) {
     if (target instanceof Sprite) {
       others.push(target);
     } else if (target instanceof Array) {
-      if (pInst.quadTree !== undefined && pInst.quadTree.active) {
-        others = pInst.quadTree.retrieveFromGroup(this, target);
+      if (p5Inst.quadTree !== undefined && p5Inst.quadTree.active) {
+        others = p5Inst.quadTree.retrieveFromGroup(this, target);
       }
 
       // If the quadtree is disabled -or- no sprites in this group are in the
@@ -4255,14 +4257,14 @@ function Animation(pInst) {
     var ext1 = from.substring(from.length-4, from.length);
     if(ext1 !== '.png')
     {
-      pInst.print('Animation error: you need to use .png files (filename '+from+')');
+      p5Inst.print('Animation error: you need to use .png files (filename '+from+')');
       from = -1;
     }
 
     var ext2 = to.substring(to.length-4, to.length);
     if(ext2 !== '.png')
     {
-      pInst.print('Animation error: you need to use .png files (filename '+to+')');
+      p5Inst.print('Animation error: you need to use .png files (filename '+to+')');
       to = -1;
     }
 
@@ -4306,8 +4308,8 @@ function Animation(pInst) {
       if(prefix1 !== prefix2 )
       {
         //print("2 separate images");
-        this.images.push(pInst.loadImage(from));
-        this.images.push(pInst.loadImage(to));
+        this.images.push(p5Inst.loadImage(from));
+        this.images.push(p5Inst.loadImage(to));
       }
       //same digits: case img0001, img0002
       else
@@ -4319,8 +4321,8 @@ function Animation(pInst) {
           //load all images
           for (i = number1; i <= number2; i++) {
             // Use nf() to number format 'i' into four digits
-            fileName = prefix1 + pInst.nf(i, digits1) + '.png';
-            this.images.push(pInst.loadImage(fileName));
+            fileName = prefix1 + p5Inst.nf(i, digits1) + '.png';
+            this.images.push(p5Inst.loadImage(fileName));
 
           }
 
@@ -4331,7 +4333,7 @@ function Animation(pInst) {
           for (i = number1; i <= number2; i++) {
             // Use nf() to number format 'i' into four digits
             fileName = prefix1 + i + '.png';
-            this.images.push(pInst.loadImage(fileName));
+            this.images.push(p5Inst.loadImage(fileName));
 
           }
 
@@ -4367,7 +4369,7 @@ function Animation(pInst) {
       if(frameArguments[i] instanceof p5.Image)
         this.images.push(frameArguments[i]);
       else
-        this.images.push(pInst.loadImage(frameArguments[i]));
+        this.images.push(p5Inst.loadImage(frameArguments[i]));
     }
   }
 
@@ -4419,8 +4421,8 @@ function Animation(pInst) {
         this.update();
 
       //this.currentImageMode = g.imageMode;
-      pInst.push();
-      pInst.imageMode(CENTER);
+      p5Inst.push();
+      p5Inst.imageMode(CENTER);
 
       var xTranslate = this.xpos;
       var yTranslate = this.ypos;
@@ -4438,22 +4440,22 @@ function Animation(pInst) {
         yTranslate += ((frame_info.sourceY || 0) - missingY / 2);
       }
 
-      pInst.translate(xTranslate, yTranslate);
-      if (pInst._angleMode === pInst.RADIANS) {
-        pInst.rotate(radians(this.rotation));
+      p5Inst.translate(xTranslate, yTranslate);
+      if (p5Inst._angleMode === p5Inst.RADIANS) {
+        p5Inst.rotate(radians(this.rotation));
       } else {
-        pInst.rotate(this.rotation);
+        p5Inst.rotate(this.rotation);
       }
 
       if (frame_info) {
         if (this.spriteSheet.image instanceof Image) {
-          pInst.imageElement(this.spriteSheet.image,
+          p5.imageElement(this.spriteSheet.image,
             frame_info.x, frame_info.y,
             frame_info.width, frame_info.height,
             this.offX, this.offY,
             frame_info.width, frame_info.height);
         } else {
-          pInst.image(this.spriteSheet.image,
+          p5Inst.image(this.spriteSheet.image,
             frame_info.x, frame_info.y,
             frame_info.width, frame_info.height,
             this.offX, this.offY,
@@ -4461,16 +4463,16 @@ function Animation(pInst) {
           }
       } else if (image) {
         if (image instanceof Image) {
-          pInst.imageElement(image, this.offX, this.offY);
+          p5.imageElement(image, this.offX, this.offY);
         } else {
-          pInst.image(image, this.offX, this.offY);
+          p5Inst.image(image, this.offX, this.offY);
         }
       } else {
-        pInst.print('Warning undefined frame '+frame);
+        p5Inst.print('Warning undefined frame '+frame);
         //this.isActive = false;
       }
 
-      pInst.pop();
+      p5Inst.pop();
     }
   };
 
@@ -4793,13 +4795,13 @@ function SpriteSheet(pInst) {
         if (typeof spriteSheetArgs[2] === 'function') {
           callback = spriteSheetArgs[2];
         }
-        this.image = pInst.loadImageElement(
+        this.image = p5Inst.loadImageElement(
           spriteSheetArgs[0],
           function(img) { if (callback) return callback(img); },
           function() { if (callback) return callback(null); }
         );
       } else {
-        this.image = pInst.loadImage(spriteSheetArgs[0]);
+        this.image = p5Inst.loadImage(spriteSheetArgs[0]);
       }
     } else if (longArgs) {
       var generateSheetFrames = this._generateSheetFrames.bind(this);
@@ -4807,7 +4809,7 @@ function SpriteSheet(pInst) {
         if (typeof spriteSheetArgs[4] === 'function') {
           callback = spriteSheetArgs[4];
         }
-        this.image = pInst.loadImageElement(
+        this.image = p5Inst.loadImageElement(
           spriteSheetArgs[0],
           function(img) {
             generateSheetFrames(img);
@@ -4816,7 +4818,7 @@ function SpriteSheet(pInst) {
           function() { if (callback) return callback(null); }
         );
       } else {
-        this.image = pInst.loadImage(spriteSheetArgs[0], generateSheetFrames);
+        this.image = p5Inst.loadImage(spriteSheetArgs[0], generateSheetFrames);
       }
     }
   }
@@ -4867,10 +4869,10 @@ function SpriteSheet(pInst) {
       }
     }
     if (this.image instanceof Image) {
-      pInst.imageElement(this.image, frameToDraw.frame.x, frameToDraw.frame.y,
+      p5Inst.imageElement(this.image, frameToDraw.frame.x, frameToDraw.frame.y,
         frameToDraw.frame.width, frameToDraw.frame.height, x, y, dWidth, dHeight);
     } else {
-      pInst.image(this.image, frameToDraw.frame.x, frameToDraw.frame.y,
+      p5Inst.image(this.image, frameToDraw.frame.x, frameToDraw.frame.y,
         frameToDraw.frame.width, frameToDraw.frame.height, x, y, dWidth, dHeight);
     }
   };
@@ -4978,8 +4980,8 @@ Quadtree.prototype.updateBounds = function() {
 };
 
 /*
-	 * Split the node into 4 subnodes
-	 */
+   * Split the node into 4 subnodes
+   */
 Quadtree.prototype.split = function() {
 
   var nextLevel	= this.level + 1,
@@ -5023,8 +5025,8 @@ Quadtree.prototype.split = function() {
 
 
 /*
-	 * Determine the quadtrant for an area in this node
-	 */
+   * Determine the quadtrant for an area in this node
+   */
 Quadtree.prototype.getIndex = function( pRect ) {
   if(!pRect.collider)
     return -1;
@@ -5064,10 +5066,10 @@ Quadtree.prototype.getIndex = function( pRect ) {
 
 
 /*
-	 * Insert an object into the node. If the node
-	 * exceeds the capacity, it will split and add all
-	 * objects to their corresponding subnodes.
-	 */
+   * Insert an object into the node. If the node
+   * exceeds the capacity, it will split and add all
+   * objects to their corresponding subnodes.
+   */
 Quadtree.prototype.insert = function( obj ) {
   //avoid double insertion
   if(this.objects.indexOf(obj) === -1)
@@ -5112,8 +5114,8 @@ Quadtree.prototype.insert = function( obj ) {
 
 
 /*
-	 * Return all objects that could collide with a given area
-	 */
+   * Return all objects that could collide with a given area
+   */
 Quadtree.prototype.retrieve = function( pRect ) {
 
 
@@ -5151,8 +5153,8 @@ Quadtree.prototype.retrieveFromGroup = function( pRect, group ) {
 };
 
 /*
-	 * Get all objects stored in the quadtree
-	 */
+   * Get all objects stored in the quadtree
+   */
 Quadtree.prototype.getAll = function() {
 
   var objects = this.objects;
@@ -5166,8 +5168,8 @@ Quadtree.prototype.getAll = function() {
 
 
 /*
-	 * Get the node in which a certain object is stored
-	 */
+   * Get the node in which a certain object is stored
+   */
 Quadtree.prototype.getObjectNode = function( obj ) {
 
   var index;
@@ -5198,9 +5200,9 @@ Quadtree.prototype.getObjectNode = function( obj ) {
 
 
 /*
-	 * Removes a specific object from the quadtree
-	 * Does not delete empty subnodes. See cleanup-function
-	 */
+   * Removes a specific object from the quadtree
+   * Does not delete empty subnodes. See cleanup-function
+   */
 Quadtree.prototype.removeObject = function( obj ) {
 
   var node = this.getObjectNode( obj ),
@@ -5213,8 +5215,8 @@ Quadtree.prototype.removeObject = function( obj ) {
 
 
 /*
-	 * Clear the quadtree and delete all objects
-	 */
+   * Clear the quadtree and delete all objects
+   */
 Quadtree.prototype.clear = function() {
 
   this.objects = [];
@@ -5231,9 +5233,9 @@ Quadtree.prototype.clear = function() {
 
 
 /*
-	 * Clean up the quadtree
-	 * Like clear, but objects won't be deleted but re-inserted
-	 */
+   * Clean up the quadtree
+   * Like clear, but objects won't be deleted but re-inserted
+   */
 Quadtree.prototype.cleanup = function() {
 
   var objects = this.getAll();

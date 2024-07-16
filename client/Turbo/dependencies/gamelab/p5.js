@@ -19715,7 +19715,9 @@ p5.prototype.loadImage = function(path, successCallback, failureCallback) {
   // so we don't need to worry about crossOrigin with base64 file types
   if(path.indexOf('data:image/') !== 0) {
     img.crossOrigin = 'Anonymous';
-    path = path.match(/^(assets|\/media)/) !== null ? path: "/media?u=" + path;
+    path = path.match(/^(assets|\/media)/) !== null ? path: 
+    path.match(/(https?:\/\/|www\.|ftp:\/\/|sftp:\/\/|ftps:\/\/|mailto:|git:\/\/)/i) ? "/media?u=" + path:
+    `/media?u=https://studio.code.org/v3/assets/${fconfig.channel}/${path}`;
   }
 
   //start loading the image
@@ -21519,7 +21521,9 @@ p5.prototype.loadFont = function (path, onSuccess, onError) {
 
   var p5Font = new p5.Font(this);
   var decrementPreload = p5._getDecrementPreload.apply(this, arguments);
-  path = path.match(/^(assets|\/media)/) !== null ? path: "/media?u=" + path;
+  path = path.match(/^(assets|\/media)/) !== null ? path: 
+  path.match(/(https?:\/\/|www\.|ftp:\/\/|sftp:\/\/|ftps:\/\/|mailto:|git:\/\/)/i) ? "/media?u=" + path:
+  `/media?u=https://studio.code.org/v3/assets/${fconfig.channel}/${path}`;
 
   opentype.load(path, function (err, font) {
 

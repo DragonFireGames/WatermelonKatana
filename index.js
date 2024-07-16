@@ -41,7 +41,9 @@ app.get("/turbowarp", userAuth, (req, res) => res.sendFile(cldir+"/turbowarp/ind
 const server = app.listen(PORT, () =>
   console.log(`Server Connected to port ${PORT}`)
 );
+server.setTimeout(3e4);
 process.on("unhandledRejection", (err) => {
   console.log(`An error occurred: ${err.message}`);
-  server.close(() => process.exit(1));
+  console.log(err);
+  //server.close(() => process.exit(1));
 });

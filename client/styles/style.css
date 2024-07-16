@@ -21,8 +21,12 @@ body {
   color: #000000;
   text-decoration: none;
   width: 200px;
+  min-width:200px;
   height: 300px;
-  display: inline-block;
+  min-height: 300px;
+  /*display: inline-block;*/
+
+  flex:1;
 }
 
 .project-thumbnail {
@@ -31,4 +35,20 @@ body {
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+
+#list{
+  display: flex;
+  max-width: 100%;
+  flex-wrap: wrap;
+  gap: 1em;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.thumbnail-border{
+  border: solid black 2px;
+  min-height:200px;
+  min-width:200px;
 }

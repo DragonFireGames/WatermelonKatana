@@ -1,87 +1,95 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edit | PIC-MO</title>
-</head>
-<body>
-  <h1>Edit Project</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit | PIC-MO</title>
+  </head>
+  <body>
+    <h1>Edit Project</h1>
 
-  <!-- Navbar? (WIP) -->
-  <div class="topnav">
-    <a href="/">Home</a>
-  </div>
-  
-  <form >
-    <div class="error" style="background-color: red;"></div><br>
-    <label for="name">Name</label><br>
-    <input type="text" id="name" required/><br>
-    <label for="link">Link</label><br>
-    <input type="text" id="link" required><br>
-    <label for="desc">Description</label><br>
-    <textarea id="desc"></textarea><br>
-    <label for="thumb">Thumbnail</label><br>
-    <input type="text" id="thumb"><br>
-    <input type="submit" value="update"><br>
-  </form>
-  <button id="deletebtn">delete</button>
-  <script>
-    const form = document.querySelector('form');
-    const name = document.querySelector('#name');
-    const desc = document.querySelector('#desc');
-    const link = document.querySelector('#link');
-    const thumb = document.querySelector('#thumb');
-    const display = document.querySelector('.error');
+    <!-- Navbar? (WIP) -->
+    <div class="topnav">
+      <a href="/">Home</a>
+    </div>
 
-    location.path = location.pathname.split("/");
-    const pid = location.path[2];
+    <form>
+      <div class="error" style="background-color: red"></div>
+      <br />
+      <label for="name">Name</label><br />
+      <input type="text" id="name" required /><br />
+      <label for="link">Link</label><br />
+      <input type="text" id="link" required /><br />
+      <label for="desc">Description</label><br />
+      <textarea id="desc"></textarea><br />
+      <label for="thumb">Thumbnail</label><br />
+      <input type="text" id="thumb" /><br />
+      <input type="submit" value="update" /><br />
+    </form>
+    <button id="deletebtn">delete</button>
+    <script>
+      const form = document.querySelector("form");
+      const name = document.querySelector("#name");
+      const desc = document.querySelector("#desc");
+      const link = document.querySelector("#link");
+      const thumb = document.querySelector("#thumb");
+      const display = document.querySelector(".error");
 
-    const deletebtn = document.querySelector('#deletebtn');
-    deletebtn.onclick = async () => {
-      if (!confirm("Warning, this is permanent! Are you sure you want to continue?")) return;
-      await fetch('/api/project/delete/'+pid, {
-        method: 'DELETE',
-        body: JSON.stringify({id}),
-        headers: {'Content-Type': 'application/json'}
-      });
-      location.assign("/");
-    }
+      location.path = location.pathname.split("/");
+      const pid = location.path[2];
 
-    (async() => {
-      const res = await fetch('/api/project/data/'+pid);
-      const data = await res.json();
-      name.value = data.name;
-      desc.value = data.desc;
-      link.value = data.link;
-      thumb.value = data.thumbnail || "";
-    })();
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      display.textContent = '';
-      if (!link.value.match(/^https?:\/\//)) return display.textContent = 'Link is not a vaild URL';
-      try {
-        const res = await fetch('/api/project/update/'+pid, {
-          method: 'POST',
-          body: JSON.stringify({
-            name: name.value,
-            link: link.value,
-            desc: desc.value,
-            thumbnail: thumb.value,
-          }),
-          headers: { 'Content-Type': 'application/json' }
+      const deletebtn = document.querySelector("#deletebtn");
+      deletebtn.onclick = async () => {
+        if (
+          !confirm(
+            "Warning, this is permanent! Are you sure you want to continue?",
+          )
+        )
+          return;
+        await fetch("/api/project/delete/" + pid, {
+          method: "DELETE",
+          body: JSON.stringify({ pid }),
+          headers: { "Content-Type": "application/json" },
         });
+        location.assign("/");
+      };
+
+      (async () => {
+        const res = await fetch("/api/project/data/" + pid);
         const data = await res.json();
-        if (res.status === 400 || res.status === 401) {
-          return display.textContent = data.message+". "+(data.error ? data.error : '');
+        name.value = data.name;
+        desc.value = data.desc;
+        link.value = data.link;
+        thumb.value = data.thumbnail || "";
+      })();
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        display.textContent = "";
+        if (!link.value.match(/^https?:\/\//))
+          return (display.textContent = "Link is not a vaild URL");
+        try {
+          const res = await fetch("/api/project/update/" + pid, {
+            method: "POST",
+            body: JSON.stringify({
+              name: name.value,
+              link: link.value,
+              desc: desc.value,
+              thumbnail: thumb.value,
+            }),
+            headers: { "Content-Type": "application/json" },
+          });
+          const data = await res.json();
+          if (res.status === 400 || res.status === 401) {
+            return (display.textContent =
+              data.message + ". " + (data.error ? data.error : ""));
+          }
+          location.assign("/project/" + data.id);
+        } catch (err) {
+          console.error(err.message);
+          alert(err.message);
         }
-        location.assign('/project/'+data.id);
-      } catch (err) {
-        console.error(err.message);
-        alert(err.message);
-      }
-    });
-  </script>
-</body>
+      });
+    </script>
+  </body>
 </html>
