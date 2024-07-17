@@ -2528,10 +2528,7 @@ function Sprite(pInst, _x, _y, _w, _h) {
         if(this.alpha > 0) {
           animations[currentAnimation].draw(0, 0, 0);
         }
-        if(this.alpha < 1 && this.alpha > 0) {
-          pop();
-        }
-        if(this.tint) {
+        if(this.alpha < 1 && this.alpha > 0 || this.tint) {
           pop();
         }
       }

@@ -11,7 +11,7 @@ function projHTML(list) {
   return function (proj) {
     let div = `<div class="project-panel">
     <a href="/project/${proj.id}">
-      <div class="thumbnail-border"><img class="project-thumbnail" src="${proj.thumbnail || "/images/placeholders/PLACEHOLDER_pfp.png"}"></div>
+      <div class="thumbnail-border"><img class="project-thumbnail" src="${proj.thumbnail || "/images/placeholders/PLACEHOLDER_project.png"}"></div>
       <div>${proj.name}</div>
       </a>
       <div>By: <a href="/user/${proj.poster}">${proj.poster}</a></div>
@@ -20,6 +20,6 @@ function projHTML(list) {
 
     list.innerHTML += HtmlSanitizer.SanitizeHtml(div);
     let lastThumbnail = list.children[list.children.length - 1].querySelector(".project-thumbnail");
-    if (!lastThumbnail.getAttribute("src"))lastThumbnail.src = "/images/placeholders/PLACEHOLDER_pfp.png";
+    if (!lastThumbnail.getAttribute("src"))lastThumbnail.src = "/images/placeholders/PLACEHOLDER_project.png";
   };
 }

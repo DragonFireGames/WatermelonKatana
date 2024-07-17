@@ -70,7 +70,6 @@ async function getHTML(html, id, code) {
       for(var global in window.Global){iframe.contentWindow[global]=window[global]};
       let script=iframe.contentDocument.createElement("script");
       script.text=${JSON.stringify(code)};
-script.setAttribute('namespace','Global');
 iframe.contentDocument.head.appendChild(script);
 let element = document.getElementById("divApplab");
       element.style["transform"] = "scale(" + (Math.min(window.innerWidth, window.innerHeight) / 450) + ")";
