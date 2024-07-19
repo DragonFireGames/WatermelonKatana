@@ -171,3 +171,40 @@ exports.userdata = async (req, res, next) => {
     console.log(err.message);
   }
 };
+
+exports.changePassword = async (req, res, next) => {
+  const { userId, currentPassword, newPassword } = req.body;
+
+  if (!userId || !currentPassword || !newPassword) return res.status(400).json({
+    message: "User ID, current password, and new password are required",
+  });
+
+  if (newPassword.length < 6) return res.status(400).json({
+    message: "New password should be at least 6 characters long",
+  });
+
+  try {
+    const user = await Users.findById(userId);
+    if (!user) return res.status(404).json({
+      message: "User not found",
+    });
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) return res.status(400).json({
+      message: "Current password is incorrect",
+    });
+
+    const hash = await bcrypt.hash(newPassword, 10);
+    user.password = hash;
+    await user.save();
+
+    res.status(200).json({
+      message: "Password successfully changed",
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: "An error occurred",
+      error: error.message,
+    });
+  }
+};
