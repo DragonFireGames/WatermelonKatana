@@ -46,8 +46,7 @@ body {
 .project-panel {
   color: #000;
   text-decoration: none;
-  width: 200px;
-  height: 300px;
+  max-width: 205px;
   flex: 1;
   background-color: #fff;
   border-radius: 10px;
@@ -57,7 +56,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  overflow: show;
 }
 
 .project-panel:hover {
@@ -66,7 +65,7 @@ body {
 }
 
 .project-thumbnail {
-  max-width: 100%;
+  max-width: 200px;
   max-height: 200px;
   display: block;
   margin: 0 auto;
@@ -75,12 +74,12 @@ body {
 
 #list {
   display: flex;
-  max-width: 100%;
   flex-wrap: wrap;
   gap: 1em;
   flex-direction: row;
-  align-items: stretch;
-  padding: 5em 1em 1em;
+  align-items: center;
+  justify-content: center;
+  padding: 3em 1em 1em;
   box-sizing: border-box;
 }
 
@@ -89,4 +88,8 @@ body {
   min-height: 200px;
   min-width: 200px;
   border-radius: 10px;
+}
+
+.project-link {
+  text-align: center;
 }

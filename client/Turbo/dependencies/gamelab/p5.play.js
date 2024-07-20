@@ -776,9 +776,7 @@ p5.prototype.createGroup = function() {
 };
 
 defineLazyP5Property('World', function() {
-  var World = {
-    pInst: this
-  };
+  var World = Game = {};
 
   function createReadOnlyP5PropertyAlias(name) {
     Object.defineProperty(World, name, {
@@ -795,6 +793,13 @@ defineLazyP5Property('World', function() {
   createReadOnlyP5PropertyAlias('mouseY');
   createReadOnlyP5PropertyAlias('allSprites');
   createReadOnlyP5PropertyAlias('frameCount');
+
+  Object.defineProperty(World, 'pInst', {
+    enumerable: true,
+    get: function() {
+      return p5Inst
+    }
+  })
 
   Object.defineProperty(World, 'frameRate', {
     enumerable: true,

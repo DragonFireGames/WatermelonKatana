@@ -12,7 +12,7 @@ function projHTML(list) {
     let div = `<div class="project-panel">
     <a href="/project/${proj.id}">
       <div class="thumbnail-border"><img class="project-thumbnail" src="${proj.thumbnail || "/images/placeholders/PLACEHOLDER_project.png"}"></div>
-      <div>${proj.name}</div>
+      <div class="project-link">${proj.name}</div>
       </a>
       <div>By: <a href="/user/${proj.poster}">${proj.poster}</a></div>
       <div>Score: ${proj.score} Views: ${proj.views}</div>
