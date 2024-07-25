@@ -1442,6 +1442,7 @@ deltaTime = ((now - then) / 1000)/INTERVAL_60; // seconds since last frame
 // @param {Number} height Height of the placeholder rectangle and of the
 //                        collider until an image or new collider are set
 function Sprite(pInst, _x, _y, _w, _h) {
+  const self = this;
   var pInstBind = createPInstBinder(pInst);
 
   var createVector = pInstBind('createVector');
@@ -2979,7 +2980,8 @@ function Sprite(pInst, _x, _y, _w, _h) {
   * @param {String} label Animation identifier
   */
   this.setAnimation = function(animationName) {
-    if (animationName === this.getAnimationLabel()) {
+    var context = this instanceof Sprite ? this: self;
+    if (animationName === context.getAnimationLabel()) {
       return;
     }
 
@@ -2989,10 +2991,10 @@ function Sprite(pInst, _x, _y, _w, _h) {
       throw new Error('Unable to find an animation named "' + animationName +
           '".  Please make sure the animation exists.');
     }
-    this.addAnimation(animationName, animation);
-    this.changeAnimation(animationName);
+    context.addAnimation(animationName, animation);
+    context.changeAnimation(animationName);
     if (p5Inst._pauseSpriteAnimationsByDefault) {
-      this.pause();
+      context.pause();
     }
   };
 

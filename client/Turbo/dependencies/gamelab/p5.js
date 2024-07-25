@@ -19681,6 +19681,7 @@ _dereq_('../core/error_helpers');
  *
  */
 p5.prototype.loadImage = function(path, successCallback, failureCallback) {
+  var scope = this._isGlobal ? window : this;
   var img = new Image();
   var pImg = new p5.Image(1, 1, this);
   var decrementPreload = p5._getDecrementPreload.apply(this, arguments);
@@ -19695,14 +19696,16 @@ p5.prototype.loadImage = function(path, successCallback, failureCallback) {
     if (typeof successCallback === 'function') {
       successCallback(pImg);
     }
-    if (decrementPreload && (successCallback !== decrementPreload)) {
+    if (decrementPreload && scope._preloadCount > 0) {
       decrementPreload();
     }
   };
   img.onerror = function(e) {
     p5._friendlyFileLoadError(0,img.src);
     // don't get failure callback mixed up with decrementPreload
-    if ((typeof failureCallback === 'function') &&
+    if(decrementPreload && scope._preloadCount > 0) {
+      decrementPreload();
+    } else if ((typeof failureCallback === 'function') &&
       (failureCallback !== decrementPreload)) {
       failureCallback(e);
     }
@@ -21518,7 +21521,7 @@ p5._getDecrementPreload = function () {
  *
  */
 p5.prototype.loadFont = function (path, onSuccess, onError) {
-
+  var scope = this._isGlobal ? window : this;    
   var p5Font = new p5.Font(this);
   var decrementPreload = p5._getDecrementPreload.apply(this, arguments);
   path = path.match(/^(assets|\/media)/) !== null ? path: 
@@ -21528,8 +21531,9 @@ p5.prototype.loadFont = function (path, onSuccess, onError) {
   opentype.load(path, function (err, font) {
 
     if (err) {
-
-      if ((typeof onError !== 'undefined') && (onError !== decrementPreload)) {
+      if(decrementPreload && scope._preloadCount > 0) {
+        decrementPreload();
+      } else if ((typeof onError !== 'undefined') && (onError !== decrementPreload)) {
         return onError(err);
       }
       p5._friendlyFileLoadError(4, path);
@@ -21543,7 +21547,7 @@ p5.prototype.loadFont = function (path, onSuccess, onError) {
       onSuccess(p5Font);
     }
 
-    if (decrementPreload && (onSuccess !== decrementPreload)) {
+    if (decrementPreload && scope._preloadCount > 0) {
       decrementPreload();
     }
 
@@ -21654,6 +21658,7 @@ p5.prototype.loadBytes = function () {
  *
  */
 p5.prototype.loadJSON = function () {
+  var scope = this._isGlobal ? window : this;
   var path = arguments[0];
   var callback = arguments[1];
   var errorCallback;
@@ -21681,7 +21686,9 @@ p5.prototype.loadJSON = function () {
     crossOrigin: true,
     error: function (resp) {
       // pass to error callback if defined
-      if (errorCallback) {
+      if(decrementPreload && scope._preloadCount > 0) {
+        decrementPreload();
+      } else if (errorCallback) {
         errorCallback(resp);
       } else { // otherwise log error msg
         console.log(resp.statusText);
@@ -21694,7 +21701,7 @@ p5.prototype.loadJSON = function () {
       if (typeof callback !== 'undefined') {
         callback(resp);
       }
-      if (decrementPreload && (callback !== decrementPreload)) {
+      if (decrementPreload && scope._preloadCount > 0) {
         decrementPreload();
       }
     }
@@ -21764,6 +21771,7 @@ p5.prototype.loadJSON = function () {
  *
  */
 p5.prototype.loadStrings = function (path, callback, errorCallback) {
+  var scope = this._isGlobal ? window : this;
   var ret = [];
   var req = new XMLHttpRequest();
   var decrementPreload = p5._getDecrementPreload.apply(this, arguments);
@@ -21772,7 +21780,9 @@ p5.prototype.loadStrings = function (path, callback, errorCallback) {
   }
 
   req.addEventListener('error', function (resp) {
-    if (errorCallback) {
+    if(decrementPreload && scope._preloadCount > 0) {
+      decrementPreload();
+    } else if (errorCallback) {
       errorCallback(resp);
     } else {
       console.log(resp.responseText);
@@ -21790,11 +21800,13 @@ p5.prototype.loadStrings = function (path, callback, errorCallback) {
         if (typeof callback !== 'undefined') {
           callback(ret);
         }
-        if (decrementPreload && (callback !== decrementPreload)) {
+        if (decrementPreload && scope._preloadCount > 0) {
           decrementPreload();
         }
       } else {
-        if (errorCallback) {
+        if(decrementPreload && scope._preloadCount > 0) {
+          decrementPreload();
+        } else if (errorCallback) {
           errorCallback(req);
         } else {
           console.log(req.statusText);
@@ -21895,6 +21907,7 @@ p5.prototype.loadStrings = function (path, callback, errorCallback) {
  *
  */
 p5.prototype.loadTable = function (path) {
+  var scope = this._isGlobal ? window : this;
   var callback = null;
   var options = [];
   var header = false;
@@ -22063,14 +22076,16 @@ p5.prototype.loadTable = function (path) {
       if (callback !== null) {
         callback(t);
       }
-      if (decrementPreload && (callback !== decrementPreload)) {
+      if (decrementPreload && scope._preloadCount > 0) {
         decrementPreload();
       }
     })
     .fail(function (err, msg) {
       p5._friendlyFileLoadError(2, path);
       // don't get error callback mixed up with decrementPreload
-      if ((typeof callback === 'function') &&
+      if(decrementPreload && scope._preloadCount > 0) {
+        decrementPreload();
+      } else if ((typeof callback === 'function') &&
         (callback !== decrementPreload)) {
         callback(false);
       }
@@ -22149,6 +22164,7 @@ p5.prototype.parseXML = function (two) {
  * @return {Object}              XML object containing data
  */
 p5.prototype.loadXML = function (path, callback, errorCallback) {
+  var scope = this._isGlobal ? window : this;
   var ret = {};
   var decrementPreload = p5._getDecrementPreload.apply(this, arguments);
   path = path.match(/^(assets|\/xhr)/) !== null ? path: "/xhr?u=" + path;
@@ -22158,7 +22174,9 @@ p5.prototype.loadXML = function (path, callback, errorCallback) {
       crossOrigin: true,
       error: function (resp) {
         // pass to error callback if defined
-        if (errorCallback) {
+        if(decrementPreload && scope._preloadCount > 0) {
+          decrementPreload();
+        } else if (errorCallback) {
           errorCallback(resp);
         } else { // otherwise log error msg
           console.log(resp.statusText);
@@ -22174,7 +22192,7 @@ p5.prototype.loadXML = function (path, callback, errorCallback) {
       if (typeof callback !== 'undefined') {
         callback(ret);
       }
-      if (decrementPreload && (callback !== decrementPreload)) {
+      if (decrementPreload && scope._preloadCount > 0) {
         decrementPreload();
       }
     });

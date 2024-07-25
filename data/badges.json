@@ -1,0 +1,53 @@
+{
+	"badges": [
+		{
+			"name": "Founder",
+			"image": "https://fakeimg.pl/300x300",
+			"description": "Founder of PIC-Mo, and notably awesome.",
+			"isUnlockable": false
+		},
+		{
+			"name": "Developer",
+			"image": "https://fakeimg.pl/300x300",
+			"description": "Helped develop an aspect of PIC-Mo",
+			"isUnlockable": false
+		},
+		{
+			"name": "Administrator",
+			"image": "https://fakeimg.pl/300x300",
+			"description": "Helped PIC-Mo by administering it.",
+			"isUnlockable": false
+		},
+		{
+			"name": "Community Hero",
+			"image": "https://fakeimg.pl/300x300",
+			"description": "A real hero of the community, who helps make this platform a great place.",
+			"isUnlockable": false
+		},
+		{
+			"name": "Innovator",
+			"image": "https://fakeimg.pl/300x300",
+			"description": "The Game gives you a Purpose. The Real Game is, to Find a Purpose.",
+			"isUnlockable": false
+		},
+		{
+			"name": "Champion",
+			"image": "https://fakeimg.pl/300x300",
+			"description": "Placed first place in a game jam, congrats!",
+			"isUnlockable": false
+		},
+		{
+			"name": "Architect",
+			"image": "https://fakeimg.pl/300x300",
+			"description": "How the f*** did you get that many views on a game?",
+			"isUnlockable": false
+		},
+
+		{
+			"name": "GameDev",
+			"image": "https://fakeimg.pl/300x300",
+			"description": "Congrats on publishing your first game on PIC-Mo!",
+			"isUnlockable": true
+		}
+	]
+}

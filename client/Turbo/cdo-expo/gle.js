@@ -1,8 +1,6 @@
 // const fs = require("fs");
 const request = require("./requests");
 const startPath = "https://studio.code.org";
-const soundLibrary = `${startPath}/api/v1/sound-library/`;
-const assetList = [];
 let animations = `${startPath}/v3/animations/`;
 let assets = `${startPath}/v3/assets/`;
 
@@ -12,8 +10,6 @@ async function exportProject(id) {
   return new Promise(async (resolve, reject) => {
     animations += id + "/";
     let source = await getJSON(id);
-    await getAssets(id);
-    await getSounds(source.source);
     resolve(await getHTML(id, getCode(source)));
   });
 }
@@ -31,14 +27,6 @@ async function getJSON(id) {
   });
 }
 
-async function getAssets(id) {
-  let resources = await request.send(assets + id, "json");
-  assets += `${id}/`;
-  for (let resource of resources) {
-    assetList.push(resource.filename);
-  }
-}
-
 function getCode(json) {
   let animationList = json.animations;
   let libraries = ``;
@@ -50,26 +38,23 @@ function getCode(json) {
     let funcs = library.functions.join("|");
     let pattern = new RegExp(`(?<!\\(\\s*|(?<!\\/\\/.*|\\/\\*[^\\*\\/]*|["'][^'"]*)function\\s+[\\S]+\\s*\\(\\)\\s*{[^}]+)function\\s+(${funcs})\\s*(?=\\()`, "g");
     src = src.replace(pattern, `var $1 = this.$1 = function`);
-    libraries += `var ${lib} = new (function ${lib}() {\n${src}\nreturn(this)\n})()\n`;
+    libraries += `var ${lib} = window[${JSON.stringify(lib)}] || {};
+(function ${lib}() {\n${src}\nreturn(this)\n}).bind(${lib})()\n`;
   });
   animationList.orderedKeys.forEach((key) => {
     let animation = animationList.propsByKey[key];
-    animation.rootRelativePath = `${
-      animation.sourceUrl
+    animation.rootRelativePath = `${animation.sourceUrl
         ? `/media?u=${startPath}/${animation.sourceUrl}`
         : `/media?u=${animations + key}.png`
-    }`;
+      }`;
   });
   if (animationList.orderedKeys.length < 1) {
     let prerequisites = {
-      preload: "function preload() {}",
-      setup: "function setup() {window.preload = null;}"
+      preload: "function preload(){}",
+      setup: "function setup(){window.preload = null;}"
     };
     for (let req in prerequisites) {
-      if (
-        json.source.match(new RegExp(`^(\\s*function\\s*${req})`, "m")) ===
-        null
-      ) {
+      if (json.source.match(new RegExp(`^(\\s*function\\s*${req})`, "gm")) === null) {
         requisites += `${prerequisites[req]}\n`;
       }
     }
@@ -374,7 +359,7 @@ async function getHTML(id, code) {
       <script src="${dependency}/p5.play.js"></script>
       <script>
         let __IFRRAME__ = document.createElement("iframe");
-        __IFRRAME__.srcdoc = \`<script> window.fconfig = { channel: "${id}" };
+        __IFRRAME__.srcdoc = \`<script> window.fconfig = { channel: "${id}", useDatablockStorage: true };
         function setExportConfig(config) { fconfig = Object.assign(fconfig, config) }
       <\\/script>
       <script src="https://studio.code.org/projects/gamelab/${id}/export_config?script_call=setExportConfig"><\\/script>
@@ -407,7 +392,7 @@ async function getHTML(id, code) {
         document.head.appendChild(script);
         // scaler
         const element = document.getElementById("sketch")
-        element.style["transform"] = "scale(" + (Math.min(window.innerWidth, window.innerHeight) / 400 - 0.05) + ")";
+        element.style["transform"] = "scale(" + (Math.min(window.innerWidth, window.innerHeight) / 400) + ")";
         element.style["transform-origin"] = "top left";
       })
   </script>
@@ -424,66 +409,6 @@ async function getHTML(id, code) {
   <body class="web"
   style="margin:0; overflow:hidden; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; position:fixed; top:0; left:0; width:400px; height:565px;">
   <div id="sketch" class="web" style="position:absolute;"></div>
-  <div id="soft-buttons" style="z-index: -1; display: none">
-    <button id="leftButton" disabled className="arrow">
-    </button>
-    <button id="rightButton" disabled className="arrow">
-    </button>
-    <button id="upButton" disabled className="arrow">
-    </button>
-    <button id="downButton" disabled className="arrow">
-    </button>
-  </div>
- <div id="studio-dpad-container" style="position:absolute; width:400px; bottom:5px; height:157px; overflow-y:hidden;z-index: -1;">
-  </div>
-</body>
-</html>`;
-      }),
-  );
-}
-
-/*/// Breaks stuff for now, but I think this might be the way to go?
-
-async function getHTML(id, code) {
-  return Promise.resolve(
-    await request
-      .send(`${startPath}/v3/channels/${id}`, "json")
-      .then(async (data) => {
-        const dependency = "/turbowarp/gamelab";
-        return `<html>
-  <head>
-    <title> ${data.name} </title>
-      <meta charset="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <link href="${dependency}/gamelab.css" rel="stylesheet" type="text/css">
-      <script src="${dependency}/p5.js"></script>
-      <script src="${dependency}/p5.play.js"></script>
-      <script>
-        window.fconfig = { channel: "${id}" };
-        function setExportConfig(config) { fconfig = Object.assign(fconfig, config) }
-      </script>
-      <script src="https://studio.code.org/projects/gamelab/${id}/export_config?script_call=setExportConfig"></script>
-      <script src="https://code.jquery.com/jquery-1.12.1.min.js"></script>
-      <script src="${dependency}/gamelab-api.js"></script>
-      <script>
-        window.addEventListener("load", () => {
-          Object.assign(window, fconfig);
-          eval.apply(window, [${JSON.stringify(code)}]);
-        });
-    </script>
-    <style>
-      body.expo {
-        background-color: black;
-      }
-  
-      #sketch.expo.no-controls {
-        top: 82px;
-      }
-    </style>
-  </head>
-  <body class="web"
-  style="margin:0; overflow:hidden; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; position:fixed; top:0; left:0; width:400px; height:565px;">
-  <div id="sketch" class="web" style="position:absolute;"></div>
   <div id="soft-buttons" style="display: none">
     <button id="leftButton" disabled className="arrow">
     </button>
@@ -494,28 +419,12 @@ async function getHTML(id, code) {
     <button id="downButton" disabled className="arrow">
     </button>
   </div>
-  <div id="studio-dpad-container" style="position:absolute; width:400px; bottom:5px; height:157px; overflow-y:hidden;">
+  <div id="studio-dpad-container" style="position:absolute; width:400px; bottom:5px; height:157px; overflow-y:hidden;z-index: -1;">
   </div>
 </body>
 </html>`;
       }),
   );
-}
-
-//*/
-
-async function getSounds(json) {
-  return new Promise(async (resolve, reject) => {
-    const soundRegex =
-      /(\bsound:\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
-    const soundPrefix = /^sound:\/\//;
-    let sounds = [...new Set(json.match(soundRegex))];
-    for (let sound of sounds) {
-      sound = sound.replace(soundPrefix, "");
-      assetList.push(sound);
-    }
-    resolve(sounds);
-  });
 }
 
 module.exports = {

@@ -21,14 +21,125 @@
     <a href="/">Home</a>
   </div>
   <iframe id="game" style="display: block; margin-left: auto; margin-right: auto;"></iframe> <br>
-  <button id="favoritebtn" onclick="favbtnclick()">Loading...</button>
+  <!-- https://uiverse.io/barisdogansutcu/fresh-gecko-10 -->
+  <style>
+    #fav-container {
+      background-color: rgb(36, 36, 36);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 15px 10px 10px;
+      cursor: pointer;
+      user-select: none;
+      border-radius: 10px;
+      box-shadow: rgba(46, 46, 46, 0.2) 0px 8px 24px;
+      color: rgb(255, 255, 255);
+    }
+
+    #favorite-btn {
+      display: none;
+    }
+
+    #favorite-btn:checked + #fav-container svg {
+      fill: hsl(0deg 100% 50%);
+      stroke: hsl(0deg 100% 50%);
+      animation: heartButton 1s;
+    }
+
+    @keyframes heartButton {
+      0% {
+        transform: scale(1);
+      }
+
+      25% {
+        transform: scale(1.3);
+      }
+
+      50% {
+        transform: scale(1);
+      }
+
+      75% {
+        transform: scale(1.3);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    #favorite-btn + #fav-container .fav-action {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+    }
+
+    #favorite-btn + #fav-container .fav-action span {
+      grid-column-start: 1;
+      grid-column-end: 1;
+      grid-row-start: 1;
+      grid-row-end: 1;
+      transition: all 0.5s;
+    }
+
+    #favorite-btn + #fav-container .fav-action span.fav-option-1 {
+      transform: translate(0px, 0%);
+      opacity: 1;
+    }
+
+    #favorite-btn:checked + #fav-container .fav-action span.fav-option-1 {
+      transform: translate(0px, -100%);
+      opacity: 0;
+    }
+
+    #favorite-btn + #fav-container .fav-action span.fav-option-2 {
+      transform: translate(0px, 100%);
+      opacity: 0;
+    }
+
+    #favorite-btn:checked + #fav-container .fav-action span.fav-option-2 {
+      transform: translate(0px, 0%);
+      opacity: 1;
+    }
+
+  </style>
+  <input
+    value="favorite-button"
+    name="favorite-checkbox"
+    id="favorite-btn"
+    type="checkbox"
+    onclick="favbtnclick(this.checked)"
+  />
+  <label id="fav-container" for="favorite-btn">
+    <svg
+      class="feather feather-heart"
+      stroke-linejoin="round"
+      stroke-linecap="round"
+      stroke-width="2"
+      stroke="currentColor"
+      fill="none"
+      viewBox="0 0 24 24"
+      height="24"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+      ></path>
+    </svg>
+    <div class="fav-action">
+      <span class="fav-option-1">Add to Favorites</span>
+      <span class="fav-option-2">Added to Favorites</span>
+    </div>
+  </label>
+  <!---->
   <div id="display">
     Loading...
   </div>
   <script src="/scripts/utils.js"></script>
   <script>
     const display = document.querySelector('#display');
-    const favoritebtn = document.querySelector('#favoritebtn');
+    const favoritebtn = document.querySelector('#favorite-btn');
     const game = document.querySelector('#game');
     const pid = location.path[2];
     (async() => {
@@ -60,9 +171,10 @@
         const tok = await getAuth();
         if (!tok.auth) {
           favoritebtn.outerHTML = "";
+          document.querySelector('#fav-container').outerHTML = "";
           return;
         }
-        favoritebtn.innerHTML = tok.user.favorites.includes(pid) ? "Unfavorite" : "Favorite";
+        favoritebtn.checked = !!tok.user.favorites.includes(pid);
         if (tok.user.id !== data.posterId) return;
         document.body.innerHTML += `<button class="edit"> <a href="/project/${pid}/edit">Edit</a></button>`;
       } catch(e) {
@@ -71,16 +183,14 @@
       }
     })();
     
-    async function favbtnclick() {
+    async function favbtnclick(addtofavs) {
       const score = document.querySelector('#score');
-      if (favoritebtn.innerHTML === "Favorite") {
+      if (addtofavs) {
         await fetch("/api/project/favorite/"+pid);
         score.innerHTML = Number(score.textContent)+1;
-        favoritebtn.innerHTML = "Unfavorite";
-      } else if (favoritebtn.innerHTML === "Unfavorite") {
+      } else {
         await fetch("/api/project/unfavorite/"+pid);
         score.innerHTML = Number(score.textContent)-1;
-        favoritebtn.innerHTML = "Favorite";
       }
     };
   </script>

@@ -36,12 +36,12 @@ async function getAssets(id) {
 }
 
 function getCode(json) {
-  if (assetList.length > 0) {
-    json.source = json.source.replace(
-      new RegExp(`["|'](?:sound://)(${assetList.join("|")})["|']`, "g"), `"/media?u=${soundLibrary}$1"`);
-    json.source = json.source.replace(
-      new RegExp(`["|'](${assetList.join("|")})["|']`, "g"), `"/media?u=${assets}$1"`);
-  }
+  // if (assetList.length > 0) {
+  //   json.source = json.source.replace(
+  //     new RegExp(`["|'](?:sound://)(${assetList.join("|")})["|']`, "g"), `"/media?u=${soundLibrary}$1"`);
+  //   json.source = json.source.replace(
+  //     new RegExp(`["|'](${assetList.join("|")})["|']`, "g"), `"/media?u=${assets}$1"`);
+  // }
   return json.source;
 }
 
@@ -58,12 +58,223 @@ async function getHTML(html, id, code) {
     <link rel="preload" href="${dependency}/fa-v4compatibility.woff2" as="font">
     <script src="https://code.jquery.com/jquery-1.12.1.min.js"></script>
     <script>
-      window.EXPORT_OPTIONS = {channel: "${id}"};
+      window.EXPORT_OPTIONS = {channel: "${id}", useDatablockStorage: true};
       function setExportConfig(config) { window.EXPORT_OPTIONS = Object.assign(config, EXPORT_OPTIONS)}
     </script>
     <script src="https://studio.code.org/projects/applab/${id}/export_config?script_call=setExportConfig"></script>
     <script>
       window.inject = function() {
+      Object.defineProperties(Object.prototype, {
+        apply: {
+          value: function (fn, args) {
+            if (typeof this === "object" && "length" in this) {
+              return Function.prototype.apply.call(this, fn, args);
+            }
+          },
+          enumerable: false,
+          configurable: true,
+          writable: true
+        },
+        concat: {
+          value: function () {
+            if (typeof this === "object" && "length" in this) {
+              return Array.prototype.concat.apply(Array.from(this), Array.from(arguments));
+            }
+            return [];
+          },
+          enumerable: false,
+          configurable: true,
+          writable: true
+        },
+        every: {
+          value: function (cb, _this) {
+            if (typeof this === "object" && "length" in this) {
+              return Array.prototype.every.call(this, cb, _this);
+            }
+            return false;
+          },
+          enumerable: false,
+          configurable: true,
+          writable: true
+        },
+        indexOf: {
+          value: function (search, fromIndex) {
+            if (typeof this === "object" && "length" in this) {
+              return Array.prototype.indexOf.call(this, search, fromIndex);
+            }
+            return -1;
+          },
+          enumerable: false,
+          configurable: true,
+          writable: true
+        },
+        filter: {
+          value: function (cb, _this) {
+            if (typeof this === "object" && "length" in this) {
+              return Array.prototype.filter.call(this, cb, _this);
+            }
+            return [];
+          },
+          enumerable: false,
+          configurable: true,
+          writable: true
+        },
+        forEach: {
+          value: function (cb, _this) {
+            if (typeof this === "object" && "length" in this) {
+              return Array.prototype.forEach.call(this, cb, _this);
+            }
+          },
+          enumerable: false,
+          configurable: true,
+          writable: true
+        },
+        join: {
+          value: function (separator) {
+            if (typeof this === "object" && "length" in this) {
+              return Array.prototype.join.call(this, separator);
+            }
+            return "";
+          },
+          enumerable: false,
+          configurable: true,
+          writable: true
+        },
+        lastIndexOf: {
+          value: function (search, fromIndex) {
+            if (typeof this === "object" && "length" in this) {
+              return Array.prototype.lastIndexOf.call(this, search, fromIndex);
+            }
+            return -1;
+          },
+          enumerable: false,
+          configurable: true,
+          writable: true
+        },
+        map: {
+          value: function (cb, _this) {
+            if (typeof this === "object" && "length" in this) {
+              const mapped = [];
+              for (let i in this) {
+                mapped.push(cb.call(_this, this[i], Number(i)));
+              }
+              return mapped;
+            }
+          },
+          enumerable: false,
+          configurable: true,
+          writable: true
+        },
+        push: {
+          value: function () {
+            if (typeof this === "object" && "length" in this) {
+              return Array.prototype.push.apply(this, Array.from(arguments))
+            }
+            return 0;
+          },
+          enumerable: false,
+          configurable: true,
+          writable: true
+        },
+        pop: {
+          value: function () {
+            if (typeof this === "object" && "length" in this) {
+              return Array.prototype.pop.apply(this)
+            }
+            return undefined;
+          },
+          enumerable: false,
+          configurable: true,
+          writable: true
+        },
+        reduce: {
+          value: function (cb, startValue) {
+            if (typeof this === "object" && "length" in this) {
+              return Array.prototype.reduce.call(this, cb, startValue);
+            }
+            throw new TypeError("Cannot call reduce on a non-array object");
+          },
+          enumerable: false,
+          configurable: true,
+          writable: true
+        },
+        some: {
+          value: function (cb, _this) {
+            if (typeof this === "object" && "length" in this) {
+              return Array.prototype.some.call(this, cb, _this);
+            }
+            return false;
+          },
+          enumerable: false,
+          configurable: true,
+          writable: true
+        },
+        shift: {
+          value: function () {
+            if (typeof this === "object" && "length" in this) {
+              return Array.prototype.shift.call(this);
+            }
+            return undefined;
+          },
+          enumerable: false,
+          configurable: true,
+          writable: true
+        },
+        splice: {
+          value: function (start, amount, ...items) {
+            if (typeof this === "object" && "length" in this) {
+              return Array.prototype.splice.apply(this, [start, amount, ...items]);
+            }
+            return [];
+          },
+          enumerable: false,
+          configurable: true,
+          writable: true
+        },
+        unshift: {
+          value: function () {
+            if (typeof this === "object" && "length" in this) {
+              return Array.prototype.unshift.apply(this, Array.from(arguments));
+            }
+            return 0;
+          },
+          enumerable: false,
+          configurable: true,
+          writable: true
+        },
+        reverse: {
+          value: function () {
+            if (typeof this === "object" && "length" in this) {
+              return Array.prototype.reverse.call(this);
+            }
+            return this;
+          },
+          enumerable: false,
+          configurable: true,
+          writable: true
+        },
+        slice: {
+          value: function () {
+            if (typeof this === "object" && "length" in this) {
+              return Array.prototype.slice.call(this, arguments);
+            }
+          },
+          enumerable: false,
+          configurable: true,
+          writable: true
+        },
+        sort: {
+          value: function (cb) {
+            if (typeof this === "object" && "length" in this) {
+              return Array.prototype.sort.call(this, cb);
+            }
+            return this;
+          },
+          enumerable: false,
+          configurable: true,
+          writable: true
+        }
+      })
       let iframe = document.createElement("iframe");
       iframe.addEventListener("load",()=>{
       iframe.addEventListener = function (element, event, callback) {return document.body.addEventListener(element, event, callback)};

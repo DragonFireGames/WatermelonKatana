@@ -1,3 +1,6 @@
+/**
+ * Import necessary modules and dependencies
+ */
 const express = require("express");
 const connectDB = require("./db");
 const app = express();
@@ -6,44 +9,94 @@ const { adminAuth, userAuth } = require("./middleware/auth.js");
 const { Turbo } = require("./client/Turbo/index");
 const PORT = process.env.PORT || 3000;
 
+/**
+ * Connect to the database
+ */
 connectDB();
 
-app.use(express.json());
-app.use(cookieParser());
+/**
+ * Middleware setup
+ */
+app.use(express.json()); // Parse JSON request bodies
+app.use(cookieParser()); // Parse cookies attached to the client request
 
-app.use(express.static(__dirname+"/client"));
+/**
+ * Serve static files from the client directory
+ */
+app.use(express.static(__dirname + "/client"));
 
-// Turbowarp
-const turbo = new Turbo(app, express.static("./client/Turbo/dependencies"))
+/**
+ * Initialize TurboWarp with static dependencies
+ */
+const turbo = new Turbo(app, express.static("./client/Turbo/dependencies"));
 
-// Routes
-app.use("/api/auth", require("./Auth/route"));
-app.use("/api/project", require("./Project/route"));
+/**
+ * Define API routes
+ */
+app.use("/api/auth", require("./Auth/route")); // Authentication routes
+app.use("/api/project", require("./Project/route")); // Project routes
 
-const cldir = __dirname+"/client";
-app.get("/", (req, res) => res.sendFile(cldir+"/home.html"));
-app.get("/register", (req, res) => res.sendFile(cldir+"/register.html"));
-app.get("/login", (req, res) => res.sendFile(cldir+"/login.html"));
+/**
+ * Client directory path
+ */
+const cldir = __dirname + "/client";
+
+/**
+ * Define route handlers for serving HTML files
+ */
+app.get("/", (req, res) => res.sendFile(cldir + "/home.html")); // Home page
+app.get("/register", (req, res) => res.sendFile(cldir + "/register.html")); // Registration page
+app.get("/login", (req, res) => res.sendFile(cldir + "/login.html")); // Login page
+
+// Logout route: clear the JWT cookie and redirect to home
 app.get("/logout", (req, res) => {
-  res.cookie("jwt", "", { maxAge: "1" });
-  res.redirect("/");
+	res.cookie("jwt", "", { maxAge: "1" });
+	res.redirect("/");
 });
-app.get("/admin", adminAuth, (req, res) => res.sendFile(cldir+"/admin.html"));
-app.get("/basic", userAuth, (req, res) => res.sendFile(cldir+"/basic.html"));
-app.get("/publish", userAuth, (req, res) => res.sendFile(cldir+"/publish.html"));
-app.get("/project/:id", (req, res) => res.sendFile(cldir+"/project.html"));
-app.get("/project/:id/edit", userAuth, (req, res) => res.sendFile(cldir+"/edit.html"));
-app.get("/project/:id/delete", userAuth, (req, res) => res.redirect("/api/project/delete/"+req.params.id));
-app.get("/user/:name", (req, res) => res.sendFile(cldir+"/user.html"));
-app.get("/profile", userAuth, (req, res) => res.sendFile(cldir+"/profile.html"));
-app.get("/turbowarp", userAuth, (req, res) => res.sendFile(cldir+"/turbowarp/index.html"));
 
-const server = app.listen(PORT, () =>
-  console.log(`Server Connected to port ${PORT}`)
-);
-server.setTimeout(3e4);
+// Admin page, protected by admin authentication middleware
+app.get("/admin", adminAuth, (req, res) => res.sendFile(cldir + "/admin.html"));
+
+// Basic user page, protected by user authentication middleware
+app.get("/basic", userAuth, (req, res) => res.sendFile(cldir + "/basic.html"));
+
+// Publish page, protected by user authentication middleware
+app.get("/publish", userAuth, (req, res) => res.sendFile(cldir + "/publish.html"));
+
+// Project page with dynamic project ID
+app.get("/project/:id", (req, res) => res.sendFile(cldir + "/project.html"));
+
+// Edit project page, protected by user authentication middleware
+app.get("/project/:id/edit", userAuth, (req, res) => res.sendFile(cldir + "/edit.html"));
+
+// Delete project route, protected by user authentication middleware
+app.get("/project/:id/delete", userAuth, (req, res) => res.redirect("/api/project/delete/" + req.params.id));
+
+// User profile page with dynamic user name
+app.get("/user/:name", (req, res) => res.sendFile(cldir + "/user.html"));
+
+// User profile page, protected by user authentication middleware
+app.get("/profile", userAuth, (req, res) => res.sendFile(cldir + "/profile.html"));
+
+// TurboWarp page, protected by user authentication middleware
+app.get("/turbowarp", userAuth, (req, res) => res.sendFile(cldir + "/turbowarp/index.html"));
+
+/**
+ * Start the server and listen on the specified port
+ */
+const server = app.listen(PORT, () => {
+	console.log(`Server Connected to port ${PORT}`);
+});
+
+// Set server timeout to 30 seconds
+server.setTimeout(30000);
+
+/**
+ * Handle unhandled promise rejections
+ */
 process.on("unhandledRejection", (err) => {
-  console.log(`An error occurred: ${err.message}`);
-  console.log(err);
-  //server.close(() => process.exit(1));
+	console.log(`An error occurred: ${err.message}`);
+	console.log(err);
+	// Uncomment the line below to close the server on unhandled rejection
+	// server.close(() => process.exit(1));
 });
