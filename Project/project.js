@@ -85,6 +85,11 @@ exports.deleteProject = async (req, res, next) => {
     if (project.posterId !== user.id && user.role !== "Admin") return res.status(403).json({
       message: "Not Authorized. You do not own this project",
     });
+    var users = await Users.find({ favorites: { $all: [ pid ] } });
+    for (var i = 0; i < users.length; i++) {
+      users[i].favorites.splice(users[i].favorites.indexOf(pid),1);
+      await users[i].save();
+    }
     await project.remove();
     console.log("deleted "+pid);
     res.status(201).json({

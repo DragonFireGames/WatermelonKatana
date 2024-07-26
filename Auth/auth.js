@@ -1,4 +1,5 @@
 const Users = require("../model/Users");
+const Projects = require("../model/Projects");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -136,10 +137,12 @@ exports.updateRole = async (req, res, next) => {
 };
 
 async function cleanDeleteUser(res, user) {
+  for (var id of user.favorites) {
+    var p = await Projects.findOne({_id:id});
+    p.score--;
+    await p.save();
+  }
   user = await user.remove();
-  // Remove score from every project the user has favorited
-  throw "Not implemented yet";
-  //
   res.status(201).json({ message: "User successfully deleted", user });
   return;
 }
