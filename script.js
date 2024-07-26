@@ -11,7 +11,7 @@ var Users =  require("./model/Users");
     u.avatar = "https://fakeimg.pl/300x300";
     u.banner = "https://fakeimg.pl/720x360";
     u.biography = "This user has not added a biography yet.";
-    await p.save();
+    await u.save();
   }
   
   //Projects.updateMany({ },{views:0,thumbnail:""}).then(console.log);
