@@ -4,6 +4,10 @@ const UserSchema = new Mongoose.Schema({
   username: {
     type: String,
     unique: true,
+    collation: {
+      locale: 'en',
+      strength: 2
+    },
     required: true,
   },
   password: {

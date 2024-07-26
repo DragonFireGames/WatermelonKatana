@@ -9,8 +9,8 @@ body {
 }
 
 .topnav {
-  background-color: #333;
-  color: #fff;
+  background-color: #fff;
+  color: #000;
   height: 2.5em;
   font-size: 1em;
   display: flex;
@@ -21,26 +21,6 @@ body {
   position: fixed;
   top: 0;
   z-index: 1000;
-}
-
-.usernameHeader {
-  font-size: 2em;
-  margin-top: 3em;
-  color: #333;
-  text-align: center;
-}
-
-.role {
-  font-size: 1.2em;
-  color: #777;
-  text-align: center;
-  margin-bottom: 1em;
-}
-
-.uidtext {
-  font-size: 0.8em;
-  color: #aaa;
-  text-align: center;
 }
 
 .project-panel {
@@ -72,7 +52,7 @@ body {
   border-radius: 5px;
 }
 
-#list {
+.project-list {
   display: flex;
   flex-wrap: wrap;
   gap: 1em;

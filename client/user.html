@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User | PIC-Mo</title>
   <link rel="stylesheet" type="text/css" href="/styles/style.css">
+  <link rel="stylesheet" type="text/css" href="/styles/user.css">
 </head>
 <body>
   <!-- Navbar? (WIP) -->
@@ -17,9 +18,9 @@
     Loading...
   </div>
   Published
-  <ul id="list"></ul>
+  <ul id="list" class="project-list"></ul>
   Favorites
-  <ul id="favlist"></ul>
+  <ul id="favlist" class="project-list"></ul>
 
   <script src="/scripts/HtmlSanitizer.js"></script>
   <script src="/scripts/utils.js"></script>
@@ -46,10 +47,13 @@
           const res = await fetch('/api/auth/userdata?username='+name);
           const data = await res.json();
           if (res.status === 400 || res.status === 401) throw Error(data);
-          display.innerHTML = `<div>
+          display.innerHTML = `
+          <div>
             <img src="${data.banner}" style="width: 100vw; height: 60px; ">
-            <img src="${data.avatar}" width=50 height=50>
-            <p class="usernameHeader">${data.username}</p>
+            <div class="namecontainer">
+            <img class="avatar" src="${data.avatar}">
+            <p class="username">${data.username}</p>
+            </div>
             <p class="biography">${data.biography}</p>
             <p class="role">${data.role}</p>
             <i class="uidtext" title="Click to Copy">ID: ${data.id}</i>
