@@ -37,6 +37,9 @@ const UserSchema = new Mongoose.Schema({
     pack: function() {
       const container = {};
       container.username = this.username;
+      container.avatar = this.avatar;
+      container.banner = this.banner;
+      container.biography = this.biography;
       container.role = this.role;
       container.id = this._id;
       container.favorites = this.favorites;

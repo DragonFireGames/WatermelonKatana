@@ -48,6 +48,7 @@
           if (res.status === 400 || res.status === 401) throw Error(data);
           display.innerHTML = `<div>
             <p class="usernameHeader">${data.username}</p>
+            <p class="biography">${data.biography}</p>
             <p class="role">${data.role}</p>
             <i class="uidtext" title="Click to Copy">ID: ${data.id}</i>
           </div>`;
