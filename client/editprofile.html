@@ -80,7 +80,7 @@
             return (display.textContent =
               data.message + ". " + (data.error ? data.error : ""));
           }
-          location.assign("/project/" + data.id);
+          location.assign("/profile");
         } catch (err) {
           console.error(err.message);
           alert(err.message);

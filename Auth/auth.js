@@ -81,7 +81,7 @@ exports.login = async (req, res, next) => {
 exports.update = async (req, res, next) => {
   const { username, avatar, banner, biography } = req.body;
   const userId = res.locals.userToken?.id;
-
+  console.log(req.body);
   try {
     const user = await Users.findById(userId);
     if (!user) return res.status(404).json({

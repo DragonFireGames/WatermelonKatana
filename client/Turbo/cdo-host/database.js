@@ -8,6 +8,8 @@ const ProjectData = Mongoose.model("projectdata", ProjectDataSchema);
 // Database
 const TurboDB = async function(id) {
   var db = {};
+  db._changed = false;
+  db._read = false;
   db._data = await ProjectData.findById(id);
   if (!db._data) {
     db._data = await ProjectData.create({
@@ -24,19 +26,19 @@ const TurboDB = async function(id) {
   };
   db.setKeyValue = function(key,value) {
     this._data.keyvalues[key] = value;
-    this._data.save();
+    this._changed = true;
     return true;
   };
   db.populateKeyValues = function(map) {
     for (i in map) {
       this._data.keyvalues[i] = map[i];
     }
-    this._data.save();
+    this._changed = true;
     return true;
   };
   db.deleteKeyValue = function(key) {
     delete this._data.keyvalues[key];
-    this._data.save();
+    this._changed = true;
     return true;
   };
   // table paths
@@ -46,14 +48,14 @@ const TurboDB = async function(id) {
     if (table[table_name] === undefined) table[table_name] = { records: [], nextId: 1 };
     record_json.id = table[table_name].nextId++;
     table[table_name].records.push(record_json)
-    this._data.save();
+    this._changed = true;
     return { table_name, record_json };
   };
   db.createTable = function(table_name) {
     if (typeof table_name !== "string") throw `unable to create a table wihout a name`;
     let table = this._data.tables;
     if (table[table_name] === undefined) table[table_name] = { records: [], nextId: 1 };
-    this._data.save();
+    this._changed = true;
     return true;
   };
   db.addColumn = function(column_name, table_name) {
@@ -63,7 +65,7 @@ const TurboDB = async function(id) {
     for (let record of table.records) {
       record[column_name] = null;
     }
-    this._data.save();
+    this._changed = true;
     return true;
   };
   /*db.add_shared_table = function(table_name) {
@@ -78,7 +80,7 @@ const TurboDB = async function(id) {
     let json = self.csvToJSON(table_data_csv)
     if (json.records.length < 0) throw "there isn't any data in this csv file";
     this._data.tables[table_name] = json;
-    this._data.save();
+    this._changed = true;
     return true;
   };*/
   db.populateTables = function(map) {
@@ -91,7 +93,7 @@ const TurboDB = async function(id) {
       }
       table[t].nextId = table[t].records.length + 1;
     }
-    this._data.save();
+    this._changed = true;
     return true;
   };
   db.updateRecord = function(table_name, record_json) {
@@ -105,7 +107,7 @@ const TurboDB = async function(id) {
         break;
       }
     }
-    this._data.save();
+    this._changed = true;
     return table.records;
   };
   db.renameColumn = function(table_name, old_column_name, new_column_name) {
@@ -115,7 +117,7 @@ const TurboDB = async function(id) {
       record[new_column_name] = record[old_column_name];
       delete record[old_column_name];
     }
-    this._data.save();
+    this._changed = true;
     return true;
   };
   db.coerceColumn = function(table_name, column_name, column_type) {
@@ -137,7 +139,7 @@ const TurboDB = async function(id) {
         }
       }
     }
-    this._data.save();
+    this._changed = true;
     return true;
   };
   db.getColumnsForTable = function() {
@@ -168,7 +170,7 @@ fs.writeFileSync(`${self.csvPath}/${table_name}.csv`, self.jsonToCSV(table.recor
     let table = this._data.tables
     if (table[table_name] === undefined) throw `failed to clear table "${table_name}"`;
     table[table_name] = { records: [], nextId: 1 };
-    this._data.save();
+    this._changed = true;
     return true;
   };
   db.deleteRecord = function(table_name, record_id) {
@@ -183,7 +185,7 @@ fs.writeFileSync(`${self.csvPath}/${table_name}.csv`, self.jsonToCSV(table.recor
       }
     }
     if (!c) throw `failed to remove record on table "${table_name}" at id "${record_id}"`;
-    this._data.save();
+    this._changed = true;
     return true;
   };
   db.deleteColumn = function(table_name, column_name) {
@@ -194,14 +196,14 @@ fs.writeFileSync(`${self.csvPath}/${table_name}.csv`, self.jsonToCSV(table.recor
         delete record[column_name];
       }
     }
-    this._data.save();
+    this._changed = true;
     return { table_name, column_name };
   };
   db.deleteTable = function(table_name) {
     let table = this._data.tables;
     if (table[table_name] === undefined) throw`failed to delete the table "${table_name}"`
     delete table[table_name];
-    this._data.save();
+    this._changed = true;
     return true;
   };
   db.getTableNames = function() {
@@ -216,7 +218,7 @@ fs.writeFileSync(`${self.csvPath}/${table_name}.csv`, self.jsonToCSV(table.recor
   db.clearAllData = function() {
     this._data.keyvalues = {};
     this._data.tables = {};
-    this._data.save();
+    this._changed = true;
     return true;
   };
   return db;
@@ -224,6 +226,20 @@ fs.writeFileSync(`${self.csvPath}/${table_name}.csv`, self.jsonToCSV(table.recor
 
 // Api Interface
 var TurboDBList = {};
+setInterval(()=>{
+  for (var i in TurboDBList) {
+    if (TurboDBList[i]._changed) {
+      console.log("Saving changes to "+i);
+      TurboDBList[i]._data.save();
+    }
+    if (!TurboDBList[i]._read) {
+      console.log("Removing "+i+" from RAM");
+      delete TurboDBList[i];
+      continue;
+    }
+    TurboDBList[i]._changed = false;
+  }
+},60*1000);
 function createLink(app,method,name,callback) {
     app[method]("/datablock_storage/:id/"+name,async(req,res)=>{
     console.log(method,name,req.params.id,req.query,req.body);
@@ -233,6 +249,7 @@ function createLink(app,method,name,callback) {
         db = await TurboDB(req.params.id); 
         TurboDBList[req.params.id] = db;
       }
+      db._read = true;
       var ret = await callback(db,req);
       console.log(ret);
       res.status(200).send(ret);
