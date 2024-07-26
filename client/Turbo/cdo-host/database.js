@@ -5,6 +5,7 @@ const ProjectDataSchema = new Mongoose.Schema({}, { strict: false });
 
 const ProjectData = Mongoose.model("projects", ProjectDataSchema);
 
+// Database
 const TurboDB = async function(id) {
   var db = {};
   db._data = await ProjectData.findById(id);
@@ -221,16 +222,20 @@ const TurboDB = async function(id) {
   return db;
 };
 
+// Api Interface
 var TurboDBList = {};
 function createLink(app,method,name,callback) {
     app[method]("/datablock_storage/:id/"+name,async(req,res)=>{
+    console.log(method,name,req.params.id,req.query,req.body);
     try {
       var db = TurboDBList[req.params.id];
       if (db === undefined) {
         db = await TurboDB(req.params.id); 
         TurboDBList[req.params.id] = db;
       }
-      res.status(200).send(await callback(db,req));
+      var ret = await callback(db,req);
+      console.log(ret);
+      res.status(200).send(ret);
     } catch(e) {
       res.status(400).send({ "msg": output, "type": output });
     }
