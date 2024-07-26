@@ -11,22 +11,19 @@ const UserSchema = new Mongoose.Schema({
     minlength: 6,
     required: true,
   },
-  /*
   avatar: {
     type: String,
     default: "https://fakeimg.pl/300x300",
-    required: true,
   },
   banner: {
     type: String,
     default: "https://fakeimg.pl/720x360",
-    required: true,
   },
   biography: {
     type: String,
     default: "This user has not added a biography yet.",
-    required: true,
   },
+  /*
   badges: [ number ],
   */
   role: {

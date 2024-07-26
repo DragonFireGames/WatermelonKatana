@@ -33,7 +33,7 @@
           button.addEventListener('click', async() => {
             display.textContent= ''
             const id = data.user[i+1].id
-            const res = await fetch('/api/auth/update', {
+            const res = await fetch('/api/auth/updateRole', {
               method: 'PUT',
               body: JSON.stringify({ role: 'Admin', id}),
               headers: { 'Content-Type': 'application/json' }

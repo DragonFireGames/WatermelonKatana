@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Edit Profile | PIC-MO</title>
+  </head>
+  <body>
+    <h1>Edit Profile</h1>
+
+    <!-- Navbar? (WIP) -->
+    <div class="topnav">
+      <a href="/">Home</a>
+    </div>
+
+    <form>
+      <div class="error" style="background-color: red"></div>
+      <br/>
+      <label for="name">Username</label><br/>
+      <input type="text" id="name" required/><br/>
+      <label for="bio">Biography</label><br/>
+      <textarea id="bio"></textarea><br/>
+      <label for="avatar">Avatar</label><br/>
+      <input type="text" id="avatar"/><br/>
+      <label for="banner">Banner</label><br/>
+      <input type="text" id="banner"/><br/>
+      <input type="submit" value="update"/><br/>
+    </form>
+    <button id="deletebtn">delete account</button>
+    <script>
+      const form = document.querySelector("form");
+      const name = document.querySelector("#name");
+      const bio = document.querySelector("#bio");
+      const avatar = document.querySelector("#avatar");
+      const banner = document.querySelector("#banner");
+      const display = document.querySelector(".error");
+
+      const deletebtn = document.querySelector("#deletebtn");
+      deletebtn.onclick = async () => {
+        var confirmationPswd = prompt("Warning, this is permanent! Are you sure you want to continue?");
+        if (!confirmationPswd) return;
+        await fetch("/api/auth/deleteSelf", {
+          method: "DELETE",
+          body: JSON.stringify({ confirmationPswd }),
+          headers: { "Content-Type": "application/json" },
+        });
+        location.assign("/");
+      };
+
+      (async () => {
+        const res = await fetch("/api/auth/update");
+        const data = await res.json();
+        name.value = data.username;
+        bio.value = data.biography || "";
+        avatar.value = data.avatar || "";
+        banner.value = data.banner || "";
+      })();
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        display.textContent = "";
+        if (!link.value.match(/^https?:\/\//))
+          return (display.textContent = "Link is not a vaild URL");
+        try {
+          const res = await fetch("/api/project/update/" + pid, {
+            method: "POST",
+            body: JSON.stringify({
+              username: name.value,
+              biography: bio.value,
+              avatar: avatar.value,
+              banner: banner.value,
+            }),
+            headers: { "Content-Type": "application/json" },
+          });
+          const data = await res.json();
+          if (res.status === 400 || res.status === 401) {
+            return (display.textContent =
+              data.message + ". " + (data.error ? data.error : ""));
+          }
+          location.assign("/project/" + data.id);
+        } catch (err) {
+          console.error(err.message);
+          alert(err.message);
+        }
+      });
+    </script>
+  </body>
+</html>

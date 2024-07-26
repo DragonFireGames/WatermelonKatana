@@ -79,6 +79,32 @@ exports.login = async (req, res, next) => {
 };
 
 exports.update = async (req, res, next) => {
+  const { username, avatar, banner, biography } = req.body;
+  const userId = res.locals.userToken?.id;
+
+  try {
+    const user = await Users.findById(userId);
+    if (!user) return res.status(404).json({
+      message: "User not found",
+    });
+    user.username = username;
+    user.avatar = avatar;
+    user.banner = banner;
+    user.biography = biography;
+    await user.save();
+    res.status(201).json({
+      message: "Update successful",
+      user 
+    });
+  } catch(error) {
+    res.status(400).json({
+      message: "An error occurred",
+      error: error.message
+    });
+  };
+};
+
+exports.updateRole = async (req, res, next) => {
   const { role, id } = req.body;
   // Verifying if role and id is presnt
   if (!role || !id) return res.status(400).json({ 
@@ -109,13 +135,41 @@ exports.update = async (req, res, next) => {
   };
 };
 
+async function cleanDeleteUser(res, user) {
+  user = await user.remove();
+  // Remove score from every project the user has favorited
+  throw "Not implemented yet";
+  //
+  res.status(201).json({ message: "User successfully deleted", user });
+  return;
+}
+
+exports.deleteSelf = async (req, res, next) => {
+  const { confirmationPswd } = req.body;
+  const userId = res.locals.userToken?.id;
+
+  try {
+    const user = await Users.findById(userId);
+    if (!user) return res.status(404).json({
+      message: "User not found",
+    });
+
+    const isMatch = await bcrypt.compare(confirmationPswd, user.password);
+    if (!isMatch) return res.status(400).json({
+      message: "Confirmation password is incorrect",
+    });
+    
+    await cleanDeleteUser(res,user);
+  } catch(error) {
+    res.status(400).json({ message: "An error occurred", error: error.message })
+  }
+};
+
 exports.deleteUser = async (req, res, next) => {
   const { id } = req.body;
   try {
     var user = await Users.findById(id);
-    user = await user.remove();
-    // Remove score from every project the user has favorited
-    res.status(201).json({ message: "User successfully deleted", user });
+    await cleanDeleteUser(res,user);
   } catch(error) {
     res.status(400).json({ message: "An error occurred", error: error.message })
   }
@@ -173,8 +227,9 @@ exports.userdata = async (req, res, next) => {
 };
 
 exports.changePassword = async (req, res, next) => {
-  const { userId, currentPassword, newPassword } = req.body;
-
+  const { currentPassword, newPassword } = req.body;
+  const userId = res.locals.userToken?.id;
+  
   if (!userId || !currentPassword || !newPassword) return res.status(400).json({
     message: "User ID, current password, and new password are required",
   });

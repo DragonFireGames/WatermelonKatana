@@ -75,8 +75,11 @@ app.get("/project/:id/delete", userAuth, (req, res) => res.redirect("/api/projec
 // User profile page with dynamic user name
 app.get("/user/:name", (req, res) => res.sendFile(cldir + "/user.html"));
 
-// User profile page, protected by user authentication middleware
+// User self profile page, protected by user authentication middleware
 app.get("/profile", userAuth, (req, res) => res.sendFile(cldir + "/profile.html"));
+
+// User edit self page, protected by user authentication middleware
+app.get("/profile/edit", userAuth, (req, res) => res.sendFile(cldir + "/editprofile.html"));
 
 // TurboWarp page, protected by user authentication middleware
 app.get("/turbowarp", userAuth, (req, res) => res.sendFile(cldir + "/turbowarp/index.html"));

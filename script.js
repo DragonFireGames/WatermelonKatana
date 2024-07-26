@@ -5,11 +5,19 @@ var Projects =  require("./model/Projects");
 var Users =  require("./model/Users");
 
 (async function(){try{
+
+  var ulist = await Users.find({ });
+  for (var u of ulist) {
+    u.avatar = "https://fakeimg.pl/300x300";
+    u.banner = "https://fakeimg.pl/720x360";
+    u.biography = "This user has not added a biography yet.";
+    await p.save();
+  }
   
   //Projects.updateMany({ },{views:0,thumbnail:""}).then(console.log);
 
   //* Run when converting to ref
-  
+  /*
   var list = await Projects.find({ });
   for (var p of list) {
     //var u = await Users.findById(p[i].posterId);
