@@ -222,8 +222,8 @@ const TurboDB = async function(id) {
 };
 
 var TurboDBList = {};
-function createLink(appmethod,name,callback) {
-    appmethod("/datablock_storage/:id/"+name,async(req,res)=>{
+function createLink(app,method,name,callback) {
+    app[method]("/datablock_storage/:id/"+name,async(req,res)=>{
     try {
       var db = TurboDBList[req.params.id];
       if (db === undefined) {
@@ -238,31 +238,31 @@ function createLink(appmethod,name,callback) {
 }
 
 module.exports = {
-  Database: function(app) {
+  Database: function(a) {
     const c = createLink;
-    c(app.get,"get_key_value", (db,req) => db.getKeyValue(req.query.key));
-    c(app.get,"get_key_values", db => db.getAllKeyValues());
-    c(app.post,"set_key_value", (db,req) => db.setKeyValue(req.body.key,req.body.value));
-    c(app.post,"populate_key_values", (db,req) => db.setKeyValue(req.body.key_values_json));
-    c(app.delete,"delete_key_value", (db,req) => db.setKeyValue(req.body.key));
-    c(app.post,"create_record", (db,req) => db.createRecord(req.body.table_name, req.body.record_json));
-    c(app.post,"create_table", (db,req) => db.createTable(req.body.table_name));
-    c(app.post,"add_column", (db,req) => db.addColumn(req.body.column_name, req.body.table_name));
-    //c(app.post,"add_shared_table", (db,req) => db.add_shared_table(req.body.table_name));
-    //c(app.post,"import_csv", (db,req) => db.import_csv(req.body.table_name, req.body.table_data_csv));
-    c(app.put,"populate_tables", (db,req) => db.populateTables(req.body.tables_json));
-    c(app.put,"update_record", (db,req) => db.updateRecord(req.body.table_name, req.body.record_json));
-    c(app.put,"rename_column", (db,req) => db.renameColumn(req.body.table_name, req.body.old_column_name, req.body.new_column_name));
-    c(app.put,"coerce_column", (db,req) => db.coerceColumn(req.body.table_name, req.body.column_name, req.body.column_type));
-    c(app.get,"get_columns_for_table", (db,req) => db.getColumnsForTable(req.query.table_name));
-    //c(app.get,"export_csv", (db,req) => db.export_csv(req.query.table_name));
-    c(app.get,"read_records", (db,req) => db.readRecords(req.body.table_name));
-    c(app.delete,"delete_record", (db,req) => db.deleteRecord(req.body.table_name, req.body.record_id));
-    c(app.delete,"delete_column", (db,req) => db.deleteColumn(req.body.table_name, req.body.column_name));
-    c(app.delete,"delete_table", (db,req) => db.deleteTable(req.body.table_name));
-    c(app.get,"get_table_names", db => db.getTableNames());
-    c(app.get,"get_library_manifest", db => db.getLibraryManifest());
-    c(app.get,"project_has_data", db => db.projectHasData());
-    c(app.delete,"clear_all_data", db => db.clearAllData());
+    c(a,"get","get_key_value", (db,req) => db.getKeyValue(req.query.key));
+    c(a,"get","get_key_values", db => db.getAllKeyValues());
+    c(a,"post","set_key_value", (db,req) => db.setKeyValue(req.body.key,req.body.value));
+    c(a,"post","populate_key_values", (db,req) => db.setKeyValue(req.body.key_values_json));
+    c(a,"delete","delete_key_value", (db,req) => db.setKeyValue(req.body.key));
+    c(a,"post","create_record", (db,req) => db.createRecord(req.body.table_name, req.body.record_json));
+    c(a,"post","create_table", (db,req) => db.createTable(req.body.table_name));
+    c(a,"post","add_column", (db,req) => db.addColumn(req.body.column_name, req.body.table_name));
+    //c(a,"post","add_shared_table", (db,req) => db.add_shared_table(req.body.table_name));
+    //c(a,"post","import_csv", (db,req) => db.import_csv(req.body.table_name, req.body.table_data_csv));
+    c(a,"put","populate_tables", (db,req) => db.populateTables(req.body.tables_json));
+    c(a,"put","update_record", (db,req) => db.updateRecord(req.body.table_name, req.body.record_json));
+    c(a,"put","rename_column", (db,req) => db.renameColumn(req.body.table_name, req.body.old_column_name, req.body.new_column_name));
+    c(a,"put","coerce_column", (db,req) => db.coerceColumn(req.body.table_name, req.body.column_name, req.body.column_type));
+    c(a,"get","get_columns_for_table", (db,req) => db.getColumnsForTable(req.query.table_name));
+    //c(a,"get","export_csv", (db,req) => db.export_csv(req.query.table_name));
+    c(a,"get","read_records", (db,req) => db.readRecords(req.body.table_name));
+    c(a,"delete","delete_record", (db,req) => db.deleteRecord(req.body.table_name, req.body.record_id));
+    c(a,"delete","delete_column", (db,req) => db.deleteColumn(req.body.table_name, req.body.column_name));
+    c(a,"delete","delete_table", (db,req) => db.deleteTable(req.body.table_name));
+    c(a,"get","get_table_names", db => db.getTableNames());
+    c(a,"get","get_library_manifest", db => db.getLibraryManifest());
+    c(a,"get","project_has_data", db => db.projectHasData());
+    c(a,"delete","clear_all_data", db => db.clearAllData());
   }
 };
