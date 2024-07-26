@@ -222,7 +222,7 @@ function createLink(app,method,name,callback) {
       console.log(ret||true);
       res.status(200).send(ret||true);
     } catch(e) {
-      res.status(400).send({ "msg": output, "type": output });
+      res.status(400).send({ Error: e });
     }
   });
 }
