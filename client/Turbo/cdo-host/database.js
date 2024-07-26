@@ -25,19 +25,16 @@ const TurboDB = async function(id) {
   db.setKeyValue = function(key,value) {
     this._data.keyvalues[key] = value;
     this._data.save();
-    return true;
   };
   db.populateKeyValues = function(map) {
     for (i in map) {
       this._data.keyvalues[i] = map[i];
     }
     this._data.save();
-    return true;
   };
   db.deleteKeyValue = function(key) {
     delete this._data.keyvalues[key];
     this._data.save();
-    return true;
   };
   // table paths
   db.createRecord = function(table_name, record_json) {
@@ -54,7 +51,6 @@ const TurboDB = async function(id) {
     let table = this._data.tables;
     if (table[table_name] === undefined) table[table_name] = { records: [], nextId: 1 };
     this._data.save();
-    return true;
   };
   db.addColumn = function(column_name, table_name) {
     if (typeof column_name !== "string" || typeof table_name !== "string") throw `invalid argument table "${table_name}" or column "${column_name}"`;
@@ -64,13 +60,11 @@ const TurboDB = async function(id) {
       record[column_name] = null;
     }
     this._data.save();
-    return true;
   };
   /*db.add_shared_table = function(table_name) {
     let file = `${path || __dirname}/${table_name}.csv`
     if (!fs.existsSync(file)) {
       this._data.tables[table_name] = self.csvToJSON(fs.readFileSync(file, "utf-8"))
-      return true;
     }
   };
   db.import_csv = function(table_name, table_data_csv) {
@@ -79,7 +73,6 @@ const TurboDB = async function(id) {
     if (json.records.length < 0) throw "there isn't any data in this csv file";
     this._data.tables[table_name] = json;
     this._data.save();
-    return true;
   };*/
   db.populateTables = function(map) {
     let table = this._data.tables;
@@ -92,7 +85,6 @@ const TurboDB = async function(id) {
       table[t].nextId = table[t].records.length + 1;
     }
     this._data.save();
-    return true;
   };
   db.updateRecord = function(table_name, record_json) {
     if (typeof table_name !== "string" || (typeof record_json !== "object" && record_json !== null)) throw `unable to update table ${table_name} at id ${table_id}`;
@@ -116,7 +108,6 @@ const TurboDB = async function(id) {
       delete record[old_column_name];
     }
     this._data.save();
-    return true;
   };
   db.coerceColumn = function(table_name, column_name, column_type) {
     let table = this._data.tables[table_name];
@@ -138,7 +129,6 @@ const TurboDB = async function(id) {
       }
     }
     this._data.save();
-    return true;
   };
   db.getColumnsForTable = function() {
     const columns = ["id"];
@@ -157,7 +147,6 @@ const TurboDB = async function(id) {
       let table = this._data.tables[table_name];
       if (table === undefined) throw `table "${table_name}" cannot be exported`;
       fs.writeFileSync(`${self.csvPath}/${table_name}.csv`, self.jsonToCSV(table.records), "utf-8");
-      return true;
   };*/
   db.readRecords = function(table_name) {
     let table = this._data.tables[table_name];
@@ -169,7 +158,6 @@ const TurboDB = async function(id) {
     if (table[table_name] === undefined) throw `failed to clear table "${table_name}"`;
     table[table_name] = { records: [], nextId: 1 };
     this._data.save();
-    return true;
   };
   db.deleteRecord = function(table_name, record_id) {
     let table = this._data.tables[table_name];
@@ -184,7 +172,6 @@ const TurboDB = async function(id) {
     }
     if (!c) throw `failed to remove record on table "${table_name}" at id "${record_id}"`;
     this._data.save();
-    return null;
   };
   db.deleteColumn = function(table_name, column_name) {
     let table = this._data.tables[table_name];
@@ -202,7 +189,6 @@ const TurboDB = async function(id) {
     if (table[table_name] === undefined) throw`failed to delete the table "${table_name}"`
     delete table[table_name];
     this._data.save();
-    return true;
   };
   db.getTableNames = function() {
     return Object.keys(this._data.tables);
@@ -217,7 +203,6 @@ const TurboDB = async function(id) {
     this._data.keyvalues = {};
     this._data.tables = {};
     this._data.save();
-    return true;
   };
   return db;
 };
@@ -234,8 +219,8 @@ function createLink(app,method,name,callback) {
         TurboDBList[req.params.id] = db;
       }
       var ret = await callback(db,req);
-      console.log(ret);
-      res.status(200).send(ret);
+      console.log(ret||true);
+      res.status(200).send(ret||true);
     } catch(e) {
       res.status(400).send({ "msg": output, "type": output });
     }
