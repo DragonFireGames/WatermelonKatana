@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User | PIC-Mo</title>
-  <style src="styles/style.css"></style>
+  <link rel="stylesheet" type="text/css" href="/styles/style.css">
 </head>
 <body>
   <!-- Navbar? (WIP) -->
@@ -47,6 +47,8 @@
           const data = await res.json();
           if (res.status === 400 || res.status === 401) throw Error(data);
           display.innerHTML = `<div>
+            <img src="${data.banner}" style="width: 100vw; height: 60px; ">
+            <img src="${data.avatar}" width=50 height=50>
             <p class="usernameHeader">${data.username}</p>
             <p class="biography">${data.biography}</p>
             <p class="role">${data.role}</p>

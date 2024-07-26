@@ -39,7 +39,7 @@
 
       const deletebtn = document.querySelector("#deletebtn");
       deletebtn.onclick = async () => {
-        var confirmationPswd = prompt("Warning, this is permanent! Are you sure you want to continue?");
+        var confirmationPswd = prompt("Warning, this is permanent! Enter your password to continue.");
         if (!confirmationPswd) return;
         await fetch("/api/auth/deleteSelf", {
           method: "DELETE",
