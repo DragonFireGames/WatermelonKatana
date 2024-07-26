@@ -119,9 +119,9 @@ exports.updateRole = async (req, res, next) => {
     // Finds the user with the id
     var user = await Users.findById(id);
     // Verifies the user is not an admin
-    if (user.role !== "Admin") return res.status(400).json({
+    /*if (user.role === "Admin") return res.status(400).json({
       message: "User is already an Admin"
-    });
+    });*/
     user.role = role;
     await user.save();
     res.status(201).json({
