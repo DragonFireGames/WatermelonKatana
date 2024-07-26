@@ -30,7 +30,7 @@
       e.preventDefault()
       display.textContent = '';
       if (password.value !== password2.value) {
-        display.textContent = 'Passwords do not match';
+        return display.textContent = 'Passwords do not match';
       }
       try {
         const res = await fetch('/api/auth/register', {

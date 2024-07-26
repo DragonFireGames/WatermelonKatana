@@ -81,8 +81,11 @@ app.get("/profile", userAuth, (req, res) => res.sendFile(cldir + "/profile.html"
 // User edit self page, protected by user authentication middleware
 app.get("/profile/edit", userAuth, (req, res) => res.sendFile(cldir + "/editprofile.html"));
 
-// TurboWarp page, protected by user authentication middleware
-app.get("/turbowarp", userAuth, (req, res) => res.sendFile(cldir + "/turbowarp/index.html"));
+// User change password page, protected by user authentication middleware
+app.get("/profile/chpass", userAuth, (req, res) => res.sendFile(cldir + "/chpass.html"));
+
+// TurboWarp page
+app.get("/turbowarp", (req, res) => res.sendFile(cldir + "/turbowarp/index.html"));
 
 /**
  * Start the server and listen on the specified port

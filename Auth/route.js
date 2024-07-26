@@ -6,6 +6,7 @@ const { adminAuth, userAuth, checkAuth } = require("../middleware/auth");
 
 router.route("/register").post(register);
 router.route("/login").post(login);
+router.route("/changePassword").post(userAuth, changePassword);
 router.route("/update").put(userAuth, update);
 router.route("/updateRole").put(adminAuth, updateRole);
 router.route("/deleteUser").delete(adminAuth, deleteUser);
