@@ -12,12 +12,10 @@ const TurboDB = async function(id) {
   db._read = true;
   db._data = await ProjectData.findOne({ _id:id });
   if (!db._data) {
-    db._data = await ProjectData.create({
-      _id:id,
-      tables:{},
-      keyvalues:{},
-    });
+    db._data = await ProjectData.create({ _id:id });
   }
+  if (!db.tables) db.tables = {};
+  if (!db.keyvalues) db.keyvalues = {};
   db.getKeyValue = function(key) {
     return this._data.keyvalues[key];
   };
