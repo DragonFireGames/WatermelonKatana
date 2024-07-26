@@ -6,6 +6,8 @@
     <title>Edit Profile | PIC-MO</title>
   </head>
   <body>
+    <script src="/scripts/HtmlSanitizer.js"></script>
+    <script src="/scripts/utils.js"></script>
     <h1>Edit Profile</h1>
 
     <!-- Navbar? (WIP) -->
@@ -48,12 +50,13 @@
       };
 
       (async () => {
-        const res = await fetch("/api/auth/update");
-        const data = await res.json();
-        name.value = data.username;
-        bio.value = data.biography || "";
-        avatar.value = data.avatar || "";
-        banner.value = data.banner || "";
+        const data = await getAuth();
+        if (!data.auth) alert("Not signed in!");
+        const user = data.user;
+        name.value = user.username;
+        bio.value = user.biography || "";
+        avatar.value = user.avatar || "";
+        banner.value = user.banner || "";
       })();
 
       form.addEventListener("submit", async (e) => {
@@ -62,7 +65,7 @@
         if (!link.value.match(/^https?:\/\//))
           return (display.textContent = "Link is not a vaild URL");
         try {
-          const res = await fetch("/api/project/update/" + pid, {
+          const res = await fetch("/api/auth/update", {
             method: "POST",
             body: JSON.stringify({
               username: name.value,

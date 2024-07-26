@@ -20,14 +20,8 @@
 		<script src="/scripts/utils.js"></script>
 		<script>
 			async () => {
-				const res = await fetch("/api/auth/check");
-				const data = await res.json();
+				const data = await getAuth();
 				if (!data.auth) return;
-				header.innerHTML = `
-					<p>Signed in as ${data.user.username}</p><br/>
-				`;
-
-				footer.innerHTML = `<button class="logout"> <a href="/logout">Log Out</a></button>`;
 			};
 		</script>
 	</body>
