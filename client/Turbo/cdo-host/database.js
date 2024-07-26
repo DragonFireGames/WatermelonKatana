@@ -1,7 +1,7 @@
 const Mongoose = require("mongoose");
 const fs = require("fs");
 
-const ProjectDataSchema = new Mongoose.Schema({ customId: String }, { strict: false });
+const ProjectDataSchema = new Mongoose.Schema({ _id: String }, { strict: false });
 
 const ProjectData = Mongoose.model("projectdata", ProjectDataSchema);
 
@@ -11,7 +11,7 @@ const TurboDB = async function(id) {
   db._data = await ProjectData.findById(id);
   if (!db._data) {
     db._data = await ProjectData.create({
-      customId:id,
+      _id:id,
       tables:{},
       keyvalues:{},
     });
