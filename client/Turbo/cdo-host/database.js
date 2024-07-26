@@ -3,7 +3,7 @@ const fs = require("fs");
 
 const ProjectDataSchema = new Mongoose.Schema({ customId: String }, { strict: false });
 
-const ProjectData = Mongoose.model("projects", ProjectDataSchema);
+const ProjectData = Mongoose.model("projectdata", ProjectDataSchema);
 
 // Database
 const TurboDB = async function(id) {
