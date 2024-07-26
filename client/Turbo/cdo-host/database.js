@@ -1,7 +1,17 @@
 const Mongoose = require("mongoose");
 const fs = require("fs");
 
-const ProjectDataSchema = new Mongoose.Schema({ _id: String }, { strict: false });
+const ProjectDataSchema = new Mongoose.Schema({ 
+  _id: String, 
+  keyvalues: {
+    type: Object, 
+    default: {}
+  },
+  tables: {
+    type: Object, 
+    default: {}
+  } 
+}, { strict: false });
 
 const ProjectData = Mongoose.model("projectdata", ProjectDataSchema);
 
@@ -14,8 +24,6 @@ const TurboDB = async function(id) {
   if (!db._data) {
     db._data = await ProjectData.create({ _id:id });
   }
-  if (!db._data.tables) db._data.tables = {};
-  if (!db._data.keyvalues) db._data.keyvalues = {};
   db.getKeyValue = function(key) {
     return this._data.keyvalues[key];
   };
