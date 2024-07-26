@@ -9,8 +9,8 @@ const ProjectData = Mongoose.model("projectdata", ProjectDataSchema);
 const TurboDB = async function(id) {
   var db = {};
   db._changed = false;
-  db._read = false;
-  db._data = await ProjectData.findById(id);
+  db._read = true;
+  db._data = await ProjectData.findOne({ _id:id });
   if (!db._data) {
     db._data = await ProjectData.create({
       _id:id,
@@ -238,18 +238,21 @@ setInterval(()=>{
       continue;
     }
     TurboDBList[i]._changed = false;
+    TurboDBList[i]._read = false;
   }
 },60*1000);
 function createLink(app,method,name,callback) {
     app[method]("/datablock_storage/:id/"+name,async(req,res)=>{
     console.log(method,name,req.params.id,req.query,req.body);
     try {
-      var db = TurboDBList[req.params.id];
+      const id = req.params.id;
+      var db = TurboDBList[id];
       if (db === undefined) {
-        db = await TurboDB(req.params.id); 
-        TurboDBList[req.params.id] = db;
+        db = await TurboDB(id); 
+        TurboDBList[id] = db;
       }
       db._read = true;
+      console.log(db);
       var ret = await callback(db,req);
       console.log(ret);
       res.status(200).send(ret);

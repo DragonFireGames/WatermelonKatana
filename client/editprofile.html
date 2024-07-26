@@ -62,8 +62,10 @@
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
         display.textContent = "";
-        if (!link.value.match(/^https?:\/\//))
-          return (display.textContent = "Link is not a vaild URL");
+        if (!avatar.value.match(/^https?:\/\//))
+          return (display.textContent = "Avatar is not a vaild URL");
+        if (!banner.value.match(/^https?:\/\//))
+        return (display.textContent = "Banner is not a vaild URL");
         try {
           const res = await fetch("/api/auth/update", {
             method: "POST",
