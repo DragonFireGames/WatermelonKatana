@@ -68,7 +68,7 @@
         return (display.textContent = "Banner is not a vaild URL");
         try {
           const res = await fetch("/api/auth/update", {
-            method: "POST",
+            method: "PUT",
             body: JSON.stringify({
               username: name.value,
               biography: bio.value,
