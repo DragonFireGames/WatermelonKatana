@@ -49,7 +49,7 @@
           if (res.status === 400 || res.status === 401) throw Error(data);
           display.innerHTML = `
           <div>
-            <img src="${data.banner}" style="width: 100vw; height: 60px; ">
+            <img class="banner" src="${data.banner}">
             <div class="namecontainer">
             <img class="avatar" src="${data.avatar}">
             <p class="username">${data.username}</p>
