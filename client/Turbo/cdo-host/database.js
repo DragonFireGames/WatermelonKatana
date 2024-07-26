@@ -14,8 +14,8 @@ const TurboDB = async function(id) {
   if (!db._data) {
     db._data = await ProjectData.create({ _id:id });
   }
-  if (!db.tables) db.tables = {};
-  if (!db.keyvalues) db.keyvalues = {};
+  if (!db._data.tables) db._data.tables = {};
+  if (!db._data.keyvalues) db._data.keyvalues = {};
   db.getKeyValue = function(key) {
     return this._data.keyvalues[key];
   };
