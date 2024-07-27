@@ -32,6 +32,7 @@
       e.preventDefault();
       display.textContent = '';
       if (!link.value.match(/^https?:\/\//)) return display.textContent = 'Link is not a vaild URL';
+      var taglist = tags.value.toLowerCase().replace(/[^\w\d_-]/g,"").split(",");
       try {
         const res = await fetch('/api/project/publish', {
           method: 'POST',
@@ -39,6 +40,7 @@
             name: name.value,
             link: link.value,
             desc: desc.value,
+            tags: taglist,
             thumbnail: thumb.value,
           }),
           headers: { 'Content-Type': 'application/json' }

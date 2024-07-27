@@ -2,7 +2,7 @@ const Projects = require("../model/Projects");
 const Users = require("../model/Users");
 
 exports.publish = async (req, res, next) => {
-  var { name, link, desc, thumbnail } = req.body;
+  var { name, link, desc, tags, thumbnail } = req.body;
   console.log(name,link);
   try {
     const iscdo = link.match(/^https?:\/\/studio\.code\.org\/projects\/(applab|gamelab)\/([^/]+)/);
@@ -13,6 +13,7 @@ exports.publish = async (req, res, next) => {
       name,
       link,
       desc,
+      tags,
       thumbnail,
       iscdo: !!iscdo,
       postedAt: Date.now(),
@@ -36,7 +37,7 @@ exports.publish = async (req, res, next) => {
 };
 
 exports.update = async (req, res, next) => {
-  var { name, link, desc, thumbnail } = req.body;
+  var { name, link, desc, tags, thumbnail } = req.body;
   console.log(name,link);
   try {
     const pid = req.params.id;
@@ -55,6 +56,7 @@ exports.update = async (req, res, next) => {
     project.name = name;
     project.link = link;
     project.desc = desc;
+    project.tags = tags;
     project.thumbnail = thumbnail;
     project.iscdo = !!iscdo;
     await project.save();

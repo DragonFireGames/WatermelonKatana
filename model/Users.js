@@ -28,7 +28,7 @@ const UserSchema = new Mongoose.Schema({
     default: "This user has not added a biography yet.",
   },
   /*
-  badges: [ number ],
+  badges: [ Number ],
   */
   role: {
     type: String,

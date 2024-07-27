@@ -40,12 +40,7 @@
 
       const deletebtn = document.querySelector("#deletebtn");
       deletebtn.onclick = async () => {
-        if (
-          !confirm(
-            "Warning, this is permanent! Are you sure you want to continue?",
-          )
-        )
-          return;
+        if (!confirm("Warning, this is permanent! Are you sure you want to continue?")) return;
         await fetch("/api/project/delete/" + pid, {
           method: "DELETE",
           body: JSON.stringify({ pid }),
@@ -60,14 +55,16 @@
         name.value = data.name;
         desc.value = data.desc;
         link.value = data.link;
+        tags.value = data.tags.join(", ");
         thumb.value = data.thumbnail || "";
       })();
 
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
         display.textContent = "";
-        if (!link.value.match(/^https?:\/\//))
+        if (!link.value.match(/^https?:\/\//)) 
           return (display.textContent = "Link is not a vaild URL");
+        var taglist = tags.value.toLowerCase().replace(/[^\w\d_-]/g,"").split(",");
         try {
           const res = await fetch("/api/project/update/" + pid, {
             method: "POST",
@@ -75,6 +72,7 @@
               name: name.value,
               link: link.value,
               desc: desc.value,
+              tags: taglist,
               thumbnail: thumb.value,
             }),
             headers: { "Content-Type": "application/json" },
