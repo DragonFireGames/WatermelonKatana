@@ -9,12 +9,13 @@
     <script src="/scripts/utils.js"></script>
   </head>
   <body>
-    <h1>Edit Project</h1>
-
     <!-- Navbar? (WIP) -->
     <div class="topnav">
       <a href="/">Home</a>
     </div>
+    <div id="block"></div>
+    
+    <h1>Edit Project</h1>
 
     <form>
       <div class="error" style="background-color: red"></div>
@@ -58,6 +59,7 @@
       (async () => {
         const res = await fetch("/api/project/data/" + pid);
         const data = await res.json();
+        alert(JSON.stringify(data));
         name.value = data.name;
         desc.value = data.desc;
         link.value = data.link;
