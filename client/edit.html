@@ -59,7 +59,6 @@
       (async () => {
         const res = await fetch("/api/project/data/" + pid);
         const data = await res.json();
-        alert(JSON.stringify(data));
         name.value = data.name;
         desc.value = data.desc;
         link.value = data.link;
