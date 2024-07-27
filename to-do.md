@@ -100,6 +100,9 @@ Will these actually get done?
 - [ ] Sell Private Account information to China
 - [ ] Sell company to Microsoft for $10,000,000,000
 
+## Phase ??? - Sigma stuff Colack's going to do
+- [ ] Library for creating games that makes everything simpler
+
 ---
 - Original info by Colack & others
 - Reorganized by DragonFireGames
