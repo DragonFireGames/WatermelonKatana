@@ -84,7 +84,7 @@ Will these actually get done?
 - [ ] Spread Awareness for the site (also done during Beta)
 - [ ] Ad-Campaigns across scratch & code.org
 - [ ] Post it everywhere
-- [ ] Discord Server
+- [x] Discord Server
 - [ ] Make it Popular (Honeymoon phase)
 
 ### Step 3 - Cash Out
@@ -93,6 +93,8 @@ Will these actually get done?
 - [ ] Scale Up Systems to handle a large userbase
 - [ ] Hire Staff (or rely on volunteer moderation like Reddit)
 - [ ] Page Ads (before games)
+- [ ] Page Ads (during games)
+- [ ] Page Ads (around games)
 - [ ] Excessive Page Ads for Anonymous Users
 - [ ] Ad-free subscription service
 - [ ] Sell Private Account information to China
