@@ -69,7 +69,7 @@
           return (display.textContent = "Link is not a vaild URL");
         if (!thumb.value.match(/^https?:\/\//)) 
           return display.textContent = 'Thumbnail is not a vaild URL';
-        var taglist = tags.value.toLowerCase().replace(/[^\w\d_-]/g,"").split(",");
+        var taglist = tags.value.toLowerCase().replace(/[^\w\d_-,]/g,"").split(",");
         try {
           const res = await fetch("/api/project/update/" + pid, {
             method: "POST",
