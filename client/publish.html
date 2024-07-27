@@ -4,9 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Publish | PIC-MO</title>
+  <link rel="stylesheet" type="text/css" href="/styles/style.css">
+  <script src="/scripts/HtmlSanitizer.js"></script>
+  <script src="/scripts/utils.js"></script>
 </head>
 <body>
   <h1>Publish Project</h1>
+
+  <!-- Navbar? (WIP) -->
+  <div class="topnav">
+    <a href="/">Home</a>
+  </div>
+  
   <form >
     <div class="error" style="background-color: red;"></div><br>
     <label for="name">Name</label><br>
@@ -16,7 +25,7 @@
     <label for="desc">Description</label><br>
     <textarea id="desc"></textarea><br>
     <label for="tags">Tags</label><br>
-    <input type="text" id="tags" required><br>
+    <input type="text" id="tags"><br>
     <label for="thumb">Thumbnail</label><br>
     <input type="text" id="thumb"><br>
     <input type="submit" value="publish"><br>
