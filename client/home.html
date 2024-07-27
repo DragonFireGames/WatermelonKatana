@@ -22,9 +22,9 @@
       const list = document.querySelector('#list');
     
       (async () => {
-        const res = await fetch('/api/project/list');
+        const res = await fetch('/api/project/list'+location.search);
         const data = await res.json();
-        data.projects.sort((a,b)=>b.score-a.score);
+        data.projects.sort((a,b)=>(b.score-a.score)||(b.views-a.views));
         data.projects.map(projHTML(list));
       })();
       
