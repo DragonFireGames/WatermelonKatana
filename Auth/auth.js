@@ -182,6 +182,7 @@ exports.getUsers = async (req, res, next) => {
   try {
     var search = {};
     if (req.query.role) search.role = req.query.role;
+    if (req.query.customQuery) search = req.query.customQuery;
     var users = await Users.find(search);
     const list = users.map(e=>e.pack());
     res.status(200).json({ user: list });
