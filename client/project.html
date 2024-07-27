@@ -158,6 +158,7 @@
           <b>Name</b> => ${data.name} <br>
           <b>Poster</b> => <a href="/user/${data.poster}">${data.poster}</a> <br>
           <b>Description</b> => ${data.desc} <br>
+          <b>Tags</b> => ${data.tags.join(", ")} <br>
           <b>URL</b> => <a href="${data.link}">${data.link}</a> <br>
           <b>Score</b> => <span id="score">${data.score}</span> <br>
           <b>Posted At</b> => ${new Date(data.postedAt).toUTCString()} <br>

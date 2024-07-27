@@ -112,7 +112,7 @@ exports.deleteProject = async (req, res, next) => {
 exports.list = async (req, res, next) => {
   try {
     var search = {};
-    const {poster, iscdo, before, after, customquery} = req.query;
+    const { poster, iscdo, before, after, include, exclude, customQuery } = req.query;
     if (poster) search.poster = poster;
     if (iscdo == "0" || iscdo == "false") search.iscdo = false;
     else if (iscdo == "1" || iscdo == "true") search.iscdo = true;
@@ -121,6 +121,8 @@ exports.list = async (req, res, next) => {
       if (before) search.postedAt.$lte = before;
       if (after) search.postedAt.$gte = after;
     }
+    if (include) search.tags.$all = include;
+    if (exclude) search.tags.$not.$all = exclude;
     if (customquery) search = JSON.parse(customquery);
     var list = await Projects.find(search);
     list = list.map(e=>e.pack());

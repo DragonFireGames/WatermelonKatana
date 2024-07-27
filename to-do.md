@@ -17,7 +17,7 @@ Will these actually get done?
 - [ ] Commenting System
 - [ ] Forums
 - [x] Reputation System
-- [ ] Tag System
+- [x] Tag System
 
 ## Phase 2 - Production
 - Timeframe: Winter of 2024-2025

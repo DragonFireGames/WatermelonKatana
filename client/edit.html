@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Edit | PIC-MO</title>
   </head>
   <body>
@@ -15,22 +15,25 @@
 
     <form>
       <div class="error" style="background-color: red"></div>
-      <br />
-      <label for="name">Name</label><br />
-      <input type="text" id="name" required /><br />
-      <label for="link">Link</label><br />
-      <input type="text" id="link" required /><br />
-      <label for="desc">Description</label><br />
-      <textarea id="desc"></textarea><br />
-      <label for="thumb">Thumbnail</label><br />
-      <input type="text" id="thumb" /><br />
-      <input type="submit" value="update" /><br />
+      <br/>
+      <label for="name">Name</label><br/>
+      <input type="text" id="name" required/><br/>
+      <label for="link">Link</label><br/>
+      <input type="text" id="link" required/><br/>
+      <label for="desc">Description</label><br/>
+      <textarea id="desc"></textarea><br/>
+      <label for="tags">Tags</label><br>
+      <input type="text" id="tags" required><br>
+      <label for="thumb">Thumbnail</label><br/>
+      <input type="text" id="thumb"/><br/>
+      <input type="submit" value="update"/><br/>
     </form>
     <button id="deletebtn">delete</button>
     <script>
       const form = document.querySelector("form");
       const name = document.querySelector("#name");
       const desc = document.querySelector("#desc");
+      const tags = document.querySelector('#tags');
       const link = document.querySelector("#link");
       const thumb = document.querySelector("#thumb");
       const display = document.querySelector(".error");
@@ -64,6 +67,8 @@
         display.textContent = "";
         if (!link.value.match(/^https?:\/\//)) 
           return (display.textContent = "Link is not a vaild URL");
+        if (!thumb.value.match(/^https?:\/\//)) 
+          return display.textContent = 'Thumbnail is not a vaild URL';
         var taglist = tags.value.toLowerCase().replace(/[^\w\d_-]/g,"").split(",");
         try {
           const res = await fetch("/api/project/update/" + pid, {
