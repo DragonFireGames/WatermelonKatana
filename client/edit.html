@@ -37,7 +37,7 @@
       const form = document.querySelector("form");
       const name = document.querySelector("#name");
       const desc = document.querySelector("#desc");
-      const tags = document.querySelector('#tags');
+      const tags = document.querySelector("#tags");
       const link = document.querySelector("#link");
       const thumb = document.querySelector("#thumb");
       const display = document.querySelector(".error");
@@ -66,7 +66,7 @@
         tags.value = data.tags.join(", ");
         thumb.value = data.thumbnail || "";
       })();
-
+/*
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
         display.textContent = "";
@@ -97,7 +97,7 @@
           console.error(err.message);
           alert(err.message);
         }
-      });
+      });*/
     </script>
   </body>
 </html>
