@@ -73,3 +73,8 @@ body {
 .project-link {
   text-align: center;
 }
+
+#block {
+  height: 2.5em;
+  width: 100vw;
+}
