@@ -5,19 +5,27 @@ Will these actually get done?
 - Timeframe: Summer of 2024
 - Completely Private
 
-### Step 1 - Posting Projects
+### Step 1 - Accounts
 - [x] Basic Account/Profile System
+- [x] User Settings
 - [x] Profile Page
+
+### Step 2 - Posting Projects
 - [x] Game Embed System
 - [x] Game System (deploy from GitHub)
 - [x] Publishing Panel
-
-### Step 2 - Forums
-- [x] Posting System
 - [ ] Commenting System
-- [ ] Forums
-- [x] Reputation System
+- [x] Favorite System
 - [x] Tag System
+
+### Step 3 - Forums
+- [ ] Posting System
+- [ ] Forums
+- [ ] Reputation System
+- [ ] Follow/Friending Systems
+
+### Step 4 - Quick Chat
+- [x] Chat System using discord
 
 ## Phase 2 - Production
 - Timeframe: Winter of 2024-2025
@@ -38,13 +46,6 @@ Will these actually get done?
 - [ ] Markdown Support
 - [ ] Custom Emoji Support
 
-### Step 3 - Quick Chat
-- [ ] Chat System
-- [ ] Game Chat System
-- [ ] Messaging System
-- [ ] User Settings
-- [ ] Follow/Friending Systems
-
 ## Phase 3 - Deployment
 - Timeframe: Summer of 2025
 - Open Beta
@@ -57,8 +58,8 @@ Will these actually get done?
 - [ ] Finalize GUI/Graphics
 - [ ] Admins / Moderators ability to pin posts
 - [ ] Friend activity monitor (what are they doing?)
-- [ ] Live Game Chat
-- [ ] Remix System (integrated with Github/Free Deployment Software)
+- [ ] Live Game Chat???
+- [ ] Remix System (integrated with Github/Free Deployment Software)???
 - [ ] Code editor???
 - [ ] Public Version Management (from Github)
 - [ ] Profile Statuses

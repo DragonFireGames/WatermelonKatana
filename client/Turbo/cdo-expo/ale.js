@@ -63,7 +63,7 @@ async function getHTML(html, id, code) {
     </script>
     <script src="https://studio.code.org/projects/applab/${id}/export_config?script_call=setExportConfig"></script>
     <script>
-      window.inject = function() {
+    window.inject = function() {
       Object.defineProperties(Object.prototype, {
         apply: {
           value: function (fn, args) {
@@ -279,12 +279,34 @@ async function getHTML(html, id, code) {
       iframe.addEventListener("load",()=>{
       iframe.addEventListener = function (element, event, callback) {return document.body.addEventListener(element, event, callback)};
       for(var global in window.Global){iframe.contentWindow[global]=window[global]};
-      let script=iframe.contentDocument.createElement("script");
-      script.text=${JSON.stringify(code)};
-iframe.contentDocument.head.appendChild(script);
-let element = document.getElementById("divApplab");
-      element.style["transform"] = "scale(" + (Math.min(window.innerWidth, window.innerHeight) / 450) + ")";
-      element.style["transform-origin"] = "top left";
+      ;(function() {
+        return fetch("/api/auth/check").then(r => {
+              if (r.status === 200) {
+                  return r.json();
+              } else {
+                  return {auth: false};
+              }
+          }).then(d => {
+              if(d.user !== undefined) {
+                  return "accountUser:" + d.user.id;
+              } else {
+                  return getUserId();
+              }
+          }).then(id => {
+              if(localStorage.userId === undefined || id.startsWith("accountUser:")) {
+                localStorage.userId = id;
+              }
+              let script=iframe.contentDocument.createElement("script");
+              script.text=${JSON.stringify(code)};
+              iframe.contentDocument.head.appendChild(script);
+              let element = document.getElementById("divApplab");
+              element.style["transform"] = "scale(" + (Math.min(window.innerWidth, window.innerHeight) / 450) + ")";
+              element.style["transform-origin"] = "top left";
+          })
+          .catch(err => {
+              throw new Error(err);
+          })
+      })();
 });
 document.head.appendChild(iframe);
       }

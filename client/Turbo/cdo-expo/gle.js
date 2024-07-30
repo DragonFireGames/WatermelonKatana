@@ -316,11 +316,32 @@ window.preload = function () {
   }
 })
 ${requisites}
-// Better than eval but still unsafe;
-let __script = document.createElement("script");
-__script.text = ${JSON.stringify(libraries + json.source)};
-document.body.appendChild(__script);
-
+;(function() {
+    return fetch("/api/auth/check").then(r => {
+        if (r.status === 200) {
+            return r.json();
+        } else {
+            return {auth: false};
+        }
+    }).then(d => {
+        if(d.user !== undefined) {
+            return "accountUser:" + d.user.id;
+        } else {
+            return getUserId();
+        }
+    }).then(id => {
+        if(localStorage.userId === undefined || id.startsWith("accountUser:")) {
+          localStorage.userId = id;
+        }
+        // Better than eval but still unsafe;
+        let __script = document.createElement("script");
+        __script.text = ${JSON.stringify(libraries + json.source)};
+        document.body.appendChild(__script);
+    })
+    .catch(err => {
+        throw new Error(err);
+    })
+})();
     try { window.draw = draw; } catch (e) {}
     switch (stage) {
       case 'preload':

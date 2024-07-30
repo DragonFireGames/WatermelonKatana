@@ -54,34 +54,33 @@ app.get("/logout", (req, res) => {
 	res.redirect("/");
 });
 
-// Admin page, protected by admin authentication middleware
+// Chat page, users only
+app.get("/chat", userAuth, (req, res) => res.sendFile(cldir + "/chat.html"));
+
+// Admin page, admins only
 app.get("/admin", adminAuth, (req, res) => res.sendFile(cldir + "/admin.html"));
 
-// Basic user page, protected by user authentication middleware
+// Basic user page, users only
 app.get("/basic", userAuth, (req, res) => res.sendFile(cldir + "/basic.html"));
 
-// Publish page, protected by user authentication middleware
+// Publish page, users only
 app.get("/publish", userAuth, (req, res) => res.sendFile(cldir + "/publish.html"));
 
 // Project page with dynamic project ID
 app.get("/project/:id", (req, res) => res.sendFile(cldir + "/project.html"));
-
-// Edit project page, protected by user authentication middleware
+// Edit project page, users only
 app.get("/project/:id/edit", userAuth, (req, res) => res.sendFile(cldir + "/edit.html"));
-
-// Delete project route, protected by user authentication middleware
+// Delete project route, users only
 app.get("/project/:id/delete", userAuth, (req, res) => res.redirect("/api/project/delete/" + req.params.id));
 
 // User profile page with dynamic user name
 app.get("/user/:name", (req, res) => res.sendFile(cldir + "/user.html"));
 
-// User self profile page, protected by user authentication middleware
+// User self profile page, users only
 app.get("/profile", userAuth, (req, res) => res.sendFile(cldir + "/profile.html"));
-
-// User edit self page, protected by user authentication middleware
+// User edit self page, users only
 app.get("/profile/edit", userAuth, (req, res) => res.sendFile(cldir + "/editprofile.html"));
-
-// User change password page, protected by user authentication middleware
+// User change password page, users only
 app.get("/profile/chpass", userAuth, (req, res) => res.sendFile(cldir + "/chpass.html"));
 
 // TurboWarp page

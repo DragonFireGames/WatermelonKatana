@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Quick Chat - PIC-MO</title>
+    <link rel="stylesheet" type="text/css" href="/styles/style.css">
+    <script src="/scripts/HtmlSanitizer.js"></script>
+    <script src="/scripts/utils.js"></script>
+  </head>
+  <body>
+    <!-- Navbar? (WIP) -->
+    <div class="topnav">
+      <a href="/">Home</a>
+    </div>
+    <div id="block"></div>
+    <style>
+      #onlineMembers {
+        position: absolute;
+        top: calc(5px + 2.5em);
+        left: calc(100vw - 310px);
+        width: 300px;
+        height: calc(100vh - 10px - 2.5em);
+      }
+      #widgetBot {
+        position: absolute;
+        top: calc(5px + 2.5em);
+        left: 5px;
+        width: calc(100vw - 315px);
+        height: calc(100vh - 10px - 2.5em);
+      }
+    </style>
+    
+    <div id="discordWidget">
+      <iframe src="https://discord.com/widget?id=1250572359077724291&theme=dark" id="onlineMembers" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+      <widgetbot id="widgetBot"></widgetbot>
+      <script>
+        var widgetBot = document.getElementById("widgetBot");
+        var avatar = "https://t4.ftcdn.net/jpg/03/59/58/91/360_F_359589186_JDLl8dIWoBNf1iqEkHxhUeeOulx0wOC5.jpg"//location.origin;
+        widgetBot.outerHTML = '<widgetbot server="1250572359077724291" channel="1250572359467925570" id="widgetBot" avatar="'+avatar+'"></widgetbot>';
+      </script>
+      <script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed"></script>
+    </div>
+  </body>
+</html>

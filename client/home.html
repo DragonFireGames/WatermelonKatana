@@ -37,6 +37,7 @@
           <p>Signed in as ${data.user.username}</p><br/>
           <a href="/publish">Publish</a>
           <a href="/profile">Profile</a>
+          <a href="/chat">Chat</a>
         `;
         if (data.user.role === "Basic") {
           header.innerHTML += `<a href="/basic">User List</a> <a href="/profile">Profile Settings</a>`;
