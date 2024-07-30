@@ -9,4 +9,4 @@
   <widgetbot server="1250572359077724291" channel="1250572359467925570" id="widgetBot" avatar="${avatar}" username="${username}"></widgetbot>
   <script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed"></script>
   <script>console.log(1);</script>`;
-});
+})();
