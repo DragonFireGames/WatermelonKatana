@@ -32,8 +32,17 @@
     
     <div id="discordWidget">
       <iframe src="https://discord.com/widget?id=1250572359077724291&theme=dark" id="onlineMembers" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
-      <widgetbot id="widgetBot"></widgetbot>
-      <script src="/scripts/chat.js"></script>
+      <widgetbot id="widgetBot" server="1250572359077724291" channel="1250572359467925570"></widgetbot>
+      <script>
+      (async function(){
+        var widgetBot = document.getElementById("widgetBot");
+        var data = await getAuth();
+        if (!data.auth) return;
+        widgetBot.avatar = data.user.avatar||"https://t4.ftcdn.net/jpg/03/59/58/91/360_F_359589186_JDLl8dIWoBNf1iqEkHxhUeeOulx0wOC5.jpg";
+        widgetBot.username = data.user.username;
+      })();
+      </script>
+      <script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed"></script>
     </div>
   </body>
 </html>
