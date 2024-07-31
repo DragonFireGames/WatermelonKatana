@@ -20,29 +20,9 @@ canvas.registerFont("./client/Turbo/dependencies/fonts/fa-v4compatibility.ttf", 
 async function exportProject(id) {
   assets = `${startPath}/v3/assets/`
   return new Promise(async (resolve, reject) => {
-    let source = await request.send(`${startPath}/v3/sources/${id}/main.json`, 'json');
-    await getAssets(id);
-    getSounds(source.source);
-    resolve(await getHTML(source.html, id, getCode(source)));
+    let json = await request.send(`${startPath}/v3/sources/${id}/main.json`, 'json');
+    resolve(await getHTML(source.html, id, json.source));
   })
-}
-
-async function getAssets(id) {
-  let resources = await request.send(assets + id, "json");
-  assets += `${id}/`;
-  for (let resource of resources) {
-    assetList.push(resource.filename)
-  }
-}
-
-function getCode(json) {
-  // if (assetList.length > 0) {
-  //   json.source = json.source.replace(
-  //     new RegExp(`["|'](?:sound://)(${assetList.join("|")})["|']`, "g"), `"/media?u=${soundLibrary}$1"`);
-  //   json.source = json.source.replace(
-  //     new RegExp(`["|'](${assetList.join("|")})["|']`, "g"), `"/media?u=${assets}$1"`);
-  // }
-  return json.source;
 }
 
 async function getHTML(html, id, code) {
@@ -329,19 +309,6 @@ document.head.appendChild(iframe);
     }
   })
   return page.serialize();
-}
-
-function getSounds(json) {
-  return new Promise(async (resolve, reject) => {
-    const soundRegex = /(\bsound:\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
-    const soundPrefix = /^sound:\/\//;
-    let sounds = [...new Set(json.match(soundRegex))];
-    for (let sound of sounds) {
-      sound = sound.replace(soundPrefix, "");
-      assetList.push(sound);
-    }
-    resolve(sounds)
-  })
 }
 
 function renderIconToString(value, element) {
