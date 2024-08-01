@@ -46,6 +46,7 @@ const cldir = __dirname + "/client";
  * Define route handlers for serving HTML files
  */
 app.get("/", (req, res) => res.sendFile(cldir + "/home.html")); // Home page
+app.get("/search", (req, res) => res.sendFile(cldir + "/search.html")); // Home page
 app.get("/register", (req, res) => res.sendFile(cldir + "/register.html")); // Registration page
 app.get("/login", (req, res) => res.sendFile(cldir + "/login.html")); // Login page
 
