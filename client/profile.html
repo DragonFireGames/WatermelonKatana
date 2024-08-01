@@ -19,11 +19,33 @@
 		</div>
 		<div id="footer"></div>
 
+		Published
+		<ul id="list" class="project-list"></ul>
+		Favorites
+		<ul id="favlist" class="project-list"></ul>
+		
 		<script>
-			async () => {
-				const data = await getAuth();
-				if (!data.auth) return;
-			};
+			const list = document.querySelector('#list');
+			const favlist = document.querySelector('#favlist');
+			const display = document.querySelector('#display');
+			
+			(async () => {
+				const udata = await getAuth();
+				if (!udata.auth) return;
+				try {
+					await Promise.all(udata.user.favorites.map(async pid => {
+						const res = await fetch('/api/project/data/'+pid);
+						const proj = await res.json();
+						projHTML(favlist)(proj);
+					}));
+					const res = await fetch('/api/project/list?poster='+udata.user.username);
+					const data = await res.json();
+					data.projects.map(projHTML(list));
+				} catch(e) {
+					alert(e);
+					console.error(e);
+				}
+			})();
 		</script>
 	</body>
 </html>

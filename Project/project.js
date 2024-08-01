@@ -112,10 +112,12 @@ exports.deleteProject = async (req, res, next) => {
 exports.list = async (req, res, next) => {
   try {
     var search = {};
-    const { poster, iscdo, postedBefore, postedAfter, includeTags, excludeTags, customQuery } = req.query;
+    const { poster, iscdo, postedBefore, postedAfter, includeTags, excludeTags, featured, customQuery } = req.query;
     if (poster) search.poster = poster;
     if (iscdo == "0" || iscdo == "false") search.iscdo = false;
     else if (iscdo == "1" || iscdo == "true") search.iscdo = true;
+    if (featured == "0" || featured == "false") search.featured = false;
+    else if (featured == "1" || featured == "true") search.featured = true;
     if (postedBefore || postedAfter) {
       search.postedAt = {};
       if (postedBefore) search.postedAt.$lte = postedBefore;
@@ -186,7 +188,6 @@ exports.favorite = async (req, res, next) => {
     console.log(error.message);
   }
 };
-
 exports.unfavorite = async (req, res, next) => {
   try {
     const pid = req.params.id;
@@ -209,6 +210,55 @@ exports.unfavorite = async (req, res, next) => {
     user.favorites.splice(index,1);
     project.score--;
     await user.save();
+    await project.save();
+    res.status(201).json({
+      message: "Project successfully updated",
+      id: project._id,
+      name: project.name,
+    });
+    console.log("done!");
+  } catch(error) {
+    res.status(400).json({
+      message: "Project not successfully updated",
+      error: error.message,
+    });
+    console.log(error.message);
+  }
+};
+
+exports.feature = async (req, res, next) => {
+  try {
+    const pid = req.params.id;
+    const project = await Projects.findOne({ _id: pid });
+    if (!project) return res.status(404).json({
+      message: "Fetch not successful",
+      error: "Project not found",
+    });
+    project.featured = true;
+    await project.save();
+    res.status(201).json({
+      message: "Project successfully updated",
+      id: project._id,
+      name: project.name,
+    });
+    console.log("done!");
+  } catch(error) {
+    res.status(400).json({
+      message: "Project not successfully updated",
+      error: error.message,
+    });
+    console.log(error.message);
+  }
+};
+exports.unfeature = async (req, res, next) => {
+  try {
+    const pid = req.params.id;
+    const project = await Projects.findOne({ _id: pid });
+    if (!project) return res.status(404).json({
+      message: "Fetch not successful",
+      error: "Project not found",
+    });
+    project.featured = false;
     await project.save();
     res.status(201).json({
       message: "Project successfully updated",

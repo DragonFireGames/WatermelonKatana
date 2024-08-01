@@ -14,7 +14,9 @@
   <div id="header">
     <a href="/register">Register</a> <a href="/login">Login</a>
   </div>
+  <p>Post your projects, Interact with other peoples' projects, Chat with your friends & More! We have a large gallery of games and a growing user base, help us out by either posting your browser game here or playing other peoples' games!</p>
   <a href="https://discord.gg/S8XTzKEz5f">Join our discord!</a>
+  Featured Projects:
   <div id="list" class="project-list"></div>
   <div id="footer">
   </div>
@@ -25,9 +27,10 @@
       const list = document.querySelector('#list');
     
       (async () => {
-        const res = await fetch('/api/project/list'+location.search);
+        const res = await fetch('/api/project/list');
         const data = await res.json();
-        data.projects.sort((a,b)=>(b.score-a.score)||(b.views-a.views));
+        data.projects.sort((a,b)=>(Number(b.featured)-Number(a.featured))(b.score-a.score)||(b.views-a.views));
+        data.projects = data.projects.splice(0,4);
         data.projects.map(projHTML(list));
       })();
       

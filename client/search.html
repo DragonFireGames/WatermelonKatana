@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search | PIC-MO</title>
+  <meta property="og:title" content="Search - PIC-Mo"/>
+  <meta property="og:type" content="profile"/>
+  <link rel="stylesheet" type="text/css" href="/styles/style.css">
+  <script src="/scripts/HtmlSanitizer.js"></script>
+  <script src="/scripts/utils.js"></script>
+</head>
+<body>
+  <!-- Navbar? (WIP) -->
+  <div class="topnav">
+    <a href="/">Home</a>
+  </div>
+  <div id="block"></div>
+  
+  <div id="list" class="project-list"></div>
+  <div id="footer">
+  </div>
+  
+  <script>
+      const list = document.querySelector('#list');
+    
+      (async () => {
+        const res = await fetch('/api/project/list'+location.search);
+        const data = await res.json();
+        data.projects.sort((a,b)=>(b.score-a.score)||(b.views-a.views));
+        data.projects.map(projHTML(list));
+      })();
+    
+    </script>
+  </body>
+</body>
+</html>

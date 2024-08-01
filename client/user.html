@@ -7,12 +7,15 @@
   <!--og:meta-->
   <link rel="stylesheet" type="text/css" href="/styles/style.css">
   <link rel="stylesheet" type="text/css" href="/styles/user.css">
+  <script src="/scripts/HtmlSanitizer.js"></script>
+  <script src="/scripts/utils.js"></script>
 </head>
 <body>
   <!-- Navbar? (WIP) -->
   <div class="topnav">
     <a href="/">Home</a>
   </div>
+  <div id="block"></div>
 
   <!-- Main Content -->
   <div id="display">
@@ -23,8 +26,6 @@
   Favorites
   <ul id="favlist" class="project-list"></ul>
 
-  <script src="/scripts/HtmlSanitizer.js"></script>
-  <script src="/scripts/utils.js"></script>
   <script>
       const list = document.querySelector('#list');
       const favlist = document.querySelector('#favlist');
