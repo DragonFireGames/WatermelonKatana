@@ -8,6 +8,7 @@ const cookieParser = require("cookie-parser");
 const { adminAuth, userAuth } = require("./middleware/auth.js");
 const { Turbo } = require("./client/Turbo/index");
 const PORT = process.env.PORT || 3000;
+const sendFileReplace = require("./replace");
 
 /**
  * Connect to the database
@@ -67,14 +68,28 @@ app.get("/basic", userAuth, (req, res) => res.sendFile(cldir + "/basic.html"));
 app.get("/publish", userAuth, (req, res) => res.sendFile(cldir + "/publish.html"));
 
 // Project page with dynamic project ID
-app.get("/project/:id", (req, res) => res.sendFile(cldir + "/project.html"));
+const { Projects } = require("./model/Projects.js");
+app.get("/project/:id", async (req, res) => {
+	var proj = await Projects.findOne({_id:req.params.id});
+	sendFileReplace(res,"./client/project.html",s=>s.replace("<!--og:meta-->",`<meta property="og:title" content="${proj.name}"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:image" content="${proj.thumbnail}"/>
+  <meta property="og:description" content="${proj.desc}"/>`));
+});
 // Edit project page, users only
 app.get("/project/:id/edit", userAuth, (req, res) => res.sendFile(cldir + "/edit.html"));
 // Delete project route, users only
 app.get("/project/:id/delete", userAuth, (req, res) => res.redirect("/api/project/delete/" + req.params.id));
 
 // User profile page with dynamic user name
-app.get("/user/:name", (req, res) => res.sendFile(cldir + "/user.html"));
+const { Users } = require("./model/Users.js");
+app.get("/user/:name", async (req, res) => {
+	 var user = await Users.findOne({username:req.params.name});
+	 sendFileReplace(res,"./client/user.html",s=>s.replace("<!--og:meta-->",`<meta property="og:title" content="${user.username}"/>
+	 <meta property="og:type" content="website"/>
+	 <meta property="og:image" content="${user.avatar}"/>
+	 <meta property="og:description" content="${user.biography}"/>`));
+ });
 
 // User self profile page, users only
 app.get("/profile", userAuth, (req, res) => res.sendFile(cldir + "/profile.html"));
