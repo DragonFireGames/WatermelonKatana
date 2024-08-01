@@ -71,7 +71,7 @@
         display.textContent = "";
         if (!link.value.match(/^https?:\/\//)) 
           return (display.textContent = "Link is not a vaild URL");
-        if (thumb && !thumb.value.match(/^https?:\/\//)) 
+        if (thumb.value && !thumb.value.match(/^https?:\/\//)) 
           return display.textContent = 'Thumbnail is not a vaild URL';
         var taglist = tags.value.toLowerCase().replace(/[^,\w\d_-]/g,"").split(",");
         try {
