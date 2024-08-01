@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User | PIC-Mo</title>
+  <meta property="og:title" content=""/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:image" content=""/>
+  <meta property="og:description" content=""/>
   <link rel="stylesheet" type="text/css" href="/styles/style.css">
   <link rel="stylesheet" type="text/css" href="/styles/user.css">
 </head>
@@ -58,6 +62,11 @@
             <p class="role">${data.role}</p>
             <i class="uidtext" title="Click to Copy">ID: ${data.id}</i>
           </div>`;
+          setOGMetaTags({
+            title: data.username+" - PIC-Mo",
+            description: data.biography,
+            image: data.avatar,
+          });
           await Promise.all(data.favorites.map(async pid => {
             const res = await fetch('/api/project/data/'+pid);
             const proj = await res.json();

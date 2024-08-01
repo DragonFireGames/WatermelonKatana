@@ -23,3 +23,11 @@ function projHTML(list) {
     if (!lastThumbnail.getAttribute("src"))lastThumbnail.src = "/images/placeholders/PLACEHOLDER_project.png";
   };
 }
+
+function setOGMetaTags(data) {
+  const metas = Array.from(document.getElementsByTagName('meta'));
+  for (var i in data) {
+    var elem = metas.find((m) => m.attributes[0].nodeValue === 'og:'+i);
+      elem.attributes[1].nodeValue = data[i];
+  }
+}

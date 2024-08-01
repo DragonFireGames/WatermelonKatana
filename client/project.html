@@ -5,6 +5,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>View | PIC-MO</title>
+  <meta property="og:title" content=""/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:image" content=""/>
+  <meta property="og:description" content=""/>
   <style>
     html, body {
       margin: 0;
@@ -161,6 +165,12 @@
           <b>ID</b> => ${data.id} <br>`;
         
         console.log(`Extra Debug Info:\nIsCDO?: ${data.iscdo}\nPosterID: ${data.posterId}`);
+
+        setOGMetaTags({
+          title: data.name+" - PIC-Mo",
+          description: data.desc,
+          image: data.thumb,
+        });
         
         if (!data.iscdo) {
           game.src = data.link;
