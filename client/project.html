@@ -162,12 +162,6 @@
           <b>ID</b> => ${data.id} <br>`;
         
         console.log(`Extra Debug Info:\nIsCDO?: ${data.iscdo}\nPosterID: ${data.posterId}`);
-
-        setOGMetaTags({
-          title: data.name+" - PIC-Mo",
-          description: data.desc,
-          image: data.thumb,
-        });
         
         if (!data.iscdo) {
           game.src = data.link;
