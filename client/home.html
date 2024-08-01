@@ -30,8 +30,8 @@
       (async () => {
         const res = await fetch('/api/project/list');
         const data = await res.json();
-        data.projects.sort((a,b)=>(Number(b.featured)-Number(a.featured))(b.score-a.score)||(b.views-a.views));
-        data.projects = data.projects.splice(0,4);
+        data.projects.sort((a,b)=>(Number(b.featured)-Number(a.featured))||(b.score-a.score)||(b.views-a.views));
+        data.projects = data.projects.splice(0,8);
         data.projects.map(projHTML(list));
       })();
       
@@ -45,13 +45,11 @@
           <a href="/publish">Publish</a>
           <a href="/profile">Profile</a>
           <a href="/chat">Chat</a>
+          <a href="/search">Project Gallery</a>
+          <a href="/basic">User List</a>
         `;
-        if (data.user.role === "Basic") {
-          header.innerHTML += `<a href="/basic">User List</a> <a href="/profile">Profile Settings</a>`;
-        } else {
-          if (data.user.role === "Admin") {
-            header.innerHTML += `<a href="/admin">User List</a>`;
-          }
+        if (data.user.role === "Admin") {
+          header.innerHTML += `<a href="/admin">Admin List</a>`;
         }
       })();
     </script>

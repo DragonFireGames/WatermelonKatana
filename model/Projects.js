@@ -42,6 +42,10 @@ const ProjectSchema = new Mongoose.Schema({
     type: String,
     default: "",
   },
+  featured: {
+    type: Boolean,
+    default: false,
+  },
   tags: [ String ],
   score: {
     type: Number,
@@ -79,6 +83,7 @@ const ProjectSchema = new Mongoose.Schema({
       container.name = this.name;
       container.link = this.link;
       container.desc = this.desc;
+      container.featured = this.featured;
       container.tags = this.tags || [];
       container.thumbnail = this.thumbnail;
       container.score = this.score;
