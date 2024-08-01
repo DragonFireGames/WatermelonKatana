@@ -31,7 +31,7 @@
         const res = await fetch('/api/project/list');
         const data = await res.json();
         data.projects.sort((a,b)=>(Number(b.featured)-Number(a.featured))||(b.score-a.score)||(b.views-a.views));
-        data.projects = data.projects.splice(0,8);
+        data.projects = data.projects.splice(0,5);
         data.projects.map(projHTML(list));
       })();
       
