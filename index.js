@@ -68,7 +68,7 @@ app.get("/basic", userAuth, (req, res) => res.sendFile(cldir + "/basic.html"));
 app.get("/publish", userAuth, (req, res) => res.sendFile(cldir + "/publish.html"));
 
 // Project page with dynamic project ID
-const { Projects } = require("./model/Projects.js");
+const Projects = require("./model/Projects.js");
 app.get("/project/:id", async (req, res) => {
 	var proj = await Projects.findOne({_id:req.params.id});
 	sendFileReplace(res,"./client/project.html",s=>s.replace("<!--og:meta-->",`<meta property="og:title" content="${proj.name}"/>
@@ -82,7 +82,7 @@ app.get("/project/:id/edit", userAuth, (req, res) => res.sendFile(cldir + "/edit
 app.get("/project/:id/delete", userAuth, (req, res) => res.redirect("/api/project/delete/" + req.params.id));
 
 // User profile page with dynamic user name
-const { Users } = require("./model/Users.js");
+const Users = require("./model/Users.js");
 app.get("/user/:name", async (req, res) => {
 	 var user = await Users.findOne({username:req.params.name});
 	 sendFileReplace(res,"./client/user.html",s=>s.replace("<!--og:meta-->",`<meta property="og:title" content="${user.username}"/>
