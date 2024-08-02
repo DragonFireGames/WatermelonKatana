@@ -181,7 +181,7 @@
           return;
         }
         favoritebtn.checked = !!tok.user.favorites.includes(pid);
-        if (tok.user.id !== data.posterId) return;
+        if (tok.user.id !== data.posterId && tok.user.role !== "Admin") return;
         document.body.innerHTML += `<button class="edit"> <a href="/project/${pid}/edit">Edit</a></button>`;
       } catch(e) {
         alert(e);

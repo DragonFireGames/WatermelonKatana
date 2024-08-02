@@ -23,14 +23,15 @@
     <label for="password">Password</label><br>
     <input type="password" id="password" required><br>
     <input type="submit" value="login"><br>
-    </form>
-  <a href="/register">Don't have an accout? Register</a>
+  </form>
+  <a href="/register">Don't have an account? Register</a>
 
   <script>
-    const form = document.querySelector('form')
-    const username = document.querySelector('#username')
-    const password = document.querySelector('#password')
-    const display = document.querySelector('.error')
+    const form = document.querySelector('form');
+    const username = document.querySelector('#username');
+    const password = document.querySelector('#password');
+    const display = document.querySelector('.error');
+    const params = new URLSearchParams(location.search);
 
    form.addEventListener('submit', async (e) => {
       e.preventDefault()
@@ -41,11 +42,13 @@
           body: JSON.stringify({ username: username.value, password: password.value }),
           headers: { 'Content-Type': 'application/json' }
         });
-        const data = await res.json()
+        const data = await res.json();
         if (res.status === 400 || res.status === 401) {
           return display.textContent = `${data.message}. ${data.error ? data.error : ''}`
         }
-        location.assign('/');
+        var q = parseInt();
+        var redirect = params.get("redir") || "/";
+        location.assign(redirect);
       } catch (err) {
         console.log(err.message)
       }

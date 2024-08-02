@@ -16,18 +16,52 @@
     <a href="/">Home</a>
   </div>
   <div id="block"></div>
+
+  <div id="controls">
+    <form>
+      <select id="sortOptions">
+        <option value="score">Score</option>
+        <option value="views">Views</option>
+        <option value="latest">Latest</option>
+      </select>
+      <input type="text" id="searchBar" placeholder="Search tags here separated by a comma">
+      <input type="submit" value="Search">
+    </form>
+  </div>
   
   <div id="list" class="project-list"></div>
   <div id="footer">
   </div>
   
   <script>
+      const form = document.querySelector('form')
       const list = document.querySelector('#list');
+      const sortOptions = document.querySelector('#sortOptions');
+      const searchBar = document.querySelector('#searchBar');
+      const params = new URLSearchParams(location.search);
+
+     form.addEventListener('submit', async (e) => {
+        e.preventDefault()
+        display.textContent = '';
+        try {
+          const url = new URL(location);
+          var taglist = searchBar.value.toLowerCase().replace(/[^,\w\d_-]/g,"").split(",");
+          url.searchParams.set("includeTags", taglist.join("+"));
+          url.searchParams.set("sort", sortOptions.value);
+          history.pushState({}, "", url);
+        } catch (err) {
+          console.log(err.message)
+        }
+      });
     
       (async () => {
         const res = await fetch('/api/project/list'+location.search);
         const data = await res.json();
-        data.projects.sort((a,b)=>(b.score-a.score)||(b.views-a.views));
+        switch (params.get("sort")||"score") {
+          case "score": data.projects.sort((a,b)=>(b.score-a.score)||(b.views-a.views)); break;
+          case "views": data.projects.sort((a,b)=>(b.views-a.views)||(b.score-a.score)); break;
+          case "latest": data.projects.sort((a,b)=>(b.postedAt-a.postedAt)); break;
+        }
         data.projects.map(projHTML(list));
       })();
     

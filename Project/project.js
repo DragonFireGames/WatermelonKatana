@@ -123,8 +123,8 @@ exports.list = async (req, res, next) => {
       if (postedBefore) search.postedAt.$lte = postedBefore;
       if (postedAfter) search.postedAt.$gte = postedAfter;
     }
-    if (includeTags) search.tags.$all = includeTags;
-    if (excludeTags) search.tags.$not.$all = excludeTags;
+    if (includeTags) search.tags.$all = includeTags.split("+");
+    if (excludeTags) search.tags.$not.$all = excludeTags.split("+");
     if (customQuery) search = JSON.parse(customQuery);
     var list = await Projects.find(search);
     list = list.map(e=>e.pack());

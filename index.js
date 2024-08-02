@@ -109,6 +109,9 @@ const server = app.listen(PORT, () => {
 	console.log(`Server Connected to port ${PORT}`);
 });
 
+// 404 response page
+app.use((req, res) => res.status(404).sendFile(cldir + "/404.html"));
+
 // Set server timeout to 30 seconds
 server.setTimeout(30000);
 

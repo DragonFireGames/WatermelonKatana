@@ -1,15 +1,16 @@
 const jwt = require("jsonwebtoken");
 const jwtSecret = process.env["JWT_SECRET"];
+const cldir = __dirname + "/client";
 
 exports.adminAuth = (req, res, next) => {
   const token = req.cookies.jwt;
   if (token) {
     jwt.verify(token, jwtSecret, (err, decodedToken) => {
       if (err) {
-        return res.status(403).json({ message: "Not authorized" });
+        return res.status(403).sendFile(cldir+"/403.html");
       } else {
         if (decodedToken.role !== "Admin") {
-          return res.status(403).json({ message: "Not authorized" });
+          return res.status(403).json({ message: "Not authorized, user not admin" });
         } else {
           res.locals.userToken = decodedToken;
           next();
@@ -17,7 +18,7 @@ exports.adminAuth = (req, res, next) => {
       }
     });
   } else {
-    return res.status(403).json({ message: "Not authorized, token not available" });
+    return res.status(403).sendFile(cldir+"/403.html");
   }
 };
 exports.userAuth = (req, res, next) => {
@@ -25,14 +26,14 @@ exports.userAuth = (req, res, next) => {
   if (token) {
     jwt.verify(token, jwtSecret, (err, decodedToken) => {
       if (err) {
-        return res.status(403).json({ message: "Not authorized" });
+        return res.status(403).sendFile(cldir+"/403.html");
       } else {
         res.locals.userToken = decodedToken;
         next();
       }
     });
   } else {
-    return res.status(403).json({ message: "Not authorized, token not available" });
+    return res.status(403).sendFile(cldir+"/403.html");
   }
 };
 
