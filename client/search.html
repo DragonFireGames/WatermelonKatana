@@ -38,25 +38,27 @@
       const list = document.querySelector('#list');
       const sortOptions = document.querySelector('#sortOptions');
       const searchBar = document.querySelector('#searchBar');
-      const params = new URLSearchParams(location.search);
+      var params = new URLSearchParams(location.search);
       sortOptions.value = params.get("sort")||"score";
-      searchBar.value = (params.get("includeTags")||"").replace("+",", ");
+      searchBar.value = (params.get("tags")||"").replace("+",", ");
     
       form.addEventListener('submit', async (e) => {
         e.preventDefault()
         try {
           var taglist = searchBar.value.toLowerCase().replace(/[^,\w\d_-]/g,"").split(",");
           const url = new URL(location);
-          if (taglist.length > 0) url.searchParams.set("includeTags", taglist.join("+"));
+          if (taglist[0]) url.searchParams.set("tags", taglist.join("+"));
           url.searchParams.set("sort", sortOptions.value);
           history.pushState({}, "", url);
+          params = new URLSearchParams(location.search);
+          searchProjects();
         } catch (err) {
           alert(err.message);
           console.log(err.message)
         }
       });
-    
-      (async () => {
+
+      async function searchProjects() {
         const res = await fetch('/api/project/list'+location.search);
         const data = await res.json();
         switch (params.get("sort")||"score") {
@@ -64,8 +66,10 @@
           case "views": data.projects.sort((a,b)=>(b.views-a.views)||(b.score-a.score)); break;
           case "latest": data.projects.sort((a,b)=>(b.postedAt-a.postedAt)); break;
         }
+        list.innerHTML = '';
         data.projects.map(projHTML(list));
-      })();
+      }
+      searchProjects();
     
     </script>
   </body>
