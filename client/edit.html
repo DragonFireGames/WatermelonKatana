@@ -74,6 +74,8 @@
         if (thumb.value && !thumb.value.match(/^https?:\/\//)) 
           return display.textContent = 'Thumbnail is not a vaild URL';
         var taglist = tags.value.toLowerCase().replace(/[^,\w\d_-]/g,"").split(",");
+        if (taglist.length < 3)
+          return display.textContent = 'Choose at least 3 tags';
         try {
           const res = await fetch("/api/project/update/" + pid, {
             method: "POST",
