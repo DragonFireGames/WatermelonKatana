@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const jwtSecret = process.env["JWT_SECRET"];
-const cldir = __dirname+"/client";
-console.log(cldir);
+const cldir = __dirname;
 
 exports.adminAuth = (req, res, next) => {
   const token = req.cookies.jwt;

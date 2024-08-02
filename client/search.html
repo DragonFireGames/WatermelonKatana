@@ -39,17 +39,19 @@
       const sortOptions = document.querySelector('#sortOptions');
       const searchBar = document.querySelector('#searchBar');
       const params = new URLSearchParams(location.search);
-
-     form.addEventListener('submit', async (e) => {
+      sortOptions.value = params.get("sort")||"score";
+      searchBar.value = (params.get("includeTags")||"").replace("+",", ");
+    
+      form.addEventListener('submit', async (e) => {
         e.preventDefault()
-        display.textContent = '';
         try {
-          const url = new URL(location);
           var taglist = searchBar.value.toLowerCase().replace(/[^,\w\d_-]/g,"").split(",");
-          url.searchParams.set("includeTags", taglist.join("+"));
+          const url = new URL(location);
+          if (taglist.length > 0) url.searchParams.set("includeTags", taglist.join("+"));
           url.searchParams.set("sort", sortOptions.value);
           history.pushState({}, "", url);
         } catch (err) {
+          alert(err.message);
           console.log(err.message)
         }
       });
