@@ -72,6 +72,10 @@ app.get("/publish", userAuth, (req, res) => res.sendFile(cldir + "/publish.html"
 const Projects = require("./model/Projects.js");
 app.get("/project/:id", async (req, res) => {
 	var proj = await Projects.findOne({_id:req.params.id});
+	if (!proj) {
+		res.status(404).sendFile(cldir+"/404.html");
+		return;
+	}
 	sendFileReplace(res,"./client/project.html",s=>s.replace("<!--og:meta-->",`<meta property="og:title" content="${proj.name}"/>
   <meta property="og:type" content="website"/>
   <meta property="og:image" content="${proj.thumbnail}"/>
@@ -85,8 +89,12 @@ app.get("/project/:id/delete", userAuth, (req, res) => res.redirect("/api/projec
 // User profile page with dynamic user name
 const Users = require("./model/Users.js");
 app.get("/user/:name", async (req, res) => {
-	 var user = await Users.findOne({username:req.params.name});
-	 sendFileReplace(res,"./client/user.html",s=>s.replace("<!--og:meta-->",`<meta property="og:title" content="${user.username}"/>
+	var user = await Users.findOne({username:req.params.name});
+	if (!user) {
+		res.status(404).sendFile(cldir+"/404.html");
+		return;
+	}
+	sendFileReplace(res,"./client/user.html",s=>s.replace("<!--og:meta-->",`<meta property="og:title" content="${user.username}"/>
 	 <meta property="og:type" content="website"/>
 	 <meta property="og:image" content="${user.avatar}"/>
 	 <meta property="og:description" content="${user.biography}"/>`));
