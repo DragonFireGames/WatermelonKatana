@@ -35,7 +35,7 @@
             const id = data.user[i+1].id
             const res = await fetch('/api/auth/updateRole', {
               method: 'PUT',
-              body: JSON.stringify({ role: 'Admin', id}),
+              body: JSON.stringify({ role: 'Basic', id}),
               headers: { 'Content-Type': 'application/json' }
             });
             const dataUpdate = await res.json()
