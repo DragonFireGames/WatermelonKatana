@@ -48,6 +48,7 @@
           var taglist = searchBar.value.toLowerCase().replace(/[^,\w\d_-]/g,"").split(",");
           const url = new URL(location);
           if (taglist[0]) url.searchParams.set("includeTags", taglist.join("+"));
+          else url.searchParams.delete("includeTags");
           url.searchParams.set("sort", sortOptions.value);
           history.pushState({}, "", url);
           params = new URLSearchParams(location.search);

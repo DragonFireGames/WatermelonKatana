@@ -15,12 +15,17 @@
   </div>
   <div id="block"></div>
   <h1>403 Not Authorized</h1>
-  <a href="/login" id="login-redirect">Login</a>
+  <div>
+    <a href="/register" id="register-redirect">Register</a>
+    <a href="/login" id="login-redirect">Login</a>
+  </div>
   <div id="footer">
   </div>
   <script>
-    var link = document.querySelector("#login-redirect");
-    link.href = "/login?redir="+location.pathname;
+    var login = document.querySelector("#login-redirect");
+    login.href = "/login?redir="+location.pathname;
+    var register = document.querySelector("#register-redirect");
+    register.href = "/register?redir="+location.pathname;
   </script>
   </body>
 </body>

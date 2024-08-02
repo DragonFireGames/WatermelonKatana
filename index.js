@@ -63,7 +63,7 @@ app.get("/chat", userAuth, (req, res) => res.sendFile(cldir + "/chat.html"));
 app.get("/admin", adminAuth, (req, res) => res.sendFile(cldir + "/admin.html"));
 
 // Basic user page, users only
-app.get("/basic", userAuth, (req, res) => res.sendFile(cldir + "/basic.html"));
+app.get("/userlist", userAuth, (req, res) => res.sendFile(cldir + "/userlist.html"));
 
 // Publish page, users only
 app.get("/publish", userAuth, (req, res) => res.sendFile(cldir + "/publish.html"));

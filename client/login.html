@@ -46,7 +46,6 @@
         if (res.status === 400 || res.status === 401) {
           return display.textContent = `${data.message}. ${data.error ? data.error : ''}`
         }
-        var q = parseInt();
         var redirect = params.get("redir") || "/";
         location.assign(redirect);
       } catch (err) {
