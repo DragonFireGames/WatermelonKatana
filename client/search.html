@@ -40,7 +40,7 @@
       const searchBar = document.querySelector('#searchBar');
       var params = new URLSearchParams(location.search);
       sortOptions.value = params.get("sort")||"score";
-      searchBar.value = (params.get("tags")||"").replace("+",", ");
+      searchBar.value = (params.get("includeTags")||"").replace("+",", ");
     
       form.addEventListener('submit', async (e) => {
         e.preventDefault()
