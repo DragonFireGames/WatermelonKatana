@@ -111,10 +111,6 @@ exports.updateRole = async (req, res, next) => {
   if (!role || !id) return res.status(400).json({ 
     message: "Role or Id not present" 
   });
-  // Verifying if the value of role is admin
-  if (role !== "Admin") return res.status(401).json({
-    message: "Role is not admin",
-  });
   try {
     // Finds the user with the id
     var user = await Users.findById(id);

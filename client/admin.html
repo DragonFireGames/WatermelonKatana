@@ -26,44 +26,44 @@
         }else{
           return null
         }
-        const editRole = document.querySelectorAll('.edit')
-        const deleteUser = document.querySelectorAll('.delete')
-
-        editRole.forEach((button, i) => {
-          button.addEventListener('click', async() => {
-            display.textContent= ''
-            const id = data.user[i+1].id
-            const res = await fetch('/api/auth/updateRole', {
-              method: 'PUT',
-              body: JSON.stringify({ role: 'Basic', id}),
-              headers: { 'Content-Type': 'application/json' }
-            });
-            const dataUpdate = await res.json()
-            if (res.status === 400 || res.status === 401) {
-              document.body.scrollTop = 0
-              document.documentElement.scrollTop = 0
-             return display.textContent = `${dataUpdate.message}. ${dataUpdate.error ? dataUpdate.error : ''}`
-             }
-             location.assign('/admin')            
+      });
+      const editRole = document.querySelectorAll('.edit')
+      const deleteUser = document.querySelectorAll('.delete')
+      editRole.forEach((button, i) => {
+        button.addEventListener('click', async() => {
+          display.textContent= ''
+          const id = data.user[i].id;
+          const role = data.user[i].role === "Admin" ? "Basic" : "Admin";
+          const res = await fetch('/api/auth/updateRole', {
+            method: 'PUT',
+            body: JSON.stringify({ role, id}),
+            headers: { 'Content-Type': 'application/json' }
+          });
+          const dataUpdate = await res.json()
+          if (res.status === 400 || res.status === 401) {
+            document.body.scrollTop = 0
+            document.documentElement.scrollTop = 0
+           return display.textContent = `${dataUpdate.message}. ${dataUpdate.error ? dataUpdate.error : ''}`
+           }
+           location.assign('/admin')            
+        })
+      });
+      deleteUser.forEach((button, i)=> {
+        button.addEventListener('click', async ()=> {
+          display.textContent =''
+          const id = data.user[i].id
+          const res = await fetch('/api/auth/deleteUser', {
+            method: 'DELETE',
+            body: JSON.stringify({id}),
+            headers: {'Content-Type': 'application/json'}
           })
-        });
-        deleteUser.forEach((button, i)=> {
-          button.addEventListener('click', async ()=> {
-            display.textContent =''
-            const id = data.user[i+1].id
-            const res = await fetch('/api/auth/deleteUser', {
-              method: 'DELETE',
-              body: JSON.stringify({id}),
-              headers: {'Content-Type': 'application/json'}
-            })
-            const dataDelete = await res.json()
-            if (res.status === 401){
-              document.body.scrollTop = 0
-              document.documentElement.scrollTop = 0
-              return display.textContent = `${dataUpdate.message}. ${dataUpdate.error ? dataUpdate.error : ''}`
-            }
-            location.assign('/admin')
-          })
+          const dataDelete = await res.json()
+          if (res.status === 401){
+            document.body.scrollTop = 0
+            document.documentElement.scrollTop = 0
+            return display.textContent = `${dataUpdate.message}. ${dataUpdate.error ? dataUpdate.error : ''}`
+          }
+          location.assign('/admin')
         })
       })
     }
