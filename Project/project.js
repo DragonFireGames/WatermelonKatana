@@ -123,8 +123,16 @@ exports.list = async (req, res, next) => {
       if (postedBefore) search.postedAt.$lte = postedBefore;
       if (postedAfter) search.postedAt.$gte = postedAfter;
     }
-    if (includeTags) search.tags.$all = includeTags.split("+");
-    if (excludeTags) search.tags.$not.$all = excludeTags.split("+");
+    if (includeTags) {
+      search.tags = { $all: includeTags.split("+") };
+    }
+    if (excludeTags) {
+      excludeTags = excludeTags.split("+");
+      search.$nor = [];
+      for (var i = 0; i < excludeTags.length; i++) {
+        search.$nor.push({ tags: excludeTags[i] });
+      }
+    }
     if (customQuery) search = JSON.parse(customQuery);
     var list = await Projects.find(search);
     list = list.map(e=>e.pack());
