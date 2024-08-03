@@ -7,12 +7,7 @@ let initalized = false;
 // const argv = process.argv.slice(2);
 // const folder = (argv[0] || process.cwd());
 class Host {
-  folder = null;
-  constructor(app, dir) {
-    if (typeof dir !== "string") {
-      throw new Error("Not a valid turbo port")
-    }
-    this.folder = dir;
+  constructor(app) {
     if (!initalized) {
       // Applabs patch for local use
       app.get("/xhr", (req, res) => {
@@ -92,7 +87,7 @@ class Host {
       })
     }
 
-    new Database(app, this.folder);
+    new Database(app);
   }
 }
 
