@@ -163,7 +163,7 @@
         
         console.log(`Extra Debug Info:\nIsCDO?: ${data.iscdo}\nPosterID: ${data.posterId}`);
         
-        if (!data.iscdo) {
+        if (data.iscdo) {
           //do magic
           game.src = location.origin+"/turbowarp?u="+data.link;
           game.style.width = "calc(100vmin - 15px)";
