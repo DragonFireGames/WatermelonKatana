@@ -3,6 +3,7 @@
  */
 const express = require("express");
 const connectDB = require("./db");
+const cors = require("cors");
 const app = express();
 const cookieParser = require("cookie-parser");
 const { adminAuth, userAuth } = require("./middleware/auth.js");
@@ -18,6 +19,7 @@ connectDB();
 /**
  * Middleware setup
  */
+app.use(cors()); // don't fucking touch this
 app.use(express.json()); // Parse JSON request bodies
 app.use(cookieParser()); // Parse cookies attached to the client request
 
