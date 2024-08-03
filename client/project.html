@@ -164,14 +164,18 @@
         console.log(`Extra Debug Info:\nIsCDO?: ${data.iscdo}\nPosterID: ${data.posterId}`);
         
         if (!data.iscdo) {
-          game.src = data.link;
-          game.style.width = "calc(100vw - 30px - 2.5em)";
-          game.style.height = "calc(100vh - 15px - 2.5em)";
-        } else {
           //do magic
           game.src = location.origin+"/turbowarp?u="+data.link;
           game.style.width = "calc(100vmin - 15px)";
           game.style.height = "calc(100vmin - 15px - 2.5em)";
+        } else if (data.isscratch) {
+          game.src = data.link+"/embed";
+          game.style.width = "calc(100vw - 30px)";
+          game.style.height = "calc(100vh - 15px - 2.5em)";
+        } else {
+          game.src = data.link;
+          game.style.width = "calc(100vw - 30px)";
+          game.style.height = "calc(100vh - 15px - 2.5em)";
         }
         
         const tok = await getAuth();
