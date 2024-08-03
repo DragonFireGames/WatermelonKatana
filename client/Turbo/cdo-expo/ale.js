@@ -5,11 +5,8 @@
 const request = require('./requests');
 const canvas = require("canvas");
 const startPath = "https://studio.code.org";
-const soundLibrary = `${startPath}/api/v1/sound-library/`;
 const jsdom = require("jsdom");
-const assetList = [];
 //let animations = `${startPath}/v3/animations/`;
-let assets = `${startPath}/v3/assets/`;
 canvas.registerFont("./client/Turbo/dependencies/fonts/fa-brands-400.ttf", { family: "FontAwesome" });
 //canvas.registerFont("./fonts/fa-regular-400.ttf", {family: "FontAwesome"}) doesn't seem like this one is used??
 canvas.registerFont("./client/Turbo/dependencies/fonts/fa-solid-900.ttf", { family: "FontAwesome" })
@@ -21,7 +18,7 @@ async function exportProject(id) {
   assets = `${startPath}/v3/assets/`
   return new Promise(async (resolve, reject) => {
     let json = await request.send(`${startPath}/v3/sources/${id}/main.json`, 'json');
-    resolve(await getHTML(source.html, id, json.source));
+    resolve(await getHTML(json.html, id, json.source));
   })
 }
 
