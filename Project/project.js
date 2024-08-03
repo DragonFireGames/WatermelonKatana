@@ -6,8 +6,11 @@ exports.publish = async (req, res, next) => {
   console.log(name,link);
   try {
     const iscdo = link.match(/^https?:\/\/studio\.code\.org\/projects\/(applab|gamelab)\/([^/]+)/);
+    const isscratch = link.match(/^https?:\/\/scratch\.mit\.edu\/projects\/(\d+)/) || link.match(/^https?:\/\/turbowarp\.org\/(\d+)/);
     if (!thumbnail && iscdo) thumbnail = `https://studio.code.org/v3/files/${iscdo[2]}/.metadata/thumbnail.png`;
+    if (!thumbnail && isscratch) thumbnail = `https://uploads.scratch.mit.edu/get_image/project/${isscratch[1]}_144x108.png`;
     if (iscdo) link = iscdo[0];
+    if (isscratch) link = isscratch[0];
     const user = res.locals.userToken;
     const project = await Projects.create({
       name,
@@ -16,6 +19,7 @@ exports.publish = async (req, res, next) => {
       tags,
       thumbnail,
       iscdo: !!iscdo,
+      isscratch: !!isscratch,
       postedAt: Date.now(),
       posterId: user.id,
       poster: user.username, //convert to ref eventually
@@ -51,14 +55,18 @@ exports.update = async (req, res, next) => {
       message: "Not Authorized. You do not own this project",
     });
     const iscdo = link.match(/^https?:\/\/studio\.code\.org\/projects\/(applab|gamelab)\/([^/]+)/);
-    if (iscdo) link = iscdo[0];
+    const isscratch = link.match(/^https?:\/\/scratch\.mit\.edu\/projects\/(\d+)/) || link.match(/^https?:\/\/turbowarp\.org\/(\d+)/);
     if (!thumbnail && iscdo) thumbnail = `https://studio.code.org/v3/files/${iscdo[2]}/.metadata/thumbnail.png`;
+    if (!thumbnail && isscratch) thumbnail = `https://uploads.scratch.mit.edu/get_image/project/${isscratch[1]}_144x108.png`;
+    if (iscdo) link = iscdo[0];
+    if (isscratch) link = isscratch[0];
     project.name = name;
     project.link = link;
     project.desc = desc;
     project.tags = tags;
     project.thumbnail = thumbnail;
     project.iscdo = !!iscdo;
+    project.isscratch = !!isscratch;
     await project.save();
     res.status(201).json({
       message: "Project successfully updated",
@@ -112,10 +120,12 @@ exports.deleteProject = async (req, res, next) => {
 exports.list = async (req, res, next) => {
   try {
     var search = {};
-    const { poster, iscdo, postedBefore, postedAfter, includeTags, excludeTags, featured, customQuery } = req.query;
+    const { poster, iscdo, isscratch, postedBefore, postedAfter, includeTags, excludeTags, featured, customQuery } = req.query;
     if (poster) search.poster = poster;
     if (iscdo == "0" || iscdo == "false") search.iscdo = false;
     else if (iscdo == "1" || iscdo == "true") search.iscdo = true;
+    if (isscratch == "0" || isscratch == "false") search.isscratch = false;
+    else if (isscratch == "1" || isscratch == "true") search.isscratch = true;
     if (featured == "0" || featured == "false") search.featured = false;
     else if (featured == "1" || featured == "true") search.featured = true;
     if (postedBefore || postedAfter) {
