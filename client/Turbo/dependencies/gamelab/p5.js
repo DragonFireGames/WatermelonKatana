@@ -13185,6 +13185,19 @@ p5.Renderer = function(elt, pInst, isMainCanvas) {
     this._pInst._setProperty('canvas', this.canvas);
     this._pInst._setProperty('width', this.width);
     this._pInst._setProperty('height', this.height);
+    // wrapper to setup all instances of modified events
+    let listeners = ["mouseMoved","mouseDragged","mousePressed","mouseReleased","mouseClicked","mouseWheel","keyPressed","keyReleased","keyTyped"];
+    for(let listener of listeners) {
+      Object.defineProperty(this._pInst, listener, {
+          set: function(v) {
+              window[listener] = v;
+              return v;
+          },
+          enumerable: false,
+          configurable: true,
+          writtable: true
+      })
+    }
   } else { // hide if offscreen buffer by default
     this.canvas.style.display = 'none';
     this._styles = []; // non-main elt styles stored in p5.Renderer

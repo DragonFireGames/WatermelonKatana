@@ -118,7 +118,7 @@ window.preload = function () {
   concat: {
     value: function () {
       if (typeof this === "object" && "length" in this) {
-        return Array.prototype.concat.apply(Array.from(this), Array.from(arguments));
+        return Array.prototype.concat.apply(this, arguments);
       }
       return [];
     },
@@ -208,7 +208,7 @@ window.preload = function () {
   push: {
     value: function () {
       if (typeof this === "object" && "length" in this) {
-        return Array.prototype.push.apply(this, Array.from(arguments))
+        return Array.prototype.push.apply(this, arguments)
       }
       return 0;
     },
@@ -263,7 +263,7 @@ window.preload = function () {
   splice: {
     value: function (start, amount, ...items) {
       if (typeof this === "object" && "length" in this) {
-        return Array.prototype.splice.apply(this, [start, amount, ...items]);
+        return Array.prototype.splice.call(this, start, amount, ...items);
       }
       return [];
     },
@@ -274,7 +274,7 @@ window.preload = function () {
   unshift: {
     value: function () {
       if (typeof this === "object" && "length" in this) {
-        return Array.prototype.unshift.apply(this, Array.from(arguments));
+        return Array.prototype.unshift.apply(this, arguments);
       }
       return 0;
     },
@@ -296,7 +296,7 @@ window.preload = function () {
   slice: {
     value: function () {
       if (typeof this === "object" && "length" in this) {
-        return Array.prototype.slice.call(this, arguments);
+        return Array.prototype.slice.apply(this, arguments);
       }
     },
     enumerable: false,
