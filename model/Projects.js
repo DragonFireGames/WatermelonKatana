@@ -59,6 +59,10 @@ const ProjectSchema = new Mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  isscratch: {
+    type: Boolean,
+    default: false,
+  },
   postedAt: {
     type: Number,
     required: true,
@@ -89,6 +93,7 @@ const ProjectSchema = new Mongoose.Schema({
       container.score = this.score;
       container.views = this.views;
       container.iscdo = this.iscdo;
+      container.isscratch = this.isscratch;
       container.postedAt = this.postedAt;
       container.id = this._id;
       container.posterId = this.posterId;
