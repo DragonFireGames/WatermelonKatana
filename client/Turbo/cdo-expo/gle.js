@@ -39,7 +39,7 @@ function getCode(json) {
     let pattern = new RegExp(`(?<!\\(\\s*|(?<!\\/\\/.*|\\/\\*[^\\*\\/]*|["'][^'"]*)function\\s+[\\S]+\\s*\\(\\)\\s*{[^}]+)function\\s+(${funcs})\\s*(?=\\()`, "g");
     src = src.replace(pattern, `var $1 = this.$1 = function`);
     libraries += `var ${lib} = window[${JSON.stringify(lib)}] || {};
-(function ${lib}() {\n${src}\nreturn(this)\n}).bind(${lib})()\n`;
+(function ${lib}() {\n${src}\nreturn(this)\n}).bind(${lib})();\n`;
   });
   animationList.orderedKeys.forEach((key) => {
     let animation = animationList.propsByKey[key];
