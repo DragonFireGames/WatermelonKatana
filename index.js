@@ -79,7 +79,7 @@ app.get("/project/:id", async (req, res) => {
 	sendFileReplace(res,"./client/project.html",s=>s.replace("<!--og:meta-->",`<meta property="og:title" content="${proj.name}"/>
   <meta property="og:type" content="website"/>
   <meta property="og:image" content="${proj.thumbnail}"/>
-  <meta property="og:description" content="${proj.desc}\\nBy:${proj.poster}\\nScore:${proj.score} Views:${proj.views}"/>`));
+  <meta property="og:description" content="${proj.desc} | By: ${proj.poster} Score: ${proj.score} Views: ${proj.views}"/>`));
 });
 // Edit project page, users only
 app.get("/project/:id/edit", userAuth, (req, res) => res.sendFile(cldir + "/edit.html"));
