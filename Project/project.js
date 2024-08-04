@@ -324,7 +324,12 @@ exports.comment = async (req, res, next) => {
       message: "Fetch not successful",
       error: "Project not found",
     });
-    const user = res.locals.userToken;
+    const uid = res.locals.userToken.id;
+    const user = await Users.findOne({ _id: uid });
+    if (!user) return res.status(404).json({
+      message: "Fetch not successful",
+      error: "User not found",
+    });
     project.comments.push({
       content,
       rating: 0,
