@@ -17,10 +17,12 @@
     }
   </style>
   <link rel="stylesheet" type="text/css" href="/styles/style.css">
+  <link rel="stylesheet" type="text/css" href="/styles/forum.css">
 </head>
 <body>
   <script src="/scripts/HtmlSanitizer.js"></script>
   <script src="/scripts/utils.js"></script>
+  <script src="/scripts/forum.js"></script>
   <div class="topnav">
     <a href="/">Home</a> 
   </div>
@@ -142,7 +144,12 @@
   <div id="display">
     Loading...
   </div>
+  Comments:
+  <div id="comments" class="comment-list">
+    
+  </div>
   <script>
+    const commentlist = document.querySelector("#comments");
     const display = document.querySelector('#display');
     const favoritebtn = document.querySelector('#favorite-btn');
     const game = document.querySelector('#game');
@@ -192,6 +199,21 @@
         }
         
         const tok = await getAuth();
+        listComments(commentlist,data.comments,tok.user,(content)=>{
+          content = content.replace("\n","<br>");
+          const res = await fetch("/api/project/comment/"+pid, {
+            method: "POST",
+            body: JSON.stringify({
+              name: name.value,
+              link: link.value,
+              desc: desc.value,
+              tags: taglist,
+              thumbnail: thumb.value,
+            }),
+            headers: { "Content-Type": "application/json" },
+          });
+          location.assign(location.pathname);
+        });
         if (!tok.auth) {
           favoritebtn.outerHTML = "";
           document.querySelector('#fav-container').outerHTML = "";
