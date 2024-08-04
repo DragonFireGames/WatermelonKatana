@@ -14,7 +14,7 @@ Will these actually get done?
 - [x] Game Embed System
 - [x] Game System (deploy from GitHub)
 - [x] Publishing Panel
-- [ ] Commenting System
+- [x] Commenting System
 - [x] Favorite System
 - [x] Tag System
 
