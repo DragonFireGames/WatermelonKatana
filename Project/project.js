@@ -68,17 +68,29 @@ exports.update = async (req, res, next) => {
     });
     const iscdo = link.match(/^https?:\/\/studio\.code\.org\/projects\/(applab|gamelab)\/([^/]+)/);
     const isscratch = link.match(/^https?:\/\/scratch\.mit\.edu\/projects\/(\d+)/) || link.match(/^https?:\/\/turbowarp\.org\/(\d+)/);
+    const iskhan = link.match(/^https?:\/\/www\.khanacademy\.org\/computer-programming\/([^/]+\/\d+)/);
     if (!thumbnail && iscdo) thumbnail = `https://studio.code.org/v3/files/${iscdo[2]}/.metadata/thumbnail.png`;
     if (!thumbnail && isscratch) thumbnail = `https://uploads.scratch.mit.edu/get_image/project/${isscratch[1]}_432x288.png`;
-    if (iscdo) link = iscdo[0];
-    if (isscratch) link = isscratch[0];
+    //if (!thumbnail && iskhan) thumbnail = `https://www.khanacademy.org/computer-programming/${iskhan[1]}/???.png`;
+    var platform = "embed"
+    if (iscdo) {
+      link = iscdo[0];
+      platform = "cdo";
+    }
+    if (isscratch) {
+      link = isscratch[0];
+      platform = "scratch";
+    }
+    if (iskhan) {
+      link = iskhan[0];
+      platform = "khan";
+    }
     project.name = name;
     project.link = link;
     project.desc = desc;
     project.tags = tags;
     project.thumbnail = thumbnail;
-    project.iscdo = !!iscdo;
-    project.isscratch = !!isscratch;
+    project.platform = platform;
     await project.save();
     res.status(201).json({
       message: "Project successfully updated",
