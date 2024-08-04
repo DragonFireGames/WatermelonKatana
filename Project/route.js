@@ -14,6 +14,6 @@ router.route("/favorite/:id").get(userAuth, favorite);
 router.route("/unfavorite/:id").get(userAuth, unfavorite);
 router.route("/feature/:id").get(adminAuth, feature);
 router.route("/unfeature/:id").get(adminAuth, unfeature);
-router.route("/comment/:id").post(comment);
+router.route("/comment/:id").post(userAuth, comment);
 
 module.exports = router;
