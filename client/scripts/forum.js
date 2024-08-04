@@ -21,7 +21,7 @@ async function listComments(list,comments,self,onsend) {
   }
   if (!self) return;
   var repbtn = `
-  <button class="comment" id="reply-btn">
+  <button class="comment" id="reply-btn" onclick="window.onreplybtnclick()">
     <div class="comment-top">
       <img class="comment-avatar" src="${self.avatar}">
       <p class="comment-username">${self.username}</p>
@@ -29,10 +29,8 @@ async function listComments(list,comments,self,onsend) {
     <p class="comment-content">Write a reply...</p>
   </button>`;
   list.innerHTML += repbtn;
-  var rep = setupReply(onsend,()=>rep.style.display = "none",self);
-  setTimeout(()=>{
-    document.querySelector("#reply-btn").onclick = ()=>rep.style.display = "block";
-  },10);
+  var rep = setupReply(onsend,()=>document.querySelector("#reply").style.display = "none",self);
+  window.onreplybtnclick = ()=>document.querySelector("#reply").style.display = "block";
 }
 function setupReply(onsend,oncancel,self) {
   document.body.innerHTML += `
@@ -42,17 +40,14 @@ function setupReply(onsend,oncancel,self) {
       <p class="comment-username">${self.username}</p>
     </div>
     <textarea id="reply-textbox" oninput="growtextarea(this)" resize=false placeholder="Write a reply..."></textarea>
-    <input type="button" id="send-reply-btn" value="send">
-    <input type="button" id="cancel-reply-btn"  value="cancel">
+    <input type="button" id="send-reply-btn" value="send" onclick="window.onreplysendclick()">
+    <input type="button" id="cancel-reply-btn"  value="cancel" onclick="window.onreplycancelclick()">
   </div>`;
-  setTimeout(()=>{
-    document.querySelector("#send-reply-btn").onclick = ()=>{
-      var txt = document.querySelector("#reply-textbox");
-      onsend(txt.value);
-    };
-    document.querySelector("#cancel-reply-btn").onclick = oncancel;
-  },10);
-  return document.querySelector("#reply");
+  window.onreplysendclick = ()=>{
+    var txt = document.querySelector("#reply-textbox");
+    onsend(txt.value);
+  };
+  window.onreplycancelclick = oncancel;
 }
 function growtextarea(ta) {
   ta.style.height = ""; /* Reset the height*/
