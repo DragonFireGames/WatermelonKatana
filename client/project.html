@@ -168,25 +168,25 @@
           case "cdo":
             //do magic
             game.src = location.origin+"/turbowarp?u="+data.link;
-            game.style.width = "calc(100vmin - 15px)";
+            game.style.width = "calc(100vmin - 15px - 2.5em)";
             game.style.height = "calc(100vmin - 15px - 2.5em)";
           break;
           case "scratch":
             game.src = data.link+"/embed";
-            game.style.width = "calc(100vw - 30px)";
+            game.style.width = "calc(100vw - 30px - 2.5em)";
             game.style.height = "calc(100vh - 15px - 2.5em)";
           break;
           case "khan":
             var fontSize = parseFloat(window.getComputedStyle(game, null).getPropertyValue('font-size'));
-            var wid = Math.max(window.innerWidth-30,600);
+            var wid = Math.max(window.innerWidth-30-2.5*fontSize,600);
             var hig = Math.max(window.innerHeight-15-2.5*fontSize,600);
             game.src = `https://www.khanacademy.org/computer-programming/vertex-legends-ack-productions/6720109865123840/embedded?embed=yes&editor=no&buttons=no&author=no&width=${wid}&height=${hig}`;
-            game.style.width = "calc(100vw - 30px)";
+            game.style.width = "calc(100vw - 30px - 2.5em)";
             game.style.height = "calc(100vh - 15px - 2.5em)";
           break;
           default:
             game.src = data.link;
-            game.style.width = "calc(100vw - 30px)";
+            game.style.width = "calc(100vw - 30px - 2.5em)";
             game.style.height = "calc(100vh - 15px - 2.5em)";
           break;
         }
@@ -197,8 +197,8 @@
           document.querySelector('#fav-container').outerHTML = "";
           return;
         }
-        alert(JSON.stringify(tok.user.favorites)+" "+pid+" "+(!!tok.user.favorites.includes(pid)));
         favoritebtn.checked = !!tok.user.favorites.includes(pid);
+        alert(favoritebtn.checked)
         if (tok.user.role === "Admin") { 
           document.body.innerHTML += `
           <label for="featured-btn">Featured:</label>
