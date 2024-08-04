@@ -12,7 +12,7 @@ Will these actually get done?
 
 ### Step 2 - Posting Projects
 - [x] Game Embed System
-- [x] Game System (deploy from GitHub)
+- [x] CDO, Khan, and Scratch support
 - [x] Publishing Panel
 - [x] Commenting System
 - [x] Favorite System
