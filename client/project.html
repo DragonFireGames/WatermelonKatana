@@ -22,7 +22,11 @@
   <script src="/scripts/HtmlSanitizer.js"></script>
   <script src="/scripts/utils.js"></script>
   <div class="topnav">
+    <a href="/profile">Profile</a>
     <a href="/">Home</a>
+    <a href="/chat">Chat</a>
+    <a href="/search">Gallery</a>
+    <a href="/forum">Forum</a>
   </div>
   <div id="block"></div>
   <iframe id="game" onmouseenter="window.scrollTo(0,0);document.body.style.overflow = 'hidden'" onmouseleave="document.body.style.overflow = 'scroll'" style="display: block; margin-left: auto; margin-right: auto;"></iframe> <br>
@@ -177,9 +181,13 @@
             game.style.height = "calc(100vh - 15px - 2.5em)";
           break;
           case "khan":
-            game.src = data.link;
-            game.style.width = "calc(100vw - 30px)";
-            game.style.height = "calc(100vh - 15px - 2.5em)";
+            var fontSize = parseFloat(window.getComputedStyle(game, null).getPropertyValue('font-size')); 
+            var wid = Math.max(window.innerWidth-30,600);
+            var hig = Math.max(window.innerHeight-15-2.5*fontSize,600);
+            console.log(wid,hig);
+            game.src = data.link+`/embedded?embed=yes&editor=no&buttons=no&author=no&width=${wid}&height=${hig}`;
+            game.style.width = wid+"px"//"calc(100vw - 30px)";
+            game.style.height = hig+"px"//"calc(100vh - 15px - 2.5em)";
           break;
           default:
             game.src = data.link;
