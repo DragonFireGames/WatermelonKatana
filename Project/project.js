@@ -315,8 +315,8 @@ exports.unfeature = async (req, res, next) => {
 };
 
 exports.comment = async (req, res, next) => {
-  var { content, rating } = req.body;
-  console.log(content,rating);
+  var { content } = req.body;
+  console.log(content);
   try {
     const pid = req.params.id;
     const project = await Projects.findOne({ _id: pid });
@@ -327,7 +327,7 @@ exports.comment = async (req, res, next) => {
     const user = res.locals.userToken;
     project.comments.push({
       content,
-      rating,
+      rating: 0,
       poster: user.username,
       posterId: user.id,
       postedAt: Date.now(),
