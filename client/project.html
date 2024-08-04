@@ -198,7 +198,6 @@
           return;
         }
         favoritebtn.checked = !!tok.user.favorites.includes(pid);
-        alert(favoritebtn.checked)
         if (tok.user.role === "Admin") { 
           document.body.innerHTML += `
           <label for="featured-btn">Featured:</label>
