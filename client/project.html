@@ -197,6 +197,7 @@
           document.querySelector('#fav-container').outerHTML = "";
           return;
         }
+        alert(JSON.stringify(tok.user.favorites)+" "+pid+" "+(!!tok.user.favorites.includes(pid)));
         favoritebtn.checked = !!tok.user.favorites.includes(pid);
         if (tok.user.role === "Admin") { 
           document.body.innerHTML += `
@@ -206,7 +207,7 @@
             name="featured-checkbox"
             id="featured-btn"
             type="checkbox"
-            checked=${data.featured}
+            ${data.featured ? "checked" : ""}
             onclick="featurebtnclick(this.checked)"
           /> <br>`;
         } else {
