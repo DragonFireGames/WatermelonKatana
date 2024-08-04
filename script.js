@@ -27,7 +27,7 @@ var Users =  require("./model/Users");
     const iscdo = p.link.match(/^https?:\/\/studio\.code\.org\/projects\/(applab|gamelab)\/([^/]+)/);
     p.thumbnail = `https://studio.code.org/v3/files/${iscdo[2]}/.metadata/thumbnail.png`;*/
     const iscdo = p.link.match(/^https?:\/\/studio\.code\.org\/projects\/(applab|gamelab)\/([^/]+)/);
-    const isscratch = p.link.match(/^https?:\/\/scratch\.mit\.edu\/projects\/(\d+)/) || link.match(/^https?:\/\/turbowarp\.org\/(\d+)/);
+    const isscratch = p.link.match(/^https?:\/\/scratch\.mit\.edu\/projects\/(\d+)/) || p.link.match(/^https?:\/\/turbowarp\.org\/(\d+)/);
     const iskhan = p.link.match(/^https?:\/\/www\.khanacademy\.org\/computer-programming\/([^/]+\/\d+)/);
     if (iscdo) {
       p.platform = "cdo";
