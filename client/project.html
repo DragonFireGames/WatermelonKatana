@@ -204,6 +204,10 @@
       }
     };
 
+    window.setInterval(()=>{
+      document.body.style.overflow = document.activeElement === game ? "hidden" : "scroll";
+    }, 1000);
+
   </script>
 </body>
 </html>
