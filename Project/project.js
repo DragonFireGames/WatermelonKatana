@@ -144,12 +144,9 @@ exports.deleteProject = async (req, res, next) => {
 exports.list = async (req, res, next) => {
   try {
     var search = {};
-    const { poster, iscdo, isscratch, postedBefore, postedAfter, includeTags, excludeTags, featured, customQuery } = req.query;
+    const { poster, platform, postedBefore, postedAfter, includeTags, excludeTags, featured, customQuery } = req.query;
     if (poster) search.poster = poster;
-    if (iscdo == "0" || iscdo == "false") search.iscdo = false;
-    else if (iscdo == "1" || iscdo == "true") search.iscdo = true;
-    if (isscratch == "0" || isscratch == "false") search.isscratch = false;
-    else if (isscratch == "1" || isscratch == "true") search.isscratch = true;
+    if (platform) search.platfrom = platfrom;
     if (featured == "0" || featured == "false") search.featured = false;
     else if (featured == "1" || featured == "true") search.featured = true;
     if (postedBefore || postedAfter) {
