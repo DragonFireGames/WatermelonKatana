@@ -30,10 +30,15 @@
       const list = document.querySelector('#list');
     
       (async () => {
+        /*
         const res = await fetch('/api/project/list');
         const data = await res.json();
         data.projects.sort((a,b)=>(Number(b.featured)-Number(a.featured))||(b.score-a.score)||(b.views-a.views));
         data.projects = data.projects.splice(0,5);
+        /*/
+        const res = await fetch('/api/project/list?featured=1');
+        const data = await res.json();
+        //*/
         data.projects.map(projHTML(list));
       })();
       
