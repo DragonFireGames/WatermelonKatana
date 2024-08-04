@@ -55,13 +55,9 @@ const ProjectSchema = new Mongoose.Schema({
     type: Number,
     default: 0,
   },
-  iscdo: {
-    type: Boolean,
-    default: false,
-  },
-  isscratch: {
-    type: Boolean,
-    default: false,
+  platform: {
+    type: String,
+    default: "embed",
   },
   postedAt: {
     type: Number,
@@ -92,8 +88,7 @@ const ProjectSchema = new Mongoose.Schema({
       container.thumbnail = this.thumbnail;
       container.score = this.score;
       container.views = this.views;
-      container.iscdo = this.iscdo;
-      container.isscratch = this.isscratch;
+      container.platform = this.platform;
       container.postedAt = this.postedAt;
       container.id = this._id;
       container.posterId = this.posterId;
