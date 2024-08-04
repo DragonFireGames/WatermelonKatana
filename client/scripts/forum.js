@@ -1,6 +1,6 @@
 async function listComments(list,comments,self,onsend) {
   var users = {};
-  users[self.id] = self;
+  if (self) users[self.id] = self;
   for (var c of comments) {
     var u = users[c.posterId];
     if (!u) {
@@ -19,6 +19,7 @@ async function listComments(list,comments,self,onsend) {
     </div>`;
     list.innerHTML += div;
   }
+  if (!self) return;
   var repbtn = `
   <button class="comment" id="reply-btn">
     <div class="comment-top">
