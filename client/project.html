@@ -205,7 +205,7 @@
     };
 
     window.setInterval(()=>{
-      document.body.style.overflow = document.activeElement === game ? "hidden" : "scroll";
+      document.body.style.overflow = document.activeElement.tagName === "IFRAME" ? "hidden" : "scroll";
     }, 1000);
 
   </script>
