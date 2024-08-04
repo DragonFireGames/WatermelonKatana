@@ -199,7 +199,7 @@
         }
         
         const tok = await getAuth();
-        listComments(commentlist,data.comments,tok.user,(content)=>{
+        listComments(commentlist,data.comments,tok.user,async(content)=>{
           content = content.replace("\n","<br>");
           const res = await fetch("/api/project/comment/"+pid, {
             method: "POST",
