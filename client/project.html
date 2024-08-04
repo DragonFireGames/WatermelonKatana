@@ -157,6 +157,7 @@
           <b>Description</b> => ${data.desc} <br>
           <b>Tags</b> => ${data.tags.join(", ")} <br>
           <b>URL</b> => <a href="${data.link}">${data.link}</a> <br>
+          <b>Platform</b> => ${data.platform} <br>
           <b>Score</b> => <span id="score">${data.score}</span> <br>
           <b>Posted At</b> => ${new Date(data.postedAt).toUTCString()} <br>
           <b>ID</b> => ${data.id} <br>`;
@@ -175,12 +176,12 @@
             game.style.width = "calc(100vw - 30px)";
             game.style.height = "calc(100vh - 15px - 2.5em)";
           break;
-          case: "khan":
+          case "khan":
             game.src = data.link;
             game.style.width = "calc(100vw - 30px)";
             game.style.height = "calc(100vh - 15px - 2.5em)";
           break;
-          case: "embed":
+          default:
             game.src = data.link;
             game.style.width = "calc(100vw - 30px)";
             game.style.height = "calc(100vh - 15px - 2.5em)";
