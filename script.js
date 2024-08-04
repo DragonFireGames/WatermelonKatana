@@ -16,7 +16,7 @@ var Users =  require("./model/Users");
   
   //Projects.updateMany({ },{views:0,thumbnail:""}).then(console.log);
 
-  /* Run when converting to ref
+  // Run when converting to ref
   
   var list = await Projects.find({ });
   for (var p of list) {
@@ -26,7 +26,14 @@ var Users =  require("./model/Users");
     /*if (!p.iscdo) continue;
     const iscdo = p.link.match(/^https?:\/\/studio\.code\.org\/projects\/(applab|gamelab)\/([^/]+)/);
     p.thumbnail = `https://studio.code.org/v3/files/${iscdo[2]}/.metadata/thumbnail.png`;*/
-    
+    if (p.iscdo) {
+      p.platform = "cdo";
+      delete p.iscdo;
+    }
+    if (p.isscratch) {
+      p.platform = "scratch";
+      delete p.isscratch;
+    }
     await p.save();
   }
   //*/
