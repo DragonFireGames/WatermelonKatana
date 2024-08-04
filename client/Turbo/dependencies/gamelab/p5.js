@@ -10453,7 +10453,10 @@ var p5 = function(sketch, node, sync) {
     var f = this['_on'+e];
     if (f) {
       var m = f.bind(this);
-      window.addEventListener(e, m);
+      window.addEventListener(e,v=>{
+          v.preventDefault();
+          return; m(v);
+      },{passive:false});
       this._events[e] = m;
     }
   }
