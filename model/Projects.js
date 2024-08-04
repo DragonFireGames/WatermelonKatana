@@ -8,6 +8,7 @@ const CommentSchema = new Mongoose.Schema({
   },
   rating: {
     type: Number,
+    default: 0,
   },
   postedAt: {
     type: Number,
@@ -88,6 +89,7 @@ const ProjectSchema = new Mongoose.Schema({
       container.thumbnail = this.thumbnail;
       container.score = this.score;
       container.views = this.views;
+      container.comments = this.comments.map(c=>c.pack());
       container.platform = this.platform;
       container.postedAt = this.postedAt;
       container.id = this._id;
