@@ -30,7 +30,9 @@ async function listComments(list,comments,self,onsend) {
   </button>`;
   list.innerHTML += repbtn;
   var rep = setupReply(onsend,()=>rep.style.display = "none",self);
-  document.querySelector("#reply-btn").onclick = ()=>rep.style.display = "block";
+  setTimeout(()=>{
+    document.querySelector("#reply-btn").onclick = ()=>rep.style.display = "block";
+  },10);
 }
 function setupReply(onsend,oncancel,self) {
   document.body.innerHTML += `
@@ -43,11 +45,13 @@ function setupReply(onsend,oncancel,self) {
     <input type="button" id="send-reply-btn" value="send">
     <input type="button" id="cancel-reply-btn"  value="cancel">
   </div>`;
-  document.querySelector("#send-reply-btn").onclick = ()=>{
-    var txt = document.querySelector("#reply-textbox");
-    onsend(txt.value);
-  };
-  document.querySelector("#cancel-reply-btn").onclick = oncancel;
+  setTimeout(()=>{
+    document.querySelector("#send-reply-btn").onclick = ()=>{
+      var txt = document.querySelector("#reply-textbox");
+      onsend(txt.value);
+    };
+    document.querySelector("#cancel-reply-btn").onclick = oncancel;
+  },10);
   return document.querySelector("#reply");
 }
 function growtextarea(ta) {
