@@ -198,6 +198,20 @@
           return;
         }
         favoritebtn.checked = !!tok.user.favorites.includes(pid);
+        if (tok.user.role === "Admin") { 
+          document.body.innerHTML += `
+          <label for="featured-btn">Featured:</label>
+          <input
+            value="featured-button"
+            name="featured-checkbox"
+            id="featured-btn"
+            type="checkbox"
+            checked=${data.featured}
+            onclick="featurebtnclick(this.checked)"
+          /> <br>`;
+        } else {
+          document.body.innerHTML += `<b>Featured</b> => ${data.featured} <br>`;
+        }
         if (tok.user.id !== data.posterId && tok.user.role !== "Admin") return;
         document.body.innerHTML += `<button class="edit"> <a href="/project/${pid}/edit">Edit</a></button>`;
       } catch(e) {
@@ -214,6 +228,15 @@
       } else {
         await fetch("/api/project/unfavorite/"+pid);
         score.innerHTML = Number(score.textContent)-1;
+      }
+    };
+
+    async function featurebtnclick(feature) {
+      const score = document.querySelector('#score');
+      if (feature) {
+        await fetch("/api/project/feature/"+pid);
+      } else {
+        await fetch("/api/project/unfeature/"+pid);
       }
     };
 
