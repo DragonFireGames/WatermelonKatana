@@ -163,19 +163,28 @@
         
         console.log(`Extra Debug Info:\nIsCDO?: ${data.iscdo}\nPosterID: ${data.posterId}`);
         
-        if (data.iscdo) {
-          //do magic
-          game.src = location.origin+"/turbowarp?u="+data.link;
-          game.style.width = "calc(100vmin - 15px)";
-          game.style.height = "calc(100vmin - 15px - 2.5em)";
-        } else if (data.isscratch) {
-          game.src = data.link+"/embed";
-          game.style.width = "calc(100vw - 30px)";
-          game.style.height = "calc(100vh - 15px - 2.5em)";
-        } else {
-          game.src = data.link;
-          game.style.width = "calc(100vw - 30px)";
-          game.style.height = "calc(100vh - 15px - 2.5em)";
+        switch (data.platform) {
+          case "cdo":
+            //do magic
+            game.src = location.origin+"/turbowarp?u="+data.link;
+            game.style.width = "calc(100vmin - 15px)";
+            game.style.height = "calc(100vmin - 15px - 2.5em)";
+          break;
+          case "scratch":
+            game.src = data.link+"/embed";
+            game.style.width = "calc(100vw - 30px)";
+            game.style.height = "calc(100vh - 15px - 2.5em)";
+          break;
+          case: "khan":
+            game.src = data.link;
+            game.style.width = "calc(100vw - 30px)";
+            game.style.height = "calc(100vh - 15px - 2.5em)";
+          break;
+          case: "embed":
+            game.src = data.link;
+            game.style.width = "calc(100vw - 30px)";
+            game.style.height = "calc(100vh - 15px - 2.5em)";
+          break;
         }
         
         const tok = await getAuth();
