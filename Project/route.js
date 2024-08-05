@@ -15,7 +15,7 @@ router.route("/unfavorite/:id").get(userAuth, unfavorite);
 router.route("/feature/:id").get(adminAuth, feature);
 router.route("/unfeature/:id").get(adminAuth, unfeature);
 router.route("/comment/:id").post(userAuth, comment);
-router.route("/editcomment/:id").post(userAuth, editComment);
-router.route("/deletecomment/:id").delete(userAuth, deleteComment);
+router.route("/comment/:id/edit").post(userAuth, editComment);
+router.route("/comment/:id/delete").delete(userAuth, deleteComment);
 
 module.exports = router;
