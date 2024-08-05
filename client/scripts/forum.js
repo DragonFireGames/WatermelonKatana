@@ -1,19 +1,37 @@
-async function listComments(list,comments,self,onsend) {
+async function listComments(list,comments,self,events) {
   var users = {};
   if (self) users[self.id] = self;
-  for (var c of comments) {
+  for (var i = 0; i < comments.length; i++) {
+    var c = comments[i];
     var u = users[c.posterId];
     if (!u) {
       var res = await fetch("/api/auth/userdata?id="+c.posterId);
       u = await res.json();
       users[c.posterId] = u;
     }
+    var options = `<input type="button" value="reply" onclick="window.onreplybtnclick(${i});">`;
+    if (self.id == c.posterId) {
+      options += `<input type="button" value="edit" onclick="window.oneditbtnclick(${i});">`;
+    }
+    if (self.id == c.posterId || u.role == "Admin") {
+      options += `<input type="button" style="color:red;" value="delete" onclick="window.ondeletebtnclick(${i});">`;
+    }
     var div = `
     <div class="comment">
+      <div class="comment-menu">
+        <img class="comment-menu-img" src="https://www.svgrepo.com/show/124304/three-dots.svg">
+        <div class="comment-menu-options">
+          ${options}
+        </div>
+      </div>
       <div class="comment-top">
         <img class="comment-avatar" src="${u.avatar}">
         <p class="comment-username">${u.username}</p>
         <p class="comment-data">${relativeDate(c.postedAt)}</p>
+      </div>
+      <div class="comment-upvote">
+        ${c.reputation}
+        <input class="comment-upvote-box" name="comment-vpvote" type="checkbox" value="reply">
       </div>
       <p class="comment-content">${c.content}</p>
     </div>`;
@@ -21,7 +39,7 @@ async function listComments(list,comments,self,onsend) {
   }
   if (!self) return;
   var repbtn = `
-  <button class="comment" id="reply-btn" onclick="window.onreplybtnclick()">
+  <button class="comment" id="reply-btn"  onclick="window.onreplybtnclick()">
     <div class="comment-top">
       <img class="comment-avatar" src="${self.avatar}">
       <p class="comment-username">${self.username}</p>
@@ -29,10 +47,28 @@ async function listComments(list,comments,self,onsend) {
     <p class="comment-content">Write a reply...</p>
   </button>`;
   list.innerHTML += repbtn;
-  var rep = setupReply(onsend,()=>document.querySelector("#reply").style.display = "none",self);
+  window.editingMsg = false;
+  var rep = setupReply(events,()=>{
+    if (window.editingMsg) {
+      var txt = document.querySelector("#reply-textbox");
+      txt.value = window.editingMsg.oldmsg;
+      window.editingMsg = false;
+    }
+    document.querySelector("#reply").style.display = "none";
+  },self);
   window.onreplybtnclick = ()=>document.querySelector("#reply").style.display = "block";
+  window.oneditbtnclick = (index)=>{
+    document.querySelector("#reply").style.display = "block";
+    var content = comments[index].content;
+    content = content.replace("<br>","\n");
+    var txt = document.querySelector("#reply-textbox");
+    var oldmsg = txt.value;
+    txt.value = content;
+    window.editingMsg = {index,oldmsg};
+  }
+  window.ondeletebtnclick = events.ondelete;
 }
-function setupReply(onsend,oncancel,self) {
+function setupReply(events,oncancel,self) {
   document.body.innerHTML += `
   <div id="reply">
     <div class="comment-top">
@@ -45,7 +81,11 @@ function setupReply(onsend,oncancel,self) {
   </div>`;
   window.onreplysendclick = ()=>{
     var txt = document.querySelector("#reply-textbox");
-    onsend(txt.value);
+    if (window.editingMsg) {
+      events.onedit(txt.value,window.editingMsg.index);
+    } else {
+      events.onsend(txt.value);
+    }
   };
   window.onreplycancelclick = oncancel;
 }
