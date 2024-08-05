@@ -39,8 +39,8 @@
           const res = await fetch('/api/auth/changePassword', {
             method: 'POST',
             body: JSON.stringify({
-              oldpassword: oldpassword.value,
-              newpassword: newpassword.value,
+              currentPassword: oldpassword.value,
+              newPassword: newpassword.value,
             }),
             headers: { 'Content-Type': 'application/json' }
           });
