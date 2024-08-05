@@ -16,6 +16,7 @@
   <div class="container">
     <header class="main-header">
       <h1>Welcome to PIC-MO</h1>
+      <h2 id="username" style="color: #777777"></h2>
       <nav id="header" class="main-nav">
         <a href="/register">Register</a>
         <a href="/login">Login</a>
@@ -48,11 +49,13 @@
     
     const header = document.querySelector('#header');
     const footer = document.querySelector('#footer');
+    const user = document.getElementById('username');
     (async () => {
       const data = await getAuth();
       if (!data.auth) return;
+      //<p>Signed in as ${data.user.username}</p><br/>
+      user.textContent = `Signed in as: ${data.user.username}`;
       header.innerHTML = `
-        <p>Signed in as ${data.user.username}</p><br/>
         <a href="/publish">Publish</a>
         <a href="/profile">Profile</a>
         <a href="/chat">Chat</a>
