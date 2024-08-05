@@ -81,10 +81,12 @@ function setupReply(events,oncancel,self) {
   </div>`;
   window.onreplysendclick = ()=>{
     var txt = document.querySelector("#reply-textbox");
+    var content = txt.value;
+    content = content.replace("\n","<br>");
     if (window.editingMsg) {
-      events.onedit(txt.value,window.editingMsg.index);
+      events.onedit(content,window.editingMsg.index);
     } else {
-      events.onsend(txt.value);
+      events.onsend(content);
     }
   };
   window.onreplycancelclick = oncancel;
