@@ -196,16 +196,38 @@
         }
         
         const tok = await getAuth();
-        await listComments(commentlist,data.comments,tok.user,async(content)=>{
-          content = content.replace("\n","<br>");
-          const res = await fetch("/api/project/comment/"+pid, {
-            method: "POST",
-            body: JSON.stringify({
-              content: content
-            }),
-            headers: { "Content-Type": "application/json" },
-          });
-          location.assign(location.pathname);
+        await listComments(commentlist,data.comments,tok.user,{
+          onsend:async(content)=>{
+            const res = await fetch("/api/project/"+pid+"comment", {
+              method: "POST",
+              body: JSON.stringify({
+                content: content
+              }),
+              headers: { "Content-Type": "application/json" },
+            });
+            location.assign(location.pathname);
+          },
+          onedit:async(content,index)=>{
+            const res = await fetch("/api/project/"+pid+"/comment/edit", {
+              method: "POST",
+              body: JSON.stringify({
+                content: content,
+                index: index
+              }),
+              headers: { "Content-Type": "application/json" },
+            });
+            location.assign(location.pathname);
+          },
+          ondelete:async(index)=>{
+            const res = await fetch("/api/project/"+pid+"/comment/delete", {
+              method: "DELETE",
+              body: JSON.stringify({
+                index: index
+              }),
+              headers: { "Content-Type": "application/json" },
+            });
+            location.assign(location.pathname);
+          }
         });
         if (!tok.auth) {
           favoritebtn.outerHTML = "";
