@@ -30,7 +30,7 @@ async function listComments(list,comments,self,events) {
         <p class="comment-data">${relativeDate(c.postedAt)}</p>
       </div>
       <div class="comment-upvote">
-        ${c.reputation}
+        ${c.rating}
         <input class="comment-upvote-box" name="comment-vpvote" type="checkbox" value="reply">
       </div>
       <p class="comment-content">${c.content}</p>
