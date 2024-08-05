@@ -17,6 +17,13 @@ body {
 	margin-top: 50px;
 }
 
+.error-image {
+	width: 250px;
+	border-radius: 25px;
+	height: auto;
+	margin-bottom: 20px;
+}
+
 .error-title {
 	font-size: 48px;
 	color: #333;
