@@ -34,8 +34,6 @@ document.addEventListener("DOMContentLoaded", function() {
 	const navbarHtml = `
 		<div class="topnav">
 			<a href="/">Home</a>
-			<a href="/register">Register</a>
-			<a href="/login">Login</a>
 			<a href="/chat">Chat</a>
 			<a href="/search">Project Gallery</a>
 		</div>
