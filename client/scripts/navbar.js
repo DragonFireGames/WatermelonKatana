@@ -43,5 +43,5 @@ document.addEventListener("DOMContentLoaded", function() {
 	const navbarContainer = document.createElement("div");
 	navbarContainer.innerHTML = navbarHtml;
 
-	document.body.insertBefore(navbarContainer, document.body.firstChild);
+	document.body.insertBefore(navbarContainer, document.body.prepend());
 });
