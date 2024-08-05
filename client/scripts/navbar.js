@@ -32,16 +32,16 @@ document.addEventListener("DOMContentLoaded", function() {
 	document.head.append(style);
 
 	const navbarHtml = `
-		<div class="topnav">
-			<a href="/">Home</a>
-			<a href="/chat">Chat</a>
-			<a href="/search">Project Gallery</a>
-		</div>
-		<div id="block"></div>
+	<div class="topnav">
+		<a href="/">Home</a>
+		<a href="/chat">Chat</a>
+		<a href="/search">Project Gallery</a>
+	</div>
+	<div id="block"></div>
 	`;
 
 	const navbarContainer = document.createElement("div");
 	navbarContainer.innerHTML = navbarHtml;
 
-	document.body.insertBefore(navbarContainer, document.body.prepend());
+	document.body.prepend(navbarContainer);
 });
