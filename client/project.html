@@ -198,7 +198,7 @@
         const tok = await getAuth();
         await listComments(commentlist,data.comments,tok.user,{
           onsend:async(content)=>{
-            const res = await fetch("/api/project/"+pid+"comment", {
+            const res = await fetch("/api/project/comment/"+pid, {
               method: "POST",
               body: JSON.stringify({
                 content: content
@@ -208,7 +208,7 @@
             location.assign(location.pathname);
           },
           onedit:async(content,index)=>{
-            const res = await fetch("/api/project/"+pid+"/comment/edit", {
+            const res = await fetch("/api/project/comment/"+pid+"/edit", {
               method: "POST",
               body: JSON.stringify({
                 content: content,
@@ -219,7 +219,7 @@
             location.assign(location.pathname);
           },
           ondelete:async(index)=>{
-            const res = await fetch("/api/project/"+pid+"/comment/delete", {
+            const res = await fetch("/api/project/comment/"+pid+"/delete", {
               method: "DELETE",
               body: JSON.stringify({
                 index: index
