@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { publish, list, data, update, deleteProject, favorite, unfavorite, feature, unfeature, comment } = require("./project");
+const { publish, list, data, update, deleteProject, favorite, unfavorite, feature, unfeature, comment, editComment, deleteComment } = require("./project");
 const { adminAuth, userAuth } = require("../middleware/auth");
 
 router.route("/publish").post(userAuth, publish);
@@ -15,5 +15,7 @@ router.route("/unfavorite/:id").get(userAuth, unfavorite);
 router.route("/feature/:id").get(adminAuth, feature);
 router.route("/unfeature/:id").get(adminAuth, unfeature);
 router.route("/comment/:id").post(userAuth, comment);
+router.route("/editcomment/:id").post(userAuth, editComment);
+router.route("/deletecomment/:id").delete(userAuth, deleteComment);
 
 module.exports = router;
