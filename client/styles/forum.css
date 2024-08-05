@@ -36,6 +36,7 @@
   border-radius: 10px;
   margin: 0 0 5px 0;
   width: 100%;
+  position: relative;
 }
 
 #reply-btn {
@@ -66,5 +67,50 @@
   border: none;
   outline: none;
   resize: none;
+}
+
+.comment-menu {
+  position: absolute;
+  right: 2px;
+  top: 2px;
+}
+
+.comment-menu-img {
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  padding: 5px;
+  display: block;
+}
+
+.comment-menu-img:hover {
+  background-color: #d8d8d8;
+}
+
+.comment-menu:hover .comment-menu-img {
+  background-color: #d8d8d8;
+}
+
+.comment-menu-options {
+  position: absolute;
+  display: none;
+  z-index: 100;
+}
+
+.comment-menu-options input {
+  display: block;
+}
+
+.comment-menu:hover .comment-menu-options {
+  display: block;
+}
+
+.comment-upvote {
+  float: right;
+  display: flex;
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  z-index: 99;
 }
 
