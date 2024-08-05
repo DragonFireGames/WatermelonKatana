@@ -4,73 +4,71 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User | PIC-Mo</title>
-  <!--og:meta-->
   <link rel="stylesheet" type="text/css" href="/styles/style.css">
   <link rel="stylesheet" type="text/css" href="/styles/user.css">
   <script src="/scripts/HtmlSanitizer.js"></script>
   <script src="/scripts/utils.js"></script>
 </head>
 <body>
-  <!-- Navbar? (WIP) -->
   <div class="topnav">
     <a href="/">Home</a>
   </div>
   <div id="block"></div>
-
-  <!-- Main Content -->
-  <div id="display">
+  <div id="display" class="profile-container">
     Loading...
   </div>
-  Published
-  <ul id="list" class="project-list"></ul>
-  Favorites
-  <ul id="favlist" class="project-list"></ul>
+  <div class="projects-container">
+    <h2>Published Projects</h2>
+    <ul id="list" class="project-list"></ul>
+    <h2>Favorites</h2>
+    <ul id="favlist" class="project-list"></ul>
+  </div>
 
   <script>
-      const list = document.querySelector('#list');
-      const favlist = document.querySelector('#favlist');
-      const display = document.querySelector('#display');
-      location.path = location.pathname.split("/");
-      const name = location.path[2];
-    
-      (async () => {
-        try {
-          const res = await fetch('/api/project/list?poster='+name);
-          const data = await res.json();
-          data.projects.map(projHTML(list));
-        } catch(e) {
-          alert(e);
-          console.error(e);
-        }
-      })();
-    
-      (async() => {
-        try {
-          const res = await fetch('/api/auth/userdata?username='+name);
-          const data = await res.json();
-          if (res.status === 400 || res.status === 401) throw Error(data);
-          display.innerHTML = `
-          <div>
+    const list = document.querySelector('#list');
+    const favlist = document.querySelector('#favlist');
+    const display = document.querySelector('#display');
+    location.path = location.pathname.split("/");
+    const name = location.path[2];
+
+    (async () => {
+      try {
+        const res = await fetch('/api/project/list?poster=' + name);
+        const data = await res.json();
+        data.projects.map(projHTML(list));
+      } catch (e) {
+        alert(e);
+        console.error(e);
+      }
+    })();
+
+    (async () => {
+      try {
+        const res = await fetch('/api/auth/userdata?username=' + name);
+        const data = await res.json();
+        if (res.status === 400 || res.status === 401) throw Error(data);
+        const roleClass = data.role.toLowerCase();
+        display.innerHTML = `
+          <div class="profile ${roleClass}">
             <img class="banner" src="${data.banner}">
             <div class="namecontainer">
-            <img class="avatar" src="${data.avatar}">
-            <p class="username">${data.username}</p>
+              <img class="avatar" src="${data.avatar}">
+              <p class="username">${data.username}</p>
             </div>
             <p class="biography">${data.biography}</p>
             <p class="role">${data.role}</p>
             <i class="uidtext" title="Click to Copy">ID: ${data.id}</i>
           </div>`;
-          await Promise.all(data.favorites.map(async pid => {
-            const res = await fetch('/api/project/data/'+pid);
-            const proj = await res.json();
-            projHTML(favlist)(proj);
-          }));
-        } catch(e) {
-          alert(e);
-          console.error(e);
-        }
-      })();
-    </script>
-  </body>
+        await Promise.all(data.favorites.map(async pid => {
+          const res = await fetch('/api/project/data/' + pid);
+          const proj = await res.json();
+          projHTML(favlist)(proj);
+        }));
+      } catch (e) {
+        alert(e);
+        console.error(e);
+      }
+    })();
+  </script>
 </body>
 </html>
