@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Change Password | PIC-MO</title>
-    <link rel="stylesheet" type="text/css" href="/styles/error.css">
+    <link rel="stylesheet" type="text/css" href="/styles/style.css">
     <script src="/scripts/HtmlSanitizer.js"></script>
     <script src="/scripts/utils.js"></script>
   </head>
@@ -44,6 +44,7 @@
             }),
             headers: { 'Content-Type': 'application/json' }
           });
+          const data = await res.json();
           if (res.status === 400 || res.status === 401) {
             return display.textContent = `${data.message}. ${data.error ? data.error : ''}`
           }
