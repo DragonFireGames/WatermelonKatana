@@ -51,6 +51,8 @@ Will these actually get done?
 - Open Beta
 
 ### Step 1 - Add Remaining Features
+- [ ] Project css for preview, (background color and text color)
+- [ ] Nameplates?!?!!??!!??!?
 - [ ] Save for Later tab
 - [ ] Profile Badges
 - [ ] Community Leaderboards

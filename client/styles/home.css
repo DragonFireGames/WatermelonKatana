@@ -9,11 +9,14 @@ body {
 }
 
 .container {
-	width: 100%;
+	width: 90%;
 	margin: auto;
 	overflow: hidden;
 	padding: 20px;
 	margin-top: 2.5em;
+	background: #fff;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .main-header {
@@ -87,18 +90,4 @@ body {
 	background-color: #333;
 	color: #fff;
 	border-radius: 0 0 10px 10px;
-}
-
-.project-list .project-panel {
-	max-width: 30%;
-	margin: 1%;
-}
-
-.project-list {
-	padding: 0;
-	margin: 0;
-	list-style-type: none;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
 }

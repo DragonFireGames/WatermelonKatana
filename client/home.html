@@ -8,59 +8,61 @@
   <meta property="og:type" content="profile"/>
   <meta property="og:description" content="Post your projects, Interact with other peoples' projects, Chat with your friends & More! We have a large gallery of games and a growing user base, help us out by either posting your browser game here or playing other peoples' games!"/>
   <link rel="stylesheet" type="text/css" href="/styles/style.css">
+  <link rel="stylesheet" type="text/css" href="/styles/home.css">
   <script src="/scripts/HtmlSanitizer.js"></script>
   <script src="/scripts/utils.js"></script>
 </head>
 <body>
-  <h1> - Welcome to PIC-MO - </h1>
-  <div id="header">
-    <a href="/register">Register</a>
-    <a href="/login">Login</a>
-    <a href="/chat">Chat</a>
-    <a href="/search">Project Gallery</a>
-  </div>
-  <a href="https://discord.gg/S8XTzKEz5f">Join our discord!</a>
-  <p>Post your projects, Interact with other peoples' projects, Chat with your friends & More! We have a large gallery of games and a growing user base, help us out by either posting your browser game here or playing other peoples' games!</p>
-  Featured Projects:
-  <div id="list" class="project-list"></div>
-  <div id="footer">
+  <div class="container">
+    <header class="main-header">
+      <h1>Welcome to PIC-MO</h1>
+      <nav id="header" class="main-nav">
+        <a href="/register">Register</a>
+        <a href="/login">Login</a>
+        <a href="/chat">Chat</a>
+        <a href="/search">Project Gallery</a>
+      </nav>
+    </header>
+    <section class="intro">
+      <p>Post your projects, interact with other people's projects, chat with your friends, and more! We have a large gallery of games and a growing user base. Help us out by either posting your browser game here or playing other people's games!</p>
+      <a class="discord-link" href="https://discord.gg/S8XTzKEz5f">Join our Discord!</a>
+    </section>
+    <section class="featured-projects">
+      <h2>Featured Projects</h2>
+      <div id="list" class="project-list"></div>
+    </section>
+    <footer id="footer" class="main-footer">
+      <p>&copy; 2024 PIC-Mo. All rights reserved.</p>
+    </footer>
   </div>
   
   <script>
-      const list = document.querySelector('#list');
+    const list = document.querySelector('#list');
+
+    (async () => {
+      const res = await fetch('/api/project/list?featured=1');
+      const data = await res.json();
+      data.projects.sort((a,b)=>(b.score-a.score)||(b.views-a.views));
+      data.projects.map(projHTML(list));
+    })();
     
-      (async () => {
-        /*
-        const res = await fetch('/api/project/list');
-        const data = await res.json();
-        data.projects.sort((a,b)=>(Number(b.featured)-Number(a.featured))||(b.score-a.score)||(b.views-a.views));
-        data.projects = data.projects.splice(0,5);
-        /*/
-        const res = await fetch('/api/project/list?featured=1');
-        const data = await res.json();
-        data.projects.sort((a,b)=>(b.score-a.score)||(b.views-a.views));
-        //*/
-        data.projects.map(projHTML(list));
-      })();
-      
-      const header = document.querySelector('#header');
-      const footer = document.querySelector('#footer');
-      (async ()=> {
-        const data = await getAuth();
-        if (!data.auth) return;
-        header.innerHTML = `
-          <p>Signed in as ${data.user.username}</p><br/>
-          <a href="/publish">Publish</a>
-          <a href="/profile">Profile</a>
-          <a href="/chat">Chat</a>
-          <a href="/search">Project Gallery</a>
-          <a href="/userlist">User List</a>
-        `;
-        if (data.user.role === "Admin") {
-          header.innerHTML += `<a href="/admin">Admin List</a>`;
-        }
-      })();
-    </script>
-  </body>
+    const header = document.querySelector('#header');
+    const footer = document.querySelector('#footer');
+    (async () => {
+      const data = await getAuth();
+      if (!data.auth) return;
+      header.innerHTML = `
+        <p>Signed in as ${data.user.username}</p><br/>
+        <a href="/publish">Publish</a>
+        <a href="/profile">Profile</a>
+        <a href="/chat">Chat</a>
+        <a href="/search">Project Gallery</a>
+        <a href="/userlist">User List</a>
+      `;
+      if (data.user.role === "Admin") {
+        header.innerHTML += `<a href="/admin">Admin List</a>`;
+      }
+    })();
+  </script>
 </body>
 </html>
