@@ -1,9 +1,17 @@
 location.path = location.pathname.split("/");
-async function getAuth() {
-  const res = await fetch("/api/auth/check");
-  const data = await res.json();
-  if (res.status > 206) throw Error(data);
-  return data;
+var _auth = false;
+var _authwaiting = [];
+function getAuth() {
+  return new Promise(async(resolve)=>{
+    if (_auth) return resolve(_auth);
+    _authwaiting.push(resolve);
+    if (_authwaiting.length > 1) return;
+    const res = await fetch("/api/auth/check");
+    const data = await res.json();
+    if (res.status > 206) throw Error(data);
+    for (var i = 0; i < _authwaiting.length; i++) _authwaiting[i](data);
+    _auth = data;
+  });
 }
 
 function projHTML(list) {
