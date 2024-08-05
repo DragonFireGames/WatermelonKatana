@@ -1,52 +1,54 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Profile | PIC-Mo</title>
-		<link rel="stylesheet" type="text/css" href="/styles/style.css">
-		<script src="/scripts/HtmlSanitizer.js"></script>
-		<script src="/scripts/utils.js"></script>
-	</head>
-	<body>
-  		<script src="/scripts/navbar.js"></script>
-		<h1>Profile Settings</h1>
-		<div id="header">
-			<a href="/">Home</a>
-			<a href="/logout">Log Out</a>
-			<a href="/profile/edit">Edit Profile</a>
-			<a href="/profile/chpass">Change Password</a>
-		</div>
-		<div id="footer"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile | PIC-Mo</title>
+    <link rel="stylesheet" type="text/css" href="/styles/style.css">
+    <script src="/scripts/HtmlSanitizer.js"></script>
+    <script src="/scripts/utils.js"></script>
+  </head>
+  <body>
+    <script src="/scripts/navbar.js"></script>
+    <h1>Profile Settings</h1>
+    <div id="header" class="main-nav">
+      <a href="/">Home</a>
+      <a href="/logout">Log Out</a>
+      <a href="/profile/edit">Edit Profile</a>
+      <a href="/profile/chpass">Change Password</a>
+    </div>
+    <div id="footer"></div>
 
-		Published
-		<ul id="list" class="project-list"></ul>
-		Favorites
-		<ul id="favlist" class="project-list"></ul>
-		
-		<script>
-			const list = document.querySelector('#list');
-			const favlist = document.querySelector('#favlist');
-			const display = document.querySelector('#display');
-			
-			(async () => {
-				const udata = await getAuth();
-				if (!udata.auth) return;
-				try {
-					await Promise.all(udata.user.favorites.map(async pid => {
-						const res = await fetch('/api/project/data/'+pid);
-						const proj = await res.json();
-						projHTML(favlist)(proj);
-					}));
-					const res = await fetch('/api/project/list?poster='+udata.user.username);
-					const data = await res.json();
-					data.projects.map(projHTML(list));
-				} catch(e) {
-					alert(e);
-					console.error(e);
-				}
-			})();
-		</script>
-	</body>
+    Published
+    <ul id="list" class="project-list"></ul>
+    Favorites
+    <ul id="favlist" class="project-list"></ul>
+    
+    <script>
+      const list = document.querySelector('#list');
+      const favlist = document.querySelector('#favlist');
+      const display = document.querySelector('#display');
+      const header = document.querySelector('#header');
+      
+      (async () => {
+        const udata = await getAuth();
+        if (!udata.auth) return;
+        try {
+					header.innerHTML += `<a href="/user/${udata.user.username}">User Page</a>`;
+          await Promise.all(udata.user.favorites.map(async pid => {
+            const res = await fetch('/api/project/data/'+pid);
+            const proj = await res.json();
+            projHTML(favlist)(proj);
+          }));
+          const res = await fetch('/api/project/list?poster='+udata.user.username);
+          const data = await res.json();
+          data.projects.map(projHTML(list));
+        } catch(e) {
+          alert(e);
+          console.error(e);
+        }
+      })();
+    </script>
+  </body>
 </html>
