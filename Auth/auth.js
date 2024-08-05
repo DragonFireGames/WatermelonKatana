@@ -90,6 +90,13 @@ exports.update = async (req, res, next) => {
     if (!user) return res.status(404).json({
       message: "User not found",
     });
+    if (user.username !== username) {
+      const postedProjects = await Projects.find({ posterId: userId });
+      for (var i = 0; i < postedProjects.length; i++) {
+        postedProjects[i].poster = username;
+        await postedProjects[i].save();
+      }
+    }
     user.username = username;
     user.avatar = avatar;
     user.banner = banner;
