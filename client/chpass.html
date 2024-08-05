@@ -1,58 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Change Password | PIC-MO</title>
-</head>
-
-<body>
-  <h1>Change Password Page</h1>
-  <form>
-    <div class="error" style="background-color: red;"></div><br>
-    <label for="oldpassword">Old Password</label><br>
-    <input type="password" id="oldpassword" required><br>
-    <label for="newpassword">New Password</label><br>
-    <input type="password" id="newpassword" required><br>
-    <label for="newpassword2">Repeat New Password</label><br>
-    <input type="password" id="newpassword2" required><br>
-    <input type="submit" value="login"><br>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Password | PIC-MO</title>
+    <link rel="stylesheet" type="text/css" href="/styles/error.css">
+    <script src="/scripts/HtmlSanitizer.js"></script>
+    <script src="/scripts/utils.js"></script>
+  </head>
+  <body>
+    <script src="/scripts/navbar.js"></script>
+    <h1>Change Password Page</h1>
+    <form>
+      <div class="error" style="background-color: red;"></div><br>
+      <label for="oldpassword">Old Password</label><br>
+      <input type="password" id="oldpassword" required><br>
+      <label for="newpassword">New Password</label><br>
+      <input type="password" id="newpassword" required><br>
+      <label for="newpassword2">Repeat New Password</label><br>
+      <input type="password" id="newpassword2" required><br>
+      <input type="submit" value="login"><br>
     </form>
-
-  <script>
-    const form = document.querySelector('form')
-    const oldpassword = document.querySelector('#oldpassword')
-    const newpassword = document.querySelector('#newpassword')
-    const newpassword2 = document.querySelector('#newpassword2')
-    const display = document.querySelector('.error')
-
-   form.addEventListener('submit', async (e) => {
-      e.preventDefault()
-      display.textContent = '';
-     display.textContent = '';
-     if (newpassword.value !== newpassword2.value) {
-       return display.textContent = 'Passwords do not match';
-     }
-      try {
-        const res = await fetch('/api/auth/changePassword', {
-          method: 'POST',
-          body: JSON.stringify({
-            oldpassword: oldpassword.value,
-            newpassword: newpassword.value,
-          }),
-          headers: { 'Content-Type': 'application/json' }
-        });
-        if (res.status === 400 || res.status === 401) {
-          return display.textContent = `${data.message}. ${data.error ? data.error : ''}`
+    <script>
+      const form = document.querySelector('form')
+      const oldpassword = document.querySelector('#oldpassword')
+      const newpassword = document.querySelector('#newpassword')
+      const newpassword2 = document.querySelector('#newpassword2')
+      const display = document.querySelector('.error')
+  
+     form.addEventListener('submit', async (e) => {
+        e.preventDefault()
+        display.textContent = '';
+       display.textContent = '';
+       if (newpassword.value !== newpassword2.value) {
+         return display.textContent = 'Passwords do not match';
+       }
+        try {
+          const res = await fetch('/api/auth/changePassword', {
+            method: 'POST',
+            body: JSON.stringify({
+              oldpassword: oldpassword.value,
+              newpassword: newpassword.value,
+            }),
+            headers: { 'Content-Type': 'application/json' }
+          });
+          if (res.status === 400 || res.status === 401) {
+            return display.textContent = `${data.message}. ${data.error ? data.error : ''}`
+          }
+          location.assign('/profile');
+        } catch (err) {
+          console.log(err.message);
         }
-        location.assign('/profile');
-      } catch (err) {
-        console.log(err.message);
-      }
-
-    })
-  </script>
-</body>
-
+  
+      })
+    </script>
+  </body>
 </html>
