@@ -8,21 +8,6 @@ body {
   align-items: center;
 }
 
-.topnav {
-  background-color: #fff;
-  color: #000;
-  height: 2.5em;
-  font-size: 1em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  position: fixed;
-  top: 0;
-  z-index: 1000;
-}
-
 .project-panel {
   color: #000;
   text-decoration: none;
@@ -72,9 +57,4 @@ body {
 
 .project-link {
   text-align: center;
-}
-
-#block {
-  height: 2.5em;
-  width: 100vw;
 }
