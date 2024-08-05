@@ -391,7 +391,7 @@ exports.deleteComment = async (req, res, next) => {
   }
 };
 
-exports.deleteComment = async (req, res, next) => {
+exports.editComment = async (req, res, next) => {
   var { content, index } = req.body;
   console.log(content);
   try {
