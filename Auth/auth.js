@@ -6,19 +6,20 @@ const jwt = require("jsonwebtoken");
 const jwtSecret = process.env["JWT_SECRET"];
 exports.register = async (req, res, next) => {
   const { username, password } = req.body;
-  if (password.length < 6) return res.status(400).json({ message: "Password less than 6 characters" });
+  if (!username.match(/^[\w\d_-]+$/)) return res.status(400).json({ message: "Username can only contain letters, numbers, and underscores" });
+  if (password.length < 6) return res.status(400).json({ message: "Password must be at least 6 characters" });
   try {
     var hash = await bcrypt.hash(password, 10);
     const user = await Users.create({
       username,
       password: hash,
-    })
-    const maxAge = 3 * 60 * 60;
+    });
+    const maxAge = 3 * 60 * 60; // 3hrs
     const token = jwt.sign(
       { id: user._id, username, role: user.role },
       jwtSecret,
       {
-        expiresIn: maxAge, // 3hrs
+        expiresIn: maxAge,
       }
     );
     res.cookie("jwt", token, {
@@ -81,6 +82,7 @@ exports.login = async (req, res, next) => {
 
 exports.update = async (req, res, next) => {
   const { username, avatar, banner, biography } = req.body;
+  if (!username.match(/^[\w\d_-]+$/)) return res.status(400).json({ message: "Username can only contain letters, numbers, and underscores" });
   const userId = res.locals.userToken?.id;
   console.log(req.body);
   try {
