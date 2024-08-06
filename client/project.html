@@ -52,7 +52,6 @@
   </div>
   <script>
     const postdiv = document.querySelector('#post');
-    const game = document.querySelector('#game');
     const pid = location.path[2];
     (async() => {
       try {
@@ -71,6 +70,7 @@
         <b>Views:</b> <span id="views">${data.views}</span> <br>
         `);
         
+        const game = document.querySelector('#game');
         switch (data.platform) {
           case "cdo":
             //do magic
