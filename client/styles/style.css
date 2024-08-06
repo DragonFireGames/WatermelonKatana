@@ -8,23 +8,33 @@ body {
   align-items: center;
 }
 
-.project-panel {
+.project-panel, .post-panel {
   color: #000;
   text-decoration: none;
-  max-width: 205px;
-  flex: 1;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
-  display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   overflow: show;
+  cursor: pointer;
 }
 
-.project-panel:hover {
+.post-panel {
+  padding: 5px;
+  width: 80vw;
+  display: block;
+}
+
+.project-panel {
+  max-width: 205px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-panel:hover, .post-panel:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
@@ -37,7 +47,7 @@ body {
   border-radius: 5px;
 }
 
-.project-list {
+.project-list, .post-list {
   display: flex;
   flex-wrap: wrap;
   gap: 1em;
@@ -55,6 +65,6 @@ body {
   border-radius: 10px;
 }
 
-.project-link {
+.project-link, .post-top {
   text-align: center;
 }
