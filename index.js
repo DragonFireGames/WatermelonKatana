@@ -36,6 +36,7 @@ const turbo = new Turbo(app, express.static("./client/Turbo/dependencies"));
  */
 app.use("/api/auth", require("./Auth/route")); // Authentication routes
 app.use("/api/project", require("./Project/route")); // Project routes
+app.use("/api/forum", require("./Forum/route")); // Project routes
 
 /**
  * Client directory path
