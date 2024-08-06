@@ -114,7 +114,7 @@ app.get("/forum/discussion/:id", async (req, res) => {
       "<!--og:meta-->",
       `<meta property="og:title" content="${post.name}"/>
   <meta property="og:type" content="website"/>
-  <meta property="og:description" content="${proj.content} | By: ${post.poster} | Views: ${post.views}"/>`,
+  <meta property="og:description" content="${post.content} | By: ${post.poster} | Views: ${post.views}"/>`,
     ),
   );
 });
