@@ -1,9 +1,10 @@
 const Users = require("../model/Users");
 
 module.exports = class {
-constructor(model) {
-  this.model = model;
-}
+  constructor(model) {
+    this.model = model;
+  }
+  
 async publish(req, res, next) {
   var { name, content, tags } = req.body;
   console.log(name,link);
@@ -389,4 +390,4 @@ async editComment(req, res, next) {
   }
 };
 
-
+}
