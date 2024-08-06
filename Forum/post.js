@@ -1,8 +1,9 @@
 const Users = require("../model/Users");
 
 module.exports = class {
-  constructor(model) {
+  constructor(model,name) {
     this.model = model;
+    this.name = name;
   }
 
 route(router,userAuth,adminAuth) {
@@ -136,7 +137,9 @@ async list(req, res, next) {
     if (customQuery) search = JSON.parse(customQuery);
     var list = await this.model.find(search);
     list = list.map(e=>e.pack());
-    res.status(200).json({ Posts: list });
+    var data = {};
+    data[this.name] = list;
+    res.status(200).json(data);
   } catch(err) {
     res.status(401).json({ message: "Not successful", error: err.message });
     console.log(err.message);
