@@ -1,6 +1,6 @@
 const Mongoose = require("mongoose");
 
-const CommentSchema require("./Comments");
+const CommentSchema = require("./Comments");
 
 const ProjectSchema = new Mongoose.Schema({
   name: {
