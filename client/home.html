@@ -58,7 +58,7 @@
       const data = await res.json();
       data.posts.sort((a,b)=>(Number(b.featured)-Number(a.featured))||(b.views-a.views));
       data.posts = data.posts.slice(0,5);
-      data.posts.map(postHTML(postlist));
+      data.posts.map(forumHTML(postlist));
     })();
     
     const header = document.querySelector('#header');
