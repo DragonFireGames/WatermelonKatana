@@ -1,1 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discussion | PIC-MO</title>
+  <!--og:meta-->
+  <link rel="stylesheet" type="text/css" href="/styles/style.css">
+  <link rel="stylesheet" type="text/css" href="/styles/forum.css">
+  <script src="/scripts/HtmlSanitizer.js"></script>
+  <script src="/scripts/utils.js"></script>
+  <script src="/scripts/forum.js"></script>
+</head>
+<body>
+  <script src="/scripts/navbar.js"></script>
+  <div id="post">
+    Loading...
+  </div>
+  <script>
+    const commentlist = document.querySelector("#comments");
+    const postdiv = document.querySelector('#post');
+    const pid = location.path[2];
+    (async() => {
+      try {
+        const res = await fetch('/api/forum/data/'+pid);
+        const data = await res.json();
+        await createPost(postdiv,data,`
+        ${convertHTML(data.content)} <br>
+        <b>Views:</b> <span id="views">${data.views}</span> <br>
+        `);
+      } catch(e) {
+        alert(e);
+        console.error(e);
+      }
+    })();
+    
+    async function featurebtnclick(feature) {
+      if (feature) {
+        await fetch("/api/forum/feature/"+pid);
+      } else {
+        await fetch("/api/forum/unfeature/"+pid);
+      }
+    };
 
+  </script>
+</body>
+</html>
