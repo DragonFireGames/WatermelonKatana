@@ -36,7 +36,7 @@
         const udata = await getAuth();
         if (!udata.auth) return;
         try {
-					header.innerHTML += `<a href="/user/${udata.user.username}">User Page</a>`;
+	  header.innerHTML += `<a href="/user/${udata.user.username}">User Page</a>`;
           await Promise.all(udata.user.favorites.map(async pid => {
             const res = await fetch('/api/project/data/'+pid);
             const proj = await res.json();
