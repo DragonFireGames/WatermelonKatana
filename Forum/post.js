@@ -66,7 +66,7 @@ async update(req, res, next) {
   }
 };
 
-async deletePost(req, res, next) {
+async delete(req, res, next) {
   try {
     const pid = req.params.id;
     const post = await this.model.findOne({ _id: pid });
