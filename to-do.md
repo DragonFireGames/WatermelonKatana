@@ -39,11 +39,12 @@ Will these actually get done?
 - [ ] Reporting System
 
 ### Step 2 - More Features
-- [ ] Search for Posts/Users/Games
-- [ ] Community Ranking
+- [ ] Better Search for Posts/Users/Games
+- [x] Community Ranking
 - [ ] Private Forums, Quick-Chats & Games
-- [ ] Featured Games
-- [ ] Followed/Favorited/User-Featured Games (visible on profile)
+- [x] Featured Games
+- [x] Admins / Moderators ability to pin posts
+- [x] Followed/Favorited/User-Featured Games (visible on profile)
 - [ ] Markdown Support
 - [ ] Custom Emoji Support
 
@@ -59,7 +60,6 @@ Will these actually get done?
 - [ ] Community Leaderboards
 - [ ] Improve Performance
 - [ ] Finalize GUI/Graphics
-- [ ] Admins / Moderators ability to pin posts
 - [ ] Friend activity monitor (what are they doing?)
 - [ ] Live Game Chat???
 - [ ] Remix System (integrated with Github/Free Deployment Software)???
