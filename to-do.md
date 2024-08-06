@@ -20,7 +20,7 @@ Will these actually get done?
 
 ### Step 3 - Forums
 - [x] Posting System
-- [ ] Forums
+- [x] Forums
 - [x] Upvote System
 - [ ] Follow/Friending Systems
 
