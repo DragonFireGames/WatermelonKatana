@@ -92,9 +92,10 @@ Will these actually get done?
 - [ ] Make it Popular (Honeymoon phase)
 
 ### Step 3 - Cash Out
-- [ ] Form a corporation (do it properly)
+- [ ] Form a corporation, make a logo, do it properly
+- [ ] The ads must sell that will be your new philosophy
 - [ ] Migrate to paid production environment
-- [ ] Scale Up Systems to handle a large userbase
+- [ ] Scale Up, Scale up, handle a large userbase
 - [ ] Hire Staff (or rely on volunteer moderation like Reddit)
 - [ ] Page Ads (before games)
 - [ ] Page Ads (during games)
