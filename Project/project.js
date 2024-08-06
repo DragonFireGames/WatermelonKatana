@@ -25,7 +25,7 @@ processLink(link,thumbnail) {
     link = iskhan[0];
     platform = "khan";
   }
-  return { link, platform }
+  return { link, platform, thumbnail }
 }
   
 async publish(req, res, next) {
