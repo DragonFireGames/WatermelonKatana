@@ -132,3 +132,43 @@ function relativeDate(time) {
   
   //return new Date(time).toUTCString();
 }
+
+function eventComments(name) {
+  return {
+    onsend:async(content)=>{
+      const res = await fetch("/api/"+name+"/comment/"+pid, {
+        method: "POST",
+        body: JSON.stringify({
+          content: content
+        }),
+        headers: { "Content-Type": "application/json" },
+      });
+      location.assign(location.pathname);
+    },
+    onedit:async(content,index)=>{
+      const res = await fetch("/api/"+name+"/comment/"+pid+"/edit", {
+        method: "POST",
+        body: JSON.stringify({
+          content: content,
+          index: index
+        }),
+        headers: { "Content-Type": "application/json" },
+      });
+      location.assign(location.pathname);
+    },
+    ondelete:async(index)=>{
+      const res = await fetch("/api/"+name+"/comment/"+pid+"/delete", {
+        method: "DELETE",
+        body: JSON.stringify({
+          index: index
+        }),
+        headers: { "Content-Type": "application/json" },
+      });
+      location.assign(location.pathname);
+    },
+    onupvote:async(index,checked)=>{
+      const res = await fetch("/api/"+name+"/comment/"+pid+"/"+(checked?"up":"down")+"vote?index="+index);
+      location.assign(location.pathname);
+    }
+  };
+}
