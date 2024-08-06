@@ -8,6 +8,7 @@ async function createPost(post,data,txt,name) {
       <p class="comment-username">${u.username}</p>
       <p class="comment-data">${new Date(data.postedAt).toUTCString()}</p>
     </div>
+    <h2>${data.name}</h2>
     ${txt}
     ${data.tags.map(t=>` <a href="/search?includeTags=${t}">#${t}</a>`)} <br>
   </div>
@@ -36,7 +37,7 @@ async function createPost(post,data,txt,name) {
   if (tok.user.id !== data.posterId && tok.user.role !== "Admin") return;
   console.log(post);
   if (name == "forum") name = "forum/discussion";
-  display.innerHTML += `<button class="edit"> <a href="/"${name}"/${pid}/edit">Edit</a></button>`;
+  display.innerHTML += `<button class="edit"> <a href="/${name}/${pid}/edit">Edit</a></button>`;
 }
 async function listComments(list,comments,self,events) {
   var users = {};
