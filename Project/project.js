@@ -191,6 +191,243 @@ exports.data = async (req, res, next) => {
   }
 };
 
-require("../Forum/comments")(exports,Projects,"favorite","feature");
+
+exports.favorite = async (req, res, next) => {
+  try {
+    const pid = req.params.id;
+    const project = await Projects.findOne({ _id: pid });
+    if (!project) return res.status(404).json({
+      message: "Fetch not successful",
+      error: "Project not found",
+    });
+    const uid = res.locals.userToken.id;
+    const user = await Users.findOne({ _id: uid });
+    if (!user) return res.status(404).json({
+      message: "Fetch not successful",
+      error: "User not found",
+    });
+    if (user.favorites.includes(pid)) return res.status(400).json({
+      message: "Invalid",
+      error: "Already favorited project",
+    });
+    user.favorites.push(pid);
+    project.score++;
+    await user.save();
+    await project.save();
+    res.status(201).json({
+      message: "Project successfully updated",
+      id: project._id,
+      name: project.name,
+    });
+    console.log("done!");
+  } catch(error) {
+    res.status(400).json({
+      message: "Project not successfully updated",
+      error: error.message,
+    });
+    console.log(error.message);
+  }
+};
+exports.unfavorite = async (req, res, next) => {
+  try {
+    const pid = req.params.id;
+    const project = await Projects.findOne({ _id: pid });
+    if (!project) return res.status(404).json({
+      message: "Fetch not successful",
+      error: "Project not found",
+    });
+    const uid = res.locals.userToken.id;
+    const user = await Users.findOne({ _id: uid });
+    if (!user) return res.status(404).json({
+      message: "Fetch not successful",
+      error: "User not found",
+    });
+    const index = user.favorites.indexOf(pid);
+    if (index === -1) return res.status(400).json({
+      message: "Invalid",
+      error: "Haven't favorited project yet",
+    });
+    user.favorites.splice(index,1);
+    project.score--;
+    await user.save();
+    await project.save();
+    res.status(201).json({
+      message: "Project successfully updated",
+      id: project._id,
+      name: project.name,
+    });
+    console.log("done!");
+  } catch(error) {
+    res.status(400).json({
+      message: "Project not successfully updated",
+      error: error.message,
+    });
+    console.log(error.message);
+  }
+};
+
+exports.feature = async (req, res, next) => {
+  try {
+    const pid = req.params.id;
+    const project = await Projects.findOne({ _id: pid });
+    if (!project) return res.status(404).json({
+      message: "Fetch not successful",
+      error: "Project not found",
+    });
+    project.featured = true;
+    await project.save();
+    res.status(201).json({
+      message: "Project successfully updated",
+      id: project._id,
+      name: project.name,
+    });
+    console.log("done!");
+  } catch(error) {
+    res.status(400).json({
+      message: "Project not successfully updated",
+      error: error.message,
+    });
+    console.log(error.message);
+  }
+};
+exports.unfeature = async (req, res, next) => {
+  try {
+    const pid = req.params.id;
+    const project = await Projects.findOne({ _id: pid });
+    if (!project) return res.status(404).json({
+      message: "Fetch not successful",
+      error: "Project not found",
+    });
+    project.featured = false;
+    await project.save();
+    res.status(201).json({
+      message: "Project successfully updated",
+      id: project._id,
+      name: project.name,
+    });
+    console.log("done!");
+  } catch(error) {
+    res.status(400).json({
+      message: "Project not successfully updated",
+      error: error.message,
+    });
+    console.log(error.message);
+  }
+};
+
+exports.comment = async (req, res, next) => {
+  var { content } = req.body;
+  console.log(content);
+  try {
+    const pid = req.params.id;
+    const project = await Projects.findOne({ _id: pid });
+    if (!project) return res.status(404).json({
+      message: "Fetch not successful",
+      error: "Project not found",
+    });
+    const uid = res.locals.userToken.id;
+    const user = await Users.findOne({ _id: uid });
+    if (!user) return res.status(404).json({
+      message: "Fetch not successful",
+      error: "User not found",
+    });
+    project.comments.push({
+      content,
+      rating: 0,
+      poster: user.username,
+      posterId: user.id,
+      postedAt: Date.now(),
+    });
+    await project.save();
+    res.status(201).json({
+      message: "Project successfully updated",
+      id: project._id,
+      name: project.name,
+    });
+    console.log("done!");
+  } catch(error) {
+    res.status(400).json({
+      message: "Project not successfully updated",
+      error: error.message,
+    });
+    console.log(error.message);
+  }
+};
+
+exports.deleteComment = async (req, res, next) => {
+  var { index } = req.body;
+  console.log(index);
+  try {
+    const pid = req.params.id;
+    const project = await Projects.findOne({ _id: pid });
+    if (!project) return res.status(404).json({
+      message: "Fetch not successful",
+      error: "Project not found",
+    });
+    const uid = res.locals.userToken.id;
+    const user = await Users.findOne({ _id: uid });
+    if (!user) return res.status(404).json({
+      message: "Fetch not successful",
+      error: "User not found",
+    });
+    var comment = project.comments[index];
+    if (user.id !== comment.posterId && user.role !== "Admin") return res.status(404).json({
+      message: "Delete not successful",
+      error: "User does not own comment",
+    });
+    project.comments.splice(index,1);
+    await project.save();
+    res.status(201).json({
+      message: "Project successfully updated",
+      id: project._id,
+      name: project.name,
+    });
+    console.log("done!");
+  } catch(error) {
+    res.status(400).json({
+      message: "Project not successfully updated",
+      error: error.message,
+    });
+    console.log(error.message);
+  }
+};
+
+exports.editComment = async (req, res, next) => {
+  var { content, index } = req.body;
+  console.log(content,index);
+  try {
+    const pid = req.params.id;
+    const project = await Projects.findOne({ _id: pid });
+    if (!project) return res.status(404).json({
+      message: "Fetch not successful",
+      error: "Project not found",
+    });
+    const uid = res.locals.userToken.id;
+    const user = await Users.findOne({ _id: uid });
+    if (!user) return res.status(404).json({
+      message: "Fetch not successful",
+      error: "User not found",
+    });
+    var comment = project.comments[index];
+    if (user.id !== comment.posterId) return res.status(404).json({
+      message: "Delete not successful",
+      error: "User does not own comment",
+    });
+    comment.content = content;
+    await project.save();
+    res.status(201).json({
+      message: "Project successfully updated",
+      id: project._id,
+      name: project.name,
+    });
+    console.log("done!");
+  } catch(error) {
+    res.status(400).json({
+      message: "Project not successfully updated",
+      error: error.message,
+    });
+    console.log(error.message);
+  }
+};
 
 
