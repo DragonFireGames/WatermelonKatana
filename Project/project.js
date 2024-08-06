@@ -1,6 +1,6 @@
 const Users = require("../model/Users");
 var PostAPI = require("../Forum/post.js");
-exports = class extends PostAPI {
+module.exports = class extends PostAPI {
   constructor(model) {
     super(model,"projects")
   }
