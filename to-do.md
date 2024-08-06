@@ -19,13 +19,14 @@ Will these actually get done?
 - [x] Tag System
 
 ### Step 3 - Forums
-- [ ] Posting System
+- [x] Posting System
 - [ ] Forums
-- [ ] Reputation System
+- [x] Upvote System
 - [ ] Follow/Friending Systems
 
 ### Step 4 - Quick Chat
 - [x] Chat System using discord
+- [x] Use account photo/name in quick chat
 
 ## Phase 2 - Production
 - Timeframe: Winter of 2024-2025
