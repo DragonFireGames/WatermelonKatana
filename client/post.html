@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post Discussion | PIC-MO</title>
+  <link rel="stylesheet" type="text/css" href="/styles/style.css">
+  <script src="/scripts/HtmlSanitizer.js"></script>
+  <script src="/scripts/utils.js"></script>
+</head>
+<body>
+  <script src="/scripts/navbar.js"></script>
+  
+  <h1>Post Discussion</h1>
+  
+  <form >
+    <div class="error" style="background-color: red;"></div><br>
+    <label for="name">Name</label><br>
+    <input type="text" id="name" required/><br>
+    <label for="content">Content</label><br>
+    <textarea id="content"></textarea><br>
+    <label for="tags">Tags (separate with comma)</label><br>
+    <input type="text" id="tags"><br>
+    <input type="submit" value="publish"><br>
+  </form>
+
+  <script>
+    const form = document.querySelector('form');
+    const name = document.querySelector('#name');
+    const content = document.querySelector('#content');
+    const tags = document.querySelector('#tags');
+    const display = document.querySelector('.error');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      display.textContent = '';
+      var taglist = tags.value.toLowerCase().replace(/[^,\w\d_-]/g,"").split(",");
+      if (taglist.length < 1)
+        return display.textContent = 'Choose at least 1 tag';
+      try {
+        const res = await fetch('/api/forum/publish', {
+          method: 'POST',
+          body: JSON.stringify({
+            name: name.value,
+            content: content.value,
+            tags: taglist,
+            thumbnail: thumb.value,
+          }),
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await res.json();
+        if (res.status === 400 || res.status === 401) {
+          return display.textContent = data.message+". "+(data.error ? data.error : '');
+        }
+        location.assign('/forum/discussion/'+data.id);
+      } catch (err) {
+        console.log(err.message);
+        alert(err.message);
+      }
+    });
+  </script>
+</body>
+</html>
