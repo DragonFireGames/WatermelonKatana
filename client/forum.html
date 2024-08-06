@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forum | PIC-Mo</title>
+    <link rel="stylesheet" type="text/css" href="/styles/style.css">
+    <link rel="stylesheet" type="text/css" href="/styles/home.css">
+    <script src="/scripts/HtmlSanitizer.js"></script>
+    <script src="/scripts/utils.js"></script>
+  </head>
+  <body>
+    <script src="/scripts/navbar.js"></script>
+    <h1>The PIC-Mo Forum</h1>
+    <div id="header" class="main-nav">
+      <a href="/forum/post">Post</a>
+      <a href="/chat">Chat</a>
+    </div>
+    <section class="intro">
+      <p>Post Questions, Get Help!</p>
+    </section>
+    <div id="controls">
+      <form style="font-size: 25px">
+        <select id="sortOptions" style="font-size: inherit">
+          <option value="featured">Featured</option>
+          <option value="views">Views</option>
+          <option value="latest">Latest</option>
+        </select>
+        <input type="text" id="searchBar" placeholder="Search tags here separated by a comma" style="font-size: inherit">
+        <input type="submit" value="Search" style="font-size: inherit">
+      </form>
+    </div>
+    
+    Discussions
+    <ul id="list" class="post-list"></ul>
+    
+    <div id="footer"></div>
+    
+    <script>
+      const form = document.querySelector('form')
+      const list = document.querySelector('#list');
+      const sortOptions = document.querySelector('#sortOptions');
+      const searchBar = document.querySelector('#searchBar');
+      var params = new URLSearchParams(location.search);
+      sortOptions.value = params.get("sort")||"featured";
+      searchBar.value = (params.get("includeTags")||"").replace("+",", ");
+    
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault()
+        try {
+          var taglist = searchBar.value.toLowerCase().replace(/[^,\w\d_-]/g,"").split(",");
+          const url = new URL(location);
+          if (taglist[0]) url.searchParams.set("includeTags", taglist.join("+"));
+          else url.searchParams.delete("includeTags");
+          url.searchParams.set("sort", sortOptions.value);
+          history.pushState({}, "", url);
+          params = new URLSearchParams(location.search);
+          searchPosts();
+        } catch (err) {
+          alert(err.message);
+          console.log(err.message)
+        }
+      });
+
+      async function searchPosts() {
+        const res = await fetch('/api/forum/list'+location.search);
+        const data = await res.json();
+        switch (params.get("sort")||"featured") {
+          case "featured": data.posts.sort((a,b)=>(Number(b.featured)-Number(a.featured))||(b.views-a.views)); break;
+          case "views": data.posts.sort((a,b)=>(b.views-a.views)); break;
+          case "latest": data.posts.sort((a,b)=>(b.postedAt-a.postedAt)); break;
+        }
+        list.innerHTML = '';
+        data.posts.map(forumHTML(list));
+      }
+      searchPosts();
+    </script>
+  </body>
+</html>
