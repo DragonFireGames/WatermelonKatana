@@ -33,6 +33,10 @@
       <h2>Featured Projects</h2>
       <div id="list" class="project-list"></div>
     </section>
+    <section class="featured-projects">
+      <h2>Hot Forum Topics</h2>
+      <div id="postlist" class="post-list"></div>
+    </section>
     <footer id="footer" class="main-footer">
       <p>&copy; 2024 PIC-Mo. All rights reserved.</p>
     </footer>
@@ -40,11 +44,20 @@
   
   <script>
     const list = document.querySelector('#list');
+    const postlist = document.querySelector('#postlist');
 
     (async () => {
       const res = await fetch('/api/project/list?featured=1');
       const data = await res.json();
       data.projects.sort((a,b)=>(b.score-a.score)||(b.views-a.views));
+      data.projects.map(projHTML(list));
+    })();
+
+    (async () => {
+      const res = await fetch('/api/forum/list');
+      const data = await res.json();
+      data.projects.sort((a,b)=>(Number(b.featured)-Number(a.featured))||(b.views-a.views));
+      data.projects = data.projects.slice(0,5);
       data.projects.map(projHTML(list));
     })();
     
