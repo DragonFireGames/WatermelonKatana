@@ -136,7 +136,7 @@ async list(req, res, next) {
     if (customQuery) search = JSON.parse(customQuery);
     var list = await this.model.find(search);
     list = list.map(e=>e.pack());
-    res.status(200).json({ this.model: list });
+    res.status(200).json({ Posts: list });
   } catch(err) {
     res.status(401).json({ message: "Not successful", error: err.message });
     console.log(err.message);
