@@ -1,12 +1,15 @@
-const Posts = require("../model/Posts");
 const Users = require("../model/Users");
 
-exports.publish = async (req, res, next) => {
+module.exports = class {
+constructor(model) {
+  this.model = model;
+}
+async publish(req, res, next) {
   var { name, content, tags } = req.body;
   console.log(name,link);
   try {
     const user = res.locals.userToken;
-    const post = await Posts.create({
+    const post = await this.model.create({
       name,
       content,
       tags,
@@ -28,14 +31,14 @@ exports.publish = async (req, res, next) => {
     });
     console.log(error.message);
   }
-};
-
-exports.update = async (req, res, next) => {
+}
+  
+async update(req, res, next) {
   var { name, content, tags } = req.body;
   console.log(name,link);
   try {
     const pid = req.params.id;
-    const post = await Posts.findOne({ _id: pid });
+    const post = await this.model.findOne({ _id: pid });
     if (!post) return res.status(404).json({
       message: "Fetch not successful",
       error: "Post not found",
@@ -63,10 +66,10 @@ exports.update = async (req, res, next) => {
   }
 };
 
-exports.deletePost = async (req, res, next) => {
+async deletePost(req, res, next) {
   try {
     const pid = req.params.id;
-    const post = await Posts.findOne({ _id: pid });
+    const post = await this.model.findOne({ _id: pid });
     if (!post) return res.status(404).json({
       message: "Fetch not successful",
       error: "Post not found",
@@ -75,9 +78,9 @@ exports.deletePost = async (req, res, next) => {
     if (post.posterId !== user.id && user.role !== "Admin") return res.status(403).json({
       message: "Not Authorized. You do not own this post",
     });
-    var users = await Users.find({ following: { $all: [ pid ] } });
+    var users = await Users.find({ favorites: { $all: [ pid ] } });
     for (var i = 0; i < users.length; i++) {
-      users[i].following.splice(users[i].following.indexOf(pid),1);
+      users[i].favorites.splice(users[i].favorites.indexOf(pid),1);
       await users[i].save();
     }
     await post.remove();
@@ -97,14 +100,14 @@ exports.deletePost = async (req, res, next) => {
   }
 };
 
-exports.list = async (req, res, next) => {
+async list(req, res, next) {
   try {
     var search = {};
-    const { poster, platform, postedBefore, postedAfter, includeTags, excludeTags, pinned, customQuery } = req.query;
+    const { poster, platform, postedBefore, postedAfter, includeTags, excludeTags, featured, customQuery } = req.query;
     if (poster) search.poster = poster;
     if (platform) search.platform = platform;
-    if (pinned == "0" || pinned == "false") search.pinned = false;
-    else if (pinned == "1" || pinned == "true") search.pinned = true;
+    if (featured == "0" || featured == "false") search.featured = false;
+    else if (featured == "1" || featured == "true") search.featured = true;
     if (postedBefore || postedAfter) {
       search.postedAt = {};
       if (postedBefore) search.postedAt.$lte = postedBefore;
@@ -121,19 +124,19 @@ exports.list = async (req, res, next) => {
       }
     }
     if (customQuery) search = JSON.parse(customQuery);
-    var list = await Posts.find(search);
+    var list = await this.model.find(search);
     list = list.map(e=>e.pack());
-    res.status(200).json({ posts: list });
+    res.status(200).json({ this.model: list });
   } catch(err) {
     res.status(401).json({ message: "Not successful", error: err.message });
     console.log(err.message);
   }
 };
 
-exports.data = async (req, res, next) => {
+async data(req, res, next) {
   try {
     const pid = req.params.id;
-    var post = await Posts.findOne({ _id: pid });
+    var post = await this.model.findOne({ _id: pid });
     if (!post) return res.status(404).json({
       message: "Fetch not successful",
       error: "Post not found",
@@ -148,10 +151,10 @@ exports.data = async (req, res, next) => {
 };
 
 
-exports.follow = async (req, res, next) => {
+async favorite(req, res, next) {
   try {
     const pid = req.params.id;
-    const post = await Posts.findOne({ _id: pid });
+    const post = await this.model.findOne({ _id: pid });
     if (!post) return res.status(404).json({
       message: "Fetch not successful",
       error: "Post not found",
@@ -162,12 +165,12 @@ exports.follow = async (req, res, next) => {
       message: "Fetch not successful",
       error: "User not found",
     });
-    if (user.following.includes(pid)) return res.status(400).json({
+    if (user.favorites.includes(pid)) return res.status(400).json({
       message: "Invalid",
-      error: "Already followed post",
+      error: "Already favorited post",
     });
-    user.following.push(pid);
-    post.followers++;
+    user.favorites.push(pid);
+    post.score++;
     await user.save();
     await post.save();
     res.status(201).json({
@@ -184,10 +187,10 @@ exports.follow = async (req, res, next) => {
     console.log(error.message);
   }
 };
-exports.unfollow = async (req, res, next) => {
+async unfavorite(req, res, next) {
   try {
     const pid = req.params.id;
-    const post = await Posts.findOne({ _id: pid });
+    const post = await this.model.findOne({ _id: pid });
     if (!post) return res.status(404).json({
       message: "Fetch not successful",
       error: "Post not found",
@@ -198,13 +201,13 @@ exports.unfollow = async (req, res, next) => {
       message: "Fetch not successful",
       error: "User not found",
     });
-    const index = user.following.indexOf(pid);
+    const index = user.favorites.indexOf(pid);
     if (index === -1) return res.status(400).json({
       message: "Invalid",
-      error: "Haven't followd post yet",
+      error: "Haven't favorited post yet",
     });
-    user.following.splice(index,1);
-    post.followers--;
+    user.favorites.splice(index,1);
+    post.score--;
     await user.save();
     await post.save();
     res.status(201).json({
@@ -222,15 +225,15 @@ exports.unfollow = async (req, res, next) => {
   }
 };
 
-exports.pin = async (req, res, next) => {
+async feature(req, res, next) {
   try {
     const pid = req.params.id;
-    const post = await Posts.findOne({ _id: pid });
+    const post = await this.model.findOne({ _id: pid });
     if (!post) return res.status(404).json({
       message: "Fetch not successful",
       error: "Post not found",
     });
-    post.pinned = true;
+    post.featured = true;
     await post.save();
     res.status(201).json({
       message: "Post successfully updated",
@@ -246,15 +249,15 @@ exports.pin = async (req, res, next) => {
     console.log(error.message);
   }
 };
-exports.unpin = async (req, res, next) => {
+async unfeature(req, res, next) {
   try {
     const pid = req.params.id;
-    const post = await Posts.findOne({ _id: pid });
+    const post = await this.model.findOne({ _id: pid });
     if (!post) return res.status(404).json({
       message: "Fetch not successful",
       error: "Post not found",
     });
-    post.pinned = false;
+    post.featured = false;
     await post.save();
     res.status(201).json({
       message: "Post successfully updated",
@@ -271,12 +274,12 @@ exports.unpin = async (req, res, next) => {
   }
 };
 
-exports.comment = async (req, res, next) => {
+async comment(req, res, next) {
   var { content } = req.body;
   console.log(content);
   try {
     const pid = req.params.id;
-    const post = await Posts.findOne({ _id: pid });
+    const post = await this.model.findOne({ _id: pid });
     if (!post) return res.status(404).json({
       message: "Fetch not successful",
       error: "Post not found",
@@ -310,12 +313,12 @@ exports.comment = async (req, res, next) => {
   }
 };
 
-exports.deleteComment = async (req, res, next) => {
+async deleteComment(req, res, next) {
   var { index } = req.body;
   console.log(index);
   try {
     const pid = req.params.id;
-    const post = await Posts.findOne({ _id: pid });
+    const post = await this.model.findOne({ _id: pid });
     if (!post) return res.status(404).json({
       message: "Fetch not successful",
       error: "Post not found",
@@ -348,12 +351,12 @@ exports.deleteComment = async (req, res, next) => {
   }
 };
 
-exports.editComment = async (req, res, next) => {
+async editComment(req, res, next) {
   var { content, index } = req.body;
   console.log(content,index);
   try {
     const pid = req.params.id;
-    const post = await Posts.findOne({ _id: pid });
+    const post = await this.model.findOne({ _id: pid });
     if (!post) return res.status(404).json({
       message: "Fetch not successful",
       error: "Post not found",
