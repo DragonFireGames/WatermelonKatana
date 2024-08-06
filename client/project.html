@@ -6,16 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>View | PIC-MO</title>
   <!--og:meta-->
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-    }
-    #display {
-      margin: 5px;
-      padding: 5px;
-    }
-  </style>
   <link rel="stylesheet" type="text/css" href="/styles/style.css">
   <link rel="stylesheet" type="text/css" href="/styles/forum.css">
   <script src="/scripts/HtmlSanitizer.js"></script>
@@ -139,7 +129,6 @@
     };
 
     async function featurebtnclick(feature) {
-      const score = document.querySelector('#score');
       if (feature) {
         await fetch("/api/project/feature/"+pid);
       } else {
