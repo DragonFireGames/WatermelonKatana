@@ -47,7 +47,6 @@ const cldir = __dirname + "/client";
  * Define route handlers for serving HTML files
  */
 app.get("/", (req, res) => res.sendFile(cldir + "/home.html")); // Home page
-app.get("/search", (req, res) => res.sendFile(cldir + "/search.html")); // Home page
 app.get("/register", (req, res) => res.sendFile(cldir + "/register.html")); // Registration page
 app.get("/login", (req, res) => res.sendFile(cldir + "/login.html")); // Login page
 app.get("/ui-tester", (req, res) => res.sendFile(cldir + "/ui-tester.html")); // UI Testing page
@@ -63,16 +62,14 @@ app.get("/chat", userAuth, (req, res) => res.sendFile(cldir + "/chat.html"));
 
 // Admin page, admins only
 app.get("/admin", adminAuth, (req, res) => res.sendFile(cldir + "/admin.html"));
-
 // Basic user page, users only
 app.get("/userlist", userAuth, (req, res) => res.sendFile(cldir + "/userlist.html"));
 
-// Publish page, users only
-app.get("/publish", userAuth, (req, res) => res.sendFile(cldir + "/publish.html"));
-
-// Project page with dynamic project ID
-const Projects = require("./model/Projects.js");
-app.get("/project/:id", async (req, res) => {
+// Projects
+app.get("/search", (req, res) => res.sendFile(cldir + "/search.html")); // Search page
+app.get("/publish", userAuth, (req, res) => res.sendFile(cldir + "/publish.html")); // Publish page, users only
+const Projects = require("./model/Projects.js"); 
+app.get("/project/:id", async (req, res) => { // Project page with dynamic project ID
   var proj = await Projects.findOne({_id:req.params.id});
   if (!proj) {
     res.status(404).sendFile(cldir+"/404.html");
@@ -83,13 +80,13 @@ app.get("/project/:id", async (req, res) => {
   <meta property="og:image" content="${proj.thumbnail}"/>
   <meta property="og:description" content="${proj.desc} | By: ${proj.poster} | Score: ${proj.score} Views: ${proj.views}"/>`));
 });
-// Edit project page, users only
-app.get("/project/:id/edit", userAuth, (req, res) => res.sendFile(cldir + "/edit.html"));
-// Delete project route, users only
-app.get("/project/:id/delete", userAuth, (req, res) => res.redirect("/api/project/delete/" + req.params.id));
+app.get("/project/:id/edit", userAuth, (req, res) => res.sendFile(cldir + "/edit.html")); // Edit project page, users only
+app.get("/project/:id/delete", userAuth, (req, res) => res.redirect("/api/project/delete/" + req.params.id)); // Delete project route, users only
 
-// Post page with dynamic project ID
-const Posts = require("./model/Posts.js");
+// Posts
+app.get("/forum", userAuth, (req, res) => res.sendFile(cldir + "/forum/post.html")); // Forum Home/Search
+app.get("/forum/post", userAuth, (req, res) => res.sendFile(cldir + "/forum/post.html")); // Publish page, users only
+const Posts = require("./model/Posts.js"); // Post page with dynamic post ID
 app.get("/forum/discussion/:id", async (req, res) => {
   var post = await Posts.findOne({_id:req.params.id});
   if (!post) {
@@ -100,10 +97,8 @@ app.get("/forum/discussion/:id", async (req, res) => {
   <meta property="og:type" content="website"/>
   <meta property="og:description" content="${proj.content} | By: ${post.poster} | Views: ${post.views}"/>`));
 });
-// Edit post page, users only
-app.get("/forum/discussion/:id/edit", userAuth, (req, res) => res.sendFile(cldir + "/editpost.html"));
-// Delete post route, users only
-app.get("/forum/discussion/:id/delete", userAuth, (req, res) => res.redirect("/api/project/delete/" + req.params.id));
+app.get("/forum/discussion/:id/edit", userAuth, (req, res) => res.sendFile(cldir + "/editpost.html")); // Edit post page, users only
+app.get("/forum/discussion/:id/delete", userAuth, (req, res) => res.redirect("/api/project/delete/" + req.params.id)); // Delete post route, users only
 
 // User profile page with dynamic user name
 const Users = require("./model/Users.js");
