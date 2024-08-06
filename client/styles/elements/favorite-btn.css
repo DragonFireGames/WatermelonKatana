@@ -1,0 +1,80 @@
+
+#fav-container {
+  background-color: rgb(36, 36, 36);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 15px 10px 10px;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 10px;
+  box-shadow: rgba(46, 46, 46, 0.2) 0px 8px 24px;
+  color: rgb(255, 255, 255);
+  width: 200px;
+}
+
+#favorite-btn {
+  display: none;
+}
+
+#favorite-btn:checked + #fav-container svg {
+  fill: hsl(0deg 100% 50%);
+  stroke: hsl(0deg 100% 50%);
+  animation: heartButton 1s;
+}
+
+@keyframes heartButton {
+  0% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(1.3);
+  }
+
+  50% {
+    transform: scale(1);
+  }
+
+  75% {
+    transform: scale(1.3);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+#favorite-btn + #fav-container .fav-action {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+}
+
+#favorite-btn + #fav-container .fav-action span {
+  grid-column-start: 1;
+  grid-column-end: 1;
+  grid-row-start: 1;
+  grid-row-end: 1;
+  transition: all 0.5s;
+}
+
+#favorite-btn + #fav-container .fav-action span.fav-option-1 {
+  transform: translate(0px, 0%);
+  opacity: 1;
+}
+
+#favorite-btn:checked + #fav-container .fav-action span.fav-option-1 {
+  transform: translate(0px, -100%);
+  opacity: 0;
+}
+
+#favorite-btn + #fav-container .fav-action span.fav-option-2 {
+  transform: translate(0px, 100%);
+  opacity: 0;
+}
+
+#favorite-btn:checked + #fav-container .fav-action span.fav-option-2 {
+  transform: translate(0px, 0%);
+  opacity: 1;
+}

@@ -1,17 +1,27 @@
 location.path = location.pathname.split("/");
-var _auth = false;
+var _authCache = false;
 var _authwaiting = [];
 function getAuth() {
   return new Promise(async(resolve)=>{
-    if (_auth) return resolve(_auth);
+    if (_authCache) return resolve(_authCache);
     _authwaiting.push(resolve);
     if (_authwaiting.length > 1) return;
     const res = await fetch("/api/auth/check");
     const data = await res.json();
     if (res.status > 206) throw Error(data);
     for (var i = 0; i < _authwaiting.length; i++) _authwaiting[i](data);
-    _auth = data;
+    _authCache = data;
+    if (data.user) _userCache[data.user.id] = data.user;
   });
+}
+
+var _userCache = {};
+async function getUser(id) {
+  if (_userCache[id]) return _userCache[id];
+  var res = await fetch("/api/auth/userdata?id="+id);
+  var u = await res.json();
+  _userCache[id] = u;
+  return u;
 }
 
 function projHTML(list) {

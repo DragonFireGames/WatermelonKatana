@@ -1,37 +1,46 @@
-const Projects = require("../model/Projects");
 const Users = require("../model/Users");
+var PostAPI = require("../Forum/post.js");
+module.exports = class extends PostAPI {
+  constructor(model) {
+    super(model,"projects")
+  }
 
-exports.publish = async (req, res, next) => {
-  var { name, link, desc, tags, thumbnail } = req.body;
+processLink(link) {
+  const iscdo = link.match(/^https?:\/\/studio\.code\.org\/projects\/(applab|gamelab)\/([^/]+)/);
+  const isscratch = link.match(/^https?:\/\/scratch\.mit\.edu\/projects\/(\d+)/) || link.match(/^https?:\/\/turbowarp\.org\/(\d+)/);
+  const iskhan = link.match(/^https?:\/\/www\.khanacademy\.org\/computer-programming\/([^/]+\/\d+)/);
+  if (!thumbnail && iscdo) thumbnail = `https://studio.code.org/v3/files/${iscdo[2]}/.metadata/thumbnail.png`;
+  if (!thumbnail && isscratch) thumbnail = `https://uploads.scratch.mit.edu/get_image/project/${isscratch[1]}_432x288.png`;
+  //if (!thumbnail && iskhan) thumbnail = `https://www.khanacademy.org/computer-programming/${iskhan[1]}/???.png`;
+  var platform = "embed"
+  if (iscdo) {
+    link = iscdo[0];
+    platform = "cdo";
+  }
+  if (isscratch) {
+    link = isscratch[0];
+    platform = "scratch";
+  }
+  if (iskhan) {
+    link = iskhan[0];
+    platform = "khan";
+  }
+  return { link, platform }
+}
+  
+async publish(req, res, next) {
+  var { name, link, desc, tags, thumbnail, platform } = req.body;
   console.log(name,link);
   try {
-    const iscdo = link.match(/^https?:\/\/studio\.code\.org\/projects\/(applab|gamelab)\/([^/]+)/);
-    const isscratch = link.match(/^https?:\/\/scratch\.mit\.edu\/projects\/(\d+)/) || link.match(/^https?:\/\/turbowarp\.org\/(\d+)/);
-    const iskhan = link.match(/^https?:\/\/www\.khanacademy\.org\/computer-programming\/([^/]+\/\d+)/);
-    if (!thumbnail && iscdo) thumbnail = `https://studio.code.org/v3/files/${iscdo[2]}/.metadata/thumbnail.png`;
-    if (!thumbnail && isscratch) thumbnail = `https://uploads.scratch.mit.edu/get_image/project/${isscratch[1]}_432x288.png`;
-    //if (!thumbnail && iskhan) thumbnail = `https://www.khanacademy.org/computer-programming/${iskhan[1]}/???.png`;
-    var platform = "embed"
-    if (iscdo) {
-      link = iscdo[0];
-      platform = "cdo";
-    }
-    if (isscratch) {
-      link = isscratch[0];
-      platform = "scratch";
-    }
-    if (iskhan) {
-      link = iskhan[0];
-      platform = "khan";
-    }
+    var e = this.processLink(link);
     const user = res.locals.userToken;
-    const project = await Projects.create({
+    const project = await this.model.create({
       name,
-      link,
+      link: e.link,
       desc,
       tags,
       thumbnail,
-      platform: platform,
+      platform: e.platform,
       postedAt: Date.now(),
       posterId: user.id,
       poster: user.username, //convert to ref eventually
@@ -52,12 +61,12 @@ exports.publish = async (req, res, next) => {
   }
 };
 
-exports.update = async (req, res, next) => {
-  var { name, link, desc, tags, thumbnail } = req.body;
+async update(req, res, next) {
+  var { name, link, desc, tags, thumbnail, platform } = req.body;
   console.log(name,link);
   try {
     const pid = req.params.id;
-    const project = await Projects.findOne({ _id: pid });
+    const project = await this.model.findOne({ _id: pid });
     if (!project) return res.status(404).json({
       message: "Fetch not successful",
       error: "Project not found",
@@ -66,31 +75,13 @@ exports.update = async (req, res, next) => {
     if (project.posterId !== user.id && user.role !== "Admin") return res.status(403).json({
       message: "Not Authorized. You do not own this project",
     });
-    const iscdo = link.match(/^https?:\/\/studio\.code\.org\/projects\/(applab|gamelab)\/([^/]+)/);
-    const isscratch = link.match(/^https?:\/\/scratch\.mit\.edu\/projects\/(\d+)/) || link.match(/^https?:\/\/turbowarp\.org\/(\d+)/);
-    const iskhan = link.match(/^https?:\/\/www\.khanacademy\.org\/computer-programming\/([^/]+\/\d+)/);
-    if (!thumbnail && iscdo) thumbnail = `https://studio.code.org/v3/files/${iscdo[2]}/.metadata/thumbnail.png`;
-    if (!thumbnail && isscratch) thumbnail = `https://uploads.scratch.mit.edu/get_image/project/${isscratch[1]}_432x288.png`;
-    //if (!thumbnail && iskhan) thumbnail = `https://www.khanacademy.org/computer-programming/${iskhan[1]}/???.png`;
-    var platform = "embed"
-    if (iscdo) {
-      link = iscdo[0];
-      platform = "cdo";
-    }
-    if (isscratch) {
-      link = isscratch[0];
-      platform = "scratch";
-    }
-    if (iskhan) {
-      link = iskhan[0];
-      platform = "khan";
-    }
+    var e = this.processLink(link);
     project.name = name;
-    project.link = link;
+    project.link = e.link;
     project.desc = desc;
     project.tags = tags;
     project.thumbnail = thumbnail;
-    project.platform = platform;
+    project.platform = e.platform;
     await project.save();
     res.status(201).json({
       message: "Project successfully updated",
@@ -107,10 +98,10 @@ exports.update = async (req, res, next) => {
   }
 };
 
-exports.deleteProject = async (req, res, next) => {
+async delete(req, res, next) {
   try {
     const pid = req.params.id;
-    const project = await Projects.findOne({ _id: pid });
+    const project = await this.model.findOne({ _id: pid });
     if (!project) return res.status(404).json({
       message: "Fetch not successful",
       error: "Project not found",
@@ -141,60 +132,10 @@ exports.deleteProject = async (req, res, next) => {
   }
 };
 
-exports.list = async (req, res, next) => {
-  try {
-    var search = {};
-    const { poster, platform, postedBefore, postedAfter, includeTags, excludeTags, featured, customQuery } = req.query;
-    if (poster) search.poster = poster;
-    if (platform) search.platform = platform;
-    if (featured == "0" || featured == "false") search.featured = false;
-    else if (featured == "1" || featured == "true") search.featured = true;
-    if (postedBefore || postedAfter) {
-      search.postedAt = {};
-      if (postedBefore) search.postedAt.$lte = postedBefore;
-      if (postedAfter) search.postedAt.$gte = postedAfter;
-    }
-    if (includeTags) {
-      search.tags = { $all: includeTags.split("+") };
-    }
-    if (excludeTags) {
-      excludeTags = excludeTags.split("+");
-      search.$nor = [];
-      for (var i = 0; i < excludeTags.length; i++) {
-        search.$nor.push({ tags: excludeTags[i] });
-      }
-    }
-    if (customQuery) search = JSON.parse(customQuery);
-    var list = await Projects.find(search);
-    list = list.map(e=>e.pack());
-    res.status(200).json({ projects: list });
-  } catch(err) {
-    res.status(401).json({ message: "Not successful", error: err.message });
-    console.log(err.message);
-  }
-};
-
-exports.data = async (req, res, next) => {
+async favorite(req, res, next) {
   try {
     const pid = req.params.id;
-    var project = await Projects.findOne({ _id: pid });
-    if (!project) return res.status(404).json({
-      message: "Fetch not successful",
-      error: "Project not found",
-    });
-    project.views++;
-    await project.save();
-    res.status(200).json(project.pack());
-  } catch(err) {
-    res.status(401).json({ message: "Not successful", error: err.message });
-    console.log(err.message);
-  }
-};
-
-exports.favorite = async (req, res, next) => {
-  try {
-    const pid = req.params.id;
-    const project = await Projects.findOne({ _id: pid });
+    const project = await this.model.findOne({ _id: pid });
     if (!project) return res.status(404).json({
       message: "Fetch not successful",
       error: "Project not found",
@@ -227,10 +168,10 @@ exports.favorite = async (req, res, next) => {
     console.log(error.message);
   }
 };
-exports.unfavorite = async (req, res, next) => {
+async unfavorite(req, res, next) {
   try {
     const pid = req.params.id;
-    const project = await Projects.findOne({ _id: pid });
+    const project = await this.model.findOne({ _id: pid });
     if (!project) return res.status(404).json({
       message: "Fetch not successful",
       error: "Project not found",
@@ -265,167 +206,4 @@ exports.unfavorite = async (req, res, next) => {
   }
 };
 
-exports.feature = async (req, res, next) => {
-  try {
-    const pid = req.params.id;
-    const project = await Projects.findOne({ _id: pid });
-    if (!project) return res.status(404).json({
-      message: "Fetch not successful",
-      error: "Project not found",
-    });
-    project.featured = true;
-    await project.save();
-    res.status(201).json({
-      message: "Project successfully updated",
-      id: project._id,
-      name: project.name,
-    });
-    console.log("done!");
-  } catch(error) {
-    res.status(400).json({
-      message: "Project not successfully updated",
-      error: error.message,
-    });
-    console.log(error.message);
-  }
 };
-exports.unfeature = async (req, res, next) => {
-  try {
-    const pid = req.params.id;
-    const project = await Projects.findOne({ _id: pid });
-    if (!project) return res.status(404).json({
-      message: "Fetch not successful",
-      error: "Project not found",
-    });
-    project.featured = false;
-    await project.save();
-    res.status(201).json({
-      message: "Project successfully updated",
-      id: project._id,
-      name: project.name,
-    });
-    console.log("done!");
-  } catch(error) {
-    res.status(400).json({
-      message: "Project not successfully updated",
-      error: error.message,
-    });
-    console.log(error.message);
-  }
-};
-
-exports.comment = async (req, res, next) => {
-  var { content } = req.body;
-  console.log(content);
-  try {
-    const pid = req.params.id;
-    const project = await Projects.findOne({ _id: pid });
-    if (!project) return res.status(404).json({
-      message: "Fetch not successful",
-      error: "Project not found",
-    });
-    const uid = res.locals.userToken.id;
-    const user = await Users.findOne({ _id: uid });
-    if (!user) return res.status(404).json({
-      message: "Fetch not successful",
-      error: "User not found",
-    });
-    project.comments.push({
-      content,
-      rating: 0,
-      poster: user.username,
-      posterId: user.id,
-      postedAt: Date.now(),
-    });
-    await project.save();
-    res.status(201).json({
-      message: "Project successfully updated",
-      id: project._id,
-      name: project.name,
-    });
-    console.log("done!");
-  } catch(error) {
-    res.status(400).json({
-      message: "Project not successfully updated",
-      error: error.message,
-    });
-    console.log(error.message);
-  }
-};
-
-exports.deleteComment = async (req, res, next) => {
-  var { index } = req.body;
-  console.log(content);
-  try {
-    const pid = req.params.id;
-    const project = await Projects.findOne({ _id: pid });
-    if (!project) return res.status(404).json({
-      message: "Fetch not successful",
-      error: "Project not found",
-    });
-    const uid = res.locals.userToken.id;
-    const user = await Users.findOne({ _id: uid });
-    if (!user) return res.status(404).json({
-      message: "Fetch not successful",
-      error: "User not found",
-    });
-    var comment = project.comments[index];
-    if (user.id !== comment.posterId && user.role !== "Admin") return res.status(404).json({
-      message: "Delete not successful",
-      error: "User does not own comment",
-    });
-    project.comments.splice(index,1);
-    await project.save();
-    res.status(201).json({
-      message: "Project successfully updated",
-      id: project._id,
-      name: project.name,
-    });
-    console.log("done!");
-  } catch(error) {
-    res.status(400).json({
-      message: "Project not successfully updated",
-      error: error.message,
-    });
-    console.log(error.message);
-  }
-};
-
-exports.editComment = async (req, res, next) => {
-  var { content, index } = req.body;
-  console.log(content);
-  try {
-    const pid = req.params.id;
-    const project = await Projects.findOne({ _id: pid });
-    if (!project) return res.status(404).json({
-      message: "Fetch not successful",
-      error: "Project not found",
-    });
-    const uid = res.locals.userToken.id;
-    const user = await Users.findOne({ _id: uid });
-    if (!user) return res.status(404).json({
-      message: "Fetch not successful",
-      error: "User not found",
-    });
-    var comment = project.comments[index];
-    if (user.id !== comment.posterId) return res.status(404).json({
-      message: "Delete not successful",
-      error: "User does not own comment",
-    });
-    comment.content = content;
-    await project.save();
-    res.status(201).json({
-      message: "Project successfully updated",
-      id: project._id,
-      name: project.name,
-    });
-    console.log("done!");
-  } catch(error) {
-    res.status(400).json({
-      message: "Project not successfully updated",
-      error: error.message,
-    });
-    console.log(error.message);
-  }
-};
-

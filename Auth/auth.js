@@ -1,5 +1,6 @@
 const Users = require("../model/Users");
-const Projects = require("../model/Projects");
+const Discussions = require("../model/Projects");
+const Posts = require("../model/Posts");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -95,6 +96,11 @@ exports.update = async (req, res, next) => {
       for (var i = 0; i < postedProjects.length; i++) {
         postedProjects[i].poster = username;
         await postedProjects[i].save();
+      }
+      const postedDiscussions = await Discussions.find({ posterId: userId });
+      for (var i = 0; i < postedDiscussions.length; i++) {
+        postedDiscussions[i].poster = username;
+        await postedDiscussions[i].save();
       }
     }
     user.username = username;

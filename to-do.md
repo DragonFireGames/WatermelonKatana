@@ -19,13 +19,14 @@ Will these actually get done?
 - [x] Tag System
 
 ### Step 3 - Forums
-- [ ] Posting System
+- [x] Posting System
 - [ ] Forums
-- [ ] Reputation System
+- [x] Upvote System
 - [ ] Follow/Friending Systems
 
 ### Step 4 - Quick Chat
 - [x] Chat System using discord
+- [x] Use account photo/name in quick chat
 
 ## Phase 2 - Production
 - Timeframe: Winter of 2024-2025
@@ -38,11 +39,12 @@ Will these actually get done?
 - [ ] Reporting System
 
 ### Step 2 - More Features
-- [ ] Search for Posts/Users/Games
-- [ ] Community Ranking
+- [ ] Better Search for Posts/Users/Games
+- [x] Community Ranking
 - [ ] Private Forums, Quick-Chats & Games
-- [ ] Featured Games
-- [ ] Followed/Favorited/User-Featured Games (visible on profile)
+- [x] Featured Games
+- [x] Admins / Moderators ability to pin posts
+- [x] Followed/Favorited/User-Featured Games (visible on profile)
 - [ ] Markdown Support
 - [ ] Custom Emoji Support
 
@@ -58,7 +60,6 @@ Will these actually get done?
 - [ ] Community Leaderboards
 - [ ] Improve Performance
 - [ ] Finalize GUI/Graphics
-- [ ] Admins / Moderators ability to pin posts
 - [ ] Friend activity monitor (what are they doing?)
 - [ ] Live Game Chat???
 - [ ] Remix System (integrated with Github/Free Deployment Software)???
@@ -91,9 +92,10 @@ Will these actually get done?
 - [ ] Make it Popular (Honeymoon phase)
 
 ### Step 3 - Cash Out
-- [ ] Form a corporation (do it properly)
+- [ ] Form a corporation, make a logo, do it properly
+- [ ] The ads must sell that will be your new philosophy
 - [ ] Migrate to paid production environment
-- [ ] Scale Up Systems to handle a large userbase
+- [ ] Scale Up, Scale up, handle a large userbase
 - [ ] Hire Staff (or rely on volunteer moderation like Reddit)
 - [ ] Page Ads (before games)
 - [ ] Page Ads (during games)

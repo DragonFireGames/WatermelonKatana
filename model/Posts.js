@@ -1,23 +1,15 @@
+
 const Mongoose = require("mongoose");
 
 const CommentSchema = require("./Comments");
 
-const ProjectSchema = new Mongoose.Schema({
+const PostSchema = new Mongoose.Schema({
   name: {
     type: String,
     minlength: 2,
     required: true,
   },
-  link: {
-    type: String,
-    minlength: 6,
-    required: true,
-  },
-  thumbnail: {
-    type: String,
-    default: "",
-  },
-  desc: {
+  content: {
     type: String,
     default: "",
   },
@@ -26,17 +18,9 @@ const ProjectSchema = new Mongoose.Schema({
     default: false,
   },
   tags: [ String ],
-  score: {
-    type: Number,
-    default: 0,
-  },
   views: {
     type: Number,
     default: 0,
-  },
-  platform: {
-    type: String,
-    default: "embed",
   },
   postedAt: {
     type: Number,
@@ -60,12 +44,9 @@ const ProjectSchema = new Mongoose.Schema({
     pack: function() {
       const container = {};
       container.name = this.name;
-      container.link = this.link;
-      container.desc = this.desc;
+      container.content = this.content;
       container.featured = this.featured;
       container.tags = this.tags || [];
-      container.thumbnail = this.thumbnail;
-      container.score = this.score;
       container.views = this.views;
       container.comments = this.comments;
       container.platform = this.platform;
@@ -78,6 +59,6 @@ const ProjectSchema = new Mongoose.Schema({
   }
 });
 
-const Projects = Mongoose.model("project", ProjectSchema);
+const Posts = Mongoose.model("post", PostSchema);
 
-module.exports = Projects;
+module.exports = Posts;

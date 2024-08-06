@@ -6,16 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>View | PIC-MO</title>
   <!--og:meta-->
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-    }
-    #display {
-      margin: 5px;
-      padding: 5px;
-    }
-  </style>
   <link rel="stylesheet" type="text/css" href="/styles/style.css">
   <link rel="stylesheet" type="text/css" href="/styles/forum.css">
   <script src="/scripts/HtmlSanitizer.js"></script>
@@ -26,88 +16,7 @@
   <script src="/scripts/navbar.js"></script>
   <iframe id="game" onmouseenter="window.scrollTo(0,0);document.body.style.overflow = 'hidden'" onmouseleave="document.body.style.overflow = 'scroll'" style="display: block; margin-left: auto; margin-right: auto;"></iframe> <br>
   <!-- https://uiverse.io/barisdogansutcu/fresh-gecko-10 -->
-  <style>
-    #fav-container {
-      background-color: rgb(36, 36, 36);
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 10px 15px 10px 10px;
-      cursor: pointer;
-      user-select: none;
-      border-radius: 10px;
-      box-shadow: rgba(46, 46, 46, 0.2) 0px 8px 24px;
-      color: rgb(255, 255, 255);
-      width: 200px;
-    }
-
-    #favorite-btn {
-      display: none;
-    }
-
-    #favorite-btn:checked + #fav-container svg {
-      fill: hsl(0deg 100% 50%);
-      stroke: hsl(0deg 100% 50%);
-      animation: heartButton 1s;
-    }
-
-    @keyframes heartButton {
-      0% {
-        transform: scale(1);
-      }
-
-      25% {
-        transform: scale(1.3);
-      }
-
-      50% {
-        transform: scale(1);
-      }
-
-      75% {
-        transform: scale(1.3);
-      }
-
-      100% {
-        transform: scale(1);
-      }
-    }
-
-    #favorite-btn + #fav-container .fav-action {
-      position: relative;
-      overflow: hidden;
-      display: grid;
-    }
-
-    #favorite-btn + #fav-container .fav-action span {
-      grid-column-start: 1;
-      grid-column-end: 1;
-      grid-row-start: 1;
-      grid-row-end: 1;
-      transition: all 0.5s;
-    }
-
-    #favorite-btn + #fav-container .fav-action span.fav-option-1 {
-      transform: translate(0px, 0%);
-      opacity: 1;
-    }
-
-    #favorite-btn:checked + #fav-container .fav-action span.fav-option-1 {
-      transform: translate(0px, -100%);
-      opacity: 0;
-    }
-
-    #favorite-btn + #fav-container .fav-action span.fav-option-2 {
-      transform: translate(0px, 100%);
-      opacity: 0;
-    }
-
-    #favorite-btn:checked + #fav-container .fav-action span.fav-option-2 {
-      transform: translate(0px, 0%);
-      opacity: 1;
-    }
-
-  </style>
+  <link rel="stylesheet" type="text/css" href="/styles/elements/favorite-btn.css">
   <input
     value="favorite-button"
     name="favorite-checkbox"
@@ -138,36 +47,30 @@
     </div>
   </label>
   <!---->
-  <div id="display">
+  <div id="post">
     Loading...
   </div>
-  Comments:
-  <div id="comments" class="comment-list">
-    
-  </div>
   <script>
-    const commentlist = document.querySelector("#comments");
-    const display = document.querySelector('#display');
-    const favoritebtn = document.querySelector('#favorite-btn');
-    const game = document.querySelector('#game');
+    const postdiv = document.querySelector('#post');
     const pid = location.path[2];
     (async() => {
       try {
         const res = await fetch('/api/project/data/'+pid);
         const data = await res.json();
-        display.innerHTML = `
-          <b>Name</b> => ${data.name} <br>
-          <b>Poster</b> => <a href="/user/${data.poster}">${data.poster}</a> <br>
-          <b>Description</b> => ${data.desc} <br>
-          <b>Tags</b> => ${data.tags.join(", ")} <br>
-          <b>URL</b> => <a href="${data.link}">${data.link}</a> <br>
-          <b>Platform</b> => ${data.platform} <br>
-          <b>Score</b> => <span id="score">${data.score}</span> <br>
-          <b>Posted At</b> => ${new Date(data.postedAt).toUTCString()} <br>
-          <b>ID</b> => ${data.id} <br>`;
+        await createPost(postdiv,data,`
+        ${convertHTML(data.desc)} <br>
+        <b>URL</b> => <a href="${data.link}">${data.link}</a> <br>
+        <b>Platform</b>: <a href="/search?platform=${data.platform}">${({
+          "cdo":"code.org",
+          "khan":"Khan Academy",
+          "scratch":"Scratch",
+          "embed":"Unknown"
+        }[data.platform])}</a> <br>
+        <b>Score:</b> <span id="score">${data.score}</span> 
+        <b>Views:</b> <span id="views">${data.views}</span> <br>
+        `);
         
-        console.log(`Extra Debug Info:\nIsCDO?: ${data.iscdo}\nPosterID: ${data.posterId}`);
-        
+        const game = document.querySelector('#game');
         switch (data.platform) {
           case "cdo":
             //do magic
@@ -196,61 +99,13 @@
         }
         
         const tok = await getAuth();
-        await listComments(commentlist,data.comments,tok.user,{
-          onsend:async(content)=>{
-            const res = await fetch("/api/project/comment/"+pid, {
-              method: "POST",
-              body: JSON.stringify({
-                content: content
-              }),
-              headers: { "Content-Type": "application/json" },
-            });
-            location.assign(location.pathname);
-          },
-          onedit:async(content,index)=>{
-            const res = await fetch("/api/project/comment/"+pid+"/edit", {
-              method: "POST",
-              body: JSON.stringify({
-                content: content,
-                index: index
-              }),
-              headers: { "Content-Type": "application/json" },
-            });
-            location.assign(location.pathname);
-          },
-          ondelete:async(index)=>{
-            const res = await fetch("/api/project/comment/"+pid+"/delete", {
-              method: "DELETE",
-              body: JSON.stringify({
-                index: index
-              }),
-              headers: { "Content-Type": "application/json" },
-            });
-            location.assign(location.pathname);
-          }
-        });
+        const favoritebtn = document.querySelector('#favorite-btn');
         if (!tok.auth) {
           favoritebtn.outerHTML = "";
           document.querySelector('#fav-container').outerHTML = "";
           return;
         }
         favoritebtn.checked = !!tok.user.favorites.includes(pid);
-        if (tok.user.role === "Admin") { 
-          document.body.innerHTML += `
-          <label for="featured-btn">Featured:</label>
-          <input
-            value="featured-button"
-            name="featured-checkbox"
-            id="featured-btn"
-            type="checkbox"
-            ${data.featured ? "checked" : ""}
-            onclick="featurebtnclick(this.checked)"
-          /> <br>`;
-        } else {
-          document.body.innerHTML += `<b>Featured</b> => ${data.featured} <br>`;
-        }
-        if (tok.user.id !== data.posterId && tok.user.role !== "Admin") return;
-        document.body.innerHTML += `<button class="edit"> <a href="/project/${pid}/edit">Edit</a></button>`;
       } catch(e) {
         alert(e);
         console.error(e);
@@ -269,7 +124,6 @@
     };
 
     async function featurebtnclick(feature) {
-      const score = document.querySelector('#score');
       if (feature) {
         await fetch("/api/project/feature/"+pid);
       } else {

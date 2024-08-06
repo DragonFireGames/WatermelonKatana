@@ -77,6 +77,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     <a href="/">Home</a>
     <a href="/chat">Chat</a>
     <a href="/search">Project Gallery</a>
+    <a href="/forum">Forum</a>
   </div>
   <div id="block"></div>
   `;
