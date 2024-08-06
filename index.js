@@ -54,8 +54,8 @@ app.get("/ui-tester", (req, res) => res.sendFile(cldir + "/ui-tester.html")); //
 
 // Logout route: clear the JWT cookie and redirect to home
 app.get("/logout", (req, res) => {
-	res.cookie("jwt", "", { maxAge: "1" });
-	res.redirect("/");
+  res.cookie("jwt", "", { maxAge: "1" });
+  res.redirect("/");
 });
 
 // Chat page, users only
@@ -73,12 +73,12 @@ app.get("/publish", userAuth, (req, res) => res.sendFile(cldir + "/publish.html"
 // Project page with dynamic project ID
 const Projects = require("./model/Projects.js");
 app.get("/project/:id", async (req, res) => {
-	var proj = await Projects.findOne({_id:req.params.id});
-	if (!proj) {
-		res.status(404).sendFile(cldir+"/404.html");
-		return;
-	}
-	sendFileReplace(res,"./client/project.html",s=>s.replace("<!--og:meta-->",`<meta property="og:title" content="${proj.name}"/>
+  var proj = await Projects.findOne({_id:req.params.id});
+  if (!proj) {
+    res.status(404).sendFile(cldir+"/404.html");
+    return;
+  }
+  sendFileReplace(res,"./client/project.html",s=>s.replace("<!--og:meta-->",`<meta property="og:title" content="${proj.name}"/>
   <meta property="og:type" content="website"/>
   <meta property="og:image" content="${proj.thumbnail}"/>
   <meta property="og:description" content="${proj.desc} | By: ${proj.poster} | Score: ${proj.score} Views: ${proj.views}"/>`));
@@ -88,18 +88,35 @@ app.get("/project/:id/edit", userAuth, (req, res) => res.sendFile(cldir + "/edit
 // Delete project route, users only
 app.get("/project/:id/delete", userAuth, (req, res) => res.redirect("/api/project/delete/" + req.params.id));
 
+// Post page with dynamic project ID
+const Posts = require("./model/Posts.js");
+app.get("/forum/discussion/:id", async (req, res) => {
+  var post = await Posts.findOne({_id:req.params.id});
+  if (!post) {
+    res.status(404).sendFile(cldir+"/404.html");
+    return;
+  }
+  sendFileReplace(res,"./client/discussion.html",s=>s.replace("<!--og:meta-->",`<meta property="og:title" content="${post.name}"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:description" content="${proj.content} | By: ${post.poster} | Views: ${post.views}"/>`));
+});
+// Edit post page, users only
+app.get("/forum/discussion/:id/edit", userAuth, (req, res) => res.sendFile(cldir + "/editpost.html"));
+// Delete post route, users only
+app.get("/forum/discussion/:id/delete", userAuth, (req, res) => res.redirect("/api/project/delete/" + req.params.id));
+
 // User profile page with dynamic user name
 const Users = require("./model/Users.js");
 app.get("/user/:name", async (req, res) => {
-	var user = await Users.findOne({username:req.params.name});
-	if (!user) {
-		res.status(404).sendFile(cldir+"/404.html");
-		return;
-	}
-	sendFileReplace(res,"./client/user.html",s=>s.replace("<!--og:meta-->",`<meta property="og:title" content="${user.username}"/>
-	 <meta property="og:type" content="website"/>
-	 <meta property="og:image" content="${user.avatar}"/>
-	 <meta property="og:description" content="${user.biography}"/>`));
+  var user = await Users.findOne({username:req.params.name});
+  if (!user) {
+    res.status(404).sendFile(cldir+"/404.html");
+    return;
+  }
+  sendFileReplace(res,"./client/user.html",s=>s.replace("<!--og:meta-->",`<meta property="og:title" content="${user.username}"/>
+   <meta property="og:type" content="website"/>
+   <meta property="og:image" content="${user.avatar}"/>
+   <meta property="og:description" content="${user.biography}"/>`));
  });
 
 // User self profile page, users only
@@ -116,7 +133,7 @@ app.get("/turbowarp", (req, res) => res.sendFile(cldir + "/turbowarp/index.html"
  * Start the server and listen on the specified port
  */
 const server = app.listen(PORT, () => {
-	console.log(`Server Connected to port ${PORT}`);
+  console.log(`Server Connected to port ${PORT}`);
 });
 
 // 404 response page
@@ -129,8 +146,8 @@ server.setTimeout(30000);
  * Handle unhandled promise rejections
  */
 process.on("unhandledRejection", (err) => {
-	console.log(`An error occurred: ${err.message}`);
-	console.log(err);
-	// Uncomment the line below to close the server on unhandled rejection
-	// server.close(() => process.exit(1));
+  console.log(`An error occurred: ${err.message}`);
+  console.log(err);
+  // Uncomment the line below to close the server on unhandled rejection
+  // server.close(() => process.exit(1));
 });
