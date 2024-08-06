@@ -335,6 +335,7 @@ async upvoteComment(req, res, next) {
       error: "Post not found",
     });
     const uid = res.locals.userToken.id;
+    var comment = post.comments[index];
     if (comment.upvotes.includes(uid)) return res.status(404).json({
       message: "Upvote not successful",
       error: "Already upvoted",
@@ -367,6 +368,7 @@ async downvoteComment(req, res, next) {
       error: "Post not found",
     });
     const uid = res.locals.userToken.id;
+    var comment = post.comments[index];
     var voteindex = comment.upvotes.indexOf(uid);
     if (voteindex < 0) return res.status(404).json({
       message: "Downvote not successful",
