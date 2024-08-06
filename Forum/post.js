@@ -24,7 +24,7 @@ route(router,userAuth,adminAuth) {
   
 async publish(req, res, next) {
   var { name, content, tags } = req.body;
-  console.log(name,link);
+  console.log(name,content);
   try {
     const user = res.locals.userToken;
     const post = await this.model.create({
@@ -53,7 +53,7 @@ async publish(req, res, next) {
   
 async update(req, res, next) {
   var { name, content, tags } = req.body;
-  console.log(name,link);
+  console.log(name,content);
   try {
     const pid = req.params.id;
     const post = await this.model.findOne({ _id: pid });
