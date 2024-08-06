@@ -5,7 +5,7 @@ module.exports = class extends PostAPI {
     super(model,"projects")
   }
 
-processLink(link) {
+processLink(link,thumbnail) {
   const iscdo = link.match(/^https?:\/\/studio\.code\.org\/projects\/(applab|gamelab)\/([^/]+)/);
   const isscratch = link.match(/^https?:\/\/scratch\.mit\.edu\/projects\/(\d+)/) || link.match(/^https?:\/\/turbowarp\.org\/(\d+)/);
   const iskhan = link.match(/^https?:\/\/www\.khanacademy\.org\/computer-programming\/([^/]+\/\d+)/);
@@ -32,14 +32,14 @@ async publish(req, res, next) {
   var { name, link, desc, tags, thumbnail, platform } = req.body;
   console.log(name,link);
   try {
-    var e = this.processLink(link);
+    var e = this.processLink(link,thumbnail);
     const user = res.locals.userToken;
     const project = await this.model.create({
       name,
       link: e.link,
       desc,
       tags,
-      thumbnail,
+      thumbnail: e.thumbnail,
       platform: e.platform,
       postedAt: Date.now(),
       posterId: user.id,
@@ -75,12 +75,12 @@ async update(req, res, next) {
     if (project.posterId !== user.id && user.role !== "Admin") return res.status(403).json({
       message: "Not Authorized. You do not own this project",
     });
-    var e = this.processLink(link);
+    var e = this.processLink(link,thumbnail);
     project.name = name;
     project.link = e.link;
     project.desc = desc;
     project.tags = tags;
-    project.thumbnail = thumbnail;
+    project.thumbnail = e.thumbnail;
     project.platform = e.platform;
     await project.save();
     res.status(201).json({
