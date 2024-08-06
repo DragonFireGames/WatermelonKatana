@@ -21,7 +21,7 @@ async function getUser(id) {
   var res = await fetch("/api/auth/userdata?id="+id);
   var u = await res.json();
   _userCache[id] = u;
-  return;
+  return u;
 }
 
 function projHTML(list) {
