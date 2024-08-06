@@ -1,15 +1,47 @@
+
+async function createPost(post,data,txt) {
+  var u = await getUser(data.posterId);
+  post.innerHTML = `
+  <div id="display">
+    <div class="comment-top">
+      <img class="comment-avatar" src="${u.avatar}">
+      <p class="comment-username">${u.username}</p>
+      <p class="comment-data">${new Date(data.postedAt).toUTCString()}</p>
+    </div>
+    ${txt}
+    ${data.tags.map(t=>` <a href="/search?includeTags=${t}">#${t}</a>`)} <br>
+  </div>
+  <div id="comments" class="comment-list">
+  Comments:
+  </div>
+  `;
+  var tok = await getAuth();
+  const commentlist = document.querySelector("#comments");
+  await listComments(commentlist,data.comments,tok.user,commentEvents("project"));
+  const display = document.querySelector("#display");
+  if (tok.user.role === "Admin") { 
+    display.innerHTML += `
+    <label for="featured-btn">Featured:</label>
+    <input
+      value="featured-button"
+      name="featured-checkbox"
+      id="featured-btn"
+      type="checkbox"
+      ${data.featured ? "checked" : ""}
+      onclick="featurebtnclick(this.checked)"
+    /> <br>`;
+  } else {
+    display.innerHTML += `<b>Featured</b> => ${data.featured} <br>`;
+  }
+  if (tok.user.id !== data.posterId && tok.user.role !== "Admin") return;
+  console.log(post);
+  display.innerHTML += `<button class="edit"> <a href="/project/${pid}/edit">Edit</a></button>`;
+}
 async function listComments(list,comments,self,events) {
   var users = {};
-  if (self) users[self.id] = self;
   for (var i = 0; i < comments.length; i++) {
     var c = comments[i];
-    console.log(comments[i].upvotes);
-    var u = users[c.posterId];
-    if (!u) {
-      var res = await fetch("/api/auth/userdata?id="+c.posterId);
-      u = await res.json();
-      users[c.posterId] = u;
-    }
+    var u = await getUser(c.posterId);
     if (self) {
       var options = `<input type="button" value="reply" onclick="window.onreplybtnclick(${i});">`;
       if (self.id == c.posterId) {
@@ -96,7 +128,6 @@ function growtextarea(ta) {
   ta.style.height = ""; /* Reset the height*/
   ta.style.height = Math.min(ta.scrollHeight, 200) + "px";
 }
-
 function relativeDate(time) {
   var seconds = (Date.now() - time) / 1000;
 
@@ -132,8 +163,7 @@ function relativeDate(time) {
   
   //return new Date(time).toUTCString();
 }
-
-function eventComments(name) {
+function commentEvents(name) {
   return {
     onsend:async(content)=>{
       const res = await fetch("/api/"+name+"/comment/"+pid, {
@@ -172,7 +202,6 @@ function eventComments(name) {
     }
   };
 }
-
 function convertHTML(string) {
   string = string.replace(/\&/g,"&amp;");
   string = string.replace(/</g,"&lt;");
