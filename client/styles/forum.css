@@ -1,3 +1,8 @@
+#comments {
+  display: block;
+  margin: auto;
+}
+
 .comment-list, #reply {
   width: 100vmin;
 }
