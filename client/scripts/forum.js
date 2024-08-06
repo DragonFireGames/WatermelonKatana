@@ -128,41 +128,6 @@ function growtextarea(ta) {
   ta.style.height = ""; /* Reset the height*/
   ta.style.height = Math.min(ta.scrollHeight, 200) + "px";
 }
-function relativeDate(time) {
-  var seconds = (Date.now() - time) / 1000;
-
-  if (time == 0) return "never";
-
-  var interval = Math.floor(seconds / (365.25 * 24 * 60 * 60));
-  if (interval == 1) return "1 year ago";
-  else if (interval > 1) return interval + " years ago";
-  
-  interval = Math.floor(seconds / (30.4375 * 24 * 60 * 60));
-  if (interval == 1) return "1 month ago";
-  else if (interval > 1) return interval + " months ago";
-  
-  interval = Math.floor(seconds / (7 * 24 * 60 * 60));
-  if (interval == 1) return "1 week ago";
-  else if (interval > 1) return interval + " weeks ago";
-  
-  interval = Math.floor(seconds / (24 * 60 * 60));
-  if (interval == 1) return "1 day ago";
-  else if (interval > 1) return interval + " days ago";
-  
-  interval = Math.floor(seconds / (60 * 60));
-  if (interval == 1) return "1 hour ago";
-  else if (interval > 1) return interval + " hours ago";
-  
-  interval = Math.floor(seconds / (60));
-  if (interval == 1) return "1 minute ago";
-  else if (interval > 1) return interval + " minutes ago";
-  
-  interval = Math.floor(seconds);
-  if (interval == 1) return "1 second ago";
-  return interval + " seconds ago";
-  
-  //return new Date(time).toUTCString();
-}
 function commentEvents(name) {
   return {
     onsend:async(content)=>{
