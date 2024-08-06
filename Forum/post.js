@@ -18,6 +18,8 @@ route(router,userAuth,adminAuth) {
   router.route("/comment/:id").post(userAuth, this.comment.bind(this));
   router.route("/comment/:id/edit").post(userAuth, this.editComment.bind(this));
   router.route("/comment/:id/delete").delete(userAuth, this.deleteComment.bind(this));
+  router.route("/comment/:id/upvote").get(userAuth, this.upvoteComment.bind(this));
+  router.route("/comment/:id/downvote").get(userAuth, this.downvoteComment.bind(this));
 }
   
 async publish(req, res, next) {
@@ -300,13 +302,8 @@ async editComment(req, res, next) {
       error: "Post not found",
     });
     const uid = res.locals.userToken.id;
-    const user = await Users.findOne({ _id: uid });
-    if (!user) return res.status(404).json({
-      message: "Fetch not successful",
-      error: "User not found",
-    });
     var comment = post.comments[index];
-    if (user.id !== comment.posterId) return res.status(404).json({
+    if (uid !== comment.posterId) return res.status(404).json({
       message: "Delete not successful",
       error: "User does not own comment",
     });
@@ -326,5 +323,71 @@ async editComment(req, res, next) {
     console.log(error.message);
   }
 };
+
+async upvoteComment(req, res, next) {
+  var { index } = req.query;
+  console.log("upvote",index);
+  try {
+    const pid = req.params.id;
+    const post = await this.model.findOne({ _id: pid });
+    if (!post) return res.status(404).json({
+      message: "Fetch not successful",
+      error: "Post not found",
+    });
+    const uid = res.locals.userToken.id;
+    if (comment.upvotes.includes(uid)) return res.status(404).json({
+      message: "Upvote not successful",
+      error: "Already upvoted",
+    });
+    comment.upvotes.push(uid);
+    await post.save();
+    res.status(201).json({
+      message: "Post successfully updated",
+      id: post._id,
+      name: post.name,
+    });
+    console.log("done!");
+  } catch(error) {
+    res.status(400).json({
+      message: "Post not successfully updated",
+      error: error.message,
+    });
+    console.log(error.message);
+  }
+};
+
+async downvoteComment(req, res, next) {
+  var { index } = req.query;
+  console.log("downvote",index);
+  try {
+    const pid = req.params.id;
+    const post = await this.model.findOne({ _id: pid });
+    if (!post) return res.status(404).json({
+      message: "Fetch not successful",
+      error: "Post not found",
+    });
+    const uid = res.locals.userToken.id;
+    var voteindex = comment.upvotes.indexOf(uid);
+    if (voteindex < 0) return res.status(404).json({
+      message: "Downvote not successful",
+      error: "Not upvoted",
+    });
+    comment.upvotes.splice(voteindex,1);
+    await post.save();
+    res.status(201).json({
+      message: "Post successfully updated",
+      id: post._id,
+      name: post.name,
+    });
+    console.log("done!");
+  } catch(error) {
+    res.status(400).json({
+      message: "Post not successfully updated",
+      error: error.message,
+    });
+    console.log(error.message);
+  }
+};
+
 
 }
