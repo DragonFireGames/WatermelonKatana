@@ -2,7 +2,7 @@ const Users = require("../model/Users");
 var PostAPI = require("../Forum/post.js");
 exports = class extends PostAPI {
   constructor(model) {
-    super(model,"project")
+    super(model,"projects")
   }
 
 processLink(link) {
