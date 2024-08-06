@@ -57,7 +57,7 @@
     </div>
   </label>
   <!---->
-  <div id="display">
+  <div id="post">
     Loading...
   </div>
   Comments:
@@ -66,26 +66,25 @@
   </div>
   <script>
     const commentlist = document.querySelector("#comments");
-    const display = document.querySelector('#display');
-    const favoritebtn = document.querySelector('#favorite-btn');
+    const postdiv = document.querySelector('#post');
     const game = document.querySelector('#game');
     const pid = location.path[2];
     (async() => {
       try {
         const res = await fetch('/api/project/data/'+pid);
         const data = await res.json();
-        display.innerHTML = `
-          <b>Name</b> => ${data.name} <br>
-          <b>Poster</b> => <a href="/user/${data.poster}">${data.poster}</a> <br>
-          <b>Description</b> => ${data.desc} <br>
-          <b>Tags</b> => ${data.tags.join(", ")} <br>
-          <b>URL</b> => <a href="${data.link}">${data.link}</a> <br>
-          <b>Platform</b> => ${data.platform} <br>
-          <b>Score</b> => <span id="score">${data.score}</span> <br>
-          <b>Posted At</b> => ${new Date(data.postedAt).toUTCString()} <br>
-          <b>ID</b> => ${data.id} <br>`;
-        
-        console.log(`Extra Debug Info:\nIsCDO?: ${data.iscdo}\nPosterID: ${data.posterId}`);
+        await createPost(postdiv,data,`
+        ${convertHTML(data.desc)} <br>
+        <b>URL</b> => <a href="${data.link}">${data.link}</a> <br>
+        <b>Platform</b>: <a href="/search?platform=${data.platform}">${({
+          "cdo":"code.org",
+          "khan":"Khan Academy",
+          "scratch":"Scratch",
+          "embed":"Unknown"
+        }[data.platform])}</a> <br>
+        <b>Score:</b> <span id="score">${data.score}</span> 
+        <b>Views:</b> <span id="views">${data.views}</span> <br>
+        `);
         
         switch (data.platform) {
           case "cdo":
@@ -115,29 +114,13 @@
         }
         
         const tok = await getAuth();
-        await listComments(commentlist,data.comments,tok.user,commentEvents("project"));
+        const favoritebtn = document.querySelector('#favorite-btn');
         if (!tok.auth) {
           favoritebtn.outerHTML = "";
           document.querySelector('#fav-container').outerHTML = "";
           return;
         }
         favoritebtn.checked = !!tok.user.favorites.includes(pid);
-        if (tok.user.role === "Admin") { 
-          document.body.innerHTML += `
-          <label for="featured-btn">Featured:</label>
-          <input
-            value="featured-button"
-            name="featured-checkbox"
-            id="featured-btn"
-            type="checkbox"
-            ${data.featured ? "checked" : ""}
-            onclick="featurebtnclick(this.checked)"
-          /> <br>`;
-        } else {
-          document.body.innerHTML += `<b>Featured</b> => ${data.featured} <br>`;
-        }
-        if (tok.user.id !== data.posterId && tok.user.role !== "Admin") return;
-        document.body.innerHTML += `<button class="edit"> <a href="/project/${pid}/edit">Edit</a></button>`;
       } catch(e) {
         alert(e);
         console.error(e);
