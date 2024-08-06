@@ -355,7 +355,7 @@ exports.comment = async (req, res, next) => {
 
 exports.deleteComment = async (req, res, next) => {
   var { index } = req.body;
-  console.log(content);
+  console.log(index);
   try {
     const pid = req.params.id;
     const project = await Projects.findOne({ _id: pid });
@@ -393,7 +393,7 @@ exports.deleteComment = async (req, res, next) => {
 
 exports.editComment = async (req, res, next) => {
   var { content, index } = req.body;
-  console.log(content);
+  console.log(content,index);
   try {
     const pid = req.params.id;
     const project = await Projects.findOne({ _id: pid });
