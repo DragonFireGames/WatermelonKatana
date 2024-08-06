@@ -79,11 +79,6 @@ async delete(req, res, next) {
     if (post.posterId !== user.id && user.role !== "Admin") return res.status(403).json({
       message: "Not Authorized. You do not own this post",
     });
-    var users = await Users.find({ favorites: { $all: [ pid ] } });
-    for (var i = 0; i < users.length; i++) {
-      users[i].favorites.splice(users[i].favorites.indexOf(pid),1);
-      await users[i].save();
-    }
     await post.remove();
     console.log("deleted "+pid);
     res.status(201).json({
@@ -148,81 +143,6 @@ async data(req, res, next) {
   } catch(err) {
     res.status(401).json({ message: "Not successful", error: err.message });
     console.log(err.message);
-  }
-};
-
-
-async favorite(req, res, next) {
-  try {
-    const pid = req.params.id;
-    const post = await this.model.findOne({ _id: pid });
-    if (!post) return res.status(404).json({
-      message: "Fetch not successful",
-      error: "Post not found",
-    });
-    const uid = res.locals.userToken.id;
-    const user = await Users.findOne({ _id: uid });
-    if (!user) return res.status(404).json({
-      message: "Fetch not successful",
-      error: "User not found",
-    });
-    if (user.favorites.includes(pid)) return res.status(400).json({
-      message: "Invalid",
-      error: "Already favorited post",
-    });
-    user.favorites.push(pid);
-    post.score++;
-    await user.save();
-    await post.save();
-    res.status(201).json({
-      message: "Post successfully updated",
-      id: post._id,
-      name: post.name,
-    });
-    console.log("done!");
-  } catch(error) {
-    res.status(400).json({
-      message: "Post not successfully updated",
-      error: error.message,
-    });
-    console.log(error.message);
-  }
-};
-async unfavorite(req, res, next) {
-  try {
-    const pid = req.params.id;
-    const post = await this.model.findOne({ _id: pid });
-    if (!post) return res.status(404).json({
-      message: "Fetch not successful",
-      error: "Post not found",
-    });
-    const uid = res.locals.userToken.id;
-    const user = await Users.findOne({ _id: uid });
-    if (!user) return res.status(404).json({
-      message: "Fetch not successful",
-      error: "User not found",
-    });
-    const index = user.favorites.indexOf(pid);
-    if (index === -1) return res.status(400).json({
-      message: "Invalid",
-      error: "Haven't favorited post yet",
-    });
-    user.favorites.splice(index,1);
-    post.score--;
-    await user.save();
-    await post.save();
-    res.status(201).json({
-      message: "Post successfully updated",
-      id: post._id,
-      name: post.name,
-    });
-    console.log("done!");
-  } catch(error) {
-    res.status(400).json({
-      message: "Post not successfully updated",
-      error: error.message,
-    });
-    console.log(error.message);
   }
 };
 
