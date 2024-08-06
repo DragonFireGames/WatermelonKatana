@@ -58,7 +58,7 @@
       const data = await res.json();
       data.projects.sort((a,b)=>(Number(b.featured)-Number(a.featured))||(b.views-a.views));
       data.projects = data.projects.slice(0,5);
-      data.projects.map(postHTML(list));
+      data.projects.map(postHTML(postlist));
     })();
     
     const header = document.querySelector('#header');
