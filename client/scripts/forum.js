@@ -1,5 +1,5 @@
 
-async function createPost(post,data,txt) {
+async function createPost(post,data,txt,name) {
   var u = await getUser(data.posterId);
   post.innerHTML = `
   <div id="display">
@@ -17,7 +17,7 @@ async function createPost(post,data,txt) {
   `;
   var tok = await getAuth();
   const commentlist = document.querySelector("#comments");
-  await listComments(commentlist,data.comments,tok.user,commentEvents("project"));
+  await listComments(commentlist,data.comments,tok.user,commentEvents(name));
   const display = document.querySelector("#display");
   if (tok.user.role === "Admin") { 
     display.innerHTML += `
