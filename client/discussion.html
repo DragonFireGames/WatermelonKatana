@@ -27,7 +27,7 @@
         await createPost(postdiv,data,`
         ${convertHTML(data.content)} <br>
         <b>Views:</b> <span id="views">${data.views}</span> <br>
-        `);
+        `,"forum");
       } catch(e) {
         alert(e);
         console.error(e);
