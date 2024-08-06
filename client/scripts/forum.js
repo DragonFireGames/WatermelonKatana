@@ -30,8 +30,8 @@ async function listComments(list,comments,self,events) {
         <p class="comment-data">${relativeDate(c.postedAt)}</p>
       </div>
       <div class="comment-upvote">
-        ${c.rating}
-        <input class="comment-upvote-box" name="comment-vpvote" type="checkbox" value="reply">
+        ${c.upvotes.length}
+        <input class="comment-upvote-box" name="comment-vpvote" type="checkbox" value="reply" ${c.upvotes.includes(self.id) ? "checked" : ""} onclick="window.onupvoteclick(${i},this.checked);">
       </div>
       <p class="comment-content">${c.content}</p>
     </div>`;
@@ -67,6 +67,7 @@ async function listComments(list,comments,self,events) {
     window.editingMsg = {index,oldmsg};
   }
   window.ondeletebtnclick = events.ondelete;
+  window.onupvoteclick = events.onupvote;
 }
 function setupReply(events,oncancel,self) {
   document.body.innerHTML += `
