@@ -19,13 +19,11 @@
   </div>
   <script>
     const postdiv = document.querySelector('#post');
-    const pid = location.path[2];
+    const pid = location.path[3];
     (async() => {
       try {
         const res = await fetch('/api/forum/data/'+pid);
         const data = await res.json();
-        alert(data.content)
-        alert(convertHTML(data.content))
         await createPost(postdiv,data,`
         ${convertHTML(data.content)} <br>
         <b>Views:</b> <span id="views">${data.views}</span> <br>
