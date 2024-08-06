@@ -3,6 +3,7 @@ async function listComments(list,comments,self,events) {
   if (self) users[self.id] = self;
   for (var i = 0; i < comments.length; i++) {
     var c = comments[i];
+    console.log(comments[i].upvotes);
     var u = users[c.posterId];
     if (!u) {
       var res = await fetch("/api/auth/userdata?id="+c.posterId);
@@ -36,10 +37,9 @@ async function listComments(list,comments,self,events) {
         ${c.upvotes.length}
         <input class="comment-upvote-box" name="comment-vpvote" type="checkbox" value="reply" ${c.upvotes.includes(self.id) ? "checked" : ""} onclick="window.onupvoteclick(${i},this.checked);">
       </div>`:""}
-      <p class="comment-content">${c.content}</p>
+      <p class="comment-content">${convertHTML(c.content)}</p>
     </div>`;
     list.innerHTML += div;
-    }
   }
   if (!self) return;
   var repbtn = `
@@ -63,11 +63,9 @@ async function listComments(list,comments,self,events) {
   window.onreplybtnclick = ()=>document.querySelector("#reply").style.display = "block";
   window.oneditbtnclick = (index)=>{
     document.querySelector("#reply").style.display = "block";
-    var content = comments[index].content;
-    content = content.replace("<br>","\n");
     var txt = document.querySelector("#reply-textbox");
     var oldmsg = txt.value;
-    txt.value = content;
+    txt.value = comments[index].content;
     window.editingMsg = {index,oldmsg};
   }
   window.ondeletebtnclick = events.ondelete;
@@ -86,12 +84,10 @@ function setupReply(events,oncancel,self) {
   </div>`;
   window.onreplysendclick = ()=>{
     var txt = document.querySelector("#reply-textbox");
-    var content = txt.value;
-    content = content.replace("\n","<br>");
     if (window.editingMsg) {
-      events.onedit(content,window.editingMsg.index);
+      events.onedit(txt.value,window.editingMsg.index);
     } else {
-      events.onsend(content);
+      events.onsend(txt.value);
     }
   };
   window.onreplycancelclick = oncancel;
@@ -175,4 +171,14 @@ function eventComments(name) {
       location.assign(location.pathname);
     }
   };
+}
+
+function convertHTML(string) {
+  string = string.replace(/\&/g,"&amp;");
+  string = string.replace(/</g,"&lt;");
+  string = string.replace(/>/g,"&gt;");
+  string = string.replace(/"/g,"&quot;");
+  string = string.replace(/'/g,"&apos;");
+  string = string.replace(/\n/g,"<br>");
+  return string;
 }
