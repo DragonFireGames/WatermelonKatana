@@ -32,15 +32,15 @@ async publish(req, res, next) {
   var { name, link, desc, tags, thumbnail, platform } = req.body;
   console.log(name,link);
   try {
-    { link, platform } = this.processLink(link);
+    var e = this.processLink(link);
     const user = res.locals.userToken;
     const project = await this.model.create({
       name,
-      link,
+      link: e.link,
       desc,
       tags,
       thumbnail,
-      platform,
+      platform: e.platform,
       postedAt: Date.now(),
       posterId: user.id,
       poster: user.username, //convert to ref eventually
@@ -75,13 +75,13 @@ async update(req, res, next) {
     if (project.posterId !== user.id && user.role !== "Admin") return res.status(403).json({
       message: "Not Authorized. You do not own this project",
     });
-    { link, platform } = this.processLink(link);
+    var e = this.processLink(link);
     project.name = name;
-    project.link = link;
+    project.link = e.link;
     project.desc = desc;
     project.tags = tags;
     project.thumbnail = thumbnail;
-    project.platform = platform;
+    project.platform = e.platform;
     await project.save();
     res.status(201).json({
       message: "Project successfully updated",
