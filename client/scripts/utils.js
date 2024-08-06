@@ -24,6 +24,42 @@ async function getUser(id) {
   return u;
 }
 
+function relativeDate(time) {
+  var seconds = (Date.now() - time) / 1000;
+
+  if (time == 0) return "never";
+
+  var interval = Math.floor(seconds / (365.25 * 24 * 60 * 60));
+  if (interval == 1) return "1 year ago";
+  else if (interval > 1) return interval + " years ago";
+  
+  interval = Math.floor(seconds / (30.4375 * 24 * 60 * 60));
+  if (interval == 1) return "1 month ago";
+  else if (interval > 1) return interval + " months ago";
+  
+  interval = Math.floor(seconds / (7 * 24 * 60 * 60));
+  if (interval == 1) return "1 week ago";
+  else if (interval > 1) return interval + " weeks ago";
+  
+  interval = Math.floor(seconds / (24 * 60 * 60));
+  if (interval == 1) return "1 day ago";
+  else if (interval > 1) return interval + " days ago";
+  
+  interval = Math.floor(seconds / (60 * 60));
+  if (interval == 1) return "1 hour ago";
+  else if (interval > 1) return interval + " hours ago";
+  
+  interval = Math.floor(seconds / (60));
+  if (interval == 1) return "1 minute ago";
+  else if (interval > 1) return interval + " minutes ago";
+  
+  interval = Math.floor(seconds);
+  if (interval == 1) return "1 second ago";
+  return interval + " seconds ago";
+  
+  //return new Date(time).toUTCString();
+}
+
 function projHTML(list) {
   HtmlSanitizer.AllowedAttributes["class"] = true;
   return function (proj) {
@@ -42,3 +78,16 @@ function projHTML(list) {
   };
 }
 
+
+function forumHTML(list) {
+  return function (proj) {
+    let div = `<div class="post-panel" onclick="location.assign('/forum/discussion/${proj.id}')">
+    <div class="post-top">
+      ${proj.name} | By: <a href="/user/${proj.poster}">${proj.poster}</a> | Views: ${proj.views} | ${relativeDate(proj.postedAt)}
+    <br>
+    ${proj.content.replace(/[^\w\d\s-_]/g,"").replace(/\n[^]*$/,"").slice(0,50)}
+    </div>
+    </div>`;
+    list.innerHTML += div;
+  };
+}
