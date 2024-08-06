@@ -84,8 +84,8 @@ app.get("/project/:id/edit", userAuth, (req, res) => res.sendFile(cldir + "/edit
 app.get("/project/:id/delete", userAuth, (req, res) => res.redirect("/api/project/delete/" + req.params.id)); // Delete project route, users only
 
 // Posts
-app.get("/forum", userAuth, (req, res) => res.sendFile(cldir + "/forum/post.html")); // Forum Home/Search
-app.get("/forum/post", userAuth, (req, res) => res.sendFile(cldir + "/forum/post.html")); // Publish page, users only
+app.get("/forum", userAuth, (req, res) => res.sendFile(cldir + "/forum.html")); // Forum Home/Search
+app.get("/forum/post", userAuth, (req, res) => res.sendFile(cldir + "/post.html")); // Publish page, users only
 const Posts = require("./model/Posts.js"); // Post page with dynamic post ID
 app.get("/forum/discussion/:id", async (req, res) => {
   var post = await Posts.findOne({_id:req.params.id});
