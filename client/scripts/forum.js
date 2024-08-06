@@ -9,33 +9,37 @@ async function listComments(list,comments,self,events) {
       u = await res.json();
       users[c.posterId] = u;
     }
-    var options = `<input type="button" value="reply" onclick="window.onreplybtnclick(${i});">`;
-    if (self.id == c.posterId) {
-      options += `<input type="button" value="edit" onclick="window.oneditbtnclick(${i});">`;
-    }
-    if (self.id == c.posterId || u.role == "Admin") {
-      options += `<input type="button" style="color:red;" value="delete" onclick="window.ondeletebtnclick(${i});">`;
+    if (self) {
+      var options = `<input type="button" value="reply" onclick="window.onreplybtnclick(${i});">`;
+      if (self.id == c.posterId) {
+        options += `<input type="button" value="edit" onclick="window.oneditbtnclick(${i});">`;
+      }
+      if (self.id == c.posterId || u.role == "Admin") {
+        options += `<input type="button" style="color:red;" value="delete" onclick="window.ondeletebtnclick(${i});">`;
+      }
     }
     var div = `
     <div class="comment">
+      ${self?`
       <div class="comment-menu">
         <img class="comment-menu-img" src="https://www.svgrepo.com/show/124304/three-dots.svg">
         <div class="comment-menu-options">
           ${options}
         </div>
-      </div>
+      </div>`:""}
       <div class="comment-top">
         <img class="comment-avatar" src="${u.avatar}">
         <p class="comment-username">${u.username}</p>
         <p class="comment-data">${relativeDate(c.postedAt)}</p>
       </div>
-      <div class="comment-upvote">
+      ${self?`<div class="comment-upvote">
         ${c.upvotes.length}
         <input class="comment-upvote-box" name="comment-vpvote" type="checkbox" value="reply" ${c.upvotes.includes(self.id) ? "checked" : ""} onclick="window.onupvoteclick(${i},this.checked);">
-      </div>
+      </div>`:""}
       <p class="comment-content">${c.content}</p>
     </div>`;
     list.innerHTML += div;
+    }
   }
   if (!self) return;
   var repbtn = `
