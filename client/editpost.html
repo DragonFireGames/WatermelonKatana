@@ -38,7 +38,7 @@
       const deletebtn = document.querySelector("#deletebtn");
       deletebtn.onclick = async () => {
         if (!confirm("Warning, this is permanent! Are you sure you want to continue?")) return;
-        await fetch("/api/project/delete/" + pid, {
+        await fetch("/api/forum/delete/" + pid, {
           method: "DELETE",
           body: JSON.stringify({ pid }),
           headers: { "Content-Type": "application/json" },
@@ -47,7 +47,7 @@
       };
 
       (async () => {
-        const res = await fetch("/api/project/data/" + pid);
+        const res = await fetch("/api/forum/data/" + pid);
         const data = await res.json();
         name.value = data.name;
         content.value = data.content;
@@ -61,7 +61,7 @@
         if (taglist.length < 3)
           return display.textContent = 'Choose at least 3 tags';
         try {
-          const res = await fetch("/api/project/update/" + pid, {
+          const res = await fetch("/api/forum/update/" + pid, {
             method: "POST",
             body: JSON.stringify({
               name: name.value,
@@ -75,7 +75,7 @@
             return (display.textContent =
               data.message + ". " + (data.error ? data.error : ""));
           }
-          location.assign("/project/" + data.id);
+          location.assign("/forum/discussion/" + data.id);
         } catch (err) {
           console.error(err.message);
           alert(err.message);
