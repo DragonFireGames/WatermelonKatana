@@ -66,14 +66,23 @@ document.addEventListener("DOMContentLoaded", async function() {
     }
     #block {
       height: 2.5em;
-	  width: 100%;
+      width: 100%;
     }
-.
+
+    .navbar-name {
+      color: #fff;
+      position: fixed;
+      left: 3px;
+      top: 3px;
+      margin: 3px;
+    }
+
   `;
   document.head.append(style);
 
   var navbarHtml = `
   <div class="topnav">
+    <h2 class="navbar-name">PIC-Mo</h2>
     <a href="/">Home</a>
     <a href="/chat">Chat</a>
     <a href="/search">Project Gallery</a>
