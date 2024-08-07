@@ -153,6 +153,7 @@ async list(req, res, next) {
 async data(req, res, next) {
   try {
     const pid = req.params.id;
+    if (pid === "undefined") return res.status(400).json({ message: "Missing Project ID" });
     var post = await this.model.findOne({ _id: pid });
     if (!post) return res.status(404).json({
       message: "Fetch not successful",
