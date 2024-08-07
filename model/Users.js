@@ -38,7 +38,7 @@ const UserSchema = new Mongoose.Schema({
   favorites: [ String ],
   joinedAt: {
     type: Number,
-    default: Date.now()
+    required: true,
   },
 }, {
   methods: {
