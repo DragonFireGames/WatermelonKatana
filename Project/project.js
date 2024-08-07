@@ -42,6 +42,7 @@ async publish(req, res, next) {
       thumbnail: e.thumbnail,
       platform: e.platform,
       postedAt: Date.now(),
+      activeAt: Date.now(),
       posterId: user.id,
       poster: user.username, //convert to ref eventually
     });
@@ -82,6 +83,7 @@ async update(req, res, next) {
     project.tags = tags;
     project.thumbnail = e.thumbnail;
     project.platform = e.platform;
+    project.activeAt = Date.now();
     await project.save();
     res.status(201).json({
       message: "Project successfully updated",
