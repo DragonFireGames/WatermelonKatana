@@ -93,7 +93,7 @@ function forumHTML(list) {
 
 function userHTML(list) {
   return function (user) {
-    let div = `<div class="user-panel" onclick="location.assign('/user/${user.name}');">
+    let div = `<div class="user-panel" onclick="location.assign('/user/${user.username}');">
       <div class="comment-top">
       <img class="comment-avatar" src="${user.avatar || "/images/placeholders/PLACEHOLDER_project.png"}">
       <div class="comment-username">${user.username}</div>
