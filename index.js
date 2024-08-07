@@ -80,15 +80,15 @@ app.get("/project/:id", async (req, res) => {
     res.status(404).sendFile(cldir + "/404.html");
     return;
   }
-  sendFileReplace(res, "./client/project.html", (s) =>
-    s.replace(
-      "<!--og:meta-->",
-      `<meta property="og:title" content="${proj.name}"/>
+  proj.views++;
+  sendFileReplace(res, "./client/project.html", (s) => s.replace(
+    "<!--og:meta-->",
+    `<meta property="og:title" content="${proj.name}"/>
   <meta property="og:type" content="website"/>
   <meta property="og:image" content="${proj.thumbnail}"/>
   <meta property="og:description" content="${proj.desc} | By: ${proj.poster} | Score: ${proj.score} Views: ${proj.views}"/>`,
-    ),
-  );
+  ));
+  await proj.save();
 });
 app.get("/project/:id/edit", userAuth, (req, res) =>
   res.sendFile(cldir + "/edit.html"),
@@ -109,14 +109,14 @@ app.get("/forum/discussion/:id", async (req, res) => {
     res.status(404).sendFile(cldir + "/404.html");
     return;
   }
-  sendFileReplace(res, "./client/discussion.html", (s) =>
-    s.replace(
-      "<!--og:meta-->",
-      `<meta property="og:title" content="${post.name}"/>
+  post.views++;
+  sendFileReplace(res, "./client/discussion.html", (s) => s.replace(
+    "<!--og:meta-->",
+    `<meta property="og:title" content="${post.name}"/>
   <meta property="og:type" content="website"/>
   <meta property="og:description" content="${post.content} | By: ${post.poster} | Views: ${post.views}"/>`,
-    ),
-  );
+  ));
+  await post.save();
 });
 app.get("/forum/discussion/:id/edit", userAuth, (req, res) =>
   res.sendFile(cldir + "/editpost.html"),
@@ -133,15 +133,13 @@ app.get("/user/:name", async (req, res) => {
     res.status(404).sendFile(cldir + "/404.html");
     return;
   }
-  sendFileReplace(res, "./client/user.html", (s) =>
-    s.replace(
-      "<!--og:meta-->",
-      `<meta property="og:title" content="@${user.username} on PIC-Mo"/>
-	 <meta property="og:type" content="website"/>
-	 <meta property="og:image" content="${user.avatar}"/>
-	 <meta property="og:description" content="${user.biography}"/>`,
-    ),
-  );
+  sendFileReplace(res, "./client/user.html", (s) => s.replace(
+    "<!--og:meta-->",
+    `<meta property="og:title" content="@${user.username} on PIC-Mo"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:image" content="${user.avatar}"/>
+  <meta property="og:description" content="${user.biography}"/>`,
+  ));
 });
 
 // User self profile page, users only
