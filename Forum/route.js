@@ -6,6 +6,6 @@ const PostAPI = require("./post");
 const poster = new PostAPI(Posts,"posts");
 const { adminAuth, userAuth } = require("../middleware/auth");
 
-poster.route(router,adminAuth,userAuth);
+poster.route(router,userAuth,adminAuth);
 
 module.exports = router;
