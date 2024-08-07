@@ -6,30 +6,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User List | PIC-MO</title>
   <link rel="stylesheet" type="text/css" href="/styles/style.css">
+  <link rel="stylesheet" type="text/css" href="/styles/forum.css">
   <script src="/scripts/HtmlSanitizer.js"></script>
   <script src="/scripts/utils.js"></script>
 </head>
 <body>
   <script src="/scripts/navbar.js"></script>
-  <h1>Users</h1>
-  <ul></ul>
+  <h1>User List</h1>
+  <ul id="list" class="user-list"></ul>
   <script>
-    const ul = document.querySelector('ul')
+    const list = document.querySelector('#list')
 
     const getUsers = async() => {
-      const res = await fetch('/api/auth/getUsers')
-      const data = await res.json()
-      data.user.map((mappedUser)=> {
-        if (mappedUser.username !== 'admin') {
-          let li = `<li>
-          <b>Username</b> => ${mappedUser.username} <br>
-          <b>Role</b> => ${mappedUser.role} <br>
-          <a href="/user/${mappedUser.username}">User Page</a> </li>`
-          ul.innerHTML += li
-        } else {
-          return null
-        }
-      })
+      const res = await fetch('/api/auth/getUsers');
+      const data = await res.json();
+      data.user.map(userHTML(list));
     }
     getUsers()
   </script>
