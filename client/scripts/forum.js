@@ -1,5 +1,5 @@
 
-async function createPost(post,data,txt,name) {
+async function createPost(post,data,txt,name,reload) {
   var u = await getUser(data.posterId);
   post.innerHTML = `
   <div id="display">
@@ -18,7 +18,7 @@ async function createPost(post,data,txt,name) {
   `;
   var tok = await getAuth();
   const commentlist = document.querySelector("#comments");
-  await listComments(commentlist,data.comments,tok.user,commentEvents(name));
+  await listComments(commentlist,data.comments,tok.user,commentEvents(name,reload);
   const display = document.querySelector("#display");
   if (!tok.user) return;
   if (tok.user.role === "Admin") { 
@@ -131,7 +131,7 @@ function growtextarea(ta) {
   ta.style.height = ""; /* Reset the height*/
   ta.style.height = Math.min(ta.scrollHeight, 200) + "px";
 }
-function commentEvents(name) {
+function commentEvents(name,reload) {
   return {
     onsend:async(content)=>{
       const res = await fetch("/api/"+name+"/comment/"+pid, {
@@ -141,7 +141,7 @@ function commentEvents(name) {
         }),
         headers: { "Content-Type": "application/json" },
       });
-      location.assign(location.pathname);
+      reload();
     },
     onedit:async(content,index)=>{
       const res = await fetch("/api/"+name+"/comment/"+pid+"/edit", {
@@ -152,7 +152,7 @@ function commentEvents(name) {
         }),
         headers: { "Content-Type": "application/json" },
       });
-      location.assign(location.pathname);
+      reload();
     },
     ondelete:async(index)=>{
       const res = await fetch("/api/"+name+"/comment/"+pid+"/delete", {
@@ -162,11 +162,11 @@ function commentEvents(name) {
         }),
         headers: { "Content-Type": "application/json" },
       });
-      location.assign(location.pathname);
+      reload();
     },
     onupvote:async(index,checked)=>{
       const res = await fetch("/api/"+name+"/comment/"+pid+"/"+(checked?"up":"down")+"vote?index="+index);
-      location.assign(location.pathname);
+      reload();
     }
   };
 }
