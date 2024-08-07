@@ -8,7 +8,7 @@ body {
   align-items: center;
 }
 
-.project-panel, .post-panel {
+.project-panel, .post-panel, .user-panel {
   color: #000;
   text-decoration: none;
   background-color: #fff;
@@ -25,6 +25,13 @@ body {
   padding: 5px;
   width: 80vw;
   display: block;
+}
+
+
+.post-panel, .user-panel {
+  padding: 5px;
+  display: block;
+  width: 305px;
 }
 
 .project-panel {
@@ -47,7 +54,7 @@ body {
   border-radius: 5px;
 }
 
-.project-list, .post-list {
+.project-list, .post-list, .user-list {
   display: flex;
   flex-wrap: wrap;
   gap: 1em;
