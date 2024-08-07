@@ -19,7 +19,7 @@
   </div>
   <script>
     const pid = location.path[3];
-    (async load() => {
+    (async function load() {
       try {
         const postdiv = document.querySelector('#post');
         const res = await fetch('/api/forum/data/'+pid);
