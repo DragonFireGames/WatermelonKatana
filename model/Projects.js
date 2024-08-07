@@ -42,6 +42,10 @@ const ProjectSchema = new Mongoose.Schema({
     type: Number,
     required: true,
   },
+  activeAt: {
+    type: Number,
+    required: true,
+  },
   posterId: {
     type: String,
     required: true,
@@ -70,6 +74,7 @@ const ProjectSchema = new Mongoose.Schema({
       container.comments = this.comments;
       container.platform = this.platform;
       container.postedAt = this.postedAt;
+      container.activeAt = this.activeAt;
       container.id = this._id;
       container.posterId = this.posterId;
       container.poster = this.poster;
