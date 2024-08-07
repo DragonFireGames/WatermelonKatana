@@ -32,6 +32,7 @@ async publish(req, res, next) {
       content,
       tags,
       postedAt: Date.now(),
+      activeAt: Date.now(),
       posterId: user.id,
       poster: user.username, //convert to ref eventually
     });
@@ -68,6 +69,7 @@ async update(req, res, next) {
     post.name = name;
     post.content = content;
     post.tags = tags;
+    post.activeAt = Date.now();
     await post.save();
     res.status(201).json({
       message: "Post successfully updated",
@@ -230,6 +232,7 @@ async comment(req, res, next) {
       message: "Fetch not successful",
       error: "User not found",
     });
+    post.activeAt = Date.now();
     post.comments.push({
       content,
       rating: 0,
@@ -304,9 +307,10 @@ async editComment(req, res, next) {
     const uid = res.locals.userToken.id;
     var comment = post.comments[index];
     if (uid !== comment.posterId) return res.status(404).json({
-      message: "Delete not successful",
+      message: "Edit not successful",
       error: "User does not own comment",
     });
+    post.activeAt = Date.now();
     comment.content = content;
     await post.save();
     res.status(201).json({
