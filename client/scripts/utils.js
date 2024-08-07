@@ -60,6 +60,10 @@ function relativeDate(time) {
   //return new Date(time).toUTCString();
 }
 
+function previewContent(str,len) {
+  return str.replace(/[^\w\d\s-_]/g,"").replace(/\n[^]*$/,"").slice(0,len)+((str.includes("\n")||str.length>len)?"...":"");
+}
+
 function projHTML(list) {
   return function (proj) {
     let div = `<div class="project-panel" onclick="location.assign('/project/${proj.id}');">
@@ -80,7 +84,7 @@ function forumHTML(list) {
     <div class="post-top">
       ${proj.name} | By: <a href="/user/${proj.poster}">${proj.poster}</a> | Views: ${proj.views} | ${relativeDate(proj.postedAt)}
     <br>
-    ${proj.content.replace(/[^\w\d\s-_]/g,"").replace(/\n[^]*$/,"").slice(0,50)}
+    ${previewContent(proj.content,100)}
     </div>
     </div>`;
     list.innerHTML += div;
@@ -94,7 +98,7 @@ function userHTML(list) {
       <img class="comment-avatar" src="${user.avatar || "/images/placeholders/PLACEHOLDER_project.png"}">
       <div class="comment-username">${user.username}</div>
       </div>
-      ${user.biography.replace(/[^\w\d\s-_]/g,"").replace(/\n[^]*$/,"").slice(0,50)}
+      ${previewContent(user.biography,100)}
       <div>${user.role}</div>
     </div>`;
     list.innerHTML += div;
