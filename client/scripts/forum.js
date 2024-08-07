@@ -124,6 +124,7 @@ function setupReply(events,oncancel,self) {
     } else {
       events.onsend(txt.value);
     }
+    oncancel();
   };
   window.onreplycancelclick = oncancel;
 }
