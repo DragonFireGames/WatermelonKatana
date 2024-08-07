@@ -24,6 +24,7 @@
       <form style="font-size: 25px">
         <select id="sortOptions" style="font-size: inherit">
           <option value="featured">Featured</option>
+          <option value="active">Active</option>
           <option value="views">Views</option>
           <option value="latest">Latest</option>
         </select>
@@ -67,7 +68,8 @@
         const res = await fetch('/api/forum/list'+location.search);
         const data = await res.json();
         switch (params.get("sort")||"featured") {
-          case "featured": data.posts.sort((a,b)=>(Number(b.featured)-Number(a.featured))||(b.views-a.views)); break;
+          case "featured": data.posts.sort((a,b)=>(Number(b.featured)-Number(a.featured))||(b.activeAt-a.activeAt)); break;
+          case "active": data.posts.sort((a,b)=>(b.activeAt-a.activeAt)); break;
           case "views": data.posts.sort((a,b)=>(b.views-a.views)); break;
           case "latest": data.posts.sort((a,b)=>(b.postedAt-a.postedAt)); break;
         }
