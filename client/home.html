@@ -56,7 +56,7 @@
     (async () => {
       const res = await fetch('/api/forum/list');
       const data = await res.json();
-      data.posts.sort((a,b)=>(Number(b.featured)-Number(a.featured))||(b.views-a.views));
+      data.posts.sort((a,b)=>(Number(b.featured)-Number(a.featured))||(b.activeAt-a.activeAt));
       data.posts = data.posts.slice(0,5);
       data.posts.map(forumHTML(postlist));
     })();
