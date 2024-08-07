@@ -21,16 +21,16 @@ body {
   cursor: pointer;
 }
 
-.post-panel {
-  padding: 5px;
-  width: 80vw;
-  display: block;
-}
-
-
 .post-panel, .user-panel {
   padding: 5px;
   display: block;
+}
+
+.post-panel {
+  width: 80vw;
+}
+
+.user-panel {
   width: 305px;
 }
 
