@@ -3,12 +3,12 @@ async function createPost(post,data,txt,name) {
   var u = await getUser(data.posterId);
   post.innerHTML = `
   <div id="display">
+    <h2>${data.name}</h2>
     <div class="comment-top">
       <img class="comment-avatar" src="${u.avatar}">
       <p class="comment-username">${u.username}</p>
       <p class="comment-data">${new Date(data.postedAt).toUTCString()}</p>
     </div>
-    <h2>${data.name}</h2>
     ${txt}
     ${data.tags.map(t=>` <a href="/search?includeTags=${t}">#${t}</a>`)} <br>
   </div>
