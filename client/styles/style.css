@@ -41,7 +41,7 @@ body {
   flex-direction: column;
 }
 
-.project-panel:hover, .post-panel:hover {
+.project-panel:hover, .post-panel:hover, .user-panel:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
