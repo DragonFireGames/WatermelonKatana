@@ -51,10 +51,10 @@
     Loading...
   </div>
   <script>
-    const postdiv = document.querySelector('#post');
     const pid = location.path[2];
-    (async() => {
+    (async load(reload) => {
       try {
+        const postdiv = document.querySelector('#post');
         const res = await fetch('/api/project/data/'+pid);
         const data = await res.json();
         await createPost(postdiv,data,`
@@ -68,7 +68,12 @@
         }[data.platform])}</a> <br>
         <b>Score:</b> <span id="score">${data.score}</span> 
         <b>Views:</b> <span id="views">${data.views}</span> <br>
-        `,"project");
+        `,"project",()=>{
+          postdiv.innerHTML = `Loading...`;
+          load(true);
+        });
+
+        if (reload) return;
         
         const game = document.querySelector('#game');
         switch (data.platform) {
@@ -110,7 +115,7 @@
         alert(e);
         console.error(e);
       }
-    })();
+    })(false);
     
     async function favbtnclick(addtofavs) {
       const score = document.querySelector('#score');
