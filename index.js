@@ -98,7 +98,7 @@ app.get("/project/:id/delete", userAuth, (req, res) =>
 ); // Delete project route, users only
 
 // Posts
-app.get("/forum", userAuth, (req, res) => res.sendFile(cldir + "/forum.html")); // Forum Home/Search
+app.get("/forum", (req, res) => res.sendFile(cldir + "/forum.html")); // Forum Home/Search
 app.get("/forum/post", userAuth, (req, res) =>
   res.sendFile(cldir + "/post.html"),
 ); // Publish page, users only
