@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
   var navbarHtml = `
   <div class="topnav">
-    <h2 class="navbar-name">PIC-MO</h2>
+    <h2 class="navbar-name">PIC-Mo</h2>
     <a href="/">Home</a>
     <a href="/chat">Chat</a>
     <a href="/search">Project Gallery</a>
