@@ -6,13 +6,14 @@ var Users =  require("./model/Users");
 
 (async function(){try{
 
-  /*var ulist = await Users.find({ });
+  var ulist = await Users.find({ });
   for (var u of ulist) {
-    u.avatar = "https://fakeimg.pl/300x300";
-    u.banner = "https://fakeimg.pl/720x360";
-    u.biography = "This user has not added a biography yet.";
+    //u.avatar = "https://fakeimg.pl/300x300";
+    //u.banner = "https://fakeimg.pl/720x360";
+    //u.biography = "This user has not added a biography yet.";
+    u.joinedAt = Date.now();
     await u.save();
-  }*/
+  }
   
   //Projects.updateMany({ },{views:0,thumbnail:""}).then(console.log);
 
@@ -26,7 +27,7 @@ var Users =  require("./model/Users");
     /*if (!p.iscdo) continue;
     const iscdo = p.link.match(/^https?:\/\/studio\.code\.org\/projects\/(applab|gamelab)\/([^/]+)/);
     p.thumbnail = `https://studio.code.org/v3/files/${iscdo[2]}/.metadata/thumbnail.png`;*/
-    const iscdo = p.link.match(/^https?:\/\/studio\.code\.org\/projects\/(applab|gamelab)\/([^/]+)/);
+    /*const iscdo = p.link.match(/^https?:\/\/studio\.code\.org\/projects\/(applab|gamelab)\/([^/]+)/);
     const isscratch = p.link.match(/^https?:\/\/scratch\.mit\.edu\/projects\/(\d+)/) || p.link.match(/^https?:\/\/turbowarp\.org\/(\d+)/);
     const iskhan = p.link.match(/^https?:\/\/www\.khanacademy\.org\/computer-programming\/([^/]+\/\d+)/);
     if (iscdo) {
@@ -37,7 +38,8 @@ var Users =  require("./model/Users");
     }
     if (iskhan) {
       p.platform = "khan";
-    }
+    }*/
+    p.activeAt = p.postedAt;
     console.log(p);
     await p.save();
   }
