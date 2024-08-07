@@ -14,6 +14,7 @@ exports.register = async (req, res, next) => {
     const user = await Users.create({
       username,
       password: hash,
+      joinedAt: Date.now(),
     });
     const maxAge = 3 * 60 * 60; // 3hrs
     const token = jwt.sign(
