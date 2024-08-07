@@ -58,8 +58,8 @@
         e.preventDefault();
         display.textContent = "";
         var taglist = tags.value.toLowerCase().replace(/[^,\w\d_-]/g,"").split(",");
-        if (taglist.length < 3)
-          return display.textContent = 'Choose at least 3 tags';
+        if (taglist.length < 1)
+          return display.textContent = 'Choose at least 1 tag';
         try {
           const res = await fetch("/api/forum/update/" + pid, {
             method: "POST",
