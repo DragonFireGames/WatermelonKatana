@@ -18,16 +18,19 @@
     Loading...
   </div>
   <script>
-    const postdiv = document.querySelector('#post');
     const pid = location.path[3];
-    (async() => {
+    (async load() => {
       try {
+        const postdiv = document.querySelector('#post');
         const res = await fetch('/api/forum/data/'+pid);
         const data = await res.json();
         await createPost(postdiv,data,`
         ${convertHTML(data.content)} <br>
         <b>Views:</b> <span id="views">${data.views}</span> <br>
-        `,"forum");
+        `,"forum",()=>{
+          postdiv.innerHTML = `Loading...`;
+          load();
+        });
       } catch(e) {
         alert(e);
         console.error(e);
