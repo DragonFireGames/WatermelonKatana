@@ -36,6 +36,8 @@ const UserSchema = new Mongoose.Schema({
     required: true,
   },
   favorites: [ String ],
+  following: [ String ],
+  followers: [ String ],
   joinedAt: {
     type: Number,
     required: true,
@@ -50,6 +52,8 @@ const UserSchema = new Mongoose.Schema({
       container.biography = this.biography;
       container.role = this.role;
       container.favorites = this.favorites;
+      container.following = this.following;
+      container.followers = this.followers;
       container.joinedAt = this.joinedAt;
       container.id = this._id;
       return container;
