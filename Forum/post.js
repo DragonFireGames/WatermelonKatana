@@ -158,8 +158,6 @@ async data(req, res, next) {
       message: "Fetch not successful",
       error: "Post not found",
     });
-    post.views++;
-    await post.save();
     res.status(200).json(post.pack());
   } catch(err) {
     res.status(401).json({ message: "Not successful", error: err.message });
