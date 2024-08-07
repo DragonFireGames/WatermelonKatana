@@ -63,11 +63,9 @@ function relativeDate(time) {
 function projHTML(list) {
   HtmlSanitizer.AllowedAttributes["class"] = true;
   return function (proj) {
-    let div = `<div class="project-panel">
-    <a href="/project/${proj.id}">
+    let div = `<div class="project-panel" onclick="location.assign('/project/${proj.id}');">
       <div class="thumbnail-border"><img class="project-thumbnail" src="${proj.thumbnail || "/images/placeholders/PLACEHOLDER_project.png"}"></div>
       <div class="project-link">${proj.name}</div>
-      </a>
       <div>By: <a href="/user/${proj.poster}">${proj.poster}</a></div>
       <div>Score: ${proj.score} Views: ${proj.views}</div>
     </div>`;
@@ -81,7 +79,7 @@ function projHTML(list) {
 
 function forumHTML(list) {
   return function (proj) {
-    let div = `<div class="post-panel" onclick="location.assign('/forum/discussion/${proj.id}')">
+    let div = `<div class="post-panel" onclick="location.assign('/forum/discussion/${proj.id}');">
     <div class="post-top">
       ${proj.name} | By: <a href="/user/${proj.poster}">${proj.poster}</a> | Views: ${proj.views} | ${relativeDate(proj.postedAt)}
     <br>
