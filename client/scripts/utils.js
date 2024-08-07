@@ -61,7 +61,6 @@ function relativeDate(time) {
 }
 
 function projHTML(list) {
-  HtmlSanitizer.AllowedAttributes["class"] = true;
   return function (proj) {
     let div = `<div class="project-panel" onclick="location.assign('/project/${proj.id}');">
       <div class="thumbnail-border"><img class="project-thumbnail" src="${proj.thumbnail || "/images/placeholders/PLACEHOLDER_project.png"}"></div>
@@ -69,10 +68,9 @@ function projHTML(list) {
       <div>By: <a href="/user/${proj.poster}">${proj.poster}</a></div>
       <div>Score: ${proj.score} Views: ${proj.views}</div>
     </div>`;
-
-    list.innerHTML += HtmlSanitizer.SanitizeHtml(div);
+    list.innerHTML += div;
     let lastThumbnail = list.children[list.children.length - 1].querySelector(".project-thumbnail");
-    if (!lastThumbnail.getAttribute("src"))lastThumbnail.src = "/images/placeholders/PLACEHOLDER_project.png";
+    if (!lastThumbnail.getAttribute("src")) lastThumbnail.src = "/images/placeholders/PLACEHOLDER_project.png";
   };
 }
 
