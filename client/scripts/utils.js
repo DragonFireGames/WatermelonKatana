@@ -99,7 +99,7 @@ function userHTML(list) {
       <div class="comment-username">${user.username}</div>
       </div>
       ${previewContent(user.biography,100)}
-      <div>${user.role}</div>
+      <div>Joined on ${new Date(user.joinedAt).toUTCString().replace(/\d\d:[^]+$/,"")} | ${user.role} </div>
     </div>`;
     list.innerHTML += div;
   };
