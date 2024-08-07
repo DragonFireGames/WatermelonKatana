@@ -20,6 +20,7 @@ async function createPost(post,data,txt,name) {
   const commentlist = document.querySelector("#comments");
   await listComments(commentlist,data.comments,tok.user,commentEvents(name));
   const display = document.querySelector("#display");
+  if (!tok.user) return;
   if (tok.user.role === "Admin") { 
     display.innerHTML += `
     <label for="featured-btn">Featured:</label>
