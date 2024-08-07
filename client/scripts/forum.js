@@ -18,7 +18,7 @@ async function createPost(post,data,txt,name,reload) {
   `;
   var tok = await getAuth();
   const commentlist = document.querySelector("#comments");
-  await listComments(commentlist,data.comments,tok.user,commentEvents(name,reload);
+  await listComments(commentlist,data.comments,tok.user,commentEvents(name,reload));
   const display = document.querySelector("#display");
   if (!tok.user) return;
   if (tok.user.role === "Admin") { 
