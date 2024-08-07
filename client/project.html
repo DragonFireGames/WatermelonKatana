@@ -52,7 +52,7 @@
   </div>
   <script>
     const pid = location.path[2];
-    (async load(reload) => {
+    (async function load(reload) {
       try {
         const postdiv = document.querySelector('#post');
         const res = await fetch('/api/project/data/'+pid);
