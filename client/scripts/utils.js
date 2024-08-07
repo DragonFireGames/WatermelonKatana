@@ -74,7 +74,6 @@ function projHTML(list) {
   };
 }
 
-
 function forumHTML(list) {
   return function (proj) {
     let div = `<div class="post-panel" onclick="location.assign('/forum/discussion/${proj.id}');">
@@ -83,6 +82,20 @@ function forumHTML(list) {
     <br>
     ${proj.content.replace(/[^\w\d\s-_]/g,"").replace(/\n[^]*$/,"").slice(0,50)}
     </div>
+    </div>`;
+    list.innerHTML += div;
+  };
+}
+
+function userHTML(list) {
+  return function (user) {
+    let div = `<div class="user-panel" onclick="location.assign('/user/${user.name}');">
+      <div class="comment-top">
+      <img class="comment-avatar" src="${user.avatar || "/images/placeholders/PLACEHOLDER_project.png"}">
+      <div class="comment-username">${user.username}</div>
+      </div>
+      ${user.biography.replace(/[^\w\d\s-_]/g,"").replace(/\n[^]*$/,"").slice(0,50)}
+      <div>${user.role}</div>
     </div>`;
     list.innerHTML += div;
   };
