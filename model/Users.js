@@ -36,6 +36,10 @@ const UserSchema = new Mongoose.Schema({
     required: true,
   },
   favorites: [ String ],
+  joinedAt: {
+    type: Number,
+    default: Date.now()
+  },
 }, {
   methods: {
     pack: function() {
@@ -45,8 +49,9 @@ const UserSchema = new Mongoose.Schema({
       container.banner = this.banner;
       container.biography = this.biography;
       container.role = this.role;
-      container.id = this._id;
       container.favorites = this.favorites;
+      container.joinedAt = this.joinedAt;
+      container.id = this._id;
       return container;
     }
   }
