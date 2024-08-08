@@ -22,7 +22,7 @@ Will these actually get done?
 - [x] Posting System
 - [x] Forums
 - [x] Upvote System
-- [ ] Follow/Friending Systems
+- [x] Follow Systems
 
 ### Step 4 - Quick Chat
 - [x] Chat System using discord
@@ -35,31 +35,38 @@ Will these actually get done?
 ### Step 1 - Administation
 - [ ] Administration Panel
 - [ ] Moderation Panel
-- [ ] Anonymous Mode
+- [ ] Anonymous Mode???
 - [ ] Reporting System
 
 ### Step 2 - More Features
+- [ ] Notifications
+- [ ] Media Uploading Site
 - [ ] Better Search for Posts/Users/Games
 - [x] Community Ranking
 - [ ] Private Forums, Quick-Chats & Games
 - [x] Featured Games
 - [x] Admins / Moderators ability to pin posts
 - [x] Followed/Favorited/User-Featured Games (visible on profile)
+- [ ] Post games directly using GitHub without requiring a static host url to be embedded
+- [ ] Flash support???
+
+### Step 3 - Better UI
+- [ ] UI Revamp
+- [ ] Dark/Light mode & themes
 - [ ] Markdown Support
 - [ ] Custom Emoji Support
+- [ ] Project css for preview, (background color and text color)
+- [ ] Nameplates?!?!!??!!??!?
 
 ## Phase 3 - Deployment
 - Timeframe: Summer of 2025
 - Open Beta
 
 ### Step 1 - Add Remaining Features
-- [ ] Project css for preview, (background color and text color)
-- [ ] Nameplates?!?!!??!!??!?
 - [ ] Save for Later tab
 - [ ] Profile Badges
 - [ ] Community Leaderboards
 - [ ] Improve Performance
-- [ ] Finalize GUI/Graphics
 - [ ] Friend activity monitor (what are they doing?)
 - [ ] Live Game Chat???
 - [ ] Remix System (integrated with Github/Free Deployment Software)???
