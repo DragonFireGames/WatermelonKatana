@@ -308,8 +308,7 @@ exports.follow = async (req, res, next) => {
     await Promise.all([user.save(),self.save()]);
     res.status(201).json({
       message: "Follow successful",
-      user,
-      self
+      user: self
     });
   } catch(error) {
     res.status(400).json({
@@ -344,8 +343,7 @@ exports.unfollow = async (req, res, next) => {
     await Promise.all([user.save(),self.save()]);
     res.status(201).json({
       message: "Unfollow successful",
-      user,
-      self
+      user: self
     });
   } catch(error) {
     res.status(400).json({
