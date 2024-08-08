@@ -10,13 +10,13 @@ route(router,userAuth,adminAuth) {
   router.route("/publish").post(userAuth, this.publish.bind(this));
   router.route("/list").get(this.list.bind(this));
   router.route("/data/:id").get(this.data.bind(this));
-  router.route("/update/:id").post(userAuth, this.update.bind(this));
+  router.route("/update/:id").put(userAuth, this.update.bind(this));
   router.route("/delete/:id").delete(userAuth, this.delete.bind(this));
   router.route("/delete/:id").get(userAuth, this.delete.bind(this));
   router.route("/feature/:id").get(adminAuth, this.feature.bind(this));
   router.route("/unfeature/:id").get(adminAuth, this.unfeature.bind(this));
   router.route("/comment/:id").post(userAuth, this.comment.bind(this));
-  router.route("/comment/:id/edit").post(userAuth, this.editComment.bind(this));
+  router.route("/comment/:id/edit").put(userAuth, this.editComment.bind(this));
   router.route("/comment/:id/delete").delete(userAuth, this.deleteComment.bind(this));
   router.route("/comment/:id/upvote").get(userAuth, this.upvoteComment.bind(this));
   router.route("/comment/:id/downvote").get(userAuth, this.downvoteComment.bind(this));
