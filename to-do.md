@@ -28,7 +28,7 @@ Will these actually get done?
 - [x] Chat System using discord
 - [x] Use account photo/name in quick chat
 
-## Phase 2 - Production
+## Phase 2 - Development
 - Timeframe: Winter of 2024-2025
 - Limited access Beta
 
