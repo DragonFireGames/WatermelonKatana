@@ -18,7 +18,7 @@
     const list = document.querySelector('#list')
 
     const getUsers = async() => {
-      const res = await fetch('/api/auth/getUsers');
+      const res = await fetch('/api/auth/listUsers');
       const data = await res.json();
       data.user.map(userHTML(list));
     }
