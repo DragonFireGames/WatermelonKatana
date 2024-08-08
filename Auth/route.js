@@ -11,7 +11,7 @@ router.route("/update").put(userAuth, update);
 router.route("/updateRole").put(adminAuth, updateRole);
 router.route("/deleteUser").delete(adminAuth, deleteUser);
 router.route("/deleteSelf").delete(userAuth, deleteSelf);
-router.route("/getUsers").get(getUsers);
+router.route("/listUsers").get(listUsers);
 router.route("/check").get(checkAuth, check);
 router.route("/userdata").get(userdata);
 router.route("/follow").get(userAuth, follow);
