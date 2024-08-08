@@ -294,6 +294,10 @@ exports.follow = async (req, res, next) => {
     });
     const uid = user._id;
     const sid = res.locals.userToken.id;
+    if (uid === sid) return res.status(404).json({
+      message: "Follow not successful",
+      error: "You cannot follow yourself",
+    });
     var self = await Users.findOne({ _id: sid });
     if (!self) return res.status(404).json({
       message: "Fetch not successful",
