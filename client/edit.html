@@ -74,7 +74,7 @@
           return display.textContent = 'Choose at least 3 tags';
         try {
           const res = await fetch("/api/project/update/" + pid, {
-            method: "POST",
+            method: "PUT",
             body: JSON.stringify({
               name: name.value,
               link: link.value,
