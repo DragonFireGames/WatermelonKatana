@@ -190,7 +190,7 @@ exports.deleteUser = async (req, res, next) => {
   }
 };
 
-exports.getUsers = async (req, res, next) => {
+exports.listUsers = async (req, res, next) => {
   try {
     var search = {};
     if (req.query.role) search.role = req.query.role;
@@ -234,7 +234,7 @@ async function getUser(req) {
 
 exports.userdata = async (req, res, next) => {
   try {
-    var user = getUser(req);
+    var user = await getUser(req);
     if (!user) return res.status(404).json({
       message: "Fetch not successful",
       error: "User not found",
@@ -287,7 +287,7 @@ exports.changePassword = async (req, res, next) => {
 
 exports.follow = async (req, res, next) => {
   try {
-    var user = getUser(req);
+    var user = await getUser(req);
     if (!user) return res.status(404).json({
       message: "Fetch not successful",
       error: "User not found",
@@ -326,7 +326,7 @@ exports.follow = async (req, res, next) => {
 
 exports.unfollow = async (req, res, next) => {
   try {
-    var user = getUser(req);
+    var user = await getUser(req);
     if (!user) return res.status(404).json({
       message: "Fetch not successful",
       error: "User not found",
