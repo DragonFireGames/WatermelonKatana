@@ -220,16 +220,21 @@ exports.check = async (req, res, next) => {
   }
 };
 
+async function getUser(req) {
+  const username = req.query.username;
+  const uid = req.query.id;
+  if ((uid && username) || (!uid && !username)) return res.status(404).json({
+    message: "Fetch not successful",
+    error: "Wrong query information",
+  });
+  if (username) return await Users.findOne({ username });
+  if (uid) return await Users.findOne({ _id: uid });
+  return false;
+}
+
 exports.userdata = async (req, res, next) => {
   try {
-    const username = req.query.username;
-    const uid = req.query.id;
-    if ((uid && username) || (!uid && !username)) return res.status(404).json({
-      message: "Fetch not successful",
-      error: "Wrong query information",
-    });
-    if (username) var user = await Users.findOne({ username });
-    if (uid) var user = await Users.findOne({ _id: uid });
+    var user = getUser(req);
     if (!user) return res.status(404).json({
       message: "Fetch not successful",
       error: "User not found",
@@ -279,3 +284,74 @@ exports.changePassword = async (req, res, next) => {
     });
   }
 };
+
+exports.follow = async (req, res, next) => {
+  try {
+    var user = getUser(req);
+    if (!user) return res.status(404).json({
+      message: "Fetch not successful",
+      error: "User not found",
+    });
+    const uid = user._id;
+    const sid = res.locals.userToken.id;
+    var self = await Users.findOne({ _id: sid });
+    if (!self) return res.status(404).json({
+      message: "Fetch not successful",
+      error: "Self not found",
+    });
+    if (user.followers.includes(sid)||self.following.includes(uid) return res.status(400).json({
+      message: "Invalid",
+      error: "Already following user",
+    });
+    user.followers.push(sid);
+    self.following.push(uid);
+    await Promise.all([user.save(),self.save()]);
+    res.status(201).json({
+      message: "Follow successful",
+      user,
+      self
+    });
+  } catch(error) {
+    res.status(400).json({
+      message: "An error occurred",
+      error: error.message
+    });
+  };
+};
+
+exports.unfollow = async (req, res, next) => {
+  try {
+    var user = getUser(req);
+    if (!user) return res.status(404).json({
+      message: "Fetch not successful",
+      error: "User not found",
+    });
+    const uid = user._id;
+    const sid = res.locals.userToken.id;
+    var self = await Users.findOne({ _id: sid });
+    if (!self) return res.status(404).json({
+      message: "Fetch not successful",
+      error: "Self not found",
+    });
+    var uindex = user.followers.indexOf(sid);
+    var sindex = self.following.indexOf(uid);
+    if (uindex !== -1 || sindex !== -1) return res.status(400).json({
+      message: "Invalid",
+      error: "Already following user",
+    });
+    user.followers.splice(uindex,1);
+    self.following.push(sindex,1);
+    await Promise.all([user.save(),self.save()]);
+    res.status(201).json({
+      message: "Unfollow successful",
+      user,
+      self
+    });
+  } catch(error) {
+    res.status(400).json({
+      message: "An error occurred",
+      error: error.message
+    });
+  };
+};
+
