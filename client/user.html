@@ -58,7 +58,7 @@
               Joined on ${new Date(data.joinedAt).toUTCString().replace(/\d\d:[^]+$/,"")} |
               <span id="followercount">${data.followers.length}</span> Followers | 
               ${data.following.length} Following 
-              ${tok.user?`| <input type="checkbox" id="follow-btn" onclick="followbtnclick(this.checked);" ${data.following.includes(tok.user.id)?"checked":""}> Follow`:""}
+              ${tok.user?`| <input type="checkbox" id="follow-btn" onclick="followbtnclick(this.checked);" ${data.followers.includes(tok.user.id)?"checked":""}> Follow`:""}
               <br><i class="uidtext" title="Click to Copy">ID: ${data.id}</i>
             </div>`;
           await Promise.all(data.favorites.map(async pid => {
