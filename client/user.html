@@ -46,9 +46,8 @@
           const data = await res.json();
           if (res.status === 400 || res.status === 401) throw Error(data);
           const tok = await getAuth();
-          const roleClass = data.role.toLowerCase();
           display.innerHTML = `
-            <div class="profile ${roleClass}">
+            <div class="profile ${data.role.toLowerCase()}">
               <img class="banner" src="${data.banner}">
               <div class="namecontainer">
                 <img class="avatar" src="${data.avatar}">
