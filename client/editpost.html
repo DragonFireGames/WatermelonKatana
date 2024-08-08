@@ -62,7 +62,7 @@
           return display.textContent = 'Choose at least 1 tag';
         try {
           const res = await fetch("/api/forum/update/" + pid, {
-            method: "POST",
+            method: "PUT",
             body: JSON.stringify({
               name: name.value,
               content: content.value,
