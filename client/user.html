@@ -43,8 +43,8 @@
       (async () => {
         try {
           const res = await fetch('/api/auth/userdata?username=' + name);
-          if (res.status === 400 || res.status === 401) throw Error(data);
           const data = await res.json();
+          if (res.status === 400 || res.status === 401) throw Error(data);
           const tok = await getAuth();
           const roleClass = data.role.toLowerCase();
           display.innerHTML = `
