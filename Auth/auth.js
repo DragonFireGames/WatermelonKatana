@@ -345,7 +345,7 @@ exports.unfollow = async (req, res, next) => {
       error: "Not following user",
     });
     if (uindex !== -1) user.followers.splice(uindex,1);
-    if (sindex !== -1) self.following.push(sindex,1);
+    if (sindex !== -1) self.following.splice(sindex,1);
     await Promise.all([user.save(),self.save()]);
     res.status(201).json({
       message: "Unfollow successful",
