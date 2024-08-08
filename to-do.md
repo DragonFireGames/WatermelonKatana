@@ -1,8 +1,10 @@
 # To-Do
 Will these actually get done?
+(they do, eventually)
 
 ## Phase 1 - Prototyping (COMPLETE)
-- Timeframe: Summer of 2024 (Done Aug 7, Ahead of Deadline!)
+- Timeframe: Summer of 2024 
+(Done Wed Aug 07 2024 20\:02:38 GMT-0700 (Pacific Daylight Time), Ahead of Deadline!)
 - Completely Private
 
 ### Step 1 - Accounts
@@ -29,8 +31,8 @@ Will these actually get done?
 - [x] Chat System using discord - DragonFireGames
 - [x] Use account photo/name in quick chat - DragonFireGames
 
-## Phase 2 - Development
-- Timeframe: Winter of 2024-2025
+## Phase 2 - Development (ACTIVE)
+- Timeframe: Winter of 2024-2025 (Lets shoot for Thanksgiving??)
 - Limited access Beta
 
 ### Step 1 - Administation
