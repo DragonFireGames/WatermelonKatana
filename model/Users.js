@@ -1,5 +1,20 @@
 const Mongoose = require("mongoose");
 
+const NotificationSchema = new Mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+  },
+  content: {
+    type: String,
+    default: "",
+  },
+  createdAt: {
+    type: Number,
+    required: true,
+  },
+});
+
 const UserSchema = new Mongoose.Schema({
   username: {
     type: String,
@@ -10,6 +25,7 @@ const UserSchema = new Mongoose.Schema({
     },
     required: true,
   },
+  email: String,
   password: {
     type: String,
     minlength: 6,
@@ -27,9 +43,7 @@ const UserSchema = new Mongoose.Schema({
     type: String,
     default: "This user has not added a biography yet.",
   },
-  /*
   badges: [ Number ],
-  */
   role: {
     type: String,
     default: "Basic",
@@ -42,6 +56,7 @@ const UserSchema = new Mongoose.Schema({
     type: Number,
     required: true,
   },
+  notifications: [ NotificationSchema ],
 }, {
   methods: {
     pack: function() {
@@ -50,6 +65,7 @@ const UserSchema = new Mongoose.Schema({
       container.avatar = this.avatar;
       container.banner = this.banner;
       container.biography = this.biography;
+      container.badges = this.badges;
       container.role = this.role;
       container.favorites = this.favorites;
       container.following = this.following;
@@ -57,6 +73,13 @@ const UserSchema = new Mongoose.Schema({
       container.joinedAt = this.joinedAt;
       container.id = this._id;
       return container;
+    },
+    notify: function(title,content) {
+      this.notifications.push({ 
+        title,
+        content,
+        createdAt: Date.now()
+      });
     }
   }
 });
