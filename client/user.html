@@ -55,6 +55,7 @@
               </div>
               <p class="biography">${data.biography}</p>
               <p class="role">${data.role}</p>
+              Joined on ${new Date(data.joinedAt).toUTCString().replace(/\d\d:[^]+$/,"")} |
               <span id="followercount">${data.followers.length}</span> Followers | 
               ${data.following.length} Following 
               ${tok.user?`| <input type="checkbox" id="follow-btn" onclick="followbtnclick(this.checked);" ${data.following.includes(tok.user.id)?"checked":""}> Follow`:""}
@@ -71,7 +72,7 @@
         }
       })();
       
-      async function featurebtnclick(feature) {
+      async function followbtnclick(feature) {
         var count = document.querySelector("#followercount");
         if (feature) {
           count.innerHTML = Number(count.innerHTML)+1;
