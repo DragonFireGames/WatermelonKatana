@@ -71,6 +71,7 @@ const UserSchema = new Mongoose.Schema({
       container.following = this.following;
       container.followers = this.followers;
       container.joinedAt = this.joinedAt;
+      container.notifications = this.notifications;
       container.id = this._id;
       return container;
     },
