@@ -2,31 +2,32 @@
 Will these actually get done?
 
 ## Phase 1 - Prototyping (COMPLETE)
-- Timeframe: Summer of 2024
+- Timeframe: Summer of 2024 (Done Aug 7, Ahead of Deadline!)
 - Completely Private
 
 ### Step 1 - Accounts
-- [x] Basic Account/Profile System
-- [x] User Settings
-- [x] Profile Page
+- [x] Basic Account/Profile System - DragonFireGames
+- [x] User Settings - DragonFireGames
+- [x] Profile Page - Colack
+- [x] Home Page - Colack
 
 ### Step 2 - Posting Projects
-- [x] Game Embed System
-- [x] CDO, Khan, and Scratch support
-- [x] Publishing Panel
-- [x] Commenting System
-- [x] Favorite System
-- [x] Tag System
+- [x] Game Embed System - Varrience
+- [x] CDO, Khan, and Scratch support - Varrience & DragonFireGames
+- [x] Publishing Panel - DragonFireGames
+- [x] Post/Forum Viewer - Colack & DragonFireGames
+- [x] Commenting System - DragonFireGames
+- [x] Favorite System - Colack & DragonFireGames
+- [x] Tag System/Search - Colack & DragonFireGames
 
 ### Step 3 - Forums
-- [x] Posting System
-- [x] Forums
-- [x] Upvote System
-- [x] Follow Systems
+- [x] Posting System & Forums - DragonFireGames
+- [x] Upvote System - DragonFireGames
+- [x] Follow Systems - DragonFireGames
 
 ### Step 4 - Quick Chat
-- [x] Chat System using discord
-- [x] Use account photo/name in quick chat
+- [x] Chat System using discord - DragonFireGames
+- [x] Use account photo/name in quick chat - DragonFireGames
 
 ## Phase 2 - Development
 - Timeframe: Winter of 2024-2025
@@ -42,16 +43,17 @@ Will these actually get done?
 - [ ] Notifications
 - [ ] Media Uploading Site
 - [ ] Better Search for Posts/Users/Games
-- [x] Community Ranking
+- [x] Navbar - Colack & DragonFireGames
+- [x] Community Ranking - DragonFireGames
 - [ ] Private Forums, Quick-Chats & Games
-- [x] Featured Games
-- [x] Admins / Moderators ability to pin posts
-- [x] Followed/Favorited/User-Featured Games (visible on profile)
+- [x] Featured Games - DragonFireGames
+- [x] Admins / Moderators ability to pin posts - DragonFireGames
 - [ ] Post games directly using GitHub without requiring a static host url to be embedded
 - [ ] Flash support???
+- [ ] Profile Badges
 
 ### Step 3 - Better UI
-- [ ] UI Revamp
+- [ ] UI Overhaul
 - [ ] Dark/Light mode & themes
 - [ ] Markdown Support
 - [ ] Custom Emoji Support
@@ -64,7 +66,6 @@ Will these actually get done?
 
 ### Step 1 - Add Remaining Features
 - [ ] Save for Later tab
-- [ ] Profile Badges
 - [ ] Community Leaderboards
 - [ ] Improve Performance
 - [ ] Friend activity monitor (what are they doing?)
@@ -73,6 +74,7 @@ Will these actually get done?
 - [ ] Code editor???
 - [ ] Public Version Management (from Github)
 - [ ] Profile Statuses
+- [ ] Game Jams?
 
 ### Step 2 - Final Debugging/Graphics
 - [ ] Fix Remaining Server Issues
