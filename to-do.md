@@ -1,7 +1,7 @@
 # To-Do
 Will these actually get done?
 
-## Phase 1 - Prototyping
+## Phase 1 - Prototyping (COMPLETE)
 - Timeframe: Summer of 2024
 - Completely Private
 
