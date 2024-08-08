@@ -146,7 +146,7 @@ function commentEvents(name,reload) {
     },
     onedit:async(content,index)=>{
       const res = await fetch("/api/"+name+"/comment/"+pid+"/edit", {
-        method: "POST",
+        method: "PUT",
         body: JSON.stringify({
           content: content,
           index: index
