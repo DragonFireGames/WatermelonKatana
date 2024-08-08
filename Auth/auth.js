@@ -299,12 +299,14 @@ exports.follow = async (req, res, next) => {
       message: "Fetch not successful",
       error: "Self not found",
     });
-    if (user.followers.includes(sid)||self.following.includes(uid) return res.status(400).json({
+    var uinc = user.followers.includes(sid);
+    var sinc = self.following.includes(uid);
+    if (uinc && sinc) return res.status(400).json({
       message: "Invalid",
       error: "Already following user",
     });
-    user.followers.push(sid);
-    self.following.push(uid);
+    if (!uinc) user.followers.push(sid);
+    if (!sinc) self.following.push(uid);
     await Promise.all([user.save(),self.save()]);
     res.status(201).json({
       message: "Follow successful",
@@ -334,12 +336,12 @@ exports.unfollow = async (req, res, next) => {
     });
     var uindex = user.followers.indexOf(sid);
     var sindex = self.following.indexOf(uid);
-    if (uindex !== -1 || sindex !== -1) return res.status(400).json({
+    if (uindex === -1 && sindex === -1) return res.status(400).json({
       message: "Invalid",
-      error: "Already following user",
+      error: "Not following user",
     });
-    user.followers.splice(uindex,1);
-    self.following.push(sindex,1);
+    if (uindex !== -1) user.followers.splice(uindex,1);
+    if (sindex !== -1) self.following.push(sindex,1);
     await Promise.all([user.save(),self.save()]);
     res.status(201).json({
       message: "Unfollow successful",
