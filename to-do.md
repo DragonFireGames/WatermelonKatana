@@ -55,6 +55,7 @@ Will these actually get done?
 - [ ] Profile Badges
 
 ### Step 3 - Better UI
+- [ ] Logo
 - [ ] UI Overhaul
 - [ ] Dark/Light mode & themes
 - [ ] Markdown Support
