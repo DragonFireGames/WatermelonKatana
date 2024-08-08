@@ -11,7 +11,7 @@ Will these actually get done?
 - [x] Basic Account/Profile System - DragonFireGames
 - [x] User Settings - DragonFireGames
 - [x] Profile Page - Colack
-- [x] Home Page - Colack
+- [x] Home Page - Colack & LGM Productions
 
 ### Step 2 - Posting Projects
 - [x] Game Embed System - Varrience
