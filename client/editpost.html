@@ -22,6 +22,10 @@
       <textarea id="content"></textarea><br/>
       <label for="tags">Tags</label><br/>
       <input type="text" id="tags"><br/>
+      <label for="mature">Mature</label>
+      <input type="checkbox" id="mature"><br>
+      <label for="hidden">Hidden</label>
+      <input type="checkbox" id="hidden"><br>
       <input type="submit" value="update"/><br/>
     </form>
     <button id="deletebtn">delete</button>
@@ -30,6 +34,8 @@
       const name = document.querySelector("#name");
       const content = document.querySelector("#content");
       const tags = document.querySelector("#tags");
+      const mature = document.querySelector('#mature');
+      const hidden = document.querySelector('#hidden');
       const display = document.querySelector(".error");
 
       location.path = location.pathname.split("/");
@@ -52,6 +58,8 @@
         name.value = data.name;
         content.value = data.content;
         tags.value = data.tags.join(", ");
+        mature.checked = data.mature;
+        hidden.checked = data.hidden;
       })();
 
       form.addEventListener("submit", async (e) => {
@@ -60,6 +68,8 @@
         var taglist = tags.value.toLowerCase().replace(/[^,\w\d_-]/g,"").split(",");
         if (taglist.length < 1)
           return display.textContent = 'Choose at least 1 tag';
+        if (taglist.length > 10)
+          return display.textContent = 'You can only choose a maximum of 10 tags';
         try {
           const res = await fetch("/api/forum/update/" + pid, {
             method: "PUT",
@@ -67,8 +77,8 @@
               name: name.value,
               content: content.value,
               tags: taglist,
-              mature: false,
-              hidden: false,
+              mature: mature.checked,
+              hidden: hidden.checked,
               privateRecipients: [],
             }),
             headers: { "Content-Type": "application/json" },
