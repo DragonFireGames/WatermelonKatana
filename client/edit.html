@@ -79,8 +79,11 @@
               name: name.value,
               link: link.value,
               desc: desc.value,
-              tags: taglist,
               thumbnail: thumb.value,
+              tags: taglist,
+              mature: false,
+              hidden: false,
+              privateRecipients: [],
             }),
             headers: { "Content-Type": "application/json" },
           });
