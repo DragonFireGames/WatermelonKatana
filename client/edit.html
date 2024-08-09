@@ -68,6 +68,8 @@
         tags.value = data.tags.join(", ");
         mature.checked = data.mature;
         hidden.checked = data.hidden;
+        if (data.mature) return;
+        mature.outerHTML =  ``;
       })();
 
       form.addEventListener("submit", async (e) => {
