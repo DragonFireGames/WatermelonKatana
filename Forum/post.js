@@ -1,5 +1,10 @@
 const Users = require("../model/Users");
 
+function interpretBool(obj,name,str) {
+  if (str == "0" || str == "false") obj[name] = false;
+  if (str == "1" || str == "true") obj[name] = true;
+}
+
 module.exports = class {
   constructor(model,name) {
     this.model = model;
@@ -113,16 +118,17 @@ async delete(req, res, next) {
     });
     console.log(error.message);
   }
-};
+}; 
 
 async list(req, res, next) {
   try {
-    var search = {};
-    const { poster, platform, postedBefore, postedAfter, includeTags, excludeTags, featured, customQuery } = req.query;
+    var search = { hidden: false };
+    const { poster, platform, postedBefore, postedAfter, includeTags, excludeTags, featured, mature, recipient, customQuery } = req.query;
     if (poster) search.poster = poster;
     if (platform) search.platform = platform;
-    if (featured == "0" || featured == "false") search.featured = false;
-    else if (featured == "1" || featured == "true") search.featured = true;
+    interpretBool(search,"featured",featured);
+    interpretBool(search,"mature",mature);
+    // work out recipient search later
     if (postedBefore || postedAfter) {
       search.postedAt = {};
       if (postedBefore) search.postedAt.$lte = postedBefore;
