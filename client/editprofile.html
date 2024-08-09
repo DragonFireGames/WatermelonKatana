@@ -59,8 +59,6 @@
         avatar.value = user.avatar || "";
         banner.value = user.banner || "";
         mature.checked = user.mature;
-        if (user.mature) return;
-        mature.outerHTML =  ``;
       })();
 
       form.addEventListener("submit", async (e) => {
