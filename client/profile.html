@@ -21,30 +21,14 @@
     </div>
     <div id="footer"></div>
 
-    Published
-    <ul id="list" class="project-list"></ul>
-    Favorites
-    <ul id="favlist" class="project-list"></ul>
-    
     <script>
-      const list = document.querySelector('#list');
-      const favlist = document.querySelector('#favlist');
-      const display = document.querySelector('#display');
       const header = document.querySelector('#header');
       
       (async () => {
         const udata = await getAuth();
         if (!udata.auth) return;
         try {
-	  header.innerHTML += `<a href="/user/${udata.user.username}">User Page</a>`;
-          await Promise.all(udata.user.favorites.map(async pid => {
-            const res = await fetch('/api/project/data/'+pid);
-            const proj = await res.json();
-            projHTML(favlist)(proj);
-          }));
-          const res = await fetch('/api/project/list?poster='+udata.user.username);
-          const data = await res.json();
-          data.projects.map(projHTML(list));
+	      header.innerHTML += `<a href="/user/${udata.user.username}">User Page</a>`;
         } catch(e) {
           alert(e);
           console.error(e);
