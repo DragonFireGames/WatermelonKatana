@@ -11,13 +11,13 @@ Will these actually get done?
 - [x] Basic Account/Profile System - DragonFireGames
 - [x] User Settings - DragonFireGames
 - [x] Profile Page - Colack
-- [x] Home Page - Colack & LGM Productions
+- [x] Home Page - Colack & LGM Productions & IMPixel
 
 ### Step 2 - Posting Projects
 - [x] Game Embed System - Varrience
 - [x] CDO, Khan, and Scratch support - Varrience & DragonFireGames
 - [x] Publishing Panel - DragonFireGames
-- [x] Post/Forum Viewer - Colack & DragonFireGames
+- [x] Post/Forum Viewer - Colack & DragonFireGames & Letti
 - [x] Commenting System - DragonFireGames
 - [x] Favorite System - Colack & DragonFireGames
 - [x] Tag System/Search - Colack & DragonFireGames
@@ -53,12 +53,32 @@ Will these actually get done?
 - [ ] Post games directly using GitHub without requiring a static host url to be embedded
 - [ ] Flash support???
 - [ ] Profile Badges
-- [ ] Mature game rating option
+- [x] Mature game/post rating option - DragonFireGames
+- [x] Hidden games/post - DragonFireGames
 - [ ] Game Verification
 
 ### Step 3 - Better UI
 - [ ] Logo
 - [ ] UI Overhaul
+  - [ ] Home Page
+  - [ ] Forum Page
+  - [ ] Gallery/Search Page
+  - [ ] User Profile Page
+  - [ ] Project Page
+  - [ ] Discussion Page
+  - [ ] User List Page
+  - [ ] Profile Settings Page
+  - [ ] Login Page
+  - [ ] Register Page
+  - [ ] Post Project Page
+  - [ ] Post Discussion Page
+  - [ ] Edit Project Page
+  - [ ] Edit Discussion Page
+  - [ ] Edit Profile Page
+  - [ ] Change Password Page
+  - [ ] Admin Page
+  - [ ] 404 Page
+  - [ ] 403 Page
 - [ ] Dark/Light mode & themes
 - [ ] Markdown Support
 - [ ] Custom Emoji Support
