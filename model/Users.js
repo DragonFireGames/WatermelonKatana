@@ -56,6 +56,10 @@ const UserSchema = new Mongoose.Schema({
     type: Number,
     required: true,
   },
+  mature: {
+    type: Boolean,
+    default: false,
+  },
   notifications: [ NotificationSchema ],
 }, {
   methods: {
