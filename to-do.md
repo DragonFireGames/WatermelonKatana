@@ -54,6 +54,7 @@ Will these actually get done?
 - [ ] Flash support???
 - [ ] Profile Badges
 - [ ] Mature game rating option
+- [ ] Game Verification
 
 ### Step 3 - Better UI
 - [ ] Logo
