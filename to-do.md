@@ -53,6 +53,7 @@ Will these actually get done?
 - [ ] Post games directly using GitHub without requiring a static host url to be embedded
 - [ ] Flash support???
 - [ ] Profile Badges
+- [ ] Mature game rating option
 
 ### Step 3 - Better UI
 - [ ] Logo
