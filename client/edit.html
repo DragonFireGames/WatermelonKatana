@@ -22,20 +22,26 @@
       <input type="text" id="link" required/><br/>
       <label for="desc">Description</label><br/>
       <textarea id="desc"></textarea><br/>
-      <label for="tags">Tags</label><br>
-      <input type="text" id="tags"><br>
       <label for="thumb">Thumbnail</label><br/>
       <input type="text" id="thumb"/><br/>
+      <label for="tags">Tags</label><br>
+      <input type="text" id="tags"><br>
+      <label for="mature">Mature</label>
+      <input type="checkbox" id="mature"><br>
+      <label for="hidden">Hidden</label>
+      <input type="checkbox" id="hidden"><br>
       <input type="submit" value="update"/><br/>
     </form>
-    <button id="deletebtn">delete</button>
+    <button id="deletebtn" style="color: red;">delete</button>
     <script>
       const form = document.querySelector("form");
       const name = document.querySelector("#name");
-      const desc = document.querySelector("#desc");
-      const tags = document.querySelector("#tags");
       const link = document.querySelector("#link");
+      const desc = document.querySelector("#desc");
       const thumb = document.querySelector("#thumb");
+      const tags = document.querySelector("#tags");
+      const mature = document.querySelector('#mature');
+      const hidden = document.querySelector('#hidden');
       const display = document.querySelector(".error");
 
       location.path = location.pathname.split("/");
@@ -56,10 +62,12 @@
         const res = await fetch("/api/project/data/" + pid);
         const data = await res.json();
         name.value = data.name;
-        desc.value = data.desc;
         link.value = data.link;
-        tags.value = data.tags.join(", ");
+        desc.value = data.desc;
         thumb.value = data.thumbnail || "";
+        tags.value = data.tags.join(", ");
+        mature.checked = data.mature;
+        hidden.checked = data.hidden;
       })();
 
       form.addEventListener("submit", async (e) => {
@@ -71,7 +79,9 @@
           return display.textContent = 'Thumbnail is not a vaild URL';
         var taglist = tags.value.toLowerCase().replace(/[^,\w\d_-]/g,"").split(",");
         if (taglist.length < 3)
-          return display.textContent = 'Choose at least 3 tags';
+          return display.textContent = 'Choose at least 3 tags';    
+        if (taglist.length > 10)
+          return display.textContent = 'You can only choose a maximum of 10 tags';
         try {
           const res = await fetch("/api/project/update/" + pid, {
             method: "PUT",
@@ -81,8 +91,8 @@
               desc: desc.value,
               thumbnail: thumb.value,
               tags: taglist,
-              mature: false,
-              hidden: false,
+              mature: mature.checked,
+              hidden: hidden.checked,
               privateRecipients: [],
             }),
             headers: { "Content-Type": "application/json" },
