@@ -29,7 +29,7 @@ processLink(link,thumbnail) {
 }
   
 async publish(req, res, next) {
-  var { name, link, desc, tags, thumbnail, platform } = req.body;
+  var { name, link, desc, thumbnail, tags, mature, hidden, privateRecipients, platform } = req.body;
   console.log(name,link);
   try {
     var e = this.processLink(link,thumbnail);
@@ -40,6 +40,9 @@ async publish(req, res, next) {
       desc,
       tags,
       thumbnail: e.thumbnail,
+      mature, 
+      hidden, 
+      privateRecipients,
       platform: e.platform,
       postedAt: Date.now(),
       activeAt: Date.now(),
