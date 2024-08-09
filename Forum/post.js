@@ -129,11 +129,12 @@ async delete(req, res, next) {
 async list(req, res, next) {
   try {
     var search = { hidden: false };
-    const { poster, platform, postedBefore, postedAfter, includeTags, excludeTags, featured, mature, recipient, customQuery } = req.query;
+    const { poster, platform, postedBefore, postedAfter, includeTags, excludeTags, featured, mature, showHidden, recipient, customQuery } = req.query;
     if (poster) search.poster = poster;
     if (platform) search.platform = platform;
     interpretBool(search,"featured",featured);
     interpretBool(search,"mature",mature);
+    if (showHidden == "true" || showHidden == "1") delete search.hidden;
     // work out recipient search later
     if (postedBefore || postedAfter) {
       search.postedAt = {};
