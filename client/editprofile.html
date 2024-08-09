@@ -24,6 +24,8 @@
       <input type="text" id="avatar"/><br/>
       <label for="banner">Banner</label><br/>
       <input type="text" id="banner"/><br/>
+      <label for="mature">Mature</label>
+      <input type="checkbox" id="mature"><br>
       <input type="submit" value="update"/><br/>
     </form>
     <button id="deletebtn">delete account</button>
@@ -33,6 +35,7 @@
       const bio = document.querySelector("#bio");
       const avatar = document.querySelector("#avatar");
       const banner = document.querySelector("#banner");
+      const mature = document.querySelector("#mature");
       const display = document.querySelector(".error");
 
       const deletebtn = document.querySelector("#deletebtn");
@@ -55,6 +58,7 @@
         bio.value = user.biography || "";
         avatar.value = user.avatar || "";
         banner.value = user.banner || "";
+        mature.checked = user.mature;
       })();
 
       form.addEventListener("submit", async (e) => {
@@ -72,7 +76,7 @@
               biography: bio.value,
               avatar: avatar.value,
               banner: banner.value,
-              mature: false,
+              mature: mature.checked,
             }),
             headers: { "Content-Type": "application/json" },
           });
