@@ -5,7 +5,7 @@ const express = require("express");
 const connectDB = require("./db");
 const app = express();
 const cookieParser = require("cookie-parser");
-const { adminAuth, userAuth } = require("./middleware/auth.js");
+const { adminAuth, userAuth, checkAuth } = require("./middleware/auth.js");
 const { Turbo } = require("./client/Turbo/index");
 const PORT = process.env.PORT || 3000;
 const sendFileReplace = require("./replace");
@@ -67,19 +67,23 @@ app.get("/userlist", userAuth, (req, res) =>
   res.sendFile(cldir + "/userlist.html"),
 );
 
+const Users = require("./model/Users.js"); // Users
+
 // Projects
 app.get("/search", (req, res) => res.sendFile(cldir + "/search.html")); // Search page
 app.get("/publish", userAuth, (req, res) =>
   res.sendFile(cldir + "/publish.html"),
 ); // Publish page, users only
 const Projects = require("./model/Projects.js");
-app.get("/project/:id", async (req, res) => {
+app.get("/project/:id", checkAuth, async (req, res) => {
   // Project page with dynamic project ID
   var proj = await Projects.findOne({ _id: req.params.id });
-  if (!proj) {
-    res.status(404).sendFile(cldir + "/404.html");
-    return;
+  if (proj.mature) {
+    if (!res.locals.userToken) return res.status(403).sendFile(__dirname+"middleware/403.html");
+    var user = await Users.findOne({ _id: req.userToken.id });
+    if (!user || !user.mature) return res.status(403).sendFile(__dirname+"middleware/403.html");
   }
+  if (!proj) return res.status(404).sendFile(cldir + "/404.html");
   proj.views++;
   sendFileReplace(res, "./client/project.html", (s) => s.replace(
     "<!--og:meta-->",
@@ -103,12 +107,14 @@ app.get("/forum/post", userAuth, (req, res) =>
   res.sendFile(cldir + "/post.html"),
 ); // Publish page, users only
 const Posts = require("./model/Posts.js"); // Post page with dynamic post ID
-app.get("/forum/discussion/:id", async (req, res) => {
+app.get("/forum/discussion/:id", checkAuth, async (req, res) => {
   var post = await Posts.findOne({ _id: req.params.id });
-  if (!post) {
-    res.status(404).sendFile(cldir + "/404.html");
-    return;
+  if (post.mature) {
+    if (!res.locals.userToken) return res.status(403).sendFile(__dirname+"middleware/403.html");
+    var user = await Users.findOne({ _id: req.userToken.id });
+    if (!user || !user.mature) return res.status(403).sendFile(__dirname+"middleware/403.html");
   }
+  if (!post) return res.status(404).sendFile(cldir + "/404.html");
   post.views++;
   sendFileReplace(res, "./client/discussion.html", (s) => s.replace(
     "<!--og:meta-->",
@@ -126,7 +132,6 @@ app.get("/forum/discussion/:id/delete", userAuth, (req, res) =>
 ); // Delete post route, users only
 
 // User profile page with dynamic user name
-const Users = require("./model/Users.js");
 app.get("/user/:name", async (req, res) => {
   var user = await Users.findOne({ username: req.params.name });
   if (!user) {
