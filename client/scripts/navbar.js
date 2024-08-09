@@ -1,55 +1,76 @@
-
-/*
-  Why can't we just implement the navbar as a js file lol
-*/
 document.addEventListener("DOMContentLoaded", async function() {
   const style = document.createElement("style");
   style.textContent = `
+    @import url('https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap');
+
+    :root {
+      --navbar-bg-color: #333;
+      --navbar-font-color: #f2f2f2;
+      --navbar-hover-bg-color: #ddd;
+      --navbar-hover-font-color: black;
+      --signedin-bg-color: #333;
+      --signedin-border-color: #ddd;
+      --signedin-font-color: #f2f2f2;
+      --signedin-hover-bg-color: #ddd;
+      --signedin-hover-font-color: black;
+      --navbar-font-family: "Fugaz One", sans-serif;
+    }
+
     .topnav {
-  overflow: hidden;
-      background-color: #333;
-      color: #000;
+      overflow: hidden;
+      background-color: var(--navbar-bg-color);
+      color: var(--navbar-font-color);
       height: 2.5em;
       font-size: 1em;
+      font-family: var(--navbar-font-family);
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       width: 100%;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       position: fixed;
       top: 0;
       left: 0;
       z-index: 1000;
+      padding-left: 1em;
+    }
+    .navbar-name {
+      color: var(--navbar-font-color);
+      margin-right: 2em;
     }
     .topnav a {
       float: left;
       display: block;
-      color: #f2f2f2;
+      color: var(--navbar-font-color);
       text-align: center;
-      padding: 14px 16px;
+      padding: 10px 14px;
       text-decoration: none;
+      border-radius: 15px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      margin-right: 0.5em;
     }
     .topnav a:hover {
-      background-color: #ddd;
-      color: black;
+      background-color: var(--navbar-hover-bg-color);
+      color: var(--navbar-hover-font-color);
     }
     .signedin {
       position: fixed;
       right: 3px;
-      top:3px;
+      top: 3px;
       height: calc(2.5em - 7px);
-      border: 1px solid #ddd;
+      border: 1px solid var(--signedin-border-color);
       border-radius: 10px;
       z-index: 1001;
-      color: #f2f2f2;
-      background-color: #333;
+      color: var(--signedin-font-color);
+      background-color: var(--signedin-bg-color);
       text-align: center;
       text-decoration: none;
       display: flex;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
     .signedin:hover {
-      background-color: #ddd;
-      color: black;
+      background-color: var(--signedin-hover-bg-color);
+      color: var(--signedin-hover-font-color);
     }
     .signedin-avatar {
       width: 2em;
@@ -68,15 +89,6 @@ document.addEventListener("DOMContentLoaded", async function() {
       height: 2.5em;
       width: 100%;
     }
-
-    .navbar-name {
-      color: #fff;
-      position: fixed;
-      left: 3px;
-      top: 3px;
-      margin: 3px;
-    }
-
   `;
   document.head.append(style);
 
