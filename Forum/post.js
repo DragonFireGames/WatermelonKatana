@@ -61,7 +61,7 @@ async publish(req, res, next) {
 }
   
 async update(req, res, next) {
-  var { name, content, tags } = req.body;
+  var { name, content, tags, mature, hidden, privateRecipients } = req.body;
   console.log(name,content);
   try {
     const pid = req.params.id;
@@ -77,6 +77,9 @@ async update(req, res, next) {
     post.name = name;
     post.content = content;
     post.tags = tags;
+    post.mature = mature;
+    post.hidden = hidden;
+    post.privateRecipients = privateRecipients;
     post.activeAt = Date.now();
     await post.save();
     res.status(201).json({
