@@ -78,12 +78,12 @@ const Projects = require("./model/Projects.js");
 app.get("/project/:id", checkAuth, async (req, res) => {
   // Project page with dynamic project ID
   var proj = await Projects.findOne({ _id: req.params.id });
+  if (!proj) return res.status(404).sendFile(cldir + "/404.html");
   if (proj.mature) {
     if (!res.locals.userToken) return res.status(403).sendFile(__dirname+"/middleware/403.html");
     var user = await Users.findOne({ _id: res.locals.userToken.id });
     if (!user || !user.mature) return res.status(403).sendFile(__dirname+"/middleware/403.html");
   }
-  if (!proj) return res.status(404).sendFile(cldir + "/404.html");
   proj.views++;
   sendFileReplace(res, "./client/project.html", (s) => s.replace(
     "<!--og:meta-->",
@@ -109,12 +109,12 @@ app.get("/forum/post", userAuth, (req, res) =>
 const Posts = require("./model/Posts.js"); // Post page with dynamic post ID
 app.get("/forum/discussion/:id", checkAuth, async (req, res) => {
   var post = await Posts.findOne({ _id: req.params.id });
+  if (!post) return res.status(404).sendFile(cldir + "/404.html");
   if (post.mature) {
     if (!res.locals.userToken) return res.status(403).sendFile(__dirname+"/middleware/403.html");
     var user = await Users.findOne({ _id: res.locals.userToken.id });
     if (!user || !user.mature) return res.status(403).sendFile(__dirname+"/middleware/403.html");
   }
-  if (!post) return res.status(404).sendFile(cldir + "/404.html");
   post.views++;
   sendFileReplace(res, "./client/discussion.html", (s) => s.replace(
     "<!--og:meta-->",
