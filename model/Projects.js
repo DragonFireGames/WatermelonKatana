@@ -26,6 +26,15 @@ const ProjectSchema = new Mongoose.Schema({
     default: false,
   },
   tags: [ String ],
+  mature: {
+    type: Boolean,
+    default: false,
+  },
+  hidden: {
+    type: Boolean,
+    default: false,
+  },
+  privateRecipients: [ String ],
   score: {
     type: Number,
     default: 0,
