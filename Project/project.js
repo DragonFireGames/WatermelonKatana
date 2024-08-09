@@ -66,7 +66,7 @@ async publish(req, res, next) {
 };
 
 async update(req, res, next) {
-  var { name, link, desc, tags, thumbnail, platform } = req.body;
+  var { name, link, desc, thumbnail, tags, mature, hidden, privateRecipients, platform } = req.body;
   console.log(name,link);
   try {
     const pid = req.params.id;
@@ -85,6 +85,9 @@ async update(req, res, next) {
     project.desc = desc;
     project.tags = tags;
     project.thumbnail = e.thumbnail;
+    project.mature = mature;
+    project.hidden = hidden;
+    project.privateRecipients = privateRecipients;
     project.platform = e.platform;
     project.activeAt = Date.now();
     await project.save();
