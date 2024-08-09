@@ -60,7 +60,8 @@
         tags.value = data.tags.join(", ");
         mature.checked = data.mature;
         hidden.checked = data.hidden;
-        if (user.mature) return;
+        var tok = await getAuth();
+        if (tok.user?.mature) return;
         mature.outerHTML =  ``;
       })();
 
