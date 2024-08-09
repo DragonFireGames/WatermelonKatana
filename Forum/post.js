@@ -28,7 +28,7 @@ route(router,userAuth,adminAuth) {
 }
   
 async publish(req, res, next) {
-  var { name, content, tags } = req.body;
+  var { name, content, tags, mature, hidden, privateRecipients } = req.body;
   console.log(name,content);
   try {
     const user = res.locals.userToken;
@@ -36,6 +36,9 @@ async publish(req, res, next) {
       name,
       content,
       tags,
+      mature, 
+      hidden, 
+      privateRecipients,
       postedAt: Date.now(),
       activeAt: Date.now(),
       posterId: user.id,
