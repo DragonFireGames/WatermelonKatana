@@ -65,7 +65,10 @@
       });
 
       async function searchPosts() {
-        const res = await fetch('/api/forum/list'+location.search);
+        const tok = await getAuth();
+        var sparams = new URLSearchParams(location.search);
+        sparams.set("showMature", tok.user?.mature);
+        const res = await fetch('/api/forum/list'+sparams);
         const data = await res.json();
         switch (params.get("sort")||"featured") {
           case "featured": data.posts.sort((a,b)=>(Number(b.featured)-Number(a.featured))||(b.activeAt-a.activeAt)); break;
