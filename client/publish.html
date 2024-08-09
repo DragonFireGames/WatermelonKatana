@@ -42,7 +42,13 @@
       const mature = document.querySelector('#mature');
       const hidden = document.querySelector('#hidden');
       const display = document.querySelector('.error');
-  
+      
+      (async ()=>{
+        var tok = await getAuth();
+        if (tok.user?.mature) return;
+        mature.outerHTML =  ``;
+      })();
+      
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         display.textContent = '';
