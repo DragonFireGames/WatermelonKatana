@@ -56,9 +56,9 @@
 
       async function searchProjects() {
         const tok = await getAuth();
-        var params = new URLSearchParams(location.search);
-        params.set("showMature", tok.user?.mature);
-        const res = await fetch('/api/project/list'+params);
+        var sparams = new URLSearchParams(location.search);
+        sparams.set("showMature", tok.user?.mature);
+        const res = await fetch('/api/project/list'+sparams);
         const data = await res.json();
         switch (params.get("sort")||"score") {
           case "score": data.projects.sort((a,b)=>(b.score-a.score)||(b.views-a.views)); break;
