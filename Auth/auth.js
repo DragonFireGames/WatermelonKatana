@@ -83,7 +83,7 @@ exports.login = async (req, res, next) => {
 };
 
 exports.update = async (req, res, next) => {
-  const { username, avatar, banner, biography } = req.body;
+  const { username, avatar, banner, biography, mature } = req.body;
   if (!username.match(/^[\w\d_-]+$/)) return res.status(400).json({ message: "Username can only contain letters, numbers, and underscores" });
   const userId = res.locals.userToken?.id;
   console.log(req.body);
@@ -108,6 +108,7 @@ exports.update = async (req, res, next) => {
     user.avatar = avatar;
     user.banner = banner;
     user.biography = biography;
+    user.mature = mature;
     await user.save();
     res.status(201).json({
       message: "Update successful",
