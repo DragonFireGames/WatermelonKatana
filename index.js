@@ -80,7 +80,7 @@ app.get("/project/:id", checkAuth, async (req, res) => {
   var proj = await Projects.findOne({ _id: req.params.id });
   if (proj.mature) {
     if (!res.locals.userToken) return res.status(403).sendFile(__dirname+"middleware/403.html");
-    var user = await Users.findOne({ _id: req.userToken.id });
+    var user = await Users.findOne({ _id: res.locals.userToken.id });
     if (!user || !user.mature) return res.status(403).sendFile(__dirname+"middleware/403.html");
   }
   if (!proj) return res.status(404).sendFile(cldir + "/404.html");
@@ -111,7 +111,7 @@ app.get("/forum/discussion/:id", checkAuth, async (req, res) => {
   var post = await Posts.findOne({ _id: req.params.id });
   if (post.mature) {
     if (!res.locals.userToken) return res.status(403).sendFile(__dirname+"middleware/403.html");
-    var user = await Users.findOne({ _id: req.userToken.id });
+    var user = await Users.findOne({ _id: res.locals.userToken.id });
     if (!user || !user.mature) return res.status(403).sendFile(__dirname+"middleware/403.html");
   }
   if (!post) return res.status(404).sendFile(cldir + "/404.html");
