@@ -18,6 +18,15 @@ const PostSchema = new Mongoose.Schema({
     default: false,
   },
   tags: [ String ],
+  mature: {
+    type: Boolean,
+    default: false,
+  },
+  hidden: {
+    type: Boolean,
+    default: false,
+  },
+  privateRecipients: [ String ],
   views: {
     type: Number,
     default: 0,
