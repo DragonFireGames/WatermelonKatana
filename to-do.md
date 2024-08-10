@@ -43,7 +43,7 @@ Will these actually get done?
 
 ### Step 2 - More Features
 - [ ] Notifications
-- [ ] Media Uploading Site
+- [x] Media Uploading System - DragonFireGames
 - [ ] Better Search for Posts/Users/Games
 - [x] Navbar - Colack & DragonFireGames
 - [x] Community Ranking - DragonFireGames
@@ -56,6 +56,7 @@ Will these actually get done?
 - [x] Mature game/post rating option - DragonFireGames
 - [x] Hidden games/post - DragonFireGames
 - [ ] Game Verification
+- [ ] Improve Security (XSS, SQL Injection, etc.) - toodols & DragonFireGames & Letti
 
 ### Step 3 - Better UI
 - [ ] Logo
