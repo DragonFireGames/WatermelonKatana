@@ -24,8 +24,10 @@
       <label for="desc">Description</label><br/>
       <textarea id="desc"></textarea><br/>
       <label for="thumb">Thumbnail</label><br/>
-      <input type="text" id="thumb"/><br/>
-      <input type="button" value="Upload Thumbnail" onclick="uploadThumb()"><br/>
+      <button onclick="uploadThumb()">
+        Upload Thumbnail<br>
+        <img id="thumb" style="max-width:100px; max-height:100px;">
+      </button>
       <label for="tags">Tags</label><br>
       <input type="text" id="tags"><br>
       <label for="mature">Mature</label>
@@ -66,7 +68,7 @@
         name.value = data.name;
         link.value = data.link;
         desc.value = data.desc;
-        thumb.value = data.thumbnail || "";
+        thumb.src = data.thumbnail || "";
         tags.value = data.tags.join(", ");
         mature.checked = data.mature;
         hidden.checked = data.hidden;
@@ -76,9 +78,9 @@
       })();
       
       async function uploadThumb() {
-        var url = await getFileUpload();
+        var url = await getFileUpload(thumb.src);
         if (!url) return;
-        thumb.value = location.origin+url;
+        thumb.src = location.origin+url;
       }
 
       form.addEventListener("submit", async (e) => {
@@ -86,7 +88,7 @@
         display.textContent = "";
         if (!link.value.match(/^https?:\/\//)) 
           return (display.textContent = "Link is not a vaild URL");
-        if (thumb.value && !thumb.value.match(/^https?:\/\//)) 
+        if (thumb.src && !thumb.src.match(/^https?:\/\//)) 
           return display.textContent = 'Thumbnail is not a vaild URL';
         var taglist = tags.value.toLowerCase().replace(/[^,\w\d_-]/g,"").split(",");
         if (taglist.length < 3)
@@ -100,7 +102,7 @@
               name: name.value,
               link: link.value,
               desc: desc.value,
-              thumbnail: thumb.value,
+              thumbnail: thumb.src,
               tags: taglist,
               mature: mature.checked,
               hidden: hidden.checked,
