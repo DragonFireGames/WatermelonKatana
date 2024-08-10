@@ -46,7 +46,7 @@ router.route("/upload").post(userAuth, express.urlencoded({ limit: "32mb" }), as
     console.log(error.message);
   }
 });
-router.route("/get/:id").get(async (req,res) => {
+router.route("/get/:id/*").get(async (req,res) => {
   try {
     var mid = req.params.id;
     var media = await Media.findOne({ _id: mid });
