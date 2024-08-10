@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>View | PIC-MO</title>
+  <title>View | WatermelonKatana</title>
   <!--og:meta-->
   <link rel="stylesheet" type="text/css" href="/styles/style.css">
   <link rel="stylesheet" type="text/css" href="/styles/forum.css">
@@ -58,7 +58,7 @@
         const res = await fetch('/api/project/data/'+pid);
         const data = await res.json();
         await createPost(postdiv,data,`
-        ${convertHTML(data.desc)} <br>
+        ${convertMarkdown(data.desc)} <br>
         <b>URL</b> => <a href="${data.link}">${data.link}</a> <br>
         <b>Platform</b>: <a href="/search?platform=${data.platform}">${({
           "cdo":"code.org",
