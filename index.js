@@ -128,13 +128,13 @@ app.get("/forum/discussion/:id", checkAuth, async (req, res) => {
   ));
   await post.save();
 });
-app.get("/forum/discussion/:id/edit", userAuth, (req, res) =>
+app.get("/forum/discussion/:id/edit", userAuth, (req, res) => {
   const post = await Posts.findOne({ _id: req.params.id });
   const tok = res.locals.userToken;
   if (!tok || (post.posterId !== tok.id && tok.role !== "Admin")) 
     return res.status(403).sendFile(__dirname+"/middleware/403.html");
-  res.sendFile(cldir + "/editpost.html"),
-); // Edit post page, users only
+  res.sendFile(cldir + "/editpost.html");
+}); // Edit post page, users only
 app.get("/forum/discussion/:id/delete", userAuth, (req, res) =>
   res.redirect("/api/project/delete/" + req.params.id),
 ); // Delete post route, users only
