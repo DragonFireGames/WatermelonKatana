@@ -3,7 +3,7 @@ async function createPost(post,data,txt,name,reload) {
   var u = await getUser(data.posterId);
   post.innerHTML = `
   <div id="display">
-    <h2 class="post-name">${data.name}</h2>
+    <h2 class="post-name">${makeLiteralChars(data.name)}</h2>
     <div class="comment-top">
       <img class="comment-avatar" src="${u.avatar}">
       <p class="comment-username">${u.username}</p>
