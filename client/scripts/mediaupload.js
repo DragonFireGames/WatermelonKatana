@@ -35,7 +35,7 @@
   <input id="file-upload" type="file" accept="image/*" onchange="setPreview()"><br>
   <img id="upload-preview"><br>
   <button id="file-upload-submit" onclick="uploadMedia()">Upload</button>
-  <button id="file-upload-cancel" onclick="fileUploadCancel()">Cancel</button>
+  <button id="file-upload-cancel" onclick="fileUploaded(null)">Cancel</button>
 </div>`;
 })();
 
@@ -55,20 +55,17 @@ async function uploadMedia() {
   params.set("image",b64);
   params.set("name",file.name);
   try {
-    /*var res = await fetch("/api/media/upload",{
+    var res = await fetch("/api/media/upload",{
       method: 'POST',
       body: params
     });
     var data = await res.json();
-    if (res.status > 206) throw data;*/
-    var data = {url:0};
-    var container = document.querySelector("#upload-container");
-    container.style.display = "none";
-    window.onfileupload(data.url);
+    if (res.status > 206) throw data;
+    fileUploaded(data.url);
   } catch (error) {
     alert(JSON.stringify(error));
     console.log(error);
-    fileUploadCancel();
+    fileUploaded(null);
   }
 }
 async function setPreview() {
@@ -82,10 +79,14 @@ async function setPreview() {
   var url = "data:"+file.type+";base64,"+b64;
   img.src = url;
 }
-function fileUploadCancel() {
+function fileUploaded(url) {
   var container = document.querySelector("#upload-container");
+  var img = document.querySelector('#upload-preview');
+  var elem = document.querySelector('#file-upload');
   container.style.display = "none";
-  window.onfileupload(null);
+  img.src = "";
+  elem.value = "";
+  window.onfileupload(url);
 }
 function _arrayBufferToBase64( buffer ) {
   var binary = '';
