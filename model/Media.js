@@ -22,6 +22,10 @@ const MediaSchema = new Mongoose.Schema({
     type: String,
     required: true,
   },
+  poster: {
+    type: String,
+    required: true,
+  },
 },{
   methods: {
     pack: function() {
@@ -35,6 +39,7 @@ const MediaSchema = new Mongoose.Schema({
       container.uploadedAt = this.uploadedAt;
       container.id = this._id;
       container.posterId = this.posterId;
+      container.poster = this.poster;
       return container;
     }
   }
