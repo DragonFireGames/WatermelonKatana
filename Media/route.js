@@ -7,10 +7,11 @@ const { adminAuth, userAuth } = require("../middleware/auth");
 
 router.route("/upload").post(userAuth, async (req,res) => {
   try {
+    console.log(req.query);
     var params = new URLSearchParams();
     params.set("key",process.env.IMGBB_API_KEY);
-    params.set("name",req.body.name);
-    params.set("image",req.body.image);
+    params.set("name",req.query.name);
+    params.set("image",req.query.image);
     console.log(params);
     var data = await fetch("https://api.imgbb.com/1/upload",{
       method: "POST",
