@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profile | PIC-Mo</title>
+    <title>Profile | WatermelonKatana</title>
     <link rel="stylesheet" type="text/css" href="/styles/style.css">
     <link rel="stylesheet" type="text/css" href="/styles/home.css">
     <script src="/scripts/HtmlSanitizer.js"></script>
@@ -28,7 +28,7 @@
         const udata = await getAuth();
         if (!udata.auth) return;
         try {
-	      header.innerHTML += `<a href="/user/${udata.user.username}">User Page</a>`;
+          header.innerHTML += `<a href="/user/${udata.user.username}">User Page</a>`;
         } catch(e) {
           alert(e);
           console.error(e);
