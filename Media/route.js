@@ -37,6 +37,7 @@ router.route("/upload").post(userAuth, express.urlencoded({ limit: "32mb" }), as
       message: "Media successfully uploaded",
       id: media._id,
       name: media.name,
+      url: '/api/media/'+media._id+'/'+media.name,
     });
   } catch(error) {
     res.status(400).json({
