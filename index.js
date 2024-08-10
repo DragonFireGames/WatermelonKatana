@@ -129,7 +129,7 @@ app.get("/forum/discussion/:id", checkAuth, async (req, res) => {
   ));
   await post.save();
 });
-app.get("/forum/discussion/:id/edit", userAuth, (req, res) => {
+app.get("/forum/discussion/:id/edit", userAuth, async (req, res) => {
   const post = await Posts.findOne({ _id: req.params.id });
   const tok = res.locals.userToken;
   if (!tok || (post.posterId !== tok.id && tok.role !== "Admin")) 
