@@ -60,8 +60,27 @@ function relativeDate(time) {
   //return new Date(time).toUTCString();
 }
 
+function makeLiteralChars(string) {
+  string = string.replace(/\&/g,"&amp;");
+  string = string.replace(/</g,"&lt;");
+  string = string.replace(/>/g,"&gt;");
+  string = string.replace(/"/g,"&quot;");
+  string = string.replace(/'/g,"&apos;");
+  string = string.replace(/ /g,"&nbsp;");
+  return string;
+}
+
+function convertMarkdown(string) {
+  string = makeLiteralChars(string);
+  string = string.replace(/\\\*/g,"&#42;");
+  string = string.replace(/\*\*([^*\n]+)\*\*/g,"<b>$1</b>");
+  string = string.replace(/\*([^*\n]+)\*/g,"<i>$1</i>");
+  string = string.replace(/\n/g,"<br>");
+  return string;
+}
+
 function previewContent(str,len) {
-  return str.replace(/[^\w\d\s-_]/g,"").replace(/\n[^]*$/,"").slice(0,len)+((str.includes("\n")||str.length>len)?"...":"");
+  return makeLiteralChars(str).replace(/\n[^]*$/,"").slice(0,len)+((str.includes("\n")||str.length>len)?"...":"");
 }
 
 function projHTML(list) {
