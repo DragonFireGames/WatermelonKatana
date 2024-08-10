@@ -8,8 +8,12 @@ const MediaSchema = new Mongoose.Schema({
   },
   url: {
     type: String,
-    default: "",
+    required: true,
   },
+  width: Number,
+  height: Number,
+  size: Number,
+  type: String,
   uploadedAt: {
     type: Number,
     required: true,
@@ -24,6 +28,10 @@ const MediaSchema = new Mongoose.Schema({
       const container = {};
       container.name = this.name;
       container.url = this.url;
+      container.width = this.width;
+      container.height = this.height;
+      container.size = this.size;
+      container.type = this.type;
       container.uploadedAt = this.uploadedAt;
       container.id = this._id;
       container.posterId = this.posterId;
