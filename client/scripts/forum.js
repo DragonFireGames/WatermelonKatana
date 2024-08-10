@@ -72,7 +72,7 @@ async function listComments(list,comments,self,events) {
         ${c.upvotes.length}
         <input class="comment-upvote-box" name="comment-vpvote" type="checkbox" value="reply" ${c.upvotes.includes(self.id) ? "checked" : ""} onclick="window.onupvoteclick(${i},this.checked);">
       </div>`:""}
-      <p class="comment-content">${convertHTML(c.content)}</p>
+      <p class="comment-content">${convertMarkdown(c.content)}</p>
     </div>`;
     list.innerHTML += div;
   }
@@ -170,13 +170,4 @@ function commentEvents(name,reload) {
       reload();
     }
   };
-}
-function convertHTML(string) {
-  string = string.replace(/\&/g,"&amp;");
-  string = string.replace(/</g,"&lt;");
-  string = string.replace(/>/g,"&gt;");
-  string = string.replace(/"/g,"&quot;");
-  string = string.replace(/'/g,"&apos;");
-  string = string.replace(/\n/g,"<br>");
-  return string;
 }
