@@ -7,7 +7,6 @@ const { adminAuth, userAuth } = require("../middleware/auth");
 
 router.route("/upload").post(userAuth, express.urlencoded({ limit: "32mb" }), async (req,res) => {
   try {
-    console.log(req.body);
     var params = new URLSearchParams();
     params.set("key",process.env.IMGBB_API_KEY);
     params.set("name",req.body.name);
@@ -17,9 +16,7 @@ router.route("/upload").post(userAuth, express.urlencoded({ limit: "32mb" }), as
       method: "POST",
       body: params
     });
-    console.log(data);
     data = await data.json();
-    console.log(data);
     if (data.error) throw data.error;
     const image = data.data;
     const user = res.locals.userToken;
