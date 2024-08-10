@@ -20,11 +20,13 @@ async function uploadMedia(elem) {
   data.set("image",b64);
   data.set("name",file.name);
   try {
-    const response = await fetch("/api/media/upload",{
+    var resp = await fetch("/api/media/upload",{
       method: 'POST',
       body: data
-    }).then(r=>r.json());
-    alert(JSON.stringify(response));
+    });
+    resp = await resp.json();
+    alert(JSON.stringify(resp));
+    alert(resp);
   } catch (error) {
     alert(JSON.stringify(error));
   }
