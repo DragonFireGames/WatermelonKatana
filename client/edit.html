@@ -9,6 +9,7 @@
     <script src="/scripts/utils.js"></script>
   </head>
   <body>
+    <script src="/scripts/mediaupload.js"></script>
     <script src="/scripts/navbar.js"></script>
     
     <h1>Edit Project</h1>
@@ -23,7 +24,8 @@
       <label for="desc">Description</label><br/>
       <textarea id="desc"></textarea><br/>
       <label for="thumb">Thumbnail</label><br/>
-      <input type="text" id="thumb"/><br/>
+      <input type="text" id="thumb"/>
+      <button>Upload Thumbnail</button><br/>
       <label for="tags">Tags</label><br>
       <input type="text" id="tags"><br>
       <label for="mature">Mature</label>
@@ -72,6 +74,12 @@
         if (tok.user?.mature) return;
         mature.outerHTML = data.mature.toString();
       })();
+      
+      async function uploadThumb() {
+        var url = await getFileUpload();
+        if (!url) return;
+        thumb.value = location.origin+url;
+      }
 
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
