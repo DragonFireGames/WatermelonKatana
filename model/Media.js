@@ -10,6 +10,10 @@ const MediaSchema = new Mongoose.Schema({
     type: String,
     required: true,
   },
+  delete_url: {
+    type: String,
+    required: true,
+  },
   width: Number,
   height: Number,
   size: Number,
@@ -32,6 +36,7 @@ const MediaSchema = new Mongoose.Schema({
       const container = {};
       container.name = this.name;
       container.url = this.url;
+      container.delete_url = this.delete_url;
       container.width = this.width;
       container.height = this.height;
       container.size = this.size;
