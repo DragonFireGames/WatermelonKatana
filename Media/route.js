@@ -5,13 +5,13 @@ const fetch = require("cross-fetch");
 const Media = require("../model/Media");
 const { adminAuth, userAuth } = require("../middleware/auth");
 
-router.route("/upload").post(userAuth, async (req,res) => {
+router.route("/upload").post(userAuth, express.urlencoded(), async (req,res) => {
   try {
-    console.log(req.query);
+    console.log(req.body);
     var params = new URLSearchParams();
     params.set("key",process.env.IMGBB_API_KEY);
-    params.set("name",req.query.name);
-    params.set("image",req.query.image);
+    params.set("name",req.body.name);
+    params.set("image",req.body.image);
     console.log(params);
     var data = await fetch("https://api.imgbb.com/1/upload",{
       method: "POST",
