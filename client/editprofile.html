@@ -9,6 +9,7 @@
     <script src="/scripts/utils.js"></script>
   </head>
   <body>
+    <script src="/scripts/mediaupload.js"></script>
     <script src="/scripts/navbar.js"></script>
     
     <h1>Edit Profile</h1>
@@ -22,8 +23,10 @@
       <textarea id="bio"></textarea><br/>
       <label for="avatar">Avatar</label><br/>
       <input type="text" id="avatar"/><br/>
+      <input type="button" value="Upload Avatar" onclick="uploadAvatar()"><br/>
       <label for="banner">Banner</label><br/>
       <input type="text" id="banner"/><br/>
+      <input type="button" value="Upload Banner" onclick="uploadBanner()"><br/>
       <label for="mature">Mature</label>
       <input type="checkbox" id="mature"><br>
       <input type="submit" value="update"/><br/>
@@ -60,6 +63,18 @@
         banner.value = user.banner || "";
         mature.checked = user.mature;
       })();
+
+      async function uploadAvatar() {
+        var url = await getFileUpload();
+        if (!url) return;
+        avatar.value = location.origin+url;
+      }
+      
+      async function uploadBanner() {
+        var url = await getFileUpload();
+        if (!url) return;
+        banner.value = location.origin+url;
+      }
 
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
