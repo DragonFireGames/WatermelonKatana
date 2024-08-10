@@ -62,7 +62,7 @@
 		*/
 		--title-font: 'Fugaz One', sans-serif;
 		--title-font-weight: 400;
-		--title-font-size: normal;
+		--title-font-size: 40px;
 		--text-font: 'Roboto', sans-serif;
 }
 
@@ -87,14 +87,12 @@ body {
 		font-family: var(--title-font);
 		font-weight: var(--title-font-weight);
 		font-size: var(--title-font-size);
-		color: var(--palette-primary);
-		text-shadow:
-				-1px -1px 0 var(--palette-white),
-				1px -1px 0 var(--palette-white),
-				-1px 1px 0 var(--palette-white),
-				1px 1px 0 var(--palette-white),
-				2px 2px 5px black;
+		background: linear-gradient(177deg, var(--palette-primary), var(--palette-secondary));
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		color: transparent;
 }
+
 
 /*
 	Loader
@@ -217,4 +215,3 @@ body {
 .pic-nav-link:hover {
 		color: var(--palette-link-hover);
 }
-

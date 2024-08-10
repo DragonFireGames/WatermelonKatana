@@ -10453,7 +10453,7 @@ var p5 = function(sketch, node, sync) {
     var f = this['_on'+e];
     if (f) {
       var m = f.bind(this);
-      window.addEventListener(e,m);
+      window.addEventListener(e, m);
       this._events[e] = m;
     }
   }
@@ -11751,7 +11751,7 @@ function exitFullscreen() {
  *
  */
 p5.prototype.getURL = function() {
-  return location.href;
+  return fconfig.url;
 };
 /**
  * Gets the current URL path as an array.
@@ -11772,7 +11772,7 @@ p5.prototype.getURL = function() {
  *
  */
 p5.prototype.getURLPath = function() {
-  return location.pathname.split('/').filter(function(v){return v!=='';});
+  return fconfig.pathname.split('/').filter(function(v){return v!=='';});
 };
 /**
  * Gets the current URL params as an Object.
@@ -11799,7 +11799,7 @@ p5.prototype.getURLParams = function() {
   var re = /[?&]([^&=]+)(?:[&=])([^&=]+)/gim;
   var m;
   var v={};
-  while ((m = re.exec(location.search)) != null) {
+  while ((m = re.exec(fconfig.url)) != null) {
     if (m.index === re.lastIndex) {
       re.lastIndex++;
     }

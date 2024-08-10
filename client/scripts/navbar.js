@@ -4,6 +4,9 @@ document.addEventListener("DOMContentLoaded", async function() {
     @import url('https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap');
 
     :root {
+      --palette-primary: #de6c83;
+      --palette-secondary: #2cf6b3;
+    
       --navbar-bg-color: #333;
       --navbar-font-color: #f2f2f2;
       --navbar-hover-bg-color: #ddd;
@@ -35,7 +38,10 @@ document.addEventListener("DOMContentLoaded", async function() {
       padding-left: 1em;
     }
     .navbar-name {
-      color: var(--navbar-font-color);
+		  background: linear-gradient(177deg, var(--palette-primary), var(--palette-secondary));
+		  -webkit-background-clip: text;
+		  -webkit-text-fill-color: transparent;
+		  color: transparent;
       margin-right: 2em;
     }
     .topnav a {
@@ -94,7 +100,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
   var navbarHtml = `
   <div class="topnav">
-    <h2 class="navbar-name">PIC-Mo</h2>
+    <h2 class="navbar-name">WatermelonKatana</h2>
     <a href="/">Home</a>
     <a href="/chat">Chat</a>
     <a href="/search">Project Gallery</a>

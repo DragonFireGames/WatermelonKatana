@@ -2,7 +2,6 @@
 const request = require("./requests");
 const startPath = "https://studio.code.org";
 let animations = `${startPath}/v3/animations/`;
-let assets = `${startPath}/v3/assets/`;
 
 async function exportProject(id) {
   animations = `${startPath}/v3/animations/`;
@@ -392,7 +391,9 @@ async function getHTML(id, code) {
         const globalExports = ["fconfig", "getUserId", "setKeyValue", "getKeyValue", "getTime", "promptNum", "playSound", "playSpeech", "randomNumber", "stopSound", "initMobileControls", "showMobileControls", "timedLoop", "stopTimedLoop", "appendItem", "insertItem", "removeItem"];
         for (let global of globalExports) {
           window[global] = __IFRRAME__.contentWindow[global];
-        }
+        };
+        fconfig.url = (function(){var url="https://studio.code.org/projects/gamelab/${id}";var params=location.search;if(params.startsWith("?u=")){params=params.slice(3)}var re=/[?&]([^&=]+)(?:[&=])([^&=]+)/gim;var m;while((m=re.exec(params))!=null){if(m.index===re.lastIndex){re.lastIndex+=1}url+=m[0]}return url})();
+        fconfig.pathname = "projects/gamelab/${id}";
         __IFRRAME__.contentDocument.getElementById = function (id) {
           return document.getElementById(id);
         }
