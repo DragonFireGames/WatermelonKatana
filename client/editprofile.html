@@ -22,10 +22,15 @@
       <label for="bio">Biography</label><br/>
       <textarea id="bio"></textarea><br/>
       <label for="avatar">Avatar</label><br/>
-      <input type="text" id="avatar"/><br/>
-      <input type="button" value="Upload Avatar" onclick="uploadAvatar()"><br/>
+      <button onclick="uploadAvatar()">
+        Upload Avatar<br>
+        <img id="avatar" style="max-width:100px; max-height:100px;">
+      </button>
       <label for="banner">Banner</label><br/>
-      <input type="text" id="banner"/><br/>
+      <button onclick="uploadBanner()">
+        Upload Banner<br>
+        <img id="banner" style="max-width:100px; max-height:100px;">
+      </button>
       <input type="button" value="Upload Banner" onclick="uploadBanner()"><br/>
       <label for="mature">Mature</label>
       <input type="checkbox" id="mature"><br>
@@ -59,21 +64,21 @@
         const user = data.user;
         name.value = user.username;
         bio.value = user.biography || "";
-        avatar.value = user.avatar || "";
-        banner.value = user.banner || "";
+        avatar.src = user.avatar || "";
+        banner.src = user.banner || "";
         mature.checked = user.mature;
       })();
 
       async function uploadAvatar() {
-        var url = await getFileUpload();
+        var url = await getFileUpload(avatar.src);
         if (!url) return;
-        avatar.value = location.origin+url;
+        avatar.src = location.origin+url;
       }
       
       async function uploadBanner() {
-        var url = await getFileUpload();
+        var url = await getFileUpload(avatar.src);
         if (!url) return;
-        banner.value = location.origin+url;
+        banner.src = location.origin+url;
       }
 
       form.addEventListener("submit", async (e) => {
@@ -89,8 +94,8 @@
             body: JSON.stringify({
               username: name.value,
               biography: bio.value,
-              avatar: avatar.value,
-              banner: banner.value,
+              avatar: avatar.src,
+              banner: banner.src,
               mature: mature.checked,
             }),
             headers: { "Content-Type": "application/json" },
