@@ -20,12 +20,13 @@ router.route("/upload").post(userAuth, express.urlencoded({ limit: "32mb" }), as
     console.log(data);
     data = await data.json();
     console.log(data);
-    if (data.response.error) throw data.response.error;
-    const image = data.response.data;
+    if (data.error) throw data.error;
+    const image = data.data;
     const user = res.locals.userToken;
     const media = Media.create({
       name: image.title,
       url: image.url,
+      delete_url: image.delete_url,
       width: image.width,
       height: image.height,
       size: image.size,
