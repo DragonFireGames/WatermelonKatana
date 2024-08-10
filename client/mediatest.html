@@ -15,16 +15,15 @@ async function uploadMedia(elem) {
   console.log(elem);
   var file = elem.files[0];
   var buf = await file.arrayBuffer();
-
   var b64 = _arrayBufferToBase64(buf);
-  var data = new URLSearchParams();
-  data.set("image",b64);
-  data.set("name",file.name);
-
   try {
     const response = await fetch("/api/media/upload",{
-      method: "POST",
-      body: data
+      method: 'POST',
+      body: JSON.stringify({
+        name: file.name,
+        image: b64
+      }),
+      headers: { 'Content-Type': 'application/json' }
     }).then(r=>r.json());
     alert(JSON.stringify(response));
   } catch (error) {
