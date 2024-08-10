@@ -68,7 +68,7 @@ function projHTML(list) {
   return function (proj) {
     let div = `<div class="project-panel" onclick="location.assign('/project/${proj.id}');">
       <div class="thumbnail-border"><img class="project-thumbnail" src="${proj.thumbnail || "/images/placeholders/PLACEHOLDER_project.png"}"></div>
-      <div class="project-link">${proj.name}</div>
+      <div class="project-link">${previewContent(proj.name, 100)}</div>
       <div>By: <a href="/user/${proj.poster}">${proj.poster}</a></div>
       <div>Score: ${proj.score} Views: ${proj.views}</div>
     </div>`;
@@ -82,7 +82,7 @@ function forumHTML(list) {
   return function (proj) {
     let div = `<div class="post-panel" onclick="location.assign('/forum/discussion/${proj.id}');">
     <div class="post-top">
-      ${proj.name} | By: <a href="/user/${proj.poster}">${proj.poster}</a> | Views: ${proj.views} | ${relativeDate(proj.postedAt)}
+      ${previewContent(proj.name, 100)} | By: <a href="/user/${proj.poster}">${proj.poster}</a> | Views: ${proj.views} | ${relativeDate(proj.postedAt)}
     <br>
     ${previewContent(proj.content,100)}
     </div>
