@@ -94,9 +94,14 @@ app.get("/project/:id", checkAuth, async (req, res) => {
   ));
   await proj.save();
 });
-app.get("/project/:id/edit", userAuth, (req, res) =>
-  res.sendFile(cldir + "/edit.html"),
-); // Edit project page, users only
+app.get("/project/:id/edit", userAuth, async (req, res) => {
+  const project = await Projects.findOne({_id: req.params.id})
+  if (!res.locals.userToken || project.posterId !== res.locals.userToken.id) {
+     res.status(403).sendFile(__dirname+"/middleware/403.html");
+    return 
+  }
+  res.sendFile(cldir + "/edit.html")
+}); // Edit project page, users only
 app.get("/project/:id/delete", userAuth, (req, res) =>
   res.redirect("/api/project/delete/" + req.params.id),
 ); // Delete project route, users only
