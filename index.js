@@ -95,12 +95,11 @@ app.get("/project/:id", checkAuth, async (req, res) => {
   await proj.save();
 });
 app.get("/project/:id/edit", userAuth, async (req, res) => {
-  const project = await Projects.findOne({_id: req.params.id})
-  if (!res.locals.userToken || project.posterId !== res.locals.userToken.id) {
-     res.status(403).sendFile(__dirname+"/middleware/403.html");
-    return 
-  }
-  res.sendFile(cldir + "/edit.html")
+  const project = await Projects.findOne({ _id: req.params.id });
+  const tok = res.locals.userToken;
+  if (!tok || (project.posterId !== tok.id && tok.role !== "Admin")) 
+    return res.status(403).sendFile(__dirname+"/middleware/403.html");
+  res.sendFile(cldir + "/edit.html");
 }); // Edit project page, users only
 app.get("/project/:id/delete", userAuth, (req, res) =>
   res.redirect("/api/project/delete/" + req.params.id),
@@ -130,6 +129,10 @@ app.get("/forum/discussion/:id", checkAuth, async (req, res) => {
   await post.save();
 });
 app.get("/forum/discussion/:id/edit", userAuth, (req, res) =>
+  const post = await Posts.findOne({ _id: req.params.id });
+  const tok = res.locals.userToken;
+  if (!tok || (post.posterId !== tok.id && tok.role !== "Admin")) 
+    return res.status(403).sendFile(__dirname+"/middleware/403.html");
   res.sendFile(cldir + "/editpost.html"),
 ); // Edit post page, users only
 app.get("/forum/discussion/:id/delete", userAuth, (req, res) =>
