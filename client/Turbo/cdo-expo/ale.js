@@ -23,7 +23,8 @@ async function exportProject(id) {
 }
 
 async function getHTML(html, id, code) {
-  const dependency = "/turbowarp/applab"
+  const dependency = "/turbowarp/applab";
+  html = html.replace(/["'](\/v3\/assets\/[^'"]+)['"]/g, startPath + "$1");
   html = `<html>
   <head>
     <title>${(await request.send(`${startPath}/v3/channels/${id}`, "json")).name}</title>
