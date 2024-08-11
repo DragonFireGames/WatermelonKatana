@@ -72,18 +72,23 @@ function makeLiteralChars(string) {
 
 function convertMarkdown(string) {
   string = makeLiteralChars(string);
-  var escapable = "*_~!()[]\\";
+  var escapable = "*_~`()[]\\!#";
   for (var i = 0; i < escapable.length; i++) {
-    string = string.replace("\\"+escapable[i],"&#"+escapable.charCodeAt(i)+";");
+    string = string.replace("\\"+escapable[i],"&#"+escapable.charCodeAt(i)+";"); // make certain characters escapable
   }
-  string = string.replace(/\*\*([^*\n]+)\*\*/g,"<b>$1</b>");
-  string = string.replace(/\*([^*\n]+)\*/g,"<i>$1</i>");
-  string = string.replace(/__([^*\n]+)__/g,"<u>$1</u>");
-  string = string.replace(/_([^*\n]+)_/g,"<i>$1</i>");
-  string = string.replace(/~~([^*\n]+)~~/g,"<s>$1</s>");
-  string = string.replace(/!\[([^\]"'>]*)\]\((https?:\/\/[^\)"]+)\)/g,"<img src=\"$2\" $1>");
-  string = string.replace(/\[([^\]\n]+)\]\((https?:\/\/[^\)"\n]+)\)/g,"<a href=\"$2\">$1</a>");
-  string = string.replace(/\n/g,"<br>");
+  string = string.replace(/\*\*([^*\n]+)\*\*/g,"<b>$1</b>"); // **bold**
+  string = string.replace(/\*([^*\n]+)\*/g,"<i>$1</i>"); // *italics*
+  string = string.replace(/__([^*\n]+)__/g,"<u>$1</u>"); // __underline__
+  string = string.replace(/_([^*\n]+)_/g,"<i>$1</i>"); // _italics_
+  string = string.replace(/~~([^*\n]+)~~/g,"<s>$1</s>"); // ~~strikethrough~~
+  string = string.replace(/^-# ([^\n]+)$/gm,"<sub>$1</sub>"); // -# subtext
+  string = string.replace(/^# ([^\n]+)$/gm,"<h1>$1</h1>"); // # header 1
+  string = string.replace(/^## ([^\n]+)$/gm,"<h2>$1</h2>"); // # header 2
+  string = string.replace(/^### ([^\n]+)$/gm,"<h3>$1</h3>"); // # header 3
+  string = string.replace(/!\[([^\]"'>]*)\]\((https?:\/\/[^\)"]+)\)/g,"<img src=\"$2\" $1>"); // [link](https://example.com)
+  string = string.replace(/\[([^\]\n]+)\]\((https?:\/\/[^\)"\n]+)\)/g,"<a href=\"$2\">$1</a>"); // ![width=50 height=50](https://example.com/image)
+  string = string.replace(/\n/g,"<br>"); // line breaks
+  // still need to add: block quotes, lists, code, spoilers
   return string;
 }
 
