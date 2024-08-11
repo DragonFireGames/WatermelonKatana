@@ -8,7 +8,6 @@ const Posts = require("../model/Posts");
 const { adminAuth } = require("../middleware/auth");
 
 router.route("/transfer").get(adminAuth, async (req,res) => {
-  const { type } = req.params;
   const { uid, project, post } = req.query;
   try {
     const user = await Users.findOne({ _id: uid });
