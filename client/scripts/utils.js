@@ -101,7 +101,7 @@ function projHTML(list) {
     let div = `<a class="project-panel" href="/project/${proj.id}">
       <div class="thumbnail-border"><img class="project-thumbnail" src="${proj.thumbnail || "/images/placeholders/PLACEHOLDER_project.png"}"></div>
       <div class="project-link">${previewContent(proj.name, 100)}</div>
-      <div>By: <a href="/user/${proj.poster}">${proj.poster}</a></div>
+      <div>By: <object><a href="/user/${proj.poster}">${proj.poster}</a></object></div>
       <div>Score: ${proj.score} Views: ${proj.views}</div>
     </a>`;
     list.innerHTML += div;
@@ -114,7 +114,7 @@ function forumHTML(list) {
   return function (post) {
     let div = `<a class="post-panel" href="/forum/discussion/${post.id}">
       <div class="post-top">
-        ${previewContent(post.name, 100)} | By: <a href="/user/${post.poster}">${post.poster}</a> | Views: ${post.views} | Active ${relativeDate(post.activeAt)}
+        ${previewContent(post.name, 100)} | By: <object><a href="/user/${post.poster}">${post.poster}</a></object> | Views: ${post.views} | Active ${relativeDate(post.activeAt)}
       <br>
       ${previewContent(post.content,100)}
       </div>
