@@ -72,7 +72,7 @@ function makeLiteralChars(string) {
 
 function convertMarkdown(string) {
   string = makeLiteralChars(string);
-  var escapable = "*_~`()[]\\!";
+  var escapable = "*_~!()[]\\";
   for (var i = 0; i < escapable.length; i++) {
     string = string.replace("\\"+escapable[i],"&#"+escapable.charCodeAt(i)+";");
   }
