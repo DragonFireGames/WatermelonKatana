@@ -68,6 +68,16 @@ app.get("/userlist", userAuth, (req, res) =>
   res.sendFile(cldir + "/userlist.html"),
 );
 
+function makeLiteralChars(string) {
+  string = string.replace(/\&/g,"&amp;");
+  string = string.replace(/</g,"&lt;");
+  string = string.replace(/>/g,"&gt;");
+  string = string.replace(/"/g,"&quot;");
+  string = string.replace(/'/g,"&apos;");
+  string = string.replace(/ /g,"&nbsp;");
+  return string;
+}
+
 const Users = require("./model/Users.js"); // Users
 
 // Projects
@@ -91,8 +101,14 @@ app.get("/project/:id", checkAuth, async (req, res) => {
     `<meta property="og:title" content="${proj.name}"/>
   <meta property="og:type" content="website"/>
   <meta property="og:image" content="${proj.thumbnail}"/>
-  <meta property="og:description" content="${proj.desc} | By: ${proj.poster} | Score: ${proj.score} Views: ${proj.views}"/>`,
-  ));
+  <meta property="og:description" content="${makeLiteralChars(proj.desc)} | By: ${proj.poster} | Score: ${proj.score} Views: ${proj.views}"/>
+  `).replace("<!--content-->",`
+    ${makeLiteralChars(proj.name)}<br>
+    By: ${proj.poster}<br>
+    ${makeLiteralChars(proj.desc)}<br>
+    ${proj.tags.map(v=>"#"+v).join(", ")}<br>
+    Score: ${proj.score} Views: ${proj.views} Featured: ${proj.featured}
+  `));
   await proj.save();
 });
 app.get("/project/:id/edit", userAuth, async (req, res) => {
@@ -125,8 +141,14 @@ app.get("/forum/discussion/:id", checkAuth, async (req, res) => {
     "<!--og:meta-->",
     `<meta property="og:title" content="${post.name}"/>
   <meta property="og:type" content="website"/>
-  <meta property="og:description" content="${post.content} | By: ${post.poster} | Views: ${post.views}"/>`,
-  ));
+  <meta property="og:description" content="${makeLiteralChars(post.content)} | By: ${post.poster} | Views: ${post.views}"/>
+  `).replace("<!--content-->",`
+    ${makeLiteralChars(post.name)}<br>
+    By: ${post.poster}<br>
+    ${makeLiteralChars(post.content)}<br>
+    ${post.tags.map(v=>"#"+v).join(", ")}<br>
+    Views: ${post.views} Featured: ${post.featured}
+  `));
   await post.save();
 });
 app.get("/forum/discussion/:id/edit", userAuth, async (req, res) => {
@@ -152,8 +174,13 @@ app.get("/user/:name", async (req, res) => {
     `<meta property="og:title" content="@${user.username} on WatermelonKatana"/>
   <meta property="og:type" content="website"/>
   <meta property="og:image" content="${user.avatar}"/>
-  <meta property="og:description" content="${user.biography}"/>`,
-  ));
+  <meta property="og:description" content="${makeLiteralChars(user.biography)}"/>
+  `).replace("<!--content-->",`
+    ${user.username}<br>
+    ${makeLiteralChars(user.biography)}<br>
+    ${user.badges.join(", ")}<br>
+    Role: ${user.role}
+  `));
 });
 
 // User self profile page, users only
