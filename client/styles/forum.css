@@ -13,8 +13,6 @@
   display: inline-flex;
   padding: 0.5em 5px;
   margin: 0px;
-  color: black;
-  text-decoration: none;
 }
 
 .comment-avatar {
@@ -31,6 +29,8 @@
 
 .comment-top a {
   display: inline-flex;
+  text-decoration: none;
+  color: black;
 }
 
 .comment-content {
