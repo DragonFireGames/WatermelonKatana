@@ -75,7 +75,7 @@
       }
       
       async function uploadBanner() {
-        var url = await getFileUpload(avatar.src);
+        var url = await getFileUpload(banner.src);
         if (!url) return;
         banner.src = location.origin+url;
       }
