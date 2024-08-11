@@ -5,8 +5,10 @@ async function createPost(post,data,txt,name,reload) {
   <div id="display">
     <h2 class="post-name">${makeLiteralChars(data.name)}</h2>
     <div class="comment-top">
-      <img class="comment-avatar" src="${u.avatar}">
-      <a class="comment-username" href="/user/${u.username}">${u.username}</a>
+      <a href="/user/${u.username}">
+        <img class="comment-avatar" src="${u.avatar}">
+        <p class="comment-username">${u.username}</p>
+      </a>
       <p class="comment-data">${new Date(data.postedAt).toUTCString()}</p>
     </div>
     ${txt}
@@ -64,8 +66,10 @@ async function listComments(list,comments,self,events) {
         </div>
       </div>`:""}
       <div class="comment-top">
-        <img class="comment-avatar" src="${u.avatar}">
-        <p class="comment-username">${u.username}</p>
+        <a href="/user/${u.username}">
+          <img class="comment-avatar" src="${u.avatar}">
+          <p class="comment-username">${u.username}</p>
+        </a>
         <p class="comment-data">${relativeDate(c.postedAt)}</p>
       </div>
       ${self?`<div class="comment-upvote">
