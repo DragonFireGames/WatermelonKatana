@@ -71,13 +71,13 @@
       async function uploadAvatar() {
         var url = await getFileUpload(avatar.src);
         if (!url) return;
-        avatar.src = location.origin+url;
+        avatar.src = url;
       }
       
       async function uploadBanner() {
         var url = await getFileUpload(banner.src);
         if (!url) return;
-        banner.src = location.origin+url;
+        banner.src = url;
       }
 
       form.addEventListener("submit", async (e) => {
