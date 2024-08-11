@@ -83,9 +83,21 @@ document.addEventListener("DOMContentLoaded", async function() {
     }
 
     .navbar-name:hover {
-      background: white;
+      background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0.5), #fff);
+      background-size: 200% 200%;
       -webkit-background-clip: text;
-      transition: background 0.2s;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: shimmer 2s linear infinite;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -100% 0;
+      }
+      100% {
+        background-position: 100% 0;
+      }
     }
 
     .topnav a {
