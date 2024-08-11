@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", async function() {
   var auth = await getAuth();
   if (auth.user) {
     navbarHtml += `
-    <a class="signedin nav-btn" href="/profile">
+    <a class="signedin" href="/profile">
       <img class="signedin-avatar" src="${auth.user.avatar}">
       <p class="signedin-username">${auth.user.username}</p>
     </a>
