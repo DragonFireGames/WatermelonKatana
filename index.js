@@ -106,7 +106,7 @@ app.get("/project/:id", checkAuth, async (req, res) => {
     ${makeLiteralChars(proj.name)}<br>
     By: ${proj.poster}<br>
     ${makeLiteralChars(proj.desc)}<br>
-    <a href="${proj.link}">${proj.link}<br>
+    <a href="${proj.link}">${proj.link}</a><br>
     ${proj.tags.map(v=>"#"+v).join(", ")}<br>
     Score: ${proj.score} Views: ${proj.views} Platform: ${proj.platform} Featured: ${proj.featured}
   `).replace("<!--title-->",`
