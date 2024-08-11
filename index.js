@@ -101,7 +101,7 @@ app.get("/project/:id", checkAuth, async (req, res) => {
     `<meta property="og:title" content="${makeLiteralChars(proj.name)}"/>
   <meta property="og:type" content="website"/>
   <meta property="og:image" content="${proj.thumbnail}"/>
-  <meta property="og:description" content="${makeLiteralChars(proj.desc)} \\n By: ${proj.poster} \\n Score: ${proj.score} Views: ${proj.views}"/>
+  <meta property="og:description" content="${makeLiteralChars(proj.desc)} a\\n \n ${makeLiteralChars("\n")} <br>b By: ${proj.poster} \\n Score: ${proj.score} Views: ${proj.views}"/>
   `).replace("<!--content-->",`
     ${makeLiteralChars(proj.name)}<br>
     By: ${proj.poster}<br>
