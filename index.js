@@ -149,7 +149,7 @@ app.get("/user/:name", async (req, res) => {
   }
   sendFileReplace(res, "./client/user.html", (s) => s.replace(
     "<!--og:meta-->",
-    `<meta property="og:title" content="@${user.username} on PIC-Mo"/>
+    `<meta property="og:title" content="@${user.username} on WatermelonKatana"/>
   <meta property="og:type" content="website"/>
   <meta property="og:image" content="${user.avatar}"/>
   <meta property="og:description" content="${user.biography}"/>`,

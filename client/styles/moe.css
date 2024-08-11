@@ -80,8 +80,8 @@ body {
 
 /*
 	Logo Text
-	This element is used for any text that says "PIC-Mo". 
-	Example implementation: <h1 class="pic-logo-text">PIC-Mo</h1>
+	This element is used for any text that says "WatermelonKatana". 
+	Example implementation: <h1 class="pic-logo-text">WatermelonKatana</h1>
 */
 .pic-logo-text {
 		font-family: var(--title-font);

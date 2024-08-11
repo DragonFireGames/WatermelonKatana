@@ -3,19 +3,19 @@
 		{
 			"name": "Founder",
 			"image": "https://fakeimg.pl/300x300",
-			"description": "Founder of PIC-Mo, and notably awesome.",
+			"description": "Founder of WatermelonKatana, and notably awesome.",
 			"isUnlockable": false
 		},
 		{
 			"name": "Developer",
 			"image": "https://fakeimg.pl/300x300",
-			"description": "Helped develop an aspect of PIC-Mo",
+			"description": "Helped develop an aspect of WatermelonKatana",
 			"isUnlockable": false
 		},
 		{
 			"name": "Administrator",
 			"image": "https://fakeimg.pl/300x300",
-			"description": "Helped PIC-Mo by administering it.",
+			"description": "Helped WatermelonKatana by administering it.",
 			"isUnlockable": false
 		},
 		{
@@ -46,7 +46,7 @@
 		{
 			"name": "GameDev",
 			"image": "https://fakeimg.pl/300x300",
-			"description": "Congrats on publishing your first game on PIC-Mo!",
+			"description": "Congrats on publishing your first game on WatermelonKatana!",
 			"isUnlockable": true
 		}
 	]
