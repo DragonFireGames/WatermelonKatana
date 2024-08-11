@@ -65,7 +65,7 @@ async function uploadMedia() {
   var b64 = _arrayBufferToBase64(buf);
   var params = new URLSearchParams();
   params.set("image",b64);
-  params.set("name",file.name);
+  params.set("name",file.name.replace(/\.[^.]+$/,""));
   try {
     var res = await fetch("/api/media/upload",{
       method: 'POST',
