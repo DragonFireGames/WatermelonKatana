@@ -98,12 +98,12 @@ function previewContent(str,len) {
 
 function projHTML(list) {
   return function (proj) {
-    let div = `<div class="project-panel" onclick="location.assign('/project/${proj.id}');">
+    let div = `<a class="project-panel" href="/project/${proj.id}">
       <div class="thumbnail-border"><img class="project-thumbnail" src="${proj.thumbnail || "/images/placeholders/PLACEHOLDER_project.png"}"></div>
       <div class="project-link">${previewContent(proj.name, 100)}</div>
       <div>By: <a href="/user/${proj.poster}">${proj.poster}</a></div>
       <div>Score: ${proj.score} Views: ${proj.views}</div>
-    </div>`;
+    </a>`;
     list.innerHTML += div;
     let lastThumbnail = list.children[list.children.length - 1].querySelector(".project-thumbnail");
     if (!lastThumbnail.getAttribute("src")) lastThumbnail.src = "/images/placeholders/PLACEHOLDER_project.png";
@@ -111,28 +111,28 @@ function projHTML(list) {
 }
 
 function forumHTML(list) {
-  return function (proj) {
-    let div = `<div class="post-panel" onclick="location.assign('/forum/discussion/${proj.id}');">
-    <div class="post-top">
-      ${previewContent(proj.name, 100)} | By: <a href="/user/${proj.poster}">${proj.poster}</a> | Views: ${proj.views} | ${relativeDate(proj.postedAt)}
-    <br>
-    ${previewContent(proj.content,100)}
-    </div>
-    </div>`;
+  return function (post) {
+    let div = `<a class="post-panel" href="/forum/discussion/${post.id}">
+      <div class="post-top">
+        ${previewContent(post.name, 100)} | By: <a href="/user/${post.poster}">${post.poster}</a> | Views: ${post.views} | Active ${relativeDate(post.activeAt)}
+      <br>
+      ${previewContent(post.content,100)}
+      </div>
+    </a>`;
     list.innerHTML += div;
   };
 }
 
 function userHTML(list) {
   return function (user) {
-    let div = `<div class="user-panel" onclick="location.assign('/user/${user.username}');">
+    let div = `<a class="user-panel" href="/user/${user.username}">
       <div class="comment-top">
       <img class="comment-avatar" src="${user.avatar || "/images/placeholders/PLACEHOLDER_project.png"}">
       <div class="comment-username">${user.username}</div>
       </div>
       ${previewContent(user.biography,100)}
       <div>Joined on ${new Date(user.joinedAt).toUTCString().replace(/\d\d:[^]+$/,"")} | ${user.role} </div>
-    </div>`;
+    </a>`;
     list.innerHTML += div;
   };
 }
