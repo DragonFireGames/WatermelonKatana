@@ -80,7 +80,7 @@
       async function uploadThumb() {
         var url = await getFileUpload(thumb.src);
         if (!url) return;
-        thumb.src = location.origin+url;
+        thumb.src = url;
       }
 
       form.addEventListener("submit", async (e) => {
