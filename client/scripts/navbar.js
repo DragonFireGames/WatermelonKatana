@@ -52,7 +52,6 @@ document.addEventListener("DOMContentLoaded", async function() {
       margin-right: 2em;
       position: relative;
       animation: liquidSpill 4s ease-in-out infinite;
-      cursor: pointer;
       transition: color 0.5s ease, background 0.5s ease;
     }
 
@@ -100,7 +99,7 @@ document.addEventListener("DOMContentLoaded", async function() {
       }
     }
 
-    .topnav a {
+    .nav-btn {
       float: left;
       display: block;
       color: var(--navbar-font-color);
@@ -112,7 +111,7 @@ document.addEventListener("DOMContentLoaded", async function() {
       margin-right: 0.5em;
     }
 
-    .topnav a:hover {
+    .nav-btn:hover {
       background-color: var(--navbar-hover-bg-color);
       color: var(--navbar-hover-font-color);
     }
@@ -162,17 +161,17 @@ document.addEventListener("DOMContentLoaded", async function() {
 
   var navbarHtml = `
   <div class="topnav">
-    <h2 class="navbar-name" onclick="window.location.href='/'">WatermelonKatana</h2>
-    <a href="/chat">Chat</a>
-    <a href="/search">Project Gallery</a>
-    <a href="/forum">Forum</a>
+    <h2 class="navbar-name"><a href="/">WatermelonKatana</a></h2>
+    <a class="nav-btn" href="/chat">Chat</a>
+    <a class="nav-btn" href="/search">Project Gallery</a>
+    <a class="nav-btn" href="/forum">Forum</a>
   </div>
   <div id="block"></div>
   `;
   var auth = await getAuth();
   if (auth.user) {
     navbarHtml += `
-    <a class="signedin" href="/profile">
+    <a class="signedin nav-btn" href="/profile">
       <img class="signedin-avatar" src="${auth.user.avatar}">
       <p class="signedin-username">${auth.user.username}</p>
     </a>
