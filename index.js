@@ -101,7 +101,7 @@ app.get("/project/:id", checkAuth, async (req, res) => {
     `<meta property="og:title" content="${makeLiteralChars(proj.name)}"/>
   <meta property="og:type" content="website"/>
   <meta property="og:image" content="${proj.thumbnail}"/>
-  <meta property="og:description" content="${makeLiteralChars(proj.desc)} | By: ${proj.poster} | Score: ${proj.score} Views: ${proj.views}"/>
+  <meta property="og:description" content="${makeLiteralChars(proj.desc)} <br> By: ${proj.poster} <br> Score: ${proj.score} Views: ${proj.views}"/>
   `).replace("<!--content-->",`
     ${makeLiteralChars(proj.name)}<br>
     By: ${proj.poster}<br>
@@ -144,7 +144,7 @@ app.get("/forum/discussion/:id", checkAuth, async (req, res) => {
     "<!--og:meta-->",
     `<meta property="og:title" content="${makeLiteralChars(post.name)}"/>
   <meta property="og:type" content="website"/>
-  <meta property="og:description" content="${makeLiteralChars(post.content)} | By: ${post.poster} | Views: ${post.views}"/>
+  <meta property="og:description" content="${makeLiteralChars(post.content)} <br> By: ${post.poster} <br> Views: ${post.views}"/>
   `).replace("<!--content-->",`
     ${makeLiteralChars(post.name)}<br>
     By: ${post.poster}<br>
