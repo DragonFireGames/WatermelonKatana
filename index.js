@@ -98,7 +98,7 @@ app.get("/project/:id", checkAuth, async (req, res) => {
   proj.views++;
   sendFileReplace(res, "./client/project.html", (s) => s.replace(
     "<!--og:meta-->",
-    `<meta property="og:title" content="${proj.name}"/>
+    `<meta property="og:title" content="${makeLiteralChars(proj.name)}"/>
   <meta property="og:type" content="website"/>
   <meta property="og:image" content="${proj.thumbnail}"/>
   <meta property="og:description" content="${makeLiteralChars(proj.desc)} | By: ${proj.poster} | Score: ${proj.score} Views: ${proj.views}"/>
@@ -109,6 +109,8 @@ app.get("/project/:id", checkAuth, async (req, res) => {
     <a href="${proj.link}">${proj.link}<br>
     ${proj.tags.map(v=>"#"+v).join(", ")}<br>
     Score: ${proj.score} Views: ${proj.views} Platform: ${proj.platform} Featured: ${proj.featured}
+  `).replace("<!--title-->",`
+    <title>${makeLiteralChars(proj.name)} | WatermelonKatana</title>
   `));
   await proj.save();
 });
@@ -140,7 +142,7 @@ app.get("/forum/discussion/:id", checkAuth, async (req, res) => {
   post.views++;
   sendFileReplace(res, "./client/discussion.html", (s) => s.replace(
     "<!--og:meta-->",
-    `<meta property="og:title" content="${post.name}"/>
+    `<meta property="og:title" content="${makeLiteralChars(post.name)}"/>
   <meta property="og:type" content="website"/>
   <meta property="og:description" content="${makeLiteralChars(post.content)} | By: ${post.poster} | Views: ${post.views}"/>
   `).replace("<!--content-->",`
@@ -149,6 +151,8 @@ app.get("/forum/discussion/:id", checkAuth, async (req, res) => {
     ${makeLiteralChars(post.content)}<br>
     ${post.tags.map(v=>"#"+v).join(", ")}<br>
     Views: ${post.views} Featured: ${post.featured}
+  `).replace("<!--title-->",`
+    <title>${makeLiteralChars(post.name)} | WatermelonKatana</title>
   `));
   await post.save();
 });
@@ -181,6 +185,8 @@ app.get("/user/:name", async (req, res) => {
     ${makeLiteralChars(user.biography)}<br>
     ${user.badges.join(", ")}<br>
     Role: ${user.role}
+  `).replace("<!--title-->",`
+    <title>${user.username} | WatermelonKatana</title>
   `));
 });
 
