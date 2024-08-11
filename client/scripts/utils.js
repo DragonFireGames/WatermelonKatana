@@ -66,7 +66,7 @@ function makeLiteralChars(string) {
   string = string.replace(/>/g,"&gt;");
   string = string.replace(/"/g,"&quot;");
   string = string.replace(/'/g,"&apos;");
-  string = string.replace(/ /g,"&nbsp;");
+  //string = string.replace(/ /g,"&nbsp;");
   return string;
 }
 
