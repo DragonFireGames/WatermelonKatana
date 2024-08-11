@@ -29,6 +29,10 @@
   display: flex;
 }
 
+.comment-top a {
+  display: inline-flex;
+}
+
 .comment-content {
   margin: 0px;
   padding: 5px;
