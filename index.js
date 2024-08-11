@@ -38,6 +38,7 @@ app.use("/api/auth", require("./Auth/route")); // Authentication routes
 app.use("/api/project", require("./Project/route")); // Project routes
 app.use("/api/forum", require("./Forum/route")); // Project routes
 app.use("/api/media", require("./Media/route")); // Media routes
+app.use("/api/admin", require("./Admin/route")); // Admin command routes
 
 /**
  * Client directory path
