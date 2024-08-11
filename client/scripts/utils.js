@@ -72,9 +72,17 @@ function makeLiteralChars(string) {
 
 function convertMarkdown(string) {
   string = makeLiteralChars(string);
-  string = string.replace(/\\\*/g,"&#42;");
+  var escapable = "*_~`()[]\\!";
+  for (var i = 0; i < escapable.length; i++) {
+    string = string.replace("\\"+escapable[i],"&#"+escapable.charCodeAt(i)+";");
+  }
   string = string.replace(/\*\*([^*\n]+)\*\*/g,"<b>$1</b>");
   string = string.replace(/\*([^*\n]+)\*/g,"<i>$1</i>");
+  string = string.replace(/__([^*\n]+)__/g,"<u>$1</u>");
+  string = string.replace(/_([^*\n]+)_/g,"<i>$1</i>");
+  string = string.replace(/~~([^*\n]+)~~/g,"<s>$1</s>");
+  string = string.replace(/!\[([^\]"'>]*)\]\((https?:\/\/[^\)"]+)\)/g,"<img src=\"$2\" $1>");
+  string = string.replace(/\[([^\]\n]+)\]\((https?:\/\/[^\)"\n]+)\)/g,"<a href=\"$2\">$1</a>");
   string = string.replace(/\n/g,"<br>");
   return string;
 }
