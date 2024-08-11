@@ -6,7 +6,11 @@ document.addEventListener("DOMContentLoaded", async function() {
     :root {
       --palette-primary: #de6c83;
       --palette-secondary: #2cf6b3;
-    
+      --spill-color1: #de6c83;
+      --spill-color2: #ff2e58;
+      --spill-color3: #2cf6b3;
+      --spill-color4: #00b377;
+
       --navbar-bg-color: #333;
       --navbar-font-color: #f2f2f2;
       --navbar-hover-bg-color: #ddd;
@@ -37,13 +41,53 @@ document.addEventListener("DOMContentLoaded", async function() {
       z-index: 1000;
       padding-left: 1em;
     }
+
     .navbar-name {
-		  background: linear-gradient(177deg, var(--palette-primary), var(--palette-secondary));
-		  -webkit-background-clip: text;
-		  -webkit-text-fill-color: transparent;
-		  color: transparent;
+      font-size: 1.5em;
+      background: linear-gradient(90deg, var(--spill-color1), var(--spill-color2), var(--spill-color3), var(--spill-color4));
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
       margin-right: 2em;
+      position: relative;
+      animation: liquidSpill 4s ease-in-out infinite;
+      cursor: pointer;
+      transition: color 0.5s ease, background 0.5s ease;
     }
+
+    @keyframes liquidSpill {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .navbar-name::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: inherit;
+      filter: blur(15px);
+      opacity: 0.7;
+      z-index: -1;
+      animation: liquidSpill 4s ease-in-out infinite;
+    }
+
+    .navbar-name:hover {
+      background: white;
+      -webkit-background-clip: text;
+      transition: background 0.2s;
+    }
+
     .topnav a {
       float: left;
       display: block;
@@ -55,10 +99,12 @@ document.addEventListener("DOMContentLoaded", async function() {
       transition: background-color 0.3s ease, color 0.3s ease;
       margin-right: 0.5em;
     }
+
     .topnav a:hover {
       background-color: var(--navbar-hover-bg-color);
       color: var(--navbar-hover-font-color);
     }
+
     .signedin {
       position: fixed;
       right: 3px;
@@ -74,10 +120,12 @@ document.addEventListener("DOMContentLoaded", async function() {
       display: flex;
       transition: background-color 0.3s ease, color 0.3s ease;
     }
+
     .signedin:hover {
       background-color: var(--signedin-hover-bg-color);
       color: var(--signedin-hover-font-color);
     }
+
     .signedin-avatar {
       width: 2em;
       height: 2em;
@@ -86,11 +134,13 @@ document.addEventListener("DOMContentLoaded", async function() {
       margin: 0px;
       display: inline-flex;
     }
+
     .signedin-username {
       padding: 0px;
       margin: 7px;
       display: inline-flex;
     }
+
     #block {
       height: 2.5em;
       width: 100%;
@@ -100,8 +150,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
   var navbarHtml = `
   <div class="topnav">
-    <h2 class="navbar-name">WatermelonKatana</h2>
-    <a href="/">Home</a>
+    <h2 class="navbar-name" onclick="window.location.href='/'">WatermelonKatana</h2>
     <a href="/chat">Chat</a>
     <a href="/search">Project Gallery</a>
     <a href="/forum">Forum</a>
