@@ -106,8 +106,9 @@ app.get("/project/:id", checkAuth, async (req, res) => {
     ${makeLiteralChars(proj.name)}<br>
     By: ${proj.poster}<br>
     ${makeLiteralChars(proj.desc)}<br>
+    <a href="${proj.link}">${proj.link}<br>
     ${proj.tags.map(v=>"#"+v).join(", ")}<br>
-    Score: ${proj.score} Views: ${proj.views} Featured: ${proj.featured}
+    Score: ${proj.score} Views: ${proj.views} Platform: ${proj.platform} Featured: ${proj.featured}
   `));
   await proj.save();
 });
