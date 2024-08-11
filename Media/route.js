@@ -5,7 +5,7 @@ const fetch = require("cross-fetch");
 const Media = require("../model/Media");
 const { adminAuth, userAuth } = require("../middleware/auth");
 
-router.route("/upload").post(userAuth, express.urlencoded({ limit: "32mb" }), async (req,res) => {
+router.route("/upload").post(userAuth, express.urlencoded({ extended:false, limit:"32mb" }), async (req,res) => {
   try {
     var params = new URLSearchParams();
     params.set("key",process.env.IMGBB_API_KEY);
