@@ -99,6 +99,24 @@ Logo Text
 }
 
 /*
+    Navigation Link
+    This element is used for navigation links.
+    Example implementation: <a class="pic-nav-link" href="#">Link</a>
+*/
+a, .link {
+  color: var(--palette-link);
+  text-decoration: none;
+  font-family: var(--text-font);
+  font-size: 1em;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+
+a:hover, .link:hover {
+  color: var(--palette-link-hover);
+}
+
+/*
   Button
   This element is used for any button. You can set the width and height of the button using the width and height properties.
   Example implementation: <button class="pic-button" width="100px" height="50px">Button</button>
@@ -127,7 +145,7 @@ input[type=button]:hover, input[type=submit]:hover, button:hover {
     This element is used for text input fields.
     Example implementation: <input class="pic-input" type="text" placeholder="Enter text">
 */
-input[type=text], input[type=password]:focus, textarea {
+input[type=text], input[type=password]:focus, textarea, .textbtn {
   padding: 10px;
   margin: 10px 0;
   box-sizing: border-box;
@@ -140,7 +158,7 @@ input[type=text], input[type=password]:focus, textarea {
   transition: border-color 0.2s;
 }
 
-input[type=text]:focus, input[type=password]:focus, textarea:focus {
+input[type=text]:focus, input[type=password]:focus, textarea:focus, .textbtn:hover {
   border-color: var(--palette-primary-hover);
   outline: none;
 }
@@ -182,24 +200,6 @@ input[type=checkbox] {
   /* Show the checkmark when checkbox is checked */
 input[type=checkbox]:checked + .checkbox::after {
   opacity: 1;
-}
-
-/*
-    Navigation Link
-    This element is used for navigation links.
-    Example implementation: <a class="pic-nav-link" href="#">Link</a>
-*/
-a, .link {
-  color: var(--palette-link);
-  text-decoration: none;
-  font-family: var(--text-font);
-  font-size: 1em;
-  transition: color 0.2s;
-  cursor: pointer;
-}
-
-a:hover, .link:hover {
-  color: var(--palette-link-hover);
 }
 
 /*
