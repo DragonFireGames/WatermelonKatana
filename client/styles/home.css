@@ -15,7 +15,7 @@ body {
 	overflow: hidden;
 	padding: 20px;
 	margin-top: 2.5em;
-	background: #333333; /* Darker panel background */
+	background: #202020; /* Darker panel background */
 	border-radius: 10px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
 }
