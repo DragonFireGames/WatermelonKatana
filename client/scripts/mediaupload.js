@@ -19,6 +19,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   display: none;
+  z-index: 1000;
 }
 
 #link-insert {
@@ -46,8 +47,6 @@
 </div>`;
 })();
 
-async function uploadAvatar(){return await getFileUpload()}
-
 function getFileUpload(url) {
   var container = document.querySelector("#upload-container");
   container.style.display = "block";
@@ -61,15 +60,13 @@ function getFileUpload(url) {
 async function uploadMedia() {
   var elem = document.querySelector('#file-upload');
   var link = document.querySelector('#link-insert');
-  if (link.value) {
-    return fileUploaded(link.value);
-  }
+  if (link.value || !elem.value) return fileUploaded(link.value);
   var file = elem.files[0];
   var buf = await file.arrayBuffer();
   var b64 = _arrayBufferToBase64(buf);
   var params = new URLSearchParams();
   params.set("image",b64);
-  params.set("name",file.name);
+  params.set("name",file.name.replace(/\.[^.]+$/,""));
   try {
     var res = await fetch("/api/media/upload",{
       method: 'POST',
@@ -77,7 +74,7 @@ async function uploadMedia() {
     });
     var data = await res.json();
     if (res.status > 206) throw data;
-    fileUploaded(data.url);
+    fileUploaded(location.origin+data.url);
   } catch (error) {
     alert(JSON.stringify(error));
     console.log(error);
