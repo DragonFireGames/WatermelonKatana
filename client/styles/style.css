@@ -3,6 +3,7 @@
 */
 
 @import url('https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed&display=swap');
 
 :root {
   /*
@@ -27,6 +28,7 @@
   */
   --palette-discord: #7289da;
   --palette-link: #ff9c9c;
+  --palette-link-hover: #f08dff;
 
   /*
     Background Colors
