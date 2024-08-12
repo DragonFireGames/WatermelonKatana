@@ -15,7 +15,7 @@
   padding: 5px;
   position: fixed;
   width: 72vmin;
-  top: 50%;
+  top: calc(50% + 1.75em);
   left: 50%;
   transform: translate(-50%, -50%);
   display: none;
