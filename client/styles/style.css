@@ -247,6 +247,13 @@ input[type=checkbox]:checked + .checkbox::after {
   text-decoration: none;
 }
 
+.project-panel:hover, .post-panel:hover, .user-panel:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Even darker shadow on hover */
+  text-decoration: none;
+  color: #e0e0e0;
+}
+
 .post-panel, .user-panel {
   padding: 5px;
   display: block;
@@ -265,11 +272,6 @@ input[type=checkbox]:checked + .checkbox::after {
   flex: 1;
   display: flex;
   flex-direction: column;
-}
-
-.project-panel:hover, .post-panel:hover, .user-panel:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Even darker shadow on hover */
 }
 
 .project-thumbnail {
