@@ -15,11 +15,25 @@ canvas.registerFont("./client/Turbo/dependencies/fonts/fa-v4compatibility.ttf", 
 //exportProject("pNfF6pjzbWtCgdsls0ofkSpt0yxmK29_e8iGJJtXWpI")
 
 async function exportProject(id) {
-  assets = `${startPath}/v3/assets/`
   return new Promise(async (resolve, reject) => {
     let json = await request.send(`${startPath}/v3/sources/${id}/main.json`, 'json');
-    resolve(await getHTML(json.html, id, json.source));
+    resolve(await getHTML(json.html, id, getCode(json)));
   })
+}
+
+function getCode(json) {
+  let libraries = ``;
+  json.libraries = json.libraries || [];
+  json.libraries.forEach((library) => {
+    let lib = library.name;
+    let src = library.source;
+    let funcs = library.functions.join("|");
+    let pattern = new RegExp(`(?<!\\(\\s*|(?<!\\/\\/.*|\\/\\*[^\\*\\/]*|["'][^'"]*)function\\s+[\\S]+\\s*\\(\\)\\s*{[^}]+)function\\s+(${funcs})\\s*(?=\\()`, "g");
+    src = src.replace(pattern, `var $1 = this.$1 = function`);
+    libraries += `var ${lib} = window[${JSON.stringify(lib)}] || {};
+(function ${lib}() {\n${src}\nreturn(this)\n}).bind(${lib})();\n`;
+  });
+  return libraries + json.source;
 }
 
 async function getHTML(html, id, code) {
@@ -42,217 +56,6 @@ async function getHTML(html, id, code) {
     <script src="https://studio.code.org/projects/applab/${id}/export_config?script_call=setExportConfig"></script>
     <script>
     window.inject = function() {
-      Object.defineProperties(Object.prototype, {
-        apply: {
-          value: function (fn, args) {
-            if (typeof this === "object" && "length" in this) {
-              return Function.prototype.apply.call(this, fn, args);
-            }
-          },
-          enumerable: false,
-          configurable: true,
-          writable: true
-        },
-        concat: {
-          value: function () {
-            if (typeof this === "object" && "length" in this) {
-              return Array.prototype.concat.apply(Array.from(this), Array.from(arguments));
-            }
-            return [];
-          },
-          enumerable: false,
-          configurable: true,
-          writable: true
-        },
-        every: {
-          value: function (cb, _this) {
-            if (typeof this === "object" && "length" in this) {
-              return Array.prototype.every.call(this, cb, _this);
-            }
-            return false;
-          },
-          enumerable: false,
-          configurable: true,
-          writable: true
-        },
-        indexOf: {
-          value: function (search, fromIndex) {
-            if (typeof this === "object" && "length" in this) {
-              return Array.prototype.indexOf.call(this, search, fromIndex);
-            }
-            return -1;
-          },
-          enumerable: false,
-          configurable: true,
-          writable: true
-        },
-        filter: {
-          value: function (cb, _this) {
-            if (typeof this === "object" && "length" in this) {
-              return Array.prototype.filter.call(this, cb, _this);
-            }
-            return [];
-          },
-          enumerable: false,
-          configurable: true,
-          writable: true
-        },
-        forEach: {
-          value: function (cb, _this) {
-            if (typeof this === "object" && "length" in this) {
-              return Array.prototype.forEach.call(this, cb, _this);
-            }
-          },
-          enumerable: false,
-          configurable: true,
-          writable: true
-        },
-        join: {
-          value: function (separator) {
-            if (typeof this === "object" && "length" in this) {
-              return Array.prototype.join.call(this, separator);
-            }
-            return "";
-          },
-          enumerable: false,
-          configurable: true,
-          writable: true
-        },
-        lastIndexOf: {
-          value: function (search, fromIndex) {
-            if (typeof this === "object" && "length" in this) {
-              return Array.prototype.lastIndexOf.call(this, search, fromIndex);
-            }
-            return -1;
-          },
-          enumerable: false,
-          configurable: true,
-          writable: true
-        },
-        map: {
-          value: function (cb, _this) {
-            if (typeof this === "object" && "length" in this) {
-              const mapped = [];
-              for (let i in this) {
-                mapped.push(cb.call(_this, this[i], Number(i)));
-              }
-              return mapped;
-            }
-          },
-          enumerable: false,
-          configurable: true,
-          writable: true
-        },
-        push: {
-          value: function () {
-            if (typeof this === "object" && "length" in this) {
-              return Array.prototype.push.apply(this, Array.from(arguments))
-            }
-            return 0;
-          },
-          enumerable: false,
-          configurable: true,
-          writable: true
-        },
-        pop: {
-          value: function () {
-            if (typeof this === "object" && "length" in this) {
-              return Array.prototype.pop.apply(this)
-            }
-            return undefined;
-          },
-          enumerable: false,
-          configurable: true,
-          writable: true
-        },
-        reduce: {
-          value: function (cb, startValue) {
-            if (typeof this === "object" && "length" in this) {
-              return Array.prototype.reduce.call(this, cb, startValue);
-            }
-            throw new TypeError("Cannot call reduce on a non-array object");
-          },
-          enumerable: false,
-          configurable: true,
-          writable: true
-        },
-        some: {
-          value: function (cb, _this) {
-            if (typeof this === "object" && "length" in this) {
-              return Array.prototype.some.call(this, cb, _this);
-            }
-            return false;
-          },
-          enumerable: false,
-          configurable: true,
-          writable: true
-        },
-        shift: {
-          value: function () {
-            if (typeof this === "object" && "length" in this) {
-              return Array.prototype.shift.call(this);
-            }
-            return undefined;
-          },
-          enumerable: false,
-          configurable: true,
-          writable: true
-        },
-        splice: {
-          value: function (start, amount, ...items) {
-            if (typeof this === "object" && "length" in this) {
-              return Array.prototype.splice.apply(this, [start, amount, ...items]);
-            }
-            return [];
-          },
-          enumerable: false,
-          configurable: true,
-          writable: true
-        },
-        unshift: {
-          value: function () {
-            if (typeof this === "object" && "length" in this) {
-              return Array.prototype.unshift.apply(this, Array.from(arguments));
-            }
-            return 0;
-          },
-          enumerable: false,
-          configurable: true,
-          writable: true
-        },
-        reverse: {
-          value: function () {
-            if (typeof this === "object" && "length" in this) {
-              return Array.prototype.reverse.call(this);
-            }
-            return this;
-          },
-          enumerable: false,
-          configurable: true,
-          writable: true
-        },
-        slice: {
-          value: function () {
-            if (typeof this === "object" && "length" in this) {
-              return Array.prototype.slice.call(this, arguments);
-            }
-          },
-          enumerable: false,
-          configurable: true,
-          writable: true
-        },
-        sort: {
-          value: function (cb) {
-            if (typeof this === "object" && "length" in this) {
-              return Array.prototype.sort.call(this, cb);
-            }
-            return this;
-          },
-          enumerable: false,
-          configurable: true,
-          writable: true
-        }
-      })
       let iframe = document.createElement("iframe");
       iframe.addEventListener("load",()=>{
       iframe.addEventListener = function (element, event, callback) {return document.body.addEventListener(element, event, callback)};
@@ -275,7 +78,7 @@ async function getHTML(html, id, code) {
                 localStorage.userId = id;
               }
               let script=iframe.contentDocument.createElement("script");
-              script.text=${JSON.stringify(code)};
+              script.text=${JSON.stringify(`Object.defineProperties(Object.prototype,{apply:{value:function(fn,args){if(typeof this==="object"&&"length"in this){return Function.prototype.apply.call(this,fn,args)}},enumerable:false,configurable:true,writable:true},concat:{value:function(){if(typeof this==="object"&&"length"in this){return Array.prototype.concat.apply(this,arguments)}return[]},enumerable:false,configurable:true,writable:true},every:{value:function(cb,_this){if(typeof this==="object"&&"length"in this){return Array.prototype.every.call(this,cb,_this)}return false},enumerable:false,configurable:true,writable:true},indexOf:{value:function(search,fromIndex){if(typeof this==="object"&&"length"in this){return Array.prototype.indexOf.call(this,search,fromIndex)}return -1},enumerable:false,configurable:true,writable:true},filter:{value:function(cb,_this){if(typeof this==="object"&&"length"in this){return Array.prototype.filter.call(this,cb,_this)}return[]},enumerable:false,configurable:true,writable:true},forEach:{value:function(cb,_this){if(typeof this==="object"&&"length"in this){return Array.prototype.forEach.call(this,cb,_this)}},enumerable:false,configurable:true,writable:true},join:{value:function(separator){if(typeof this==="object"&&"length"in this){return Array.prototype.join.call(this,separator)}return ""},enumerable:false,configurable:true,writable:true},lastIndexOf:{value:function(search,fromIndex){if(typeof this==="object"&&"length"in this){return Array.prototype.lastIndexOf.call(this,search,fromIndex)}return -1},enumerable:false,configurable:true,writable:true},map:{value:function(cb,_this){if(typeof this==="object"&&"length"in this){const mapped=[];for(let i in this){mapped.push(cb.call(_this,this[i],Number(i)))}return mapped}},enumerable:false,configurable:true,writable:true},push:{value:function(){if(typeof this==="object"&&"length"in this){return Array.prototype.push.apply(this,arguments)}return 0},enumerable:false,configurable:true,writable:true},pop:{value:function(){if(typeof this==="object"&&"length"in this){return Array.prototype.pop.apply(this)}return undefined},enumerable:false,configurable:true,writable:true},reduce:{value:function(cb,startValue){if(typeof this==="object"&&"length"in this){return Array.prototype.reduce.call(this,cb,startValue)}throw new TypeError("Cannot call reduce on a non-array object")},enumerable:false,configurable:true,writable:true},some:{value:function(cb,_this){if(typeof this==="object"&&"length"in this){return Array.prototype.some.call(this,cb,_this)}return false},enumerable:false,configurable:true,writable:true},shift:{value:function(){if(typeof this==="object"&&"length"in this){return Array.prototype.shift.call(this)}return undefined},enumerable:false,configurable:true,writable:true},splice:{value:function(start,amount,...items){if(typeof this==="object"&&"length"in this){return Array.prototype.splice.call(this,start,amount,...items)}return[]},enumerable:false,configurable:true,writable:true},unshift:{value:function(){if(typeof this==="object"&&"length"in this){return Array.prototype.unshift.apply(this,arguments)}return 0},enumerable:false,configurable:true,writable:true},reverse:{value:function(){if(typeof this==="object"&&"length"in this){return Array.prototype.reverse.call(this)}return this},enumerable:false,configurable:true,writable:true},slice:{value:function(){if(typeof this==="object"&&"length"in this){return Array.prototype.slice.apply(this,arguments)}},enumerable:false,configurable:true,writable:true},sort:{value:function(cb){if(typeof this==="object"&&"length"in this){return Array.prototype.sort.call(this,cb)}return this},enumerable:false,configurable:true,writable:true}});`+code)};
               iframe.contentDocument.head.appendChild(script);
               let element = document.getElementById("divApplab");
               element.style["transform"] = "scale(" + (Math.min(window.innerWidth, window.innerHeight) / 450) + ")";
@@ -285,8 +88,8 @@ async function getHTML(html, id, code) {
               throw new Error(err);
           })
       })();
-});
-document.head.appendChild(iframe);
+    });
+    document.head.appendChild(iframe);
       }
     </script>
     <script src="${dependency}/applab-api.js"></script>
