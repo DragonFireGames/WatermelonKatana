@@ -184,15 +184,16 @@ input[type=checkbox]:checked + .checkbox::after {
     This element is used for navigation links.
     Example implementation: <a class="pic-nav-link" href="#">Link</a>
 */
-a {
+a, .link {
   color: var(--palette-link);
   text-decoration: none;
   font-family: var(--text-font);
   font-size: 1em;
   transition: color 0.2s;
+  cursor: pointer;
 }
 
-a:hover {
+a:hover, .link:hover {
   color: var(--palette-link-hover);
 }
 
