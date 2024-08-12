@@ -145,7 +145,7 @@ input[type=button]:hover, input[type=submit]:hover, button:hover {
     This element is used for text input fields.
     Example implementation: <input class="pic-input" type="text" placeholder="Enter text">
 */
-input[type=text], input[type=password]:focus, textarea, .txtbtn {
+input[type=text], input[type=password], textarea, .txtbtn {
   padding: 10px;
   margin: 10px 0;
   box-sizing: border-box;
