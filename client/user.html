@@ -107,7 +107,7 @@
               <span id="followercount" class="clickable">${followerData.length}</span> Followers | 
               <span id="followingcount" class="clickable">${followingData.length}</span> Following 
               ${(tok.user && tok.user.id !== userData.id) ? `| <input type="checkbox" id="follow-btn" onclick="followbtnclick(this.checked);" ${userData.followers.includes(tok.user.id) ? "checked" : ""}> Follow` : ""}
-              | <a href="/uploadedmedia?poster=${data.username}">Uploaded Media</a>
+              | <a href="/uploadedmedia?poster=${userData.username}">Uploaded Media</a>
               <br><i class="uidtext" title="Click to Copy">ID: ${userData.id}</i>
             </div>`;
 
