@@ -35,8 +35,8 @@ const MediaSchema = new Mongoose.Schema({
     pack: function() {
       const container = {};
       container.name = this.name;
-      container.url = this.url;
-      container.delete_url = this.delete_url;
+      container.imgbb_url = this.url;
+      container.url = '/api/media/get/'+this._id+'/'+this.name+"."+this.type;
       container.width = this.width;
       container.height = this.height;
       container.size = this.size;
