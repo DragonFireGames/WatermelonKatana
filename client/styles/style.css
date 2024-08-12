@@ -275,11 +275,10 @@ a:hover, .link:hover {
 .project-list, .post-list, .user-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 1em;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding: 3em 1em 1em;
+  padding: 0em 1em 1em 0em;
   box-sizing: border-box;
 }
 
