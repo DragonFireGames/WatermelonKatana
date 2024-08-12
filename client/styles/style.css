@@ -172,7 +172,7 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus, .uploadbutto
     Checkbox Field
     This element is used for checkbox input fields.
 */
-input[type=checkbox] {
+label > input[type=checkbox] {
   display: none;
 }
 
