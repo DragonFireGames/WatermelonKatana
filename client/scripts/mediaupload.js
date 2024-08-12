@@ -3,9 +3,9 @@
 <style>
 
 #upload-container {
-  color: #000;
+  color: #fff;
   text-decoration: none;
-  background-color: #fff;
+  background-color: #000;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
@@ -19,6 +19,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   display: none;
+  z-index: 1000;
 }
 
 #link-insert {
