@@ -25,10 +25,10 @@ async function createPost(post,data,txt,name,reload) {
   if (!tok.user) return;
   if (tok.user.role === "Admin") { 
     display.innerHTML += `
-    <label for="featured=btn">Featured:
+    <label for="featured-btn">Featured:
       <input
         value="featured-button"
-        name="featured-checkbox"
+        name="featured-btn"
         id="featured-btn"
         type="checkbox"
         ${data.featured ? "checked" : ""}
