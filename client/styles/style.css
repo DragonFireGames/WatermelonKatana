@@ -178,13 +178,14 @@ input[type=checkbox] {
 
   /* Style for the custom checkbox */
 .checkbox {
-  display: inline-block;
+  display: inline-flex;
   width: 20px;
   height: 20px;
   border: 2px solid var(--palette-primary);
   border-radius: 4px;
   position: relative;
   cursor: pointer;
+  margin: 0px 0px 5px 5px;
 }
 
   /* Style for the custom checkmark */
@@ -199,6 +200,10 @@ input[type=checkbox] {
   background-color: var(--palette-primary);
   border-radius: 2px;
   opacity: 0;
+}
+
+label {
+  display: inline-flex;
 }
 
   /* Show the checkmark when checkbox is checked */
