@@ -75,10 +75,10 @@ async function listComments(list,comments,self,events) {
         <p class="comment-data">${relativeDate(c.postedAt)}</p>
       </div>
       ${self?`<div class="comment-upvote">
-        ${c.upvotes.length}
-        <label>
-          <input class="comment-upvote-box" name="comment-vpvote" type="checkbox" value="reply" ${c.upvotes.includes(self.id) ? "checked" : ""} onclick="window.onupvoteclick(${i},this.checked);">
-          <span class="checkbox"></span>
+        <label class="upvote-container">
+          ${c.upvotes.length}
+          <input class="comment-upvote-box" type="checkbox" value="reply" ${c.upvotes.includes(self.id) ? "checked" : ""} onclick="window.onupvoteclick(${i},this.checked);">
+          <svg viewBox="0 0 512 512" height="1em" xmlns="http://www.w3.org/2000/svg" class="upvote-icon"><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"></path></svg>
         </label>
       </div>`:""}
       <p class="comment-content">${convertMarkdown(c.content)}</p>
