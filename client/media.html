@@ -13,11 +13,11 @@
 <body>
   <script src="/scripts/navbar.js"></script>
   <h1>Media</h1>
-  <ul id="list" class="user-list"></ul>
+  <ul id="list" class="post-list"></ul>
   <script>
     const list = document.querySelector('#list')
 
-    const getUsers = async() => {
+    const getMedia = async() => {
       const res = await fetch('/api/media/list'+location.search);
       const data = await res.json();
       data.user.map((media)=>{
@@ -28,8 +28,8 @@
         </div>
         `;
       });
-    }
-    getUsers()
+    };
+    getMedia();
   </script>
 </body>
 </html>
