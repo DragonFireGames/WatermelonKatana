@@ -82,7 +82,7 @@
       let followerData;
       let followingData;
 
-      document.addEventListener('DOMContentLoaded', async function() {
+      (async function() {
         try {
           const res = await fetch(`/api/auth/userdata?username=${name}`);
           const userData = await res.json();
@@ -157,22 +157,23 @@
             }
           });
 
+          document.querySelector('.close-popup').addEventListener('click', function() {
+            document.getElementById('follower-popup').classList.add('hidden');
+          });
+    
+          window.addEventListener('click', function(event) {
+            const followerPopup = document.getElementById('follower-popup');
+            if (event.target === followerPopup) {
+              followerPopup.classList.add('hidden');
+            }
+          });
+
         } catch (e) {
+          alert(e);
           console.error(e);
         }
-      });
+      })();
 
-      document.querySelector('.close-popup').addEventListener('click', function() {
-        document.getElementById('follower-popup').classList.add('hidden');
-      });
-
-      window.addEventListener('click', function(event) {
-        const followerPopup = document.getElementById('follower-popup');
-        if (event.target === followerPopup) {
-          followerPopup.classList.add('hidden');
-        }
-      });
-      
       (async () => {
         try {
           const res = await fetch('/api/project/list?poster=' + name);
