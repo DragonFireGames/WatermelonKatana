@@ -5,7 +5,7 @@
 #upload-container {
   color: #fff;
   text-decoration: none;
-  background-color: #000;
+  background-color: #333;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
@@ -13,13 +13,12 @@
   justify-content: center;
   overflow: show;
   padding: 5px;
-  position: absolute;
+  position: fixed;
   width: 72vmin;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: none;
-  z-index: 1000;
 }
 
 #link-insert {
@@ -47,6 +46,8 @@
 </div>`;
 })();
 
+async function uploadAvatar(){return await getFileUpload()}
+
 function getFileUpload(url) {
   var container = document.querySelector("#upload-container");
   container.style.display = "block";
@@ -60,13 +61,15 @@ function getFileUpload(url) {
 async function uploadMedia() {
   var elem = document.querySelector('#file-upload');
   var link = document.querySelector('#link-insert');
-  if (link.value || !elem.value) return fileUploaded(link.value);
+  if (link.value) {
+    return fileUploaded(link.value);
+  }
   var file = elem.files[0];
   var buf = await file.arrayBuffer();
   var b64 = _arrayBufferToBase64(buf);
   var params = new URLSearchParams();
   params.set("image",b64);
-  params.set("name",file.name.replace(/\.[^.]+$/,""));
+  params.set("name",file.name);
   try {
     var res = await fetch("/api/media/upload",{
       method: 'POST',
@@ -74,7 +77,7 @@ async function uploadMedia() {
     });
     var data = await res.json();
     if (res.status > 206) throw data;
-    fileUploaded(location.origin+data.url);
+    fileUploaded(data.url);
   } catch (error) {
     alert(JSON.stringify(error));
     console.log(error);
@@ -92,6 +95,7 @@ async function setPreview() {
   var b64 = _arrayBufferToBase64(buf);
   var url = "data:"+file.type+";base64,"+b64;
   img.src = url;
+  img.style.display = "block";
   link.value = "";
 }
 async function setPreviewLink() {
@@ -99,6 +103,7 @@ async function setPreviewLink() {
   var elem = document.querySelector('#file-upload');
   var img = document.querySelector('#upload-preview');
   img.src = link.value;
+  img.style.display = "block";
   elem.value = "";
 }
 function fileUploaded(url) {
@@ -107,6 +112,7 @@ function fileUploaded(url) {
   var elem = document.querySelector('#file-upload');
   container.style.display = "none";
   img.src = "";
+  img.style.display = "none";
   elem.value = "";
   window.onfileupload(url);
 }
