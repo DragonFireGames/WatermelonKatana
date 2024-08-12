@@ -42,7 +42,7 @@ async function createPost(post,data,txt,name,reload) {
   if (tok.user.id !== data.posterId && tok.user.role !== "Admin") return;
   console.log(post);
   if (name == "forum") name = "forum/discussion";
-  display.innerHTML += `<a class="button edit" href="/${name}/${pid}/edit">Edit</a>`;
+  display.innerHTML += `<a class="edit" href="/${name}/${pid}/edit"><span class="button">Edit</span></a>`;
 }
 async function listComments(list,comments,self,events) {
   var users = {};
