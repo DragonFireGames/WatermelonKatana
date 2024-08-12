@@ -52,7 +52,6 @@ app.get("/", (req, res) => res.sendFile(cldir + "/home.html")); // Home page
 app.get("/register", (req, res) => res.sendFile(cldir + "/register.html")); // Registration page
 app.get("/login", (req, res) => res.sendFile(cldir + "/login.html")); // Login page
 app.get("/ui-tester", (req, res) => res.sendFile(cldir + "/ui-tester.html")); // UI Testing page
-app.get("/media", (req, res) => res.sendFile(cldir + "/media.html")); // Media page
 
 // Logout route: clear the JWT cookie and redirect to home
 app.get("/logout", (req, res) => {
@@ -66,9 +65,10 @@ app.get("/chat", userAuth, (req, res) => res.sendFile(cldir + "/chat.html"));
 // Admin page, admins only
 app.get("/admin", adminAuth, (req, res) => res.sendFile(cldir + "/admin.html"));
 // Basic user page, users only
-app.get("/userlist", userAuth, (req, res) =>
-  res.sendFile(cldir + "/userlist.html"),
-);
+app.get("/userlist", userAuth, (req, res) => res.sendFile(cldir + "/userlist.html"));
+
+// Media list
+app.get("/media", (req, res) => res.sendFile(cldir + "/media.html"));
 
 function makeLiteralChars(string) {
   string = string.replace(/\&/g,"&amp;");
