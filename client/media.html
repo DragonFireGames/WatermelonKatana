@@ -20,7 +20,7 @@
     const getMedia = async() => {
       const res = await fetch('/api/media/list'+location.search);
       const data = await res.json();
-      data.user.map((media)=>{
+      data.media.map((media)=>{
         list.innerHTML += `
         <div style="display: inline-block;">
           <img src="${media.url}" style="max-width:400; max-height:400;">
