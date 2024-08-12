@@ -17,7 +17,8 @@
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        background-color: white;
+        background-color: #333;
+        color: white;
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -30,8 +31,10 @@
 
       .close-popup {
         position: absolute;
-        top: 10px;
-        right: 10px;
+        left: 40%;
+        top: 5px;
+        margin-left: 50%;
+        margin-top: 1px;
         cursor: pointer;
       }
 
@@ -43,6 +46,18 @@
         vertical-align: middle;
       }
 
+      .avatar-basicBorder {
+        border-color: grey;
+      }
+
+      .avatar-adminBorder {
+        border-color: #ff5555;
+      }
+
+      .avatar-modBorder {
+        border-color: #55ff55;
+      }
+      
       #follower-list li {
         margin: 10px 0;
       }
@@ -86,14 +101,27 @@
           followerData = userData.followers;
           followingData = userData.following;
 
+          var roleBorderCSS;
+          
+          switch (userData.role) {
+            case "Moderator":
+              roleBorderCSS = "border-color: #55ff55;";
+              break;
+            case "Admin":
+              roleBorderCSS = "border-color: #ff5555;";
+              break;
+            default:
+              roleBorderCSS= "border-color: grey;";
+              break;
+          }
+          
           const display = document.querySelector('#display');
           const tok = await getAuth();
           display.innerHTML = `
             <div class="profile ${userData.role.toLowerCase()}">
               <img class="banner" src="${userData.banner}">
-              <div class="namecontainer">
-                <img class="avatar" src="${userData.avatar}">
-                <p class="username">${userData.username}</p>
+              <div class="namecontainer"><img class="avatar" style="${roleBorderCSS}" src="${userData.avatar}">
+              <p class="username">${userData.username}</p>
               </div>
               <p class="biography">${userData.biography}</p>
               <p class="role">${userData.role}</p>
