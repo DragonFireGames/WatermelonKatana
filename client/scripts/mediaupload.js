@@ -41,7 +41,7 @@
 <div id="upload-container">
   <input id="link-insert" type="text" onchange="setPreviewLink()"><br>
   <input id="file-upload" type="file" accept="image/*" onchange="setPreview()"><br>
-  <img id="upload-preview"><br>
+  <img id="upload-preview" onerror="cancelImagePreview(this);">
   <button id="file-upload-submit" onclick="uploadMedia()">Upload</button>
   <button id="file-upload-cancel" onclick="fileUploaded(null)">Cancel</button>
 </div>`;
@@ -93,6 +93,7 @@ async function setPreview() {
   var url = "data:"+file.type+";base64,"+b64;
   img.src = url;
   img.style.display = "block";
+  img.style.margin = "0px 0px 5px 0px";
   link.value = "";
 }
 async function setPreviewLink() {
@@ -101,15 +102,20 @@ async function setPreviewLink() {
   var img = document.querySelector('#upload-preview');
   img.src = link.value;
   img.style.display = "block";
+  img.style.margin = "0px 0px 5px 0px";
   elem.value = "";
+}
+function cancelImagePreview(img) {
+  img.src = "";
+  img.style.display = "none";
+  img.style.margin = "0px 0px 0px 0px";
 }
 function fileUploaded(url) {
   var container = document.querySelector("#upload-container");
   var img = document.querySelector('#upload-preview');
   var elem = document.querySelector('#file-upload');
   container.style.display = "none";
-  img.src = "";
-  img.style.display = "none";
+  cancelImagePreview(img);
   elem.value = "";
   window.onfileupload(url);
 }
