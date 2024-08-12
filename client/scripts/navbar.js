@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     }
 
     .navbar-name {
+      font-family: var(--navbar-font-family);
       font-size: 1.5em;
       background: linear-gradient(90deg, var(--spill-color1), var(--spill-color2), var(--spill-color3), var(--spill-color4));
       background-size: 200% 200%;
@@ -133,7 +134,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     }
 
     .signedin:hover {
-      background-color: var(--signedin-hover-bg-color);
+      background-color: var(--palette-primary);
       color: var(--signedin-hover-font-color);
     }
 

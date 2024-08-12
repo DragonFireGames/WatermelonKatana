@@ -60,6 +60,14 @@
   --palette-project-border-default: #7289da;
 
   /*
+    Logo Stuff
+  */
+  --spill-color1: #de6c83;
+  --spill-color2: #ff2e58;
+  --spill-color3: #2cf6b3;
+  --spill-color4: #00b377;
+  
+  /*
     Other Website stuff
   */
   --title-font: 'Fugaz One', sans-serif;
@@ -92,12 +100,25 @@ Logo Text
 */
 .logo-text {
   font-family: var(--title-font);
-  font-weight: var(--title-font-weight);
-  font-size: var(--title-font-size);
-  background: linear-gradient(177deg, var(--palette-primary), var(--palette-secondary));
+  background: linear-gradient(90deg, var(--spill-color1), var(--spill-color2), var(--spill-color3), var(--spill-color4));
+  background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
+  position: relative;
+  animation: liquidSpill 4s ease-in-out infinite;
+}
+
+@keyframes liquidSpill {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /*
@@ -108,7 +129,6 @@ Logo Text
 a, .link {
   color: var(--palette-link);
   text-decoration: none;
-  font-family: var(--text-font);
   font-size: 1em;
   transition: color 0.2s;
   cursor: pointer;
@@ -308,64 +328,4 @@ input[type=checkbox]:checked + .checkbox::after {
 
 .project-link, .post-top {
   text-align: center;
-}
-
-/*
-  Logo name stuff 
-*/
-.navbar-name {
-  font-size: 1.5em;
-  background: linear-gradient(90deg, var(--spill-color1), var(--spill-color2), var(--spill-color3), var(--spill-color4));
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  margin-right: 2em;
-  position: relative;
-  animation: liquidSpill 4s ease-in-out infinite;
-  transition: color 0.5s ease, background 0.5s ease;
-}
-
-@keyframes liquidSpill {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.navbar-name::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: inherit;
-  filter: blur(15px);
-  opacity: 0.7;
-  z-index: -1;
-  animation: liquidSpill 4s ease-in-out infinite;
-}
-
-.navbar-name:hover {
-  background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0.5), #fff);
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  animation: shimmer 2s linear infinite;
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -100% 0;
-  }
-  100% {
-    background-position: 100% 0;
-  }
 }

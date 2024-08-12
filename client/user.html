@@ -102,16 +102,23 @@
           followingData = userData.following;
 
           var roleBorderCSS;
+          var nameCSS;
+          var nameCSSClass;
           
           switch (userData.role) {
             case "Moderator":
               roleBorderCSS = "border-color: #55ff55;";
+              nameCSSClass = "username";
+              nameCSS = "color: #55ff55;";
               break;
             case "Admin":
               roleBorderCSS = "border-color: #ff5555;";
+              nameCSSClass = "logo-text";
+              nameCSS = "font-size: 24px; font-weight: bold;";
               break;
             default:
               roleBorderCSS= "border-color: grey;";
+              nameCSSClass = "username";
               break;
           }
           
@@ -121,7 +128,7 @@
             <div class="profile ${userData.role.toLowerCase()}">
               <img class="banner" src="${userData.banner}">
               <div class="namecontainer"><img class="avatar" style="${roleBorderCSS}" src="${userData.avatar}">
-              <p class="username">${userData.username}</p>
+              <p class="${nameCSSClass}" style="${nameCSS}">${userData.username}</p>
               </div>
               <p class="biography">${userData.biography}</p>
               <p class="role">${userData.role}</p>
