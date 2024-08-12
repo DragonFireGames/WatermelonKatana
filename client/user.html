@@ -86,6 +86,7 @@
         try {
           const res = await fetch(`/api/auth/userdata?username=${name}`);
           const userData = await res.json();
+          if (res.status === 400 || res.status === 401) throw Error(userData);
           followerData = userData.followers;
           followingData = userData.following;
 
@@ -101,14 +102,19 @@
               <p class="biography">${userData.biography}</p>
               <p class="role">${userData.role}</p>
               Joined on ${new Date(userData.joinedAt).toUTCString().replace(/\d\d:[^]+$/,"")} |
-              <span id="followercount" class="clickable">${userData.followers.length}</span> Followers | 
-              <span id="followingcount" class="clickable">${userData.following.length}</span> Following 
-              ${(tok.user && tok.user.id !== userData.id) ? 
-                `| <input type="checkbox" id="follow-btn" onclick="followbtnclick(this.checked);" 
-                ${userData.followers.includes(tok.user.id) ? "checked" : ""}> Follow` : ""}
+              <span id="followercount" class="clickable">${followerData.length}</span> Followers | 
+              <span id="followingcount" class="clickable">${followingData.length}</span> Following 
+              ${(tok.user && tok.user.id !== userData.id) ? `| <input type="checkbox" id="follow-btn" onclick="followbtnclick(this.checked);" ${userData.followers.includes(tok.user.id) ? "checked" : ""}> Follow` : ""}
+              | <a href="/media?poster=${data.username}">Uploaded Media</a>
               <br><i class="uidtext" title="Click to Copy">ID: ${userData.id}</i>
             </div>`;
 
+          await Promise.all(userData.favorites.map(async pid => {
+            const res = await fetch('/api/project/data/' + pid);
+            const proj = await res.json();
+            projHTML(favlist)(proj);
+          }));
+          
           document.getElementById('followercount').addEventListener('click', function(event) {
             event.preventDefault();
 
@@ -150,6 +156,7 @@
               });
             }
           });
+
         } catch (e) {
           console.error(e);
         }
@@ -171,40 +178,6 @@
           const res = await fetch('/api/project/list?poster=' + name);
           const data = await res.json();
           data.projects.map(projHTML(list));
-        } catch (e) {
-          alert(e);
-          console.error(e);
-        }
-      })();
-
-      (async () => {
-        try {
-          const res = await fetch('/api/auth/userdata?username=' + name);
-          const data = await res.json();
-          if (res.status === 400 || res.status === 401) throw Error(data);
-          const tok = await getAuth();
-          display.innerHTML = `
-            <div class="profile ${data.role.toLowerCase()}">
-              <img class="banner" src="${data.banner}">
-              <div class="namecontainer">
-                <img class="avatar" src="${data.avatar}">
-                <p class="username">${data.username}</p>
-              </div>
-              <p class="biography">${data.biography}</p>
-              <p class="role">${data.role}</p>
-              Joined on ${new Date(data.joinedAt).toUTCString().replace(/\d\d:[^]+$/,"")} |
-              <span id="followercount">${data.followers.length}</span> Followers | 
-              <a href="#" id="view-followers">View Followers</a> | 
-              ${data.following.length} Following 
-              ${(tok.user&&tok.user.id!==data.id)?`| <input type="checkbox" id="follow-btn" onclick="followbtnclick(this.checked);" ${data.followers.includes(tok.user.id)?"checked":""}> Follow`:""}
-              | <a href="/media?poster=${data.username}">Uploaded Media</a>
-              <br><i class="uidtext" title="Click to Copy">ID: ${data.id}</i>
-            </div>`;
-          await Promise.all(data.favorites.map(async pid => {
-            const res = await fetch('/api/project/data/' + pid);
-            const proj = await res.json();
-            projHTML(favlist)(proj);
-          }));
         } catch (e) {
           alert(e);
           console.error(e);
