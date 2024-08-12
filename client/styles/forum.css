@@ -57,6 +57,7 @@
 #reply-btn:hover {
   color: #ccc; /* Light hover effect */
   border-color: #888; /* Slightly lighter border on hover */
+  background-color: #444; /* Light hover effect */
   cursor: pointer;
 }
 
@@ -114,7 +115,13 @@
 .comment-menu-options input {
   display: block;
   color: #ccc; /* Light text color */
+  border-radius: 0;
+  width: 100%;
   background-color: #333; /* Consistent background */
+}
+
+.comment-menu-options input:hover {
+  background-color: #444; /* Consistent background */
 }
 
 .comment-menu:hover .comment-menu-options {
