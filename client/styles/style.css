@@ -278,6 +278,7 @@ a:hover, .link:hover {
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  gap: 1em;
   padding: 0em 1em 1em 0em;
   box-sizing: border-box;
 }
