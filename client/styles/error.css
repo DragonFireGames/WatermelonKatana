@@ -1,6 +1,7 @@
 body {
 	font-family: Arial, sans-serif;
-	background-color: #f4f4f4;
+	background-color: #121212; /* Dark background */
+	color: #e0e0e0; /* Light text color for general readability */
 	margin: 0;
 	padding: 0;
 	text-align: center;
@@ -11,9 +12,9 @@ body {
 	margin: auto;
 	overflow: hidden;
 	padding: 20px;
-	background: #fff;
+	background: #333333; /* Darker panel background */
 	border-radius: 10px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
 	margin-top: 50px;
 }
 
@@ -26,12 +27,13 @@ body {
 
 .error-title {
 	font-size: 48px;
-	color: #333;
+	color: #e0e0e0; /* Adjusted text color */
 	animation: bounce 1s infinite;
 }
 
 .error-message {
 	font-size: 18px;
+	color: #e0e0e0; /* Adjusted text color */
 	margin: 20px 0;
 }
 
@@ -39,24 +41,24 @@ body {
 	display: inline-block;
 	margin-top: 20px;
 	padding: 10px 20px;
-	background-color: #333;
+	background-color: #444; /* Dark background for link */
 	color: #fff;
 	text-decoration: none;
 	border-radius: 5px;
 }
 
 .home-link:hover {
-	background-color: #555;
+	background-color: #555; /* Slightly lighter hover effect */
 }
 
 @keyframes bounce {
 	0%, 20%, 50%, 80%, 100% {
-			transform: translateY(0);
+		transform: translateY(0);
 	}
 	40% {
-			transform: translateY(-30px);
+		transform: translateY(-30px);
 	}
 	60% {
-			transform: translateY(-15px);
+		transform: translateY(-15px);
 	}
 }

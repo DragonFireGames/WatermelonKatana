@@ -1,6 +1,7 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  background-color: #121212; /* Dark background */
+  color: #e0e0e0; /* Light text color for general readability */
   margin: 0;
   padding: 0;
 }
@@ -10,9 +11,9 @@ body {
   margin: auto;
   overflow: hidden;
   padding: 20px;
-  background: #fff;
+  background: #333333; /* Dark panel background */
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
 }
 
 .profile .banner {
@@ -30,7 +31,7 @@ body {
 
 .avatar {
   border-radius: 50%;
-  border: 5px solid #fff;
+  border: 5px solid #333333; /* Matching the panel color */
   width: 100px;
   height: 100px;
   margin-right: 20px;
@@ -52,7 +53,7 @@ body {
 }
 
 .projects-container h2 {
-  background-color: #333;
+  background-color: #444; /* Dark header */
   color: #fff;
   padding: 10px;
   border-radius: 5px;
@@ -64,30 +65,30 @@ body {
 }
 
 .project-list li {
-  background: #fff;
+  background: #333333; /* Darker list items */
   margin: 10px 0;
   padding: 15px;
   border-left: 5px solid #77aaff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .project-list li:hover {
-  background: #e9e9e9;
+  background: #222222; /* Dark hover effect */
 }
 
 .uidtext {
   cursor: pointer;
-  color: #555;
+  color: #999; /* Lighter for visibility */
 }
 
 .profile.admin .role {
-  color: red;
+  color: #ff5555; /* More visible colors for roles */
 }
 
 .profile.moderator .role {
-  color: blue;
+  color: #5555ff;
 }
 
 .profile.user .role {
-  color: green;
+  color: #55ff55;
 }

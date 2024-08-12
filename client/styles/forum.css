@@ -30,7 +30,7 @@
 .comment-top a {
   display: inline-flex;
   text-decoration: none;
-  color: black;
+  color: #ccc; /* Lighter text for dark mode */
 }
 
 .comment-content {
@@ -40,10 +40,10 @@
 }
 
 .comment {
-  color:black;
-  background-color: white;
+  color: #ccc; /* Lighter text color for readability */
+  background-color: #333; /* Dark background for comments */
   display: block;
-  border: 1px solid black;
+  border: 1px solid #444; /* Adjusted border color */
   border-radius: 10px;
   margin: 0 0 5px 0;
   width: 100%;
@@ -51,22 +51,22 @@
 }
 
 #reply-btn {
-  color: grey;
-  border-color: grey;
+  color: #aaa; /* Lighter grey for visibility */
+  border-color: #666; /* Darker border for consistency */
 }
 #reply-btn:hover {
-  color: black;
-  border-color: black;
-  cursor: text;
+  color: #ccc; /* Light hover effect */
+  border-color: #888; /* Slightly lighter border on hover */
+  cursor: pointer;
 }
 
 #reply {
-  background: white;
+  background: #333; /* Dark background for the reply box */
   position: fixed;
   z-index: 100;
   display: none;
   bottom: 5px;
-  border: 1px solid black;
+  border: 1px solid #444; /* Dark border for contrast */
   border-radius: 10px;
 }
 
@@ -78,6 +78,8 @@
   border: none;
   outline: none;
   resize: none;
+  background: #222; /* Even darker background for the text area */
+  color: #ccc; /* Light text color */
 }
 
 .comment-menu {
@@ -95,21 +97,24 @@
 }
 
 .comment-menu-img:hover {
-  background-color: #d8d8d8;
+  background-color: #444; /* Dark hover effect */
 }
 
 .comment-menu:hover .comment-menu-img {
-  background-color: #d8d8d8;
+  background-color: #444; /* Consistent hover effect */
 }
 
 .comment-menu-options {
   position: absolute;
   display: none;
   z-index: 100;
+  background-color: #333; /* Dark background for menu options */
 }
 
 .comment-menu-options input {
   display: block;
+  color: #ccc; /* Light text color */
+  background-color: #333; /* Consistent background */
 }
 
 .comment-menu:hover .comment-menu-options {
@@ -127,5 +132,5 @@
 
 .post-name {
   text-align: center;
+  color: #ccc; /* Light color for post names */
 }
-

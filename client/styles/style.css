@@ -1,6 +1,7 @@
 body {
   font-family: Tahoma, sans-serif;
-  background-color: #f4f4f4;
+  background-color: #121212; /* Dark background */
+  color: #e0e0e0; /* Light text color for general readability */
   margin: 0;
   padding: 0;
   display: flex;
@@ -9,11 +10,10 @@ body {
 }
 
 .project-panel, .post-panel, .user-panel {
-  color: #000;
-  text-decoration: none;
-  background-color: #fff;
+  color: #e0e0e0;
+  background-color: #333333; /* Darker panels */
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* More prominent shadow */
   transition: transform 0.2s, box-shadow 0.2s;
   align-items: center;
   justify-content: center;
@@ -43,7 +43,7 @@ body {
 
 .project-panel:hover, .post-panel:hover, .user-panel:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Even darker shadow on hover */
 }
 
 .project-thumbnail {
@@ -66,7 +66,7 @@ body {
 }
 
 .thumbnail-border {
-  border: solid #333 2px;
+  border: solid #555 2px; /* Darker border color */
   min-height: 200px;
   min-width: 200px;
   border-radius: 10px;
