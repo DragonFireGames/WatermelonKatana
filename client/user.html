@@ -197,6 +197,7 @@
               <a href="#" id="view-followers">View Followers</a> | 
               ${data.following.length} Following 
               ${(tok.user&&tok.user.id!==data.id)?`| <input type="checkbox" id="follow-btn" onclick="followbtnclick(this.checked);" ${data.followers.includes(tok.user.id)?"checked":""}> Follow`:""}
+              | <a href="/media?poster=${data.username}">Uploaded Media</a>
               <br><i class="uidtext" title="Click to Copy">ID: ${data.id}</i>
             </div>`;
           await Promise.all(data.favorites.map(async pid => {
