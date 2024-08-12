@@ -18,7 +18,7 @@
     const list = document.querySelector('#list')
 
     const getUsers = async() => {
-      const res = await fetch('/api/media/list');
+      const res = await fetch('/api/media/list'+location.search);
       const data = await res.json();
       data.user.map((media)=>{
         list.innerHTML += `
