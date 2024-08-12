@@ -37,7 +37,7 @@ const turbo = new Turbo(app, express.static("./client/Turbo/dependencies"));
 app.use("/api/auth", require("./Auth/route")); // Authentication routes
 app.use("/api/project", require("./Project/route")); // Project routes
 app.use("/api/forum", require("./Forum/route")); // Project routes
-app.use("/api/uploadedmedia", require("./Media/route")); // Media routes
+app.use("/api/media", require("./Media/route")); // Media routes
 app.use("/api/admin", require("./Admin/route")); // Admin command routes
 
 /**
@@ -68,7 +68,7 @@ app.get("/admin", adminAuth, (req, res) => res.sendFile(cldir + "/admin.html"));
 app.get("/userlist", userAuth, (req, res) => res.sendFile(cldir + "/userlist.html"));
 
 // Media list
-app.get("/media", (req, res) => res.sendFile(cldir + "/media.html"));
+app.get("/uploadedmedia", (req, res) => res.sendFile(cldir + "/media.html"));
 
 function makeLiteralChars(string) {
   string = string.replace(/\&/g,"&amp;");
