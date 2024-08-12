@@ -74,7 +74,7 @@ function convertMarkdown(string) {
   string = makeLiteralChars(string);
   var escapable = "*_~`()[]\\!#";
   for (var i = 0; i < escapable.length; i++) {
-    string = string.replace("\\"+escapable[i],"&#"+escapable.charCodeAt(i)+";"); // make certain characters escapable
+    string = string.replaceAll("\\"+escapable[i],"&#"+escapable.charCodeAt(i)+";"); // make certain characters escapable
   }
   string = string.replace(/\*\*([^*\n]+)\*\*/g,"<b>$1</b>"); // **bold**
   string = string.replace(/\*([^*\n]+)\*/g,"<i>$1</i>"); // *italics*
