@@ -35,10 +35,7 @@ router.route("/upload").post(userAuth, express.urlencoded({ extended:false, limi
     console.log(media);
     res.status(200).json({
       message: "Media successfully uploaded",
-      id: media._id,
-      name: media.name,
-      type: media.type,
-      url: '/api/media/get/'+media._id+'/'+media.name+"."+media.type,
+      media: media.pack()
     });
   } catch(error) {
     res.status(400).json({
@@ -65,6 +62,17 @@ router.route("/get/:id/*").get(async (req,res) => {
       error: error.message,
     });
     console.log(error.message);
+  }
+});
+router.route("/list").get(async (req,res) => {
+  try {
+    var search = {};
+    if (req.query.customQuery) search = req.query.customQuery;
+    var media = await Media.find(search);
+    const list = media.map(e=>e.pack());
+    res.status(200).json({ media: list });
+  } catch(err) {
+    res.status(401).json({ message: "Not successful", error: err.message });
   }
 });
 
