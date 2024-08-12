@@ -65,8 +65,10 @@ router.route("/get/:id/*").get(async (req,res) => {
   }
 });
 router.route("/list").get(async (req,res) => {
+  var { poster } = req.query;
   try {
     var search = {};
+    if (poster) search.poster = poster;
     if (req.query.customQuery) search = req.query.customQuery;
     var media = await Media.find(search);
     const list = media.map(e=>e.pack());
