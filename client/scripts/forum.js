@@ -25,15 +25,17 @@ async function createPost(post,data,txt,name,reload) {
   if (!tok.user) return;
   if (tok.user.role === "Admin") { 
     display.innerHTML += `
-    <label for="featured-btn">Featured:</label>
-    <input
-      value="featured-button"
-      name="featured-checkbox"
-      id="featured-btn"
-      type="checkbox"
-      ${data.featured ? "checked" : ""}
-      onclick="featurebtnclick(this.checked)"
-    /> <br>`;
+    <label for="featured=btn">Featured:
+      <input
+        value="featured-button"
+        name="featured-checkbox"
+        id="featured-btn"
+        type="checkbox"
+        ${data.featured ? "checked" : ""}
+        onclick="featurebtnclick(this.checked)"
+      />
+      <span class="checkbox"></span>
+    </label><br>`;
   } else {
     display.innerHTML += `<b>Featured</b> => ${data.featured} <br>`;
   }
@@ -74,7 +76,10 @@ async function listComments(list,comments,self,events) {
       </div>
       ${self?`<div class="comment-upvote">
         ${c.upvotes.length}
-        <input class="comment-upvote-box" name="comment-vpvote" type="checkbox" value="reply" ${c.upvotes.includes(self.id) ? "checked" : ""} onclick="window.onupvoteclick(${i},this.checked);">
+        <label>
+          <input class="comment-upvote-box" name="comment-vpvote" type="checkbox" value="reply" ${c.upvotes.includes(self.id) ? "checked" : ""} onclick="window.onupvoteclick(${i},this.checked);">
+          <span class="checkbox"></span>
+        </label>
       </div>`:""}
       <p class="comment-content">${convertMarkdown(c.content)}</p>
     </div>`;
