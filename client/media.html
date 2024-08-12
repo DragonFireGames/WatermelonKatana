@@ -20,6 +20,7 @@
     const getMedia = async() => {
       const res = await fetch('/api/media/list'+location.search);
       const data = await res.json();
+      data.media.reverse();
       data.media.map((media)=>{
         list.innerHTML += `
         <div style="display: inline-block;">
