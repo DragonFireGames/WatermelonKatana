@@ -57,6 +57,7 @@ Will these actually get done?
 - [x] Hidden games/post - DragonFireGames
 - [ ] Game Verification
 - [ ] Improve Security (XSS, SQL Injection, etc.) - toodols & DragonFireGames & Letti
+- [ ] Email Verification/Newsletter
 
 ### Step 3 - Better UI
 - [ ] Logo
