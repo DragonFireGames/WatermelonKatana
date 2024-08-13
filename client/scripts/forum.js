@@ -123,8 +123,8 @@ function setupReply(events,oncancel,self) {
       <p class="comment-username">${self.username}</p>
     </div>
     <textarea id="reply-textbox" oninput="growtextarea(this)" resize=false placeholder="Write a reply..."></textarea>
-    <input type="button" id="send-reply-btn" value="send" onclick="window.onreplysendclick()">
-    <input type="button" id="cancel-reply-btn"  value="cancel" onclick="window.onreplycancelclick()">
+    <input type="button" class="pink-button" id="send-reply-btn" value="send" onclick="window.onreplysendclick()">
+    <input type="button" class="pink-button" id="cancel-reply-btn"  value="cancel" onclick="window.onreplycancelclick()">
     <!--<button type="submit" class="send" title="Send">
       <svg fill="none" viewBox="0 0 24 24" height="18" width="18" xmlns="http://www.w3.org/2000/svg">
         <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" stroke="#ffffff" d="M12 5L12 20"></path>
