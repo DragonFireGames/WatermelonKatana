@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<<<<<<< HEAD
   <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -51,6 +52,52 @@
     <!---->
     <div id="post">
       <!--content-->
+=======
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--title-->
+  <!--og:meta-->
+  <link rel="stylesheet" type="text/css" href="/styles/style.css">
+  <link rel="stylesheet" type="text/css" href="/styles/forum.css">
+  <script src="/scripts/HtmlSanitizer.js"></script>
+  <script src="/scripts/utils.js"></script>
+  <script src="/scripts/forum.js"></script>
+</head>
+<body>
+  <script src="/scripts/navbar.js"></script>
+  <iframe id="game" onmouseleave="document.body.style.overflow = 'scroll'" style="display: block; margin-left: auto; margin-right: auto;"></iframe> <br>
+  <!-- https://uiverse.io/barisdogansutcu/fresh-gecko-10 -->
+  <link rel="stylesheet" type="text/css" href="/styles/elements/favorite-btn.css">
+  <input
+    value="favorite-button"
+    name="favorite-checkbox"
+    id="favorite-btn"
+    type="checkbox"
+    onclick="favbtnclick(this.checked)"
+  />
+  <label id="fav-container" for="favorite-btn">
+    <svg
+      class="feather feather-heart"
+      stroke-linejoin="round"
+      stroke-linecap="round"
+      stroke-width="2"
+      stroke="currentColor"
+      fill="none"
+      viewBox="0 0 24 24"
+      height="24"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+      ></path>
+    </svg>
+    <div class="fav-action">
+      <span class="fav-option-1">Add to Favorites</span>
+      <span class="fav-option-2">Added to Favorites</span>
+>>>>>>> 0e3369c (`Frontend` : Remove scrolling and onmousecenter on the iframe. ITS FUCKING ANNOYING)
     </div>
     <script>
       const pid = location.path[2];
