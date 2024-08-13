@@ -42,7 +42,6 @@
       const mature = document.querySelector('#mature');
       const hidden = document.querySelector('#hidden');
       const display = document.querySelector(".error");
-      markdownTextbox('#content');
 
       location.path = location.pathname.split("/");
       const pid = location.path[3];
@@ -66,6 +65,7 @@
         tags.value = data.tags.join(", ");
         mature.checked = data.mature;
         hidden.checked = data.hidden;
+        markdownTextbox('#content');
         var tok = await getAuth();
         if (tok.user?.mature) return;
         mature.outerHTML = data.mature.toString();
