@@ -125,7 +125,14 @@ function setupReply(events,oncancel,self) {
     <textarea id="reply-textbox" oninput="growtextarea(this)" resize=false placeholder="Write a reply..."></textarea>
     <input type="button" id="send-reply-btn" value="send" onclick="window.onreplysendclick()">
     <input type="button" id="cancel-reply-btn"  value="cancel" onclick="window.onreplycancelclick()">
+    <!--<button type="submit" class="send" title="Send">
+      <svg fill="none" viewBox="0 0 24 24" height="18" width="18" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" stroke="#ffffff" d="M12 5L12 20"></path>
+        <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" stroke="#ffffff" d="M7 9L11.2929 4.70711C11.6262 4.37377 11.7929 4.20711 12 4.20711C12.2071 4.20711 12.3738 4.37377 12.7071 4.70711L17 9"></path>
+      </svg>
+    </button>-->
   </div>`;
+  markdownTextbox("#reply-textbox");
   window.onreplysendclick = ()=>{
     var txt = document.querySelector("#reply-textbox");
     if (window.editingMsg) {
