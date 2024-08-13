@@ -52,7 +52,8 @@ function getFileUpload(url) {
   container.style.display = "block";
   var link = document.querySelector('#link-insert');
   link.value = url||"";
-  if (link.value) setPreviewLink();
+  if (url) setPreviewLink();
+  else cancelImagePreview();
   return new Promise((resolve)=>{
     window.onfileupload = resolve;
   });
