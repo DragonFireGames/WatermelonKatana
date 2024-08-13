@@ -1,7 +1,7 @@
 
 function markdownTextbox(sel,nobr) {
   var markbox = document.querySelector(sel);
-  markbox.outerHTML += `
+  markbox.insertAdjacentHTML("afterend", `
     ${nobr?"":"<br>"}
     <button type="button" title="Bold" onclick="replaceSelectedText(document.querySelector('${sel}'),t=>'**'+t+'**')">
       <svg fill="none" viewBox="0 0 24 24" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
@@ -44,7 +44,7 @@ function markdownTextbox(sel,nobr) {
 <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" stroke="#707277" d="M8 15C8.91212 16.2144 10.3643 17 12 17C13.6357 17 15.0879 16.2144 16 15"></path>
       <path stroke-linejoin="round" stroke-linecap="round" stroke-width="3" stroke="#707277" d="M8.00897 9L8 9M16 9L15.991 9"></path>
       </svg>
-    </button>`;
+    </button>`);
 }
 
 function getInputSelection(el) {
