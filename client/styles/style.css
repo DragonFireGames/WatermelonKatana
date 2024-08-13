@@ -163,6 +163,16 @@ input[type=button]:hover, input[type=submit]:hover, button:hover, .button:hover 
   color: var(--palette-white);
 }
 
+.pink-button {
+  background-color: var(--palette-primary);
+  color: var(--palette-white);
+}
+
+.pink-button:hover {
+  background-color: var(--palette-primary-hover);
+  color: var(--palette-white);
+}
+
 /*
     Input Field
     This element is used for text input fields.
