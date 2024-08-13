@@ -132,7 +132,7 @@ function setupReply(events,oncancel,self) {
       </svg>
     </button>-->
   </div>`;
-  markdownTextbox("#reply-textbox");
+  markdownTextbox("#reply-textbox",true);
   window.onreplysendclick = ()=>{
     var txt = document.querySelector("#reply-textbox");
     if (window.editingMsg) {
