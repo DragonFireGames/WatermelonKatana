@@ -9,6 +9,14 @@ const NotificationSchema = new Mongoose.Schema({
     type: String,
     default: "",
   },
+  link: {
+    type: String,
+    required: true,
+  },
+  poster: {
+    type: String,
+    required: true,
+  },
   createdAt: {
     type: Number,
     required: true,
@@ -80,10 +88,12 @@ const UserSchema = new Mongoose.Schema({
       container.id = this._id;
       return container;
     },
-    notify: function(title,content) {
+    notify: function(title,content,link,poster) {
       this.notifications.push({ 
         title,
         content,
+        link,
+        poster,
         createdAt: Date.now()
       });
     }
