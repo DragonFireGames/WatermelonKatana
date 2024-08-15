@@ -163,13 +163,13 @@ document.addEventListener("DOMContentLoaded", async function() {
       display: inline-flex;
     }
 
-    .notification-icon {
+    #notification-icon {
       position: relative;
       margin-right: 1em;
       cursor: pointer;
     }
 
-    .notification-dropdown {
+    .dropdown {
       display: none;
       position: absolute;
       right: 0;
@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", async function() {
       overflow: hidden;
     }
 
-    .notification-dropdown a {
+    .dropdown a {
       padding: 12px 16px;
       text-decoration: none;
       display: block;
@@ -191,12 +191,12 @@ document.addEventListener("DOMContentLoaded", async function() {
       border-bottom: 1px solid var(--navbar-hover-bg-color);
     }
 
-    .notification-dropdown a:hover {
+    .dropdown a:hover {
       background-color: var(--navbar-hover-bg-color);
       color: var(--navbar-hover-font-color);
     }
 
-    .notification-icon::after {
+    #notification-icon::after {
       content: attr(data-count);
       position: absolute;
       top: -8px;
@@ -233,9 +233,9 @@ document.addEventListener("DOMContentLoaded", async function() {
   if (auth.user) {
     const notificationCount = auth.user.notifications.length;
     navbarHtml += `
-    <div class="notification-icon" data-count="${notificationCount}" onclick="notificationbtnclick()">
+    <div id="notification-icon" data-count="${notificationCount}" onclick="notificationbtnclick()">
       <img src="/svg/bell.svg" alt="Notifications">
-      <div class="notification-dropdown">
+      <div id="notification-dropdown" class="dropdown">
         ${auth.user.notifications.map(notification => `
           <a href="${notification.link}">
             <strong>${notification.title}</strong>
@@ -266,15 +266,19 @@ document.addEventListener("DOMContentLoaded", async function() {
 
 
 function notificationbtnclick(){
-  const dropdown = document.querySelector(".notification-dropdown");
+  alert(1);
+  const dropdown = document.querySelector("#notification-dropdown");
+  alert(dropdown.innerHTML);
   dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+  alert(dropdown.style.display);
 }
 
 setTimeout(()=>{
   window.addEventListener("click", function(e) {
-    const notificationIcon = document.querySelector(".notification-dropdown");
+    alert(2);
+    const notificationIcon = document.querySelector("#notification-icon");
     if (!notificationIcon.contains(e.target)) {
-      const dropdown = document.querySelector(".notification-dropdown");
+      const dropdown = document.querySelector("#notification-dropdown");
       dropdown.style.display = "none";
     }
   });
