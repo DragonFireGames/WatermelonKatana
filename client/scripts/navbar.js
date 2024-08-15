@@ -1,3 +1,10 @@
+window.getAuth = function(){
+        return {"auth":true,"user":{"username":"DragonFireGames","avatar":"https://avatars.githubusercontent.com/u/107079704?v=4","banner":"https://mrwallpaper.com/images/hd/fire-anime-dragon-girl-co5cvw65bt6aukoo.jpg","biography":"I helped make this!","badges":[],"role":"Admin","favorites":["66a0c43e7987fe50c96fd8c9","666a1802f900da2d7c7f394b","6668fe373d3ab76052a9d747","669774b7a30d31fbce7b3b83","66a42cff51338c3e4c47c887","66a5851c354c0bea897e4c94","66aebd22cdcc8e9fd22e5234","66a9bdab15abbef5287b70a3","66b651cc381b2242108a5620","6665585fa7c85475b56062b4"],"following":["664956ba8e38f826eab644b7","666a000ac6c99a3a01aaed44"],"followers":["66629d6bab44c2530e35eef2","664956ba8e38f826eab644b7"],"joinedAt":1723046355592,"mature":true,"notifications":[/*{title:"test",content:"test",link:"/",posterId:0}*/],"id":"66629d6bab44c2530e35eef2"}}
+};
+
+window.getUser = function(){
+  return getAuth().user;
+}
 
 document.addEventListener("DOMContentLoaded", async function() {
   const style = document.createElement("style");
@@ -164,12 +171,6 @@ document.addEventListener("DOMContentLoaded", async function() {
       display: inline-flex;
     }
 
-    #notification-icon {
-      position: relative;
-      margin-right: 1em;
-      cursor: pointer;
-    }
-
     .dropdown {
       display: none;
       position: absolute;
@@ -198,13 +199,30 @@ document.addEventListener("DOMContentLoaded", async function() {
       background-color: var(--navbar-hover-bg-color);
       color: var(--navbar-hover-font-color);
     }
+    
+    #notification-icon {
+      position: relative;
+      margin-right: 1em;
+      cursor: pointer;
+      width: 2em;
+      height: 2em;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      cursor: pointer;
+      transition-duration: .3s;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.13);
+      border: none;
+    }
 
     #notification-icon::after {
       content: attr(data-count);
       position: absolute;
       top: -8px;
       right: -8px;
-      background: var(--palette-primary);
+      background-color: var(--palette-primary);
       color: white;
       font-size: 0.7em;
       padding: 2px 5px;
@@ -212,6 +230,54 @@ document.addEventListener("DOMContentLoaded", async function() {
       line-height: 1;
       min-width: 20px;
       text-align: center;
+    }
+
+    .bell {
+      width: 18px;
+    }
+
+    .bell path {
+      fill: white;
+    }
+
+    #notification-icon:hover {
+      background-color: rgb(56, 56, 56);
+    }
+
+    #notification-icon:hover .bell {
+      animation: bellRing 0.9s both;
+    }
+
+    /* bell ringing animation keyframes*/
+    @keyframes bellRing {
+      0%,
+      100% {
+        transform-origin: top;
+      }
+
+      15% {
+        transform: rotateZ(10deg);
+      }
+
+      30% {
+        transform: rotateZ(-10deg);
+      }
+
+      45% {
+        transform: rotateZ(5deg);
+      }
+
+      60% {
+        transform: rotateZ(-5deg);
+      }
+
+      75% {
+        transform: rotateZ(2deg);
+      }
+    }
+
+    #notification-icon:active {
+      transform: scale(0.8);
     }
 
     .none-dropdown: {
@@ -242,7 +308,9 @@ document.addEventListener("DOMContentLoaded", async function() {
     var notifs = await Promise.all(auth.user.notifications.map(notificationHTML));
     navbarHtml += `
     <div id="notification-icon" data-count="${notificationCount}" onclick="notificationbtnclick()">
-      <img src="/svg/bell.svg" alt="Notifications">
+      <svg viewBox="0 0 448 512" class="bell">
+         <path d="M224 0c-17.7 0-32 14.3-32 32V49.9C119.5 61.4 64 124.2 64 200v33.4c0 45.4-15.5 89.5-43.8 124.9L5.3 377c-5.8 7.2-6.9 17.1-2.9 25.4S14.8 416 24 416H424c9.2 0 17.6-5.3 21.6-13.6s2.9-18.2-2.9-25.4l-14.9-18.6C399.5 322.9 384 278.8 384 233.4V200c0-75.8-55.5-138.6-128-150.1V32c0-17.7-14.3-32-32-32zm0 96h8c57.4 0 104 46.6 104 104v33.4c0 47.9 13.9 94.6 39.7 134.6H72.3C98.1 328 112 281.3 112 233.4V200c0-57.4 46.6-104 104-104h8zm64 352H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7s18.7-28.3 18.7-45.3z"></path>
+      </svg>
       <div id="notification-dropdown" class="dropdown">
         ${notifs.join('')||`<p class="none-dropdown">No Notifications</p>`}
       </div>
