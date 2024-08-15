@@ -1,3 +1,10 @@
+window.getAuth = function(){
+        return {"auth":true,"user":{"username":"DragonFireGames","avatar":"https://avatars.githubusercontent.com/u/107079704?v=4","banner":"https://mrwallpaper.com/images/hd/fire-anime-dragon-girl-co5cvw65bt6aukoo.jpg","biography":"I helped make this!","badges":[],"role":"Admin","favorites":["66a0c43e7987fe50c96fd8c9","666a1802f900da2d7c7f394b","6668fe373d3ab76052a9d747","669774b7a30d31fbce7b3b83","66a42cff51338c3e4c47c887","66a5851c354c0bea897e4c94","66aebd22cdcc8e9fd22e5234","66a9bdab15abbef5287b70a3","66b651cc381b2242108a5620","6665585fa7c85475b56062b4"],"following":["664956ba8e38f826eab644b7","666a000ac6c99a3a01aaed44"],"followers":["66629d6bab44c2530e35eef2","664956ba8e38f826eab644b7"],"joinedAt":1723046355592,"mature":true,"notifications":[/*{title:"test",content:"test",link:"/",posterId:0}*/],"id":"66629d6bab44c2530e35eef2"}}
+};
+
+window.getUser = function(){
+  return getAuth().user;
+}
 
 document.addEventListener("DOMContentLoaded", async function() {
   const style = document.createElement("style");
@@ -178,6 +185,8 @@ document.addEventListener("DOMContentLoaded", async function() {
       background-color: var(--navbar-bg-color);
       color: var(--navbar-font-color);
       max-height: 400px;
+      min-height: 130px;
+      min-width: 335px;
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
       z-index: 1002;
       border-radius: 5px;
@@ -212,6 +221,10 @@ document.addEventListener("DOMContentLoaded", async function() {
       text-align: center;
     }
 
+    .none-dropdown: {
+      /*center somehow*/
+    }
+
     #block {
       height: 2.5em;
       width: 100%;
@@ -238,7 +251,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     <div id="notification-icon" data-count="${notificationCount}" onclick="notificationbtnclick()">
       <img src="/svg/bell.svg" alt="Notifications">
       <div id="notification-dropdown" class="dropdown">
-        ${notifs.join('')}
+        ${notifs.join('')||`<p class="none-dropdown">No Notifications</p>`}
       </div>
     </div>
     <a class="signedin" href="/profile">
