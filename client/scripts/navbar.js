@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", async function() {
   const style = document.createElement("style");
   style.textContent = `
@@ -24,7 +25,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     }
 
     .topnav {
-      overflow: hidden;
+      overflow: visible;
       background-color: var(--navbar-bg-color);
       color: var(--navbar-font-color);
       height: 2.5em;
@@ -173,14 +174,14 @@ document.addEventListener("DOMContentLoaded", async function() {
       display: none;
       position: absolute;
       right: 0;
-      top: 100%;
+      top: 2.5em;
       background-color: var(--navbar-bg-color);
       color: var(--navbar-font-color);
-      min-width: 250px;
+      max-height: 400px;
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
       z-index: 1002;
       border-radius: 5px;
-      overflow: hidden;
+      overflow: scroll;
     }
 
     .dropdown a {
@@ -232,17 +233,12 @@ document.addEventListener("DOMContentLoaded", async function() {
   var auth = await getAuth();
   if (auth.user) {
     const notificationCount = auth.user.notifications.length;
+    var notifs = await Promise.all(auth.user.notifications.map(notificationHTML));
     navbarHtml += `
     <div id="notification-icon" data-count="${notificationCount}" onclick="notificationbtnclick()">
       <img src="/svg/bell.svg" alt="Notifications">
       <div id="notification-dropdown" class="dropdown">
-        ${auth.user.notifications.map(notification => `
-          <a href="${notification.link}">
-            <strong>${notification.title}</strong>
-            <p>${notification.content}</p>
-            <small>From: ${notification.poster}</small>
-          </a>
-        `).join('')}
+        ${notifs.join('')}
       </div>
     </div>
     <a class="signedin" href="/profile">
@@ -264,21 +260,31 @@ document.addEventListener("DOMContentLoaded", async function() {
   document.body.prepend(navbarContainer);
 });
 
+async function notificationHTML(notif) {
+  var user = await getUser(notif.posterId);
+  return `<a class="user-panel" href="${notif.link}">
+    <div class="comment-top">
+    <img class="comment-avatar" src="${user.avatar || "/images/placeholders/PLACEHOLDER_project.png"}">
+    <div class="comment-username">${notif.title}</div>
+    </div>
+    ${notif.content}
+    <div>${new Date(user.createdAt).toUTCString().replace(/\d\d:[^]+$/,"")}</div>
+  </a>`;
+}
+
 
 function notificationbtnclick(){
-  const dropdown = document.querySelector("#notification-dropdown");
+  var dropdown = document.querySelector("#notification-dropdown");
   dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
 }
 
 setTimeout(()=>{
   window.addEventListener("click", function(e) {
-    alert(2);
     const notificationIcon = document.querySelector("#notification-icon");
     if (!notificationIcon.contains(e.target)) {
-      const dropdown = document.querySelector("#notification-dropdown");
+      var dropdown = document.querySelector("#notification-dropdown");
       dropdown.style.display = "none";
     }
-    alert(dropdown.style.display);
   });
 },1000);
   
