@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async function() {
       font-family: var(--navbar-font-family);
       display: flex;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: space-between;
       width: 100%;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       position: fixed;
@@ -40,6 +40,17 @@ document.addEventListener("DOMContentLoaded", async function() {
       left: 0;
       z-index: 1000;
       padding-left: 1em;
+      padding-right: 1em;
+    }
+
+    .navbar-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-right {
+      display: flex;
+      align-items: center;
     }
 
     .navbar-name {
@@ -118,9 +129,6 @@ document.addEventListener("DOMContentLoaded", async function() {
     }
 
     .signedin {
-      position: fixed;
-      right: 3px;
-      top: 3px;
       height: calc(2.5em - 7px);
       border: 1px solid var(--signedin-border-color);
       border-radius: 10px;
@@ -130,7 +138,9 @@ document.addEventListener("DOMContentLoaded", async function() {
       text-align: center;
       text-decoration: none;
       display: flex;
+      align-items: center;
       transition: background-color 0.3s ease, color 0.3s ease;
+      margin-left: 1em;
     }
 
     .signedin:hover {
@@ -153,6 +163,54 @@ document.addEventListener("DOMContentLoaded", async function() {
       display: inline-flex;
     }
 
+    .notification-icon {
+      position: relative;
+      margin-right: 1em;
+      cursor: pointer;
+    }
+
+    .notification-dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background-color: var(--navbar-bg-color);
+      color: var(--navbar-font-color);
+      min-width: 250px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      z-index: 1002;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .notification-dropdown a {
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      color: var(--navbar-font-color);
+      border-bottom: 1px solid var(--navbar-hover-bg-color);
+    }
+
+    .notification-dropdown a:hover {
+      background-color: var(--navbar-hover-bg-color);
+      color: var(--navbar-hover-font-color);
+    }
+
+    .notification-icon::after {
+      content: attr(data-count);
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--palette-primary);
+      color: white;
+      font-size: 0.7em;
+      padding: 2px 5px;
+      border-radius: 50%;
+      line-height: 1;
+      min-width: 20px;
+      text-align: center;
+    }
+
     #block {
       height: 2.5em;
       width: 100%;
@@ -162,16 +220,31 @@ document.addEventListener("DOMContentLoaded", async function() {
 
   var navbarHtml = `
   <div class="topnav">
-    <h2 class="navbar-name"><a href="/">WatermelonKatana</a></h2>
-    <a class="nav-btn" href="/chat">Chat</a>
-    <a class="nav-btn" href="/search">Project Gallery</a>
-    <a class="nav-btn" href="/forum">Forum</a>
-  </div>
-  <div id="block"></div>
+    <div class="navbar-left">
+      <h2 class="navbar-name"><a href="/">WatermelonKatana</a></h2>
+      <a class="nav-btn" href="/chat">Chat</a>
+      <a class="nav-btn" href="/search">Project Gallery</a>
+      <a class="nav-btn" href="/forum">Forum</a>
+    </div>
+    <div class="navbar-right">
   `;
+
   var auth = await getAuth();
   if (auth.user) {
+    const notificationCount = auth.user.notifications.length;
     navbarHtml += `
+    <div class="notification-icon" data-count="${notificationCount}">
+      <img src="/svg/bell.svg" alt="Notifications">
+      <div class="notification-dropdown">
+        ${auth.user.notifications.map(notification => `
+          <a href="${notification.link}">
+            <strong>${notification.title}</strong>
+            <p>${notification.content}</p>
+            <small>From: ${notification.poster}</small>
+          </a>
+        `).join('')}
+      </div>
+    </div>
     <a class="signedin" href="/profile">
       <img class="signedin-avatar" src="${auth.user.avatar}">
       <p class="signedin-username">${auth.user.username}</p>
@@ -179,8 +252,29 @@ document.addEventListener("DOMContentLoaded", async function() {
     `;
   }
 
+  navbarHtml += `
+    </div>
+  </div>
+  <div id="block"></div>
+  `;
+
   const navbarContainer = document.createElement("div");
   navbarContainer.innerHTML = navbarHtml;
 
   document.body.prepend(navbarContainer);
+
+  const notificationIcon = document.querySelector(".notification-icon");
+  if (notificationIcon) {
+    notificationIcon.addEventListener("click", function() {
+      const dropdown = notificationIcon.querySelector(".notification-dropdown");
+      dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+    });
+
+    window.addEventListener("click", function(e) {
+      if (!notificationIcon.contains(e.target)) {
+        const dropdown = notificationIcon.querySelector(".notification-dropdown");
+        dropdown.style.display = "none";
+      }
+    });
+  }
 });
