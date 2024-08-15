@@ -266,11 +266,8 @@ document.addEventListener("DOMContentLoaded", async function() {
 
 
 function notificationbtnclick(){
-  alert(1);
   const dropdown = document.querySelector("#notification-dropdown");
-  alert(dropdown.innerHTML);
   dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-  alert(dropdown.style.display);
 }
 
 setTimeout(()=>{
@@ -281,6 +278,7 @@ setTimeout(()=>{
       const dropdown = document.querySelector("#notification-dropdown");
       dropdown.style.display = "none";
     }
+    alert(dropdown.style.display);
   });
 },1000);
   
