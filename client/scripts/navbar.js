@@ -233,7 +233,7 @@ document.addEventListener("DOMContentLoaded", async function() {
   if (auth.user) {
     const notificationCount = auth.user.notifications.length;
     navbarHtml += `
-    <div class="notification-icon" data-count="${notificationCount}">
+    <div class="notification-icon" data-count="${notificationCount}" onclick="notificationbtnclick()">
       <img src="/svg/bell.svg" alt="Notifications">
       <div class="notification-dropdown">
         ${auth.user.notifications.map(notification => `
@@ -262,19 +262,21 @@ document.addEventListener("DOMContentLoaded", async function() {
   navbarContainer.innerHTML = navbarHtml;
 
   document.body.prepend(navbarContainer);
-
-  const notificationIcon = document.querySelector(".notification-icon");
-  if (notificationIcon) {
-    notificationIcon.addEventListener("click", function() {
-      const dropdown = notificationIcon.querySelector(".notification-dropdown");
-      dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-    });
-
-    window.addEventListener("click", function(e) {
-      if (!notificationIcon.contains(e.target)) {
-        const dropdown = notificationIcon.querySelector(".notification-dropdown");
-        dropdown.style.display = "none";
-      }
-    });
-  }
 });
+
+
+function notificationbtnclick(){
+  const dropdown = document.querySelector(".notification-dropdown");
+  dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+}
+
+setTimeout(()=>{
+  window.addEventListener("click", function(e) {
+    const notificationIcon = document.querySelector(".notification-dropdown");
+    if (!notificationIcon.contains(e.target)) {
+      const dropdown = document.querySelector(".notification-dropdown");
+      dropdown.style.display = "none";
+    }
+  });
+},1000);
+  
