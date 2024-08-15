@@ -82,6 +82,14 @@
   color: #ccc; /* Light text color */
 }
 
+/* @colack, i added this but you can put it where you want idrc */
+.comment-data {
+  position: relative;
+  top: -15px;
+  color: gray;
+  text-align: center;
+}
+
 .comment-menu {
   position: absolute;
   right: 2px;

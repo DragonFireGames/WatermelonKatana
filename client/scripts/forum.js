@@ -4,12 +4,12 @@ async function createPost(post,data,txt,name,reload) {
   post.innerHTML = `
   <div id="display">
     <h2 class="post-name">${makeLiteralChars(data.name)}</h2>
+    <p class="comment-data">${new Date(data.postedAt).toUTCString()}</p>
     <div class="comment-top">
       <a href="/user/${u.username}">
         <img class="comment-avatar" src="${u.avatar}">
         <p class="comment-username">${u.username}</p>
       </a>
-      <p class="comment-data">${new Date(data.postedAt).toUTCString()}</p>
     </div>
     ${txt}
     ${data.tags.map(t=>` <a href="/search?includeTags=${t}">#${t}</a>`)} <br>
