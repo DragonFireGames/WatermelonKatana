@@ -170,6 +170,7 @@ async favorite(req, res, next) {
       error: "Owner not found",
     });
     owner.notify(user.username+" favorited your project!",project.name,"/project/"+project._id,user._id,user.username);
+    await owner.save();
     res.status(201).json({
       message: "Project successfully updated",
       id: project._id,
