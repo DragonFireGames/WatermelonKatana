@@ -49,6 +49,8 @@ async publish(req, res, next) {
       posterId: user.id,
       poster: user.username, //convert to ref eventually
     });
+    await this.notifyUserFollowers(user.username+" published a project",user,name,"/project/"+project._id);
+    await this.notifyUserMentions(desc,user,name,"/project/"+project._id);
     console.log(project);
     res.status(201).json({
       message: "Project successfully published",
@@ -162,6 +164,12 @@ async favorite(req, res, next) {
     project.score++;
     await user.save();
     await project.save();
+    const owner = await Users.findOne({ _id: project.posterId });
+    if (!owner) return res.status(404).json({
+      message: "Fetch not successful",
+      error: "Owner not found",
+    });
+    owner.notify(user.username+" favorited your project!",project.name,"/project/"+project._id,user._id,user.username);
     res.status(201).json({
       message: "Project successfully updated",
       id: project._id,
