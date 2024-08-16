@@ -94,8 +94,8 @@ function getInputSelection(el) {
 }
 
 async function replaceSelectedText(el, text) {
-  if (typeof text == 'function') text = await text(seltext);
   var sel = getInputSelection(el), val = el.value;
   var seltext = val.slice(sel.start,sel.end);
+  if (typeof text == 'function') text = await text(seltext);
   el.value = val.slice(0, sel.start) + text + val.slice(sel.end);
 }
