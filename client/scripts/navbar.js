@@ -334,7 +334,7 @@ async function notificationHTML(notif) {
     <div class="comment-username">${notif.title}</div>
     </div>
     ${notif.content}
-    <div>${new Date(user.createdAt).toUTCString().replace(/\d\d:[^]+$/,"")}</div>
+    <div>${new Date(notif.createdAt).toUTCString().replace(/\d\d:[^]+$/,"")}</div>
   </a>`;
 }
 
