@@ -213,14 +213,14 @@ app.get("/notification/:index", userAuth, async (req, res) => {
       message: "Not successful",
       error: "User not found",
     });
-    var notif = user.notifications.splice(index,1);
+    var notif = user.notifications[index];
     if (!notif) return res.status(404).json({
       message: "Not successful",
       error: "Notification not found",
     });
+    user.notifications.splice(index,1);
     await user.save();
-    console.log(index,notif);
-    res.redirect(notif.link);
+    res.redirect(notif.link||"/forum");
   } catch(err) {
     res.status(401).json({ message: "Not successful", error: err.message });
     console.log(err.message);
