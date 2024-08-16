@@ -140,9 +140,6 @@ document.addEventListener("DOMContentLoaded", async function() {
       display: flex;
       align-items: center;
       transition: background-color 0.3s ease, color 0.3s ease;
-      position: fixed;
-      top: 5px;
-      right: 5px;
     }
 
     .signedin:hover {
