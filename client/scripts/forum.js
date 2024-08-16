@@ -104,14 +104,19 @@ async function listComments(list,comments,self,events) {
     }
     document.querySelector("#reply").style.display = "none";
   },self);
-  window.onreplybtnclick = ()=>document.querySelector("#reply").style.display = "block";
+  window.onreplybtnclick = (i)=>{
+    document.querySelector("#reply").style.display = "block";
+    if (!comments[i]) return;
+    var txt = document.querySelector("#reply-textbox");
+    txt.value = "@"+comments[i].poster+" "+txt.value;
+  };
   window.oneditbtnclick = (index)=>{
     document.querySelector("#reply").style.display = "block";
     var txt = document.querySelector("#reply-textbox");
     var oldmsg = txt.value;
     txt.value = comments[index].content;
     window.editingMsg = {index,oldmsg};
-  }
+  };
   window.ondeletebtnclick = events.ondelete;
   window.onupvoteclick = events.onupvote;
 }
