@@ -5,6 +5,22 @@ function interpretBool(obj,name,str) {
   if (str == "1" || str == "true") obj[name] = true;
 }
 
+function notifyUserMentions(message,user,content,link) {
+  return Promise.all(message.match(/(?<=@)[^\s]+/g).map(async function(name){
+    var mention = await Users.findOne({ username: name });
+    mention.notify(user.username+" mentioned you!",content,link,user._id,user.username);
+    await mention.save();
+  }));
+}
+
+function notifyUserFollowers(title,user,content,link) {
+  return Promise.all(user.followers.map(async function(fid){
+    var follower = await Users.findOne({ _id: fid });
+    follower.notify(title,content,link,user._id,user.username);
+    await follower.save();
+  }));
+}
+
 module.exports = class {
   constructor(model,name) {
     this.model = model;
@@ -44,6 +60,8 @@ async publish(req, res, next) {
       posterId: user.id,
       poster: user.username, //convert to ref eventually
     });
+    await notifyUserFollowers(user.username+" posted a discussion",user,name,"/forum/post/"+post._id);
+    await notifyUserMentions(content,user,name,"/forum/post/"+post._id);
     console.log(post);
     res.status(201).json({
       message: "Post successfully published",
@@ -253,6 +271,9 @@ async comment(req, res, next) {
       postedAt: Date.now(),
     });
     await post.save();
+    var link = this.name === "post" ? "/forum/post/"+post._id : "/project/"+post._id;
+    await notifyUserFollowers(user.username+" commented",user,name,link);
+    await notifyUserMentions(content,user,name,link);
     res.status(201).json({
       message: "Post successfully updated",
       id: post._id,
