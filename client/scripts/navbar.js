@@ -326,9 +326,9 @@ document.addEventListener("DOMContentLoaded", async function() {
   document.body.prepend(navbarContainer);
 });
 
-async function notificationHTML(notif) {
+async function notificationHTML(notif,index) {
   var user = await getUser(notif.posterId);
-  return `<a class="user-panel" href="${notif.link}">
+  return `<a class="user-panel" href="/notification/${index}">
     <div class="comment-top">
     <img class="comment-avatar" src="${user.avatar || "/images/placeholders/PLACEHOLDER_project.png"}">
     <div class="comment-username">${notif.title}</div>
