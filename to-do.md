@@ -42,7 +42,7 @@ Will these actually get done?
 - [ ] Reporting System
 
 ### Step 2 - More Features
-- [ ] Notifications
+- [x] Notifications
 - [x] Media Uploading System - DragonFireGames
 - [ ] Better Search for Posts/Users/Games
 - [x] Navbar - Colack & DragonFireGames
