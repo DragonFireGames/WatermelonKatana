@@ -220,18 +220,7 @@ app.get("/notification/:index", userAuth, async (req, res) => {
     });
     user.notifications.splice(index,1);
     await user.save();
-    res.send(`
-    <html>
-      <head>
-      </head>
-      <body>
-        ${JSON.stringify(notif)}
-        <script>
-          location.assign(${notif.link});
-        </script>
-      </body>
-    </html>
-    `);
+    res.redirect(notif.link);
   } catch(err) {
     res.status(401).json({ message: "Not successful", error: err.message });
     console.log(err.message);
