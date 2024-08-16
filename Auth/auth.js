@@ -318,6 +318,7 @@ exports.follow = async (req, res, next) => {
     });
     if (!uinc) user.followers.push(sid);
     if (!sinc) self.following.push(uid);
+    user.notify(self.username+" started following you!","","/user/"+self.username,sid,self.username);
     await Promise.all([user.save(),self.save()]);
     res.status(201).json({
       message: "Follow successful",
