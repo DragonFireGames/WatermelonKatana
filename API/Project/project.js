@@ -1,4 +1,4 @@
-const Users = require(".../model/Users");
+const Users = require("../../Database/model/Users");
 var PostAPI = require("../Forum/post.js");
 module.exports = class extends PostAPI {
   constructor(model) {
