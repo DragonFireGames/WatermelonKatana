@@ -48,7 +48,12 @@ async publish(req, res, next) {
   var { name, content, tags, mature, hidden, privateRecipients } = req.body;
   console.log(name,content);
   try {
-    const user = res.locals.userToken;
+    const uid = res.locals.userToken.id;
+    const user = await Users.findOne({ _id: uid });
+    if (!user) return res.status(404).json({
+      message: "Post not successfully published",
+      error: "User not found",
+    });
     const post = await this.model.create({
       name,
       content,
