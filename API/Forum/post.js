@@ -1,4 +1,4 @@
-const Users = require(".../model/Users");
+const Users = require("../../Database/model/Users");
 
 function interpretBool(obj,name,str) {
   if (str == "0" || str == "false") obj[name] = false;
