@@ -1,7 +1,7 @@
-const Users = require(".../model/Users");
-const Discussions = require(".../model/Projects");
-const Posts = require(".../model/Posts");
-const Media = require(".../model/Media");
+const Users = require("../../Database/model/Users");
+const Discussions = require("../../Database/model/Projects");
+const Posts = require("../../Database/model/Posts");
+const Media = require("../../Database/model/Media");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
