@@ -31,7 +31,11 @@
     </section>
     <section class="featured-projects">
       <h2>Featured Projects</h2>
-      <div id="list" class="project-list"></div>
+      <div id="featuredList" class="project-list"></div>
+    </section>
+    <section class="featured-projects">
+      <h2>Latest Projects</h2>
+      <div id="latestList" class="project-list"></div>
     </section>
     <section class="featured-projects">
       <h2>Hot Forum Topics</h2>
@@ -43,7 +47,8 @@
   </div>
   
   <script>
-    const list = document.querySelector('#list');
+    const featuredList = document.querySelector('#featuredList');
+    const latestList = document.querySelector('#latestList');
     const postlist = document.querySelector('#postlist');
 
     (async () => {
@@ -54,7 +59,17 @@
       const res = await fetch('/api/project/list?'+sparams);
       const data = await res.json();
       data.projects.sort((a,b)=>(b.score-a.score)||(b.views-a.views));
-      data.projects.map(projHTML(list));
+      data.projects.map(projHTML(featuredList));
+    })();
+
+    (async () => {
+      const tok = await getAuth();
+      var sparams = new URLSearchParams();
+      sparams.set("showMature", tok.user?.mature);
+      const res = await fetch('/api/project/list?'+sparams);
+      const data = await res.json();
+      data.projects.sort((a,b)=>(b.postedAt-a.postedAt));
+      data.projects.slice(0, 5).map(projHTML(latestList));
     })();
 
     (async () => {
