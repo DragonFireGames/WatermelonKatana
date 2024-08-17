@@ -5,6 +5,7 @@ const CommentSchema = new Mongoose.Schema({
     type: String,
     minlength: 1,
     required: true,
+    maxlength: 5000,
   },
   upvotes: [ String ],
   postedAt: {
