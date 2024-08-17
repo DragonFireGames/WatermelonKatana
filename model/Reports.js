@@ -2,16 +2,14 @@
 const Mongoose = require("mongoose");
 
 const ReportSchema = new Mongoose.Schema({
-  name: {
-    type: String,
-    minlength: 2,
-    required: true,
-    maxlength: 100,
-  },
   content: {
     type: String,
     default: "",
-    maxlength: 5000,
+    maxlength: 500,
+  },
+  link: {
+    type: String,
+    maxlength: 100,
   },
   postedAt: {
     type: Number,
@@ -33,8 +31,8 @@ const ReportSchema = new Mongoose.Schema({
   methods: {
     pack: function() {
       const container = {};
-      container.name = this.name;
       container.content = this.content;
+      container.link = this.link;
       container.postedAt = this.postedAt;
       container.activeAt = this.activeAt;
       container.id = this._id;
