@@ -5,10 +5,10 @@ const express = require("express");
 const connectDB = require("./Database/connect");
 const app = express();
 const cookieParser = require("cookie-parser");
-const { adminAuth, userAuth, checkAuth } = require("./middleware/auth.js");
+const { adminAuth, userAuth, checkAuth } = require("./middleware/auth");
 const { Turbo } = require("./client/Turbo/index");
 const PORT = process.env.PORT || 3000;
-const sendFileReplace = require("./replace");
+const sendFileReplace = require("./middleware/replace");
 
 /**
  * Connect to the database
@@ -80,14 +80,14 @@ function makeLiteralChars(string) {
   return string;
 }
 
-const Users = require("./Database/model/Users.js"); // Users
+const Users = require("./Database/model/Users"); // Users
 
 // Projects
 app.get("/search", (req, res) => res.sendFile(cldir + "/search.html")); // Search page
 app.get("/publish", userAuth, (req, res) =>
   res.sendFile(cldir + "/publish.html"),
 ); // Publish page, users only
-const Projects = require("./Database/model/Projects.js");
+const Projects = require("./Database/model/Projects");
 app.get("/project/:id", checkAuth, async (req, res) => {
   // Project page with dynamic project ID
   var proj = await Projects.findOne({ _id: req.params.id });
@@ -132,7 +132,7 @@ app.get("/forum", (req, res) => res.sendFile(cldir + "/forum.html")); // Forum H
 app.get("/forum/post", userAuth, (req, res) =>
   res.sendFile(cldir + "/post.html"),
 ); // Publish page, users only
-const Posts = require("./Database/model/Posts.js"); // Post page with dynamic post ID
+const Posts = require("./Database/model/Posts"); // Post page with dynamic post ID
 app.get("/forum/discussion/:id", checkAuth, async (req, res) => {
   var post = await Posts.findOne({ _id: req.params.id });
   if (!post) return res.status(404).sendFile(cldir + "/404.html");
