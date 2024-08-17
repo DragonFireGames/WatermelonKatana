@@ -32,8 +32,13 @@ async publish(req, res, next) {
   var { name, link, desc, thumbnail, tags, mature, hidden, privateRecipients, platform } = req.body;
   console.log(name,link);
   try {
+    const uid = res.locals.userToken.id;
+    const user = await Users.findOne({ _id: uid });
+    if (!user) return res.status(404).json({
+      message: "Project not successfully published",
+      error: "User not found",
+    });
     var e = this.processLink(link,thumbnail);
-    const user = res.locals.userToken;
     const project = await this.model.create({
       name,
       link: e.link,
