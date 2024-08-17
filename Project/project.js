@@ -38,6 +38,10 @@ async publish(req, res, next) {
       message: "Project not successfully published",
       error: "User not found",
     });
+    if (!link.match(/^https?:\/\/[^\s]*$/)) return res.status(400).json({
+      message: "Project not successfully published",
+      error: "Link is not a valid url",
+    });
     var e = this.processLink(link,thumbnail);
     const project = await this.model.create({
       name,
