@@ -8,10 +8,12 @@ const PostSchema = new Mongoose.Schema({
     type: String,
     minlength: 2,
     required: true,
+    maxlength: 100,
   },
   content: {
     type: String,
     default: "",
+    maxlength: 5000,
   },
   featured: {
     type: Boolean,
