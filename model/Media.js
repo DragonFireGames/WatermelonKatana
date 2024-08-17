@@ -5,6 +5,7 @@ const MediaSchema = new Mongoose.Schema({
   name: {
     type: String,
     required: true,
+    maxlength: 500
   },
   url: {
     type: String,
