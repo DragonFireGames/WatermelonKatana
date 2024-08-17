@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/styles/style.css">
-    <link rel="stylesheet" type="text/css" href="/styles/user.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/styles/style.css" />
+    <link rel="stylesheet" type="text/css" href="/styles/user.css" />
     <script src="/scripts/HtmlSanitizer.js"></script>
     <script src="/scripts/utils.js"></script>
     <style>
@@ -57,7 +57,7 @@
       .avatar-modBorder {
         border-color: #55ff55;
       }
-      
+
       #follower-list li {
         margin: 10px 0;
       }
@@ -84,16 +84,25 @@
     </div>
 
     <script>
-      const list = document.querySelector('#list');
-      const favlist = document.querySelector('#favlist');
-      const display = document.querySelector('#display');
+      const list = document.querySelector("#list");
+      const favlist = document.querySelector("#favlist");
+      const display = document.querySelector("#display");
       location.path = location.pathname.split("/");
       const name = location.path[2];
 
       let followerData;
       let followingData;
 
-      (async function() {
+      function escapeHTML(str) {
+        return str
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      (async function () {
         try {
           const res = await fetch(`/api/auth/userdata?username=${name}`);
           const userData = await res.json();
@@ -104,7 +113,7 @@
           var roleBorderCSS;
           var nameCSS;
           var nameCSSClass;
-          
+
           switch (userData.role) {
             case "Moderator":
               roleBorderCSS = "border-color: #55ff55;";
@@ -117,88 +126,95 @@
               nameCSS = "font-size: 24px; font-weight: bold;";
               break;
             default:
-              roleBorderCSS= "border-color: grey;";
+              roleBorderCSS = "border-color: grey;";
               nameCSSClass = "username";
               break;
           }
-          
-          const display = document.querySelector('#display');
+
+          const display = document.querySelector("#display");
           const tok = await getAuth();
           display.innerHTML = `
-            <div class="profile ${userData.role.toLowerCase()}">
-              <img class="banner" src="${userData.banner}">
-              <div class="namecontainer"><img class="avatar" style="${roleBorderCSS}" src="${userData.avatar}">
-              <p class="${nameCSSClass}" style="${nameCSS}">${userData.username}</p>
-              </div>
-              <p class="biography">${userData.biography}</p>
-              <p class="role">${userData.role}</p>
-              Joined on ${new Date(userData.joinedAt).toUTCString().replace(/\d\d:[^]+$/,"")} |
-              <span id="followercount" class="link">${followerData.length}</span> Followers | 
-              <span id="followingcount" class="link">${followingData.length}</span> Following 
-              ${(tok.user && tok.user.id !== userData.id) ? `| <label><input type="checkbox" id="follow-btn" onclick="followbtnclick(this.checked);" ${userData.followers.includes(tok.user.id) ? "checked" : ""}><span class="checkbox"></span></label> Follow` : ""}
-              | <a href="/uploadedmedia?poster=${userData.username}">Uploaded Media</a>
-              <br><i class="uidtext" title="Click to Copy">ID: ${userData.id}</i>
-            </div>`;
+                <div class="profile ${userData.role.toLowerCase()}">
+                  <img class="banner" src="${userData.banner}">
+                  <div class="namecontainer"><img class="avatar" style="${roleBorderCSS}" src="${userData.avatar}">
+                  <p class="${nameCSSClass}" style="${nameCSS}">${userData.username}</p>
+                  </div>
+                  <p class="biography">${escapeHTML(userData.biography)}</p>
+                  <p class="role">${userData.role}</p>
+                  Joined on ${new Date(userData.joinedAt).toUTCString().replace(/\d\d:[^]+$/, "")} |
+                  <span id="followercount" class="link">${followerData.length}</span> Followers | 
+                  <span id="followingcount" class="link">${followingData.length}</span> Following 
+                  ${tok.user && tok.user.id !== userData.id ? `| <label><input type="checkbox" id="follow-btn" onclick="followbtnclick(this.checked);" ${userData.followers.includes(tok.user.id) ? "checked" : ""}><span class="checkbox"></span></label> Follow` : ""}
+                  | <a href="/uploadedmedia?poster=${userData.username}">Uploaded Media</a>
+                  <br><i class="uidtext" title="Click to Copy">ID: ${userData.id}</i>
+                </div>`;
 
-          await Promise.all(userData.favorites.map(async pid => {
-            const res = await fetch('/api/project/data/' + pid);
-            const proj = await res.json();
-            projHTML(favlist)(proj);
-          }));
-          
-          document.getElementById('followercount').addEventListener('click', function(event) {
-            event.preventDefault();
+          await Promise.all(
+            userData.favorites.map(async (pid) => {
+              const res = await fetch("/api/project/data/" + pid);
+              const proj = await res.json();
+              projHTML(favlist)(proj);
+            }),
+          );
 
-            const followerPopup = document.getElementById('follower-popup');
-            const followerList = document.getElementById('follower-list');
+          document
+            .getElementById("followercount")
+            .addEventListener("click", function (event) {
+              event.preventDefault();
 
-            followerPopup.classList.remove('hidden');
+              const followerPopup = document.getElementById("follower-popup");
+              const followerList = document.getElementById("follower-list");
 
-            if (followerData) {
-              followerList.innerHTML = '';
-              followerData.forEach(async followerId => {
-                const follower = await getUser(followerId);
-                followerList.innerHTML += `
+              followerPopup.classList.remove("hidden");
+
+              if (followerData) {
+                followerList.innerHTML = "";
+                followerData.forEach(async (followerId) => {
+                  const follower = await getUser(followerId);
+                  followerList.innerHTML += `
                   <li>
                     <img src="${follower.avatar}" alt="${follower.username}" class="follower-avatar">
                     <a href="/user/${follower.username}">${follower.username}</a>
                   </li>`;
-              });
-            }
-          });
+                });
+              }
+            });
 
-          document.getElementById('followingcount').addEventListener('click', function(event) {
-            event.preventDefault();
+          document
+            .getElementById("followingcount")
+            .addEventListener("click", function (event) {
+              event.preventDefault();
 
-            const followerPopup = document.getElementById('follower-popup');
-            const followerList = document.getElementById('follower-list');
+              const followerPopup = document.getElementById("follower-popup");
+              const followerList = document.getElementById("follower-list");
 
-            followerPopup.classList.remove('hidden');
+              followerPopup.classList.remove("hidden");
 
-            if (followingData) {
-              followerList.innerHTML = '';
-              followingData.forEach(async followingId => {
-                const following = await getUser(followingId);
-                followerList.innerHTML += `
+              if (followingData) {
+                followerList.innerHTML = "";
+                followingData.forEach(async (followingId) => {
+                  const following = await getUser(followingId);
+                  followerList.innerHTML += `
                   <li>
                     <img src="${following.avatar}" alt="${following.username}" class="follower-avatar">
                     <a href="/user/${following.username}">${following.username}</a>
                   </li>`;
-              });
-            }
-          });
+                });
+              }
+            });
 
-          document.querySelector('.close-popup').addEventListener('click', function() {
-            document.getElementById('follower-popup').classList.add('hidden');
-          });
-    
-          window.addEventListener('click', function(event) {
-            const followerPopup = document.getElementById('follower-popup');
+          document
+            .querySelector(".close-popup")
+            .addEventListener("click", function () {
+              document.getElementById("follower-popup").classList.add("hidden");
+            });
+
+          window.addEventListener("click", function (event) {
+            const followerPopup = document.getElementById("follower-popup");
             if (event.target === followerPopup) {
-              followerPopup.classList.add('hidden');
+              followerPopup.classList.add("hidden");
             }
           });
-
         } catch (e) {
           alert(e);
           console.error(e);
@@ -207,7 +223,7 @@
 
       (async () => {
         try {
-          const res = await fetch('/api/project/list?poster=' + name);
+          const res = await fetch("/api/project/list?poster=" + name);
           const data = await res.json();
           data.projects.map(projHTML(list));
         } catch (e) {
@@ -219,13 +235,13 @@
       async function followbtnclick(feature) {
         var count = document.querySelector("#followercount");
         if (feature) {
-          count.innerHTML = Number(count.innerHTML)+1;
-          await fetch("/api/auth/follow?username="+name);
+          count.innerHTML = Number(count.innerHTML) + 1;
+          await fetch("/api/auth/follow?username=" + name);
         } else {
-          count.innerHTML = Number(count.innerHTML)-1;
-          await fetch("/api/auth/unfollow?username="+name);
+          count.innerHTML = Number(count.innerHTML) - 1;
+          await fetch("/api/auth/unfollow?username=" + name);
         }
-      };
+      }
     </script>
   </body>
 </html>
