@@ -1,10 +1,10 @@
 const fetch = require("cross-fetch");
 const bcrypt = require("bcryptjs");
 
-const Users = require(".../model/Users");
-const Projects = require(".../model/Projects");
-const Posts = require(".../model/Posts");
-const Reports = require(".../model/Reports");
+const Users = require("../../Database/model/Users");
+const Projects = require("../../Database/model/Projects");
+const Posts = require("../../Database/model/Posts");
+const Reports = require("../../Database/model/Reports");
 
 exports.transferProject = async (req,res) => {
   const { uid, project, post } = req.query;
