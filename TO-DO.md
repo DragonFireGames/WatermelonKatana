@@ -44,6 +44,7 @@ Will these actually get done?
 ### Step 2 - More Features
 - [x] Notifications
 - [x] Media Uploading System - DragonFireGames
+- [ ] Dashboard page for users with suggested games based on what they have favorited
 - [ ] Better Search for Posts/Users/Games
 - [x] Navbar - Colack & DragonFireGames
 - [x] Community Ranking - DragonFireGames
