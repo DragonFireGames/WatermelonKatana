@@ -15,15 +15,15 @@ exports.transferProject = async (req,res) => {
       error: "User not found",
     });
     var p = false;
-    if (project && !post) p = await Projects.find({ _id: project });
-    if (post && !project) p = await Posts.find({ _id: post });
+    if (project && !post) p = await Projects.findOne({ _id: project });
+    if (post && !project) p = await Posts.findOne({ _id: post });
     if (!p) return res.status(404).json({
       message: "Transfer not successful",
       error: "Post/Project not found",
     });
     p.poster = user.username;
     p.posterId = uid;
-    p.save();
+    await p.save();
     res.status(200).json({
       message: "Transfer successful",
     });
