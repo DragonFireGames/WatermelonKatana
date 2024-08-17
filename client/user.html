@@ -93,15 +93,6 @@
       let followerData;
       let followingData;
 
-      function escapeHTML(str) {
-        return str
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
-      }
-
       (async function () {
         try {
           const res = await fetch(`/api/auth/userdata?username=${name}`);
@@ -139,7 +130,7 @@
                   <div class="namecontainer"><img class="avatar" style="${roleBorderCSS}" src="${userData.avatar}">
                   <p class="${nameCSSClass}" style="${nameCSS}">${userData.username}</p>
                   </div>
-                  <p class="biography">${escapeHTML(userData.biography)}</p>
+                  <p class="biography">${convertMarkdown(userData.biography)}</p>
                   <p class="role">${userData.role}</p>
                   Joined on ${new Date(userData.joinedAt).toUTCString().replace(/\d\d:[^]+$/, "")} |
                   <span id="followercount" class="link">${followerData.length}</span> Followers | 
