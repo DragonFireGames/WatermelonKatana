@@ -34,11 +34,11 @@ const turbo = new Turbo(app, express.static("./client/Turbo/dependencies"));
 /**
  * Define API routes
  */
-app.use("/api/auth", require("./Auth/route")); // Authentication routes
-app.use("/api/project", require("./Project/route")); // Project routes
-app.use("/api/forum", require("./Forum/route")); // Project routes
-app.use("/api/media", require("./Media/route")); // Media routes
-app.use("/api/admin", require("./Admin/route")); // Admin command routes
+app.use("/api/auth", require("./API/Auth/route")); // Authentication routes
+app.use("/api/project", require("./API/Project/route")); // Project routes
+app.use("/api/forum", require("./API/Forum/route")); // Project routes
+app.use("/api/media", require("./API/Media/route")); // Media routes
+app.use("/api/admin", require("./API/Admin/route")); // Admin command routes
 
 /**
  * Client directory path
