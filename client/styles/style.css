@@ -339,3 +339,19 @@ input[type=checkbox]:checked + .checkbox::after {
 .project-link, .post-top {
   text-align: center;
 }
+
+.comment-username {
+  font-size: 1.5em;
+  text-align: center;
+  display: inline-flex;
+  padding: 0.5em 5px;
+  margin: 0px;
+}
+
+.comment-avatar {
+  width: 3em;
+  height: 3em;
+  border-radius: 50%;
+  padding: 5px 0px 0px 5px;
+  display: inline-flex;
+}
