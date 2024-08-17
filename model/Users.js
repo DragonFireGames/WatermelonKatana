@@ -36,6 +36,7 @@ const UserSchema = new Mongoose.Schema({
       strength: 2
     },
     required: true,
+    maxlength: 100
   },
   email: String,
   password: {
@@ -46,14 +47,17 @@ const UserSchema = new Mongoose.Schema({
   avatar: {
     type: String,
     default: "https://fakeimg.pl/300x300",
+    maxlength: 500
   },
   banner: {
     type: String,
     default: "https://fakeimg.pl/720x360",
+    maxlength: 500
   },
   biography: {
     type: String,
     default: "This user has not added a biography yet.",
+    maxlength: 5000
   },
   badges: [ Number ],
   role: {
