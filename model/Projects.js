@@ -21,7 +21,7 @@ const ProjectSchema = new Mongoose.Schema({
   desc: {
     type: String,
     default: "",
-    maxlength: 5000,
+    maxlength: 15000,
   },
   featured: {
     type: Boolean,
