@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const fetch = require("cross-fetch");
 
-const Media = require(".../model/Media");
-const { adminAuth, userAuth } = require(".../middleware/auth");
+const Media = require("../../Database/model/Media");
+const { adminAuth, userAuth } = require("../../middleware/auth");
 
 router.route("/upload").post(userAuth, express.urlencoded({ extended:false, limit:"32mb" }), async (req,res) => {
   try {
