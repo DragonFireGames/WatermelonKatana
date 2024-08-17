@@ -130,6 +130,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     .signedin {
       height: calc(2.5em - 7px);
+      margin-right: 2em;
       border: 1px solid var(--signedin-border-color);
       border-radius: 10px;
       z-index: 1001;
@@ -193,7 +194,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     
     #notification-icon {
       position: relative;
-      margin-right: 1em;
+      margin-right: 2.5em;
       cursor: pointer;
       width: 2em;
       height: 2em;
