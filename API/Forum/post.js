@@ -105,6 +105,7 @@ async update(req, res, next) {
     post.hidden = hidden;
     post.privateRecipients = privateRecipients;
     post.activeAt = Date.now();
+    post.viewers = [];
     await post.save();
     res.status(201).json({
       message: "Post successfully updated",
@@ -269,6 +270,7 @@ async comment(req, res, next) {
       error: "User not found",
     });
     post.activeAt = Date.now();
+    post.viewers = [];
     post.comments.push({
       content,
       rating: 0,
@@ -358,6 +360,7 @@ async editComment(req, res, next) {
       error: "User does not own comment",
     });
     post.activeAt = Date.now();
+    post.viewers = [];
     comment.content = content;
     await post.save();
     res.status(201).json({
