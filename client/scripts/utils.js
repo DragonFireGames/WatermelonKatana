@@ -87,7 +87,7 @@ function convertMarkdown(string) {
   string = string.replace(/^### ([^\n]+)$/gm,"<h3>$1</h3>"); // # header 3
   string = string.replace(/!\[([^\]"'>]*)\]\((https?:\/\/[^\)"]+)\)/g,`<img src="$2" $1>`); // ![width=50 height=50](https://example.com/image)
   string = string.replace(/\[([^\]\n]+)\]\((https?:\/\/[^\)"\n]+)\)/g,`<a href="$2">$1</a>`); // [link](https://example.com)
-  string = string.replace(/@([^\s]+)/,`<a href="/user/$1">@$1</a>`); // @Username
+  string = string.replace(/@([^\s]+)/g,`<a href="/user/$1">@$1</a>`); // @Username
   string = string.replace(/\n/g,"<br>"); // line breaks
   // still need to add: block quotes, lists, code, spoilers
   return string;
