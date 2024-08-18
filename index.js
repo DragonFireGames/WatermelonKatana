@@ -144,7 +144,7 @@ app.get("/forum/discussion/:id", checkAuth, async (req, res) => {
     var user = await Users.findOne({ _id: tok.id });
     if (!user || !user.mature) return res.status(403).sendFile(__dirname+"/middleware/403.html");
   }
-  if (tok && !proj.viewers.includes(tok.id)) post.viewers.push(tok.id);
+  if (tok && !post.viewers.includes(tok.id)) post.viewers.push(tok.id);
   post.views++;
   sendFileReplace(res, "./client/discussion.html", (s) => s.replace(
     "<!--og:meta-->",
