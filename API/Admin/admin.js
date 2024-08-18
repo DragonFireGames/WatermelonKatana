@@ -58,3 +58,71 @@ exports.resetPassword = async (req,res)=>{
     });
   }
 };
+exports.createReport = async (req, res, next) => {
+  var { content, link } = req.body;
+  console.log(content,link);
+  try {
+    const uid = res.locals.userToken.id;
+    const user = await Users.findOne({ _id: uid });
+    if (!user) return res.status(404).json({
+      message: "Report not successfully created",
+      error: "User not found",
+    });
+    const post = await Reports.create({
+      content,
+      link,
+      postedAt: Date.now(),
+      posterId: user.id,
+      poster: user.username, //convert to ref eventually
+    });
+    console.log(post);
+    res.status(201).json({
+      message: "Report successfully created",
+      id: post._id,
+      link: post.link,
+    });
+    console.log("done!");
+  } catch(error) {
+    res.status(400).json({
+      message: "Report not successfully created",
+      error: error.message,
+    });
+    console.log(error.message);
+  }
+}
+exports.openReport = async (req, res, next) => {
+  try {
+    const rid = req.params.id;
+    const report = await Reports.findOne({ _id: rid });
+    if (!report) return res.status(404).json({
+      message: "Fetch not successful",
+      error: "Report not found",
+    });
+    var link = report.link;
+    await report.remove();
+    console.log("deleted "+rid);
+    res.redirect(link);
+  } catch(error) {
+    res.status(400).json({
+      message: "Report not successfully deleted",
+      error: error.message,
+    });
+    console.log(error.message);
+  }
+}; 
+exports.listReports = async (req, res, next) => {
+  try {
+    var search = {};
+    const { customQuery } = req.query;
+    if (customQuery) search = JSON.parse(customQuery);
+    var list = await Reports.find(search);
+    list = list.map(e=>e.pack());
+    var data = {};
+    data.report = list;
+    res.status(200).json(data);
+  } catch(err) {
+    res.status(401).json({ message: "Not successful", error: err.message });
+    console.log(err.message);
+  }
+};
+
