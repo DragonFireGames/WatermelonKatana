@@ -400,6 +400,11 @@ setTimeout(()=>{
       var dropdown = document.querySelector("#notification-dropdown");
       dropdown.style.display = "none";
     }
+    const reportIcon = document.querySelector("#report-icon");
+    if (!reportIcon.contains(e.target)) {
+      var dropdown = document.querySelector("#report-dropdown");
+      dropdown.style.display = "none";
+    }
   });
 },1000);
   
