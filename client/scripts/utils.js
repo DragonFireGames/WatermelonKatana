@@ -97,10 +97,9 @@ function previewContent(str,len) {
   return makeLiteralChars(str).replace(/\n[^]*$/,"").slice(0,len)+((str.includes("\n")||str.length>len)?"...":"");
 }
 
-function projHTML(list) {
-  var tok = await getAuth();
+function projHTML(list,tok) {
   return function (proj) {
-    let div = `<a class="project-panel" href="/project/${proj.id}" ${proj.viewers.includes(tok.user?.id)?`style="color: #b0b0b0;"`:""}>
+    let div = `<a class="project-panel" href="/project/${proj.id}" ${proj.viewers.includes(tok?.user?.id)?`style="color: #b0b0b0;"`:""}>
       <div class="thumbnail-border"><img class="project-thumbnail" src="${proj.thumbnail || "/images/placeholders/PLACEHOLDER_project.png"}"></div>
       <div class="project-link">${previewContent(proj.name, 100)}</div>
       <div>By: <object><a href="/user/${proj.poster}">${proj.poster}</a></object></div>
@@ -112,10 +111,9 @@ function projHTML(list) {
   };
 }
 
-function forumHTML(list) {
-  var tok = await getAuth();
+function forumHTML(list,tok) {
   return function (post) {
-    let div = `<a class="post-panel" href="/forum/discussion/${post.id}" ${post.viewers.includes(tok.user?.id)?`style="color: #b0b0b0;"`:""}>
+    let div = `<a class="post-panel" href="/forum/discussion/${post.id}" ${post.viewers.includes(tok?.user?.id)?`style="color: #b0b0b0;"`:""}>
       <div class="post-top">
         ${previewContent(post.name, 100)} | By: <object><a href="/user/${post.poster}">${post.poster}</a></object> | Views: ${post.views} | Active ${relativeDate(post.activeAt)}
       <br>
