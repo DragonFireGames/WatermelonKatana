@@ -33,6 +33,7 @@ const PostSchema = new Mongoose.Schema({
     type: Number,
     default: 0,
   },
+  upvotes: [ String ],
   postedAt: {
     type: Number,
     required: true,
@@ -66,6 +67,7 @@ const PostSchema = new Mongoose.Schema({
       container.hidden = this.hidden;
       container.privateRecipients = this.privateRecipients;
       container.views = this.views;
+      container.upvotes = this.upvotes;
       container.comments = this.comments;
       container.platform = this.platform;
       container.postedAt = this.postedAt;
