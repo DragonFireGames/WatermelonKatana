@@ -274,12 +274,11 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     /* ------ Animation ------ */
     @keyframes flagMove {
-      0% {
-        transform: rotate(0deg) scale(0);
-        opacity: 0;
+      33% {
+        transform: rotate(0deg) scale(0.8);
       }
     
-      50% {
+      66% {
         transform: rotate(-10deg) scale(1.2);
       }
     }
