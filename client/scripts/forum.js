@@ -135,6 +135,7 @@ async function listComments(list,comments,self,events) {
   };
   window.ondeletebtnclick = events.ondelete;
   window.onupvoteclick = events.onupvote;
+  window.onreportclick = events.onreport;
 }
 function setupReply(events,oncancel,self) {
   document.body.innerHTML += `
