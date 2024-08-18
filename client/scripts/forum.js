@@ -210,7 +210,7 @@ function commentEvents(name,reload) {
     onreport:async(index)=>{
       var content = prompt("Why are you reporting this?");
       if (!content) return;
-      var link = {forum:"forum/discussion",project:"project"}[name]+"/"+pid+"/";
+      var link = "/"+{forum:"forum/discussion",project:"project"}[name]+"/"+pid;
       if (index !== "main") link += "?comment="+index;
       const res = await fetch("/api/admin/reports/create",{
         method: "POST",
