@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     .signedin {
       height: calc(2.5em - 7px);
-      margin-right: 2em;
+      margin-right: calc(1em + 5px);
       border: 1px solid var(--signedin-border-color);
       border-radius: 10px;
       z-index: 1001;
@@ -194,7 +194,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     
     .dropdown-icon {
       position: relative;
-      margin-right: 2.5em;
+      margin-right: 5px;
       cursor: pointer;
       width: 2em;
       height: 2em;
@@ -314,9 +314,10 @@ document.addEventListener("DOMContentLoaded", async function() {
   var auth = await getAuth();
   if (auth.user) {
     if (auth.user.role == "Admin") {
-      const reportList = await fetch("/api/admin/report/list").then(r=>r.json()).then(r=>r.report);
-      const reportCount = reportList.length;
-      var reports = await Promise.all(reportList.map(reportHTML));
+      const res = await fetch("/api/admin/reports/list");
+      const data = await res.json();
+      const reportCount = data.report.length;
+      var reports = await Promise.all(data.report.map(reportHTML));
       navbarHtml += `
       <div id="report-icon" class="dropdown-icon" data-count="${reportCount}" onclick="openreportbtnclick()">
         <svg viewBox="0 0 448 512" id="flagsvg" class="iconsvg">
