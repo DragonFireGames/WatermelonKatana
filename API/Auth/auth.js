@@ -367,3 +367,26 @@ exports.unfollow = async (req, res, next) => {
   };
 };
 
+exports.openNotification = async (req, res) => {
+  var { index } = req.params;
+  try {
+    const uid = res.locals.userToken.id;
+    var user = await Users.findOne({ _id: uid });
+    if (!user) return res.status(404).json({
+      message: "Not successful",
+      error: "User not found",
+    });
+    var notif = user.notifications[index];
+    if (!notif) return res.status(404).json({
+      message: "Not successful",
+      error: "Notification not found",
+    });
+    user.notifications.splice(index,1);
+    await user.save();
+    res.redirect(notif.link);
+  } catch(err) {
+    res.status(401).json({ message: "Not successful", error: err.message });
+    console.log(err.message);
+  }
+};
+
