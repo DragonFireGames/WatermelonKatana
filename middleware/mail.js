@@ -1,19 +1,18 @@
 // Email
-const email = process.env.EMAIL_NAME_PASSWORD.split("\n");
 const mailer = require('nodemailer');
 const transporter = mailer.createTransport({
   host: "smtp-mail.outlook.com",
   port: 587,
   secure: false,
   auth: {
-    user: email[0],
-    pass: email[1],
+    user: "watermelonkatana@outlook.com",
+    pass: process.env.EMAIL_PASSWORD,
   },
 });
 
 exports.sendMail = function(recipient, options) {
   options = options || {};
-  options.from = email[0];
+  options.from = "watermelonkatana@outlook.com";
   options.to = recipient;
   return new Promise((res,rej)=>{
     transporter.sendMail(options, function(error, info){
