@@ -212,15 +212,14 @@ document.addEventListener("DOMContentLoaded", async function() {
     .dropdown-icon::after {
       content: attr(data-count);
       position: absolute;
-      top: -8px;
-      right: -8px;
+      top: -5px;
+      right: -5px;
       background-color: var(--palette-primary);
       color: white;
       font-size: 0.7em;
       padding: 2px 5px;
       border-radius: 50%;
       line-height: 1;
-      min-width: 20px;
       text-align: center;
     }
 
