@@ -18,7 +18,7 @@
       <a href="/chat">Chat</a>
     </div>
     <section class="intro">
-      <p>Post Questions, Get Help!</p>
+      <p>Post Questions, Get Help! This is your place to get help coding.</p>
     </section>
     <div id="controls">
       <form style="font-size: 25px">
@@ -77,7 +77,7 @@
           case "latest": data.posts.sort((a,b)=>(b.postedAt-a.postedAt)); break;
         }
         list.innerHTML = '';
-        data.posts.map(forumHTML(list));
+        data.posts.map(forumHTML(list,tok));
       }
       searchPosts();
     </script>
