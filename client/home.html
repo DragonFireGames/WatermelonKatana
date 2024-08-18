@@ -59,7 +59,7 @@
       const res = await fetch('/api/project/list?'+sparams);
       const data = await res.json();
       data.projects.sort((a,b)=>(b.score-a.score)||(b.views-a.views));
-      data.projects.map(projHTML(featuredList));
+      data.projects.map(projHTML(featuredList,tok));
     })();
 
     (async () => {
@@ -69,7 +69,7 @@
       const res = await fetch('/api/project/list?'+sparams);
       const data = await res.json();
       data.projects.sort((a,b)=>(b.postedAt-a.postedAt));
-      data.projects.slice(0, 5).map(projHTML(latestList));
+      data.projects.slice(0, 5).map(projHTML(latestList,tok));
     })();
 
     (async () => {
@@ -80,7 +80,7 @@
       const data = await res.json();
       data.posts.sort((a,b)=>(Number(b.featured)-Number(a.featured))||(b.activeAt-a.activeAt));
       data.posts = data.posts.slice(0,5);
-      data.posts.map(forumHTML(postlist));
+      data.posts.map(forumHTML(postlist,tok));
     })();
     
     const header = document.querySelector('#header');
