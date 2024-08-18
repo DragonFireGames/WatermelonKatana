@@ -92,11 +92,13 @@ app.get("/project/:id", checkAuth, async (req, res) => {
   // Project page with dynamic project ID
   var proj = await Projects.findOne({ _id: req.params.id });
   if (!proj) return res.status(404).sendFile(cldir + "/404.html");
+  var tok = res.locals.userToken;
   if (proj.mature) {
-    if (!res.locals.userToken) return res.status(403).sendFile(__dirname+"/middleware/403.html");
-    var user = await Users.findOne({ _id: res.locals.userToken.id });
+    if (!tok) return res.status(403).sendFile(__dirname+"/middleware/403.html");
+    var user = await Users.findOne({ _id: tok.id });
     if (!user || !user.mature) return res.status(403).sendFile(__dirname+"/middleware/403.html");
   }
+  if (tok && !proj.viewers.includes(tok.id)) proj.viewers.push(tok.id);
   proj.views++;
   sendFileReplace(res, "./client/project.html", (s) => s.replace(
     "<!--og:meta-->",
@@ -136,11 +138,13 @@ const Posts = require("./Database/model/Posts"); // Post page with dynamic post 
 app.get("/forum/discussion/:id", checkAuth, async (req, res) => {
   var post = await Posts.findOne({ _id: req.params.id });
   if (!post) return res.status(404).sendFile(cldir + "/404.html");
+  var tok = res.locals.userToken;
   if (post.mature) {
-    if (!res.locals.userToken) return res.status(403).sendFile(__dirname+"/middleware/403.html");
-    var user = await Users.findOne({ _id: res.locals.userToken.id });
+    if (!tok) return res.status(403).sendFile(__dirname+"/middleware/403.html");
+    var user = await Users.findOne({ _id: tok.id });
     if (!user || !user.mature) return res.status(403).sendFile(__dirname+"/middleware/403.html");
   }
+  if (tok && !proj.viewers.includes(tok.id)) post.viewers.push(tok.id);
   post.views++;
   sendFileReplace(res, "./client/discussion.html", (s) => s.replace(
     "<!--og:meta-->",
