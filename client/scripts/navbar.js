@@ -376,9 +376,9 @@ async function reportHTML(report) {
   return `<a class="user-panel" href="/report/${report.id}">
     <div class="comment-top">
     <img class="comment-avatar" src="${user.avatar || "/images/placeholders/PLACEHOLDER_project.png"}">
-    <div class="comment-username">${user.username} reported ${report.link}</div>
+    <div class="comment-username">New Report</div>
     </div>
-    ${report.content}
+    ${user.username} reported ${report.link} because ${report.content}
     <div>${new Date(report.postedAt).toUTCString().replace(/\d\d:[^]+$/,"")}</div>
   </a>`;
 }
