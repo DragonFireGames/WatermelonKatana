@@ -82,6 +82,7 @@ const UserSchema = new Mongoose.Schema({
     pack: function() {
       const container = {};
       container.username = this.username;
+      container.verified = !!this.email;
       container.avatar = this.avatar;
       container.banner = this.banner;
       container.biography = this.biography;
