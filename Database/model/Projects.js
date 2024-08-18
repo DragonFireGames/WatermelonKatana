@@ -47,6 +47,10 @@ const ProjectSchema = new Mongoose.Schema({
   },
   viewers: [ String ],
   upvotes: [ String ],
+  gamejam: {
+    type: String,
+    default: "none",
+  },
   platform: {
     type: String,
     default: "embed",
@@ -89,6 +93,7 @@ const ProjectSchema = new Mongoose.Schema({
       container.views = this.views;
       container.viewers = this.viewers;
       container.upvotes = this.upvotes;
+      container.gamejam = this.gamejam;
       container.comments = this.comments;
       container.platform = this.platform;
       container.postedAt = this.postedAt;
