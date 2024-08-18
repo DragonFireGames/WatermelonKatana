@@ -45,6 +45,7 @@ const ProjectSchema = new Mongoose.Schema({
     type: Number,
     default: 0,
   },
+  upvotes: [ String ],
   platform: {
     type: String,
     default: "embed",
@@ -85,6 +86,7 @@ const ProjectSchema = new Mongoose.Schema({
       container.privateRecipients = this.privateRecipients;
       container.score = this.score;
       container.views = this.views;
+      container.upvotes = this.upvotes;
       container.comments = this.comments;
       container.platform = this.platform;
       container.postedAt = this.postedAt;
