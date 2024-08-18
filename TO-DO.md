@@ -39,7 +39,7 @@ Will these actually get done?
 - [ ] Administration Panel
 - [ ] Moderation Panel
 - [ ] Anonymous Mode???
-- [ ] Reporting System
+- [x] Reporting System - DragonFireGames
 
 ### Step 2 - More Features
 - [x] Notifications
@@ -53,9 +53,9 @@ Will these actually get done?
 - [x] Admins / Moderators ability to pin posts - DragonFireGames
 - [ ] Post games directly using GitHub without requiring a static host url to be embedded
 - [ ] Flash support???
-- [ ] Profile Badges
+- [ ] Profile Badges - Colack
 - [x] Mature game/post rating option - DragonFireGames
-- [x] Hidden games/post - DragonFireGames
+- [x] Hidden games/posts - DragonFireGames
 - [ ] Game Verification
 - [ ] Improve Security (XSS, SQL Injection, etc.) - toodols & DragonFireGames & Letti
 - [ ] Email Verification/Newsletter
