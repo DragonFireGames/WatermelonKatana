@@ -133,8 +133,8 @@
   color: #ccc; /* Light color for post names */
 }
 
-.upvote-container {
-  display: flex;
+.upvote-container, .report-btn {
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   position: relative;
@@ -147,6 +147,14 @@
 .upvote-icon {
   transform: rotate(-180deg);
   margin: 0px 0px 0px 3px;
+}
+
+.report-btn {
+  background-color: transparent;
+  padding: 0px 5px 0px 5px;
+}
+.report-btn:hover {
+  background-color: transparent;
 }
 
 .upvote-container input:checked + .upvote-icon {
