@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Email Verification | WatermelonKatana</title>
+	<link rel="stylesheet" type="text/css" href="/styles/style.css">
+	<script src="/scripts/HtmlSanitizer.js"></script>
+	<script src="/scripts/utils.js"></script>
+</head>
+<body>
+	<script src="/scripts/navbar.js"></script>
+	<h1>Email Verification</h1>
+	<form id="emailForm">
+		<label for="email">Enter your email for verification</label><br>
+		<input type="email" id="email" required/><br>
+		<input type="submit" value="Submit"><br>
+	</form>
+	<div class="message"></div><br>
+
+	<script>
+		const form = document.querySelector('#emailForm');
+		const message = document.querySelector('.message');
+
+		form.addEventListener('submit', (e) => {
+			e.preventDefault();
+			message.textContent = "Check your inbox for a verification link.";
+			message.style.display = 'block';
+		});
+	</script>
+</body>
+</html>

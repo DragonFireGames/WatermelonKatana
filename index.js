@@ -61,6 +61,8 @@ app.get("/logout", (req, res) => {
 
 // Chat page, users only
 app.get("/chat", userAuth, (req, res) => res.sendFile(cldir + "/chat.html"));
+app.get("/verification", userAuth, (req, res) => res.sendFile(cldir + "/verification.html"))
+
 
 // Admin page, admins only
 app.get("/admin", adminAuth, (req, res) => res.sendFile(cldir + "/admin.html"));
