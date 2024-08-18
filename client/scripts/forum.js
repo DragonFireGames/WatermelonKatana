@@ -39,6 +39,19 @@ async function createPost(post,data,txt,name,reload) {
   } else {
     display.innerHTML += `<b>Featured</b> => ${data.featured} <br>`;
   }
+  if (tok.user) {
+  	display.innerHTML += `
+    <!--<div class="comment-upvote">--><div>
+    	<button class="report-btn" onclick="window.onreportclick('main');">
+        <svg viewBox="0 0 448 512" height="1em" xmlns="http://www.w3.org/2000/svg" class="report-icon"><path d="M64 32C64 14.3 49.7 0 32 0S0 14.3 0 32V64 368 480c0 17.7 14.3 32 32 32s32-14.3 32-32V352l64.3-16.1c41.1-10.3 84.6-5.5 122.5 13.4c44.2 22.1 95.5 24.8 141.7 7.4l34.7-13c12.5-4.7 20.8-16.6 20.8-30V66.1c0-23-24.2-38-44.8-27.7l-9.6 4.8c-46.3 23.2-100.8 23.2-147.1 0c-35.1-17.6-75.4-22-113.5-12.5L64 48V32z"></path></svg>
+      </button>
+      <label class="upvote-container">
+        ${data.upvotes.length}
+        <input class="comment-upvote-box" name="comment-vpvote" type="checkbox" value="reply" ${data.upvotes.includes(tok.user.id) ? "checked" : ""} onclick="window.onupvoteclick('main',this.checked);">
+        <svg viewBox="0 0 512 512" height="1em" xmlns="http://www.w3.org/2000/svg" class="upvote-icon"><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"></path></svg>
+      </label>
+    </div>`;
+  }
   if (tok.user.id !== data.posterId && tok.user.role !== "Admin") return;
   console.log(post);
   if (name == "forum") name = "forum/discussion";
@@ -75,6 +88,9 @@ async function listComments(list,comments,self,events) {
         <p class="comment-data">${relativeDate(c.postedAt)}</p>
       </div>
       ${self?`<div class="comment-upvote">
+        <button class="report-btn" onclick="window.onreportclick(${i});">
+          <svg viewBox="0 0 448 512" height="1em" xmlns="http://www.w3.org/2000/svg" class="report-icon"><path d="M64 32C64 14.3 49.7 0 32 0S0 14.3 0 32V64 368 480c0 17.7 14.3 32 32 32s32-14.3 32-32V352l64.3-16.1c41.1-10.3 84.6-5.5 122.5 13.4c44.2 22.1 95.5 24.8 141.7 7.4l34.7-13c12.5-4.7 20.8-16.6 20.8-30V66.1c0-23-24.2-38-44.8-27.7l-9.6 4.8c-46.3 23.2-100.8 23.2-147.1 0c-35.1-17.6-75.4-22-113.5-12.5L64 48V32z"></path></svg>
+        </button>
         <label class="upvote-container">
           ${c.upvotes.length}
           <input class="comment-upvote-box" type="checkbox" value="reply" ${c.upvotes.includes(self.id) ? "checked" : ""} onclick="window.onupvoteclick(${i},this.checked);">
@@ -159,7 +175,7 @@ function commentEvents(name,reload) {
       const res = await fetch("/api/"+name+"/comment/"+pid, {
         method: "POST",
         body: JSON.stringify({
-          content: content
+          content
         }),
         headers: { "Content-Type": "application/json" },
       });
@@ -169,8 +185,8 @@ function commentEvents(name,reload) {
       const res = await fetch("/api/"+name+"/comment/"+pid+"/edit", {
         method: "PUT",
         body: JSON.stringify({
-          content: content,
-          index: index
+          content,
+          index
         }),
         headers: { "Content-Type": "application/json" },
       });
@@ -180,7 +196,7 @@ function commentEvents(name,reload) {
       const res = await fetch("/api/"+name+"/comment/"+pid+"/delete", {
         method: "DELETE",
         body: JSON.stringify({
-          index: index
+          index
         }),
         headers: { "Content-Type": "application/json" },
       });
@@ -188,6 +204,21 @@ function commentEvents(name,reload) {
     },
     onupvote:async(index,checked)=>{
       const res = await fetch("/api/"+name+"/comment/"+pid+"/"+(checked?"up":"down")+"vote?index="+index);
+      reload();
+    },
+    onreport:async(index)=>{
+      var content = prompt("Why are you reporting this?");
+      if (!content) return;
+      var link = {forum:"forum/discussion",project:"project"}[name]+"/"+pid+"/";
+      if (index !== "main") link += "?comment="+index;
+      const res = await fetch("/api/admin/reports/create",{
+        method: "POST",
+        body: JSON.stringify({
+          content,
+          link
+        }),
+        headers: { "Content-Type": "application/json" },
+      });
       reload();
     }
   };
