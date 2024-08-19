@@ -2,122 +2,84 @@
 const Users = require("../../Database/model/Users");
 const mailer = require("../mail");
 
+function makeid(length) {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) { 
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
+var pendingVerifications = {};
+
 exports.sendVerification = async (req,res) => {
-  const { uid, project, post } = req.query;
+  const { email } = req.body;
   try {
-    const user = await Users.findOne({ _id: uid });
-    if (!user) return res.status(404).json({
-      message: "Transfer not successful",
-      error: "User not found",
+    if (!email.match(/^([^@]+)@([^\s]+?).([^.\s]+)$/)) return res.status(404).json({
+      message: "Verification email not successfully created",
+      error: "Email not valid",
     });
-    var p = false;
-    if (project && !post) p = await Projects.findOne({ _id: project });
-    if (post && !project) p = await Posts.findOne({ _id: post });
-    if (!p) return res.status(404).json({
-      message: "Transfer not successful",
-      error: "Post/Project not found",
-    });
-    p.poster = user.username;
-    p.posterId = uid;
-    await p.save();
-    res.status(200).json({
-      message: "Transfer successful",
-    });
-  } catch(error) {
-    res.status(400).json({
-      message: "Transfer not successful",
-      error: error.message,
-    });
-    console.log(error.message);
-  }
-};
-exports.verifyUser = async (req,res)=>{
-  const { uid, password } = req.query;
-  try {
-    var hash = await bcrypt.hash(password||"password", 10);
-    const user = await Users.findOne({ _id: uid });
-    if (!user) return res.status(404).json({
-      message: "Transfer not successful",
-      error: "User not found",
-    });
-    user.password = hash;
-    await user.save();
-    res.status(201).json({
-      message: "Password successfully reset",
-      user: user._id,
-      role: user.role,
-    });
-  } catch(error) {
-    res.status(400).json({
-      message: "Password not successfully reset",
-      error: error.message,
-    });
-  }
-};
-exports.createReport = async (req, res, next) => {
-  var { content, link } = req.body;
-  console.log(content,link);
-  try {
     const uid = res.locals.userToken.id;
     const user = await Users.findOne({ _id: uid });
     if (!user) return res.status(404).json({
-      message: "Report not successfully created",
+      message: "Verification email not successfully created",
       error: "User not found",
     });
-    const post = await Reports.create({
-      content,
-      link,
-      postedAt: Date.now(),
-      posterId: user.id,
-      poster: user.username, //convert to ref eventually
+    var verifyId = makeid(64);
+    const maxAge = 60 * 60 * 1000; // 1 hour
+    pendingVerifications[verifyId] = {
+      uid: uid,
+      email: email,
+      expiresAt: Date.now() + maxAge;
+    };
+    var verifyUrl = "/api/auth/verify/email?id="+verifyId;
+    mailer.sendMail(email,{
+      html: `
+        Hello ${user.username}<br>
+        <br>
+        <a href="${verifyUrl}">Click here to verify your email.</a><br>
+        <br>
+        Not you? Don't click the above link.
+      `;
+    })
+    res.status(200).json({
+      message: "Verification email creation successful",
     });
-    console.log(post);
-    res.status(201).json({
-      message: "Report successfully created",
-      id: post._id,
-      link: post.link,
-    });
-    console.log("done!");
   } catch(error) {
     res.status(400).json({
-      message: "Report not successfully created",
+      message: "Verification email not successfully created",
       error: error.message,
     });
     console.log(error.message);
   }
-}
-exports.openReport = async (req, res, next) => {
+};
+exports.verifyUser = async (req,res) => {
+  const { id } = req.query;
   try {
-    const rid = req.params.id;
-    const report = await Reports.findOne({ _id: rid });
-    if (!report) return res.status(404).json({
-      message: "Fetch not successful",
-      error: "Report not found",
+    var verify = pendingVerifications[id];
+    if (!verify) return res.status(404).json({
+      message: "Verification not successful",
+      error: "Verify not found",
     });
-    var link = report.link;
-    await report.remove();
-    console.log("deleted "+rid);
-    res.redirect(link);
+    if (Date.now() > verify.expiresAt) return res.status(400).json({
+      message: "Verification not successful",
+      error: "Link expired",
+    });
+    const user = await Users.findOne({ _id: verify.uid });
+    if (!user) return res.status(404).json({
+      message: "Verification not successful",
+      error: "User not found",
+    });
+    user.email = verify.email;
+    await user.save();
+    delete pendingVerifications[id];
+    res.status(301).redirect("/verified");
   } catch(error) {
     res.status(400).json({
-      message: "Report not successfully deleted",
+      message: "Verification not successful",
       error: error.message,
     });
-    console.log(error.message);
-  }
-}; 
-exports.listReports = async (req, res, next) => {
-  try {
-    var search = {};
-    const { customQuery } = req.query;
-    if (customQuery) search = JSON.parse(customQuery);
-    var list = await Reports.find(search);
-    list = list.map(e=>e.pack());
-    var data = {};
-    data.report = list;
-    res.status(200).json(data);
-  } catch(err) {
-    res.status(401).json({ message: "Not successful", error: err.message });
-    console.log(err.message);
   }
 };
