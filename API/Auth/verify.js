@@ -32,7 +32,7 @@ exports.sendVerification = async (req,res) => {
     pendingVerifications[verifyId] = {
       uid: uid,
       email: email,
-      expiresAt: Date.now() + maxAge;
+      expiresAt: Date.now() + maxAge,
     };
     var verifyUrl = "/api/auth/verify/email?id="+verifyId;
     mailer.sendMail(email,{
