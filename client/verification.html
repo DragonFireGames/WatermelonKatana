@@ -25,7 +25,7 @@
       const message = document.querySelector('.message');
       const display = document.querySelector('.error');
   
-      form.addEventListener('submit', (e) => {
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
         display.textContent = ''
         try {
