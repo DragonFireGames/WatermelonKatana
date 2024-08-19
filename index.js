@@ -61,8 +61,6 @@ app.get("/logout", (req, res) => {
 
 // Chat page, users only
 app.get("/chat", userAuth, (req, res) => res.sendFile(cldir + "/chat.html"));
-app.get("/verify", userAuth, (req, res) => res.sendFile(cldir + "/verification.html"))
-
 
 // Admin page, admins only
 app.get("/admin", adminAuth, (req, res) => res.sendFile(cldir + "/admin.html"));
@@ -199,17 +197,11 @@ app.get("/user/:name", async (req, res) => {
 });
 
 // User self profile page, users only
-app.get("/profile", userAuth, (req, res) =>
-  res.sendFile(cldir + "/profile.html"),
-);
-// User edit self page, users only
-app.get("/profile/edit", userAuth, (req, res) =>
-  res.sendFile(cldir + "/editprofile.html"),
-);
-// User change password page, users only
-app.get("/profile/chpass", userAuth, (req, res) =>
-  res.sendFile(cldir + "/chpass.html"),
-);
+app.get("/profile", userAuth, (req, res) => res.sendFile(cldir + "/profile.html"));
+app.get("/profile/edit", userAuth, (req, res) => res.sendFile(cldir + "/editprofile.html"));
+app.get("/profile/chpass", userAuth, (req, res) => res.sendFile(cldir + "/chpass.html"));
+app.get("/profile/verify", userAuth, (req, res) => res.sendFile(cldir + "/verification.html"));
+app.get("/verified", (req, res) => res.sendFile(cldir + "/verified.html"));
 // Notification
 const { openNotification } = require("./API/Auth/auth");
 app.get("/notification/:index", userAuth, openNotification);
