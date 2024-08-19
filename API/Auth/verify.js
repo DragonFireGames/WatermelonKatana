@@ -1,6 +1,7 @@
 
 const Users = require("../../Database/model/Users");
 const mailer = require("../mail");
+const origin = "https://watermelonkatana.com/";
 
 function makeid(length) {
   let result = '';
@@ -34,7 +35,7 @@ exports.sendVerification = async (req,res) => {
       email: email,
       expiresAt: Date.now() + maxAge,
     };
-    var verifyUrl = "/api/auth/verify/email?id="+verifyId;
+    var verifyUrl = origin+"/api/auth/verify/email?id="+verifyId;
     mailer.sendMail(email,{
       subject: "WatermelonKatana Email Verification",
       text: `
