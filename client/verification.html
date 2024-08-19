@@ -38,7 +38,7 @@
           if (res.status === 400 || res.status === 401) {
             return display.textContent = `${data.message}. ${data.error ? data.error : ''}`
           }
-          message.textContent = "Check your inbox for a verification link.";
+          message.textContent = "Check your inbox for a verification link. If you don't see it, check your junk mail.";
           message.style.display = 'block';
         } catch (err) {
           console.log(err.message)
