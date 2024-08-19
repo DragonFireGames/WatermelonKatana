@@ -36,13 +36,22 @@ exports.sendVerification = async (req,res) => {
     };
     var verifyUrl = "/api/auth/verify/email?id="+verifyId;
     mailer.sendMail(email,{
+      subject: "WatermelonKatana Email Verification",
+      text: `
+        Hello ${user.username}
+
+        Open the link below to verify your email.
+        ${verifyUrl}
+        
+        Not you? Don't open the above link.
+      `,
       html: `
         Hello ${user.username}<br>
         <br>
         <a href="${verifyUrl}">Click here to verify your email.</a><br>
         <br>
         Not you? Don't click the above link.
-      `;
+      `,
     })
     res.status(200).json({
       message: "Verification email creation successful",
@@ -75,7 +84,7 @@ exports.verifyUser = async (req,res) => {
     user.email = verify.email;
     await user.save();
     delete pendingVerifications[id];
-    res.status(301).redirect("/verified");
+    res.status(301).redirect("/verified?email="+user.email);
   } catch(error) {
     res.status(400).json({
       message: "Verification not successful",
