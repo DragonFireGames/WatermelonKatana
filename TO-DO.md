@@ -58,7 +58,7 @@ Will these actually get done?
 - [x] Hidden games/posts - DragonFireGames
 - [ ] Game Verification
 - [ ] Improve Security (XSS, SQL Injection, etc.) - toodols & DragonFireGames & Letti
-- [ ] Email Verification/Newsletter
+- [x] Email Verification - DragonFireGames
 
 ### Step 3 - Better UI
 - [ ] Logo
@@ -94,6 +94,7 @@ Will these actually get done?
 
 ### Step 1 - Add Remaining Features
 - [ ] Save for Later tab
+- [ ] Newsletter + Forgot Password for verified accounts
 - [ ] Community Leaderboards
 - [ ] Improve Performance
 - [ ] Friend activity monitor (what are they doing?)
