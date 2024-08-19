@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const { register, login, update, updateRole, deleteUser, deleteSelf, listUsers, userdata, check, changePassword, follow, unfollow } = require("./auth");
+const { sendVerification, verifyUser } = require("./verify");
 const { adminAuth, userAuth, checkAuth } = require("../../middleware/auth");
 
 router.route("/register").post(register);
@@ -16,5 +17,7 @@ router.route("/check").get(checkAuth, check);
 router.route("/userdata").get(userdata);
 router.route("/follow").get(userAuth, follow);
 router.route("/unfollow").get(userAuth, unfollow);
+router.route("/verify/send").post(userAuth, sendVerification);
+router.route("/verify/email").get(verifyUser);
 
 module.exports = router;
