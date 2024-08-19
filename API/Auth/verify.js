@@ -1,7 +1,7 @@
 
 const Users = require("../../Database/model/Users");
 const mailer = require("../mail");
-const origin = "https://watermelonkatana.com/";
+const origin = "https://watermelonkatana.com";
 
 function makeid(length) {
   let result = '';
