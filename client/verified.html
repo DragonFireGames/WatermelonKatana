@@ -14,8 +14,13 @@
     <div class="container">
       <!--<img src="/images/cat/404-cat.png" alt="Verification Image" class="error-image">-->
       <h1 class="error-title">User Verified</h1>
-      <p class="error-message">Your email was successfully added to your account</p>
+      <p id="message" class="error-message"></p>
       <a class="home-link" href="/">Go Home</a>
+      <script>
+        const message = document.querySelector('#message');
+        const params = new URLSearchParams(location.search);
+        message.textContent = `The email (${params.get("email")}) was successfully added to your account`;
+      </script>
     </div>
     <div id="footer">
     </div>
