@@ -22,5 +22,7 @@ We are planning on changing our license down the line, but for now, WatermelonKa
 ## Supporters
 ### Stargazers
 ![Stargazers repo roster for @dragonfiregames/watermelonkatana](https://reporoster.com/stars/dark/dragonfiregames/watermelonkatana)
+### Star History
+![Star History Chart](https://api.star-history.com/svg?repos=dragonfiregames/watermelonkatana&type=Date&theme=dark)
 ### Forks
 ![Forkers repo roster for @dragonfiregames/watermelonkatana](https://reporoster.com/forks/dark/dragonfiregames/watermelonkatana)
