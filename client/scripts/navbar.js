@@ -343,7 +343,7 @@ document.addEventListener("DOMContentLoaded", async function() {
       <p class="signedin-username">${auth.user.username}</p>
     </a>
     `;
-  } else {
+  } else if (window.location.pathname.match(/^\/(register|login)/i) === null){
     navbarHtml += `
     <a class="nav-btn" href="/login">Login</a>
     <a class="nav-btn" href="/register">Create Account</a>
