@@ -330,10 +330,13 @@ input[type=checkbox]:checked + .checkbox::after {
 }
 
 .thumbnail-border {
-  border: solid #555 2px; /* Darker border color */
-  min-height: 200px;
+  background-image: linear-gradient(to right, pink, lightgreen);
   min-width: 200px;
-  border-radius: 10px;
+  min-height: 200px;
+  border-radius: 5px;
+  transition: margin-top 0.5s;
+  box-shadow: 0px 0px 10px pink;
+  transition: box-shadow 0.3s;
 }
 
 .project-link, .post-top {
