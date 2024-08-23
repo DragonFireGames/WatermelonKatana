@@ -100,7 +100,7 @@ function previewContent(str,len) {
 function projHTML(list,tok) {
   return function (proj) {
     let div = `<a class="project-panel" href="/project/${proj.id}" ${proj.viewers.includes(tok?.user?.id)?`style="color: #b0b0b0;"`:""}>
-      <div class="thumbnail-border"><img class="project-thumbnail" src="${proj.thumbnail || "/images/placeholders/PLACEHOLDER_project.png"}"></div>
+      <div class="thumbnail-border"><img class="project-thumbnail" src="${proj.thumbnail || "/images/placeholders/PLACEHOLDER_project.png"}" alt=""></div>
       <div class="project-link">${previewContent(proj.name, 100)}</div>
       <div>By: <object><a href="/user/${proj.poster}">${proj.poster}</a></object></div>
       <div>Score: ${proj.score} Views: ${proj.views}</div>
