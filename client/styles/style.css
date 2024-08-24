@@ -299,6 +299,20 @@ input[type=checkbox]:checked + .checkbox::after {
   width: 80vw;
 }
 
+.post-tags {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  line-height: 0px;
+  gap: 0px 8px;
+}
+
+.post-tags p {
+  background-color: #444;
+  font-size: 15px;
+  color: #e0e0e0;
+}
+
 .user-panel {
   width: 305px;
 }

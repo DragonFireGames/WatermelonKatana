@@ -32,31 +32,31 @@ function relativeDate(time) {
   var interval = Math.floor(seconds / (365.25 * 24 * 60 * 60));
   if (interval == 1) return "1 year ago";
   else if (interval > 1) return interval + " years ago";
-  
+
   interval = Math.floor(seconds / (30.4375 * 24 * 60 * 60));
   if (interval == 1) return "1 month ago";
   else if (interval > 1) return interval + " months ago";
-  
+
   interval = Math.floor(seconds / (7 * 24 * 60 * 60));
   if (interval == 1) return "1 week ago";
   else if (interval > 1) return interval + " weeks ago";
-  
+
   interval = Math.floor(seconds / (24 * 60 * 60));
   if (interval == 1) return "1 day ago";
   else if (interval > 1) return interval + " days ago";
-  
+
   interval = Math.floor(seconds / (60 * 60));
   if (interval == 1) return "1 hour ago";
   else if (interval > 1) return interval + " hours ago";
-  
+
   interval = Math.floor(seconds / (60));
   if (interval == 1) return "1 minute ago";
   else if (interval > 1) return interval + " minutes ago";
-  
+
   interval = Math.floor(seconds);
   if (interval == 1) return "1 second ago";
   return interval + " seconds ago";
-  
+
   //return new Date(time).toUTCString();
 }
 
@@ -104,6 +104,7 @@ function projHTML(list,tok) {
       <div class="project-link">${previewContent(proj.name, 100)}</div>
       <div>By: <object><a href="/user/${proj.poster}">${proj.poster}</a></object></div>
       <div>Score: ${proj.score} Views: ${proj.views}</div>
+      ${tagHTML(proj.tags)}
     </a>`;
     list.innerHTML += div;
     let lastThumbnail = list.children[list.children.length - 1].querySelector(".project-thumbnail");
@@ -118,6 +119,7 @@ function forumHTML(list,tok) {
         ${previewContent(post.name, 100)} | By: <object><a href="/user/${post.poster}">${post.poster}</a></object> | Views: ${post.views} | Active ${relativeDate(post.activeAt)}
       <br>
       ${previewContent(post.content,100)}
+      ${tagHTML(post.tags)}
       </div>
     </a>`;
     list.innerHTML += div;
@@ -136,4 +138,15 @@ function userHTML(list) {
     </a>`;
     list.innerHTML += div;
   };
+}
+
+function tagHTML(tags) {
+  let container = `<div class="post-tags">`;
+  for(let tag of tags) {
+    if(tag !== "") {  
+     container += `<p>#${tag}</p>`;
+    }
+  }
+  container += `</div>`;
+  return container;
 }
