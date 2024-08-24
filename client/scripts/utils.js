@@ -116,9 +116,10 @@ function forumHTML(list,tok) {
   return function (post) {
     let div = `<a class="post-panel" href="/forum/discussion/${post.id}" ${post.viewers.includes(tok?.user?.id)?`style="color: #b0b0b0;"`:""}>
       <div class="post-top">
-        ${previewContent(post.name, 100)} | By: <object><a href="/user/${post.poster}">${post.poster}</a></object> | Views: ${post.views} | Active ${relativeDate(post.activeAt)}
-      <br>
-      ${previewContent(post.content,100)}
+        <h2>${previewContent(post.name, 100)}</h2> 
+        <p style="display: inline;">${previewContent(post.content,100)}
+        <br>
+      By: <object><a href="/user/${post.poster}">${post.poster}</a></object> | Views: ${post.views} | Active ${relativeDate(post.activeAt)}</p>
       ${tagHTML(post.tags)}
       </div>
     </a>`;
