@@ -290,7 +290,7 @@ input[type=checkbox]:checked + .checkbox::after {
   color: #e0e0e0;
 }
 
-.project-panel:hover .post-tags {
+.project-panel:hover .project-tags {
   display: flex;
 }
 
@@ -303,7 +303,7 @@ input[type=checkbox]:checked + .checkbox::after {
   width: 80vw;
 }
 
-.post-tags {
+.project-tags {
   display: none; /* only displays tags on user hover (interested) */
   justify-content: center;
   flex-wrap: wrap;
@@ -311,7 +311,15 @@ input[type=checkbox]:checked + .checkbox::after {
   gap: 0px 8px;
 }
 
-.post-tags p {
+.forum-tags {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  line-height: 0px;
+  gap: 0px 8px;
+}
+
+.project-tags p, .forum-tags p {
   background-color: #444;
   font-size: 15px;
   color: #e0e0e0;

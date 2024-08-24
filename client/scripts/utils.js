@@ -104,7 +104,7 @@ function projHTML(list,tok) {
       <div class="project-link">${previewContent(proj.name, 100)}</div>
       <div>By: <object><a href="/user/${proj.poster}"><i>${proj.poster}</i></a></object></div>
       <div>Score: ${proj.score} Views: ${proj.views}</div>
-      ${tagHTML(proj.tags)}
+      <div class="project-tags">${tagHTML(proj.tags)}</div>
     </a>`;
     list.innerHTML += div;
     let lastThumbnail = list.children[list.children.length - 1].querySelector(".project-thumbnail");
@@ -120,7 +120,7 @@ function forumHTML(list,tok) {
         <p style="display: inline;">${previewContent(post.content,100)}
         <br>
       By: <object><a href="/user/${post.poster}"><i>${post.poster}</i></a></object> | Views: ${post.views} | Active ${relativeDate(post.activeAt)}</p>
-      ${tagHTML(post.tags)}
+      <div class="forum-tags">${tagHTML(post.tags)}</div>
       </div>
     </a>`;
     list.innerHTML += div;
@@ -142,12 +142,11 @@ function userHTML(list) {
 }
 
 function tagHTML(tags) {
-  let container = `<div class="post-tags">`;
+  let container = ``;
   for(let tag of tags) {
     if(tag !== "") {  
      container += `<p>#${tag}</p>`;
     }
   }
-  container += `</div>`;
   return container;
 }
