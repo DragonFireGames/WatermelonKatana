@@ -24,7 +24,7 @@ app.use(cookieParser()); // Parse cookies attached to the client request
 /**
  * Serve static files from the client directory
  */
-app.use(express.static(__dirname + "/client"));
+app.use(express.static(__dirname + "/assets"));
 
 /**
  * Initialize TurboWarp with static dependencies
