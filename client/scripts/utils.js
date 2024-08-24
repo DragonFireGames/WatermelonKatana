@@ -102,7 +102,7 @@ function projHTML(list,tok) {
     let div = `<a class="project-panel" href="/project/${proj.id}" ${proj.viewers.includes(tok?.user?.id)?`style="color: #b0b0b0;"`:""}>
       <div class="thumbnail-border"><img class="project-thumbnail" src="${proj.thumbnail || "/images/placeholders/PLACEHOLDER_project.png"}" alt=""></div>
       <div class="project-link">${previewContent(proj.name, 100)}</div>
-      <div>By: <object><a href="/user/${proj.poster}">${proj.poster}</a></object></div>
+      <div>By: <object><a href="/user/${proj.poster}"><i>${proj.poster}</i></a></object></div>
       <div>Score: ${proj.score} Views: ${proj.views}</div>
       ${tagHTML(proj.tags)}
     </a>`;
@@ -119,7 +119,7 @@ function forumHTML(list,tok) {
         <h2>${previewContent(post.name, 100)}</h2> 
         <p style="display: inline;">${previewContent(post.content,100)}
         <br>
-      By: <object><a href="/user/${post.poster}">${post.poster}</a></object> | Views: ${post.views} | Active ${relativeDate(post.activeAt)}</p>
+      By: <object><a href="/user/${post.poster}"><i>${post.poster}</i></a></object> | Views: ${post.views} | Active ${relativeDate(post.activeAt)}</p>
       ${tagHTML(post.tags)}
       </div>
     </a>`;
