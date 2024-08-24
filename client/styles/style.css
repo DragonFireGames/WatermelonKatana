@@ -290,6 +290,10 @@ input[type=checkbox]:checked + .checkbox::after {
   color: #e0e0e0;
 }
 
+.project-panel:hover .post-tags {
+  display: flex;
+}
+
 .post-panel, .user-panel {
   padding: 5px;
   display: block;
@@ -300,7 +304,7 @@ input[type=checkbox]:checked + .checkbox::after {
 }
 
 .post-tags {
-  display: flex;
+  display: none; /* only displays tags on user hover (interested) */
   justify-content: center;
   flex-wrap: wrap;
   line-height: 0px;
