@@ -89,10 +89,10 @@ PostSchema.index({
   tags: "text",
 },{
   weights: {
-    name: 2, 
-    content: 1,
-    poster: 0.75,
-    tags: 1.5,
+    name: 10, 
+    content: 4,
+    poster: 3,
+    tags: 6,
   },
   name: "searchIndex"
 });
