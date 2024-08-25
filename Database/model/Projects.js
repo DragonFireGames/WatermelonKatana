@@ -123,4 +123,6 @@ ProjectSchema.index({
 
 const Projects = Mongoose.model("project", ProjectSchema);
 
+Projects.on('index',console.log);
+
 module.exports = Projects;
