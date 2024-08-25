@@ -68,9 +68,9 @@
         const tok = await getAuth();
         var sparams = new URLSearchParams(location.search);
         sparams.set("showMature", tok.user?.mature);
-        const res = await fetch('/api/forum/list?'+sparams);
+        const res = await fetch('/api/forum/'+(sparams.get("query"):'search'?'list')+'+sparams);
         const data = await res.json();
-        switch (params.get("sort")||"featured") {
+        if (!sparams.get("query")) switch (params.get("sort")||"featured") {
           case "featured": data.posts.sort((a,b)=>(Number(b.featured)-Number(a.featured))||(b.activeAt-a.activeAt)); break;
           case "active": data.posts.sort((a,b)=>(b.activeAt-a.activeAt)); break;
           case "views": data.posts.sort((a,b)=>(b.views-a.views)); break;
