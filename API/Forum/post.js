@@ -188,6 +188,27 @@ async list(req, res, next) {
   }
 };
 
+async list(req, res, next) {
+  try {
+    const { search } = req.query;
+    var list = await this.model.find(
+      { $text: { $search: search } },
+      { relevance: { $meta: "textScore" } }
+    ).sort({ relevance: { $meta: "textScore" } });
+    list = list.map(e=>{
+      var c = e.pack();
+      c.relevance = e.relevance;
+      return c;
+    });
+    var data = {};
+    data[this.name] = list;
+    res.status(200).json(data);
+  } catch(err) {
+    res.status(401).json({ message: "Not successful", error: err.message });
+    console.log(err.message);
+  }
+};
+
 async data(req, res, next) {
   try {
     const pid = req.params.id;
