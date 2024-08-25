@@ -86,7 +86,7 @@ const Users = require("./Database/model/Users"); // Users
 // Projects
 app.get("/gamejams", (req, res) => res.sendFile(cldir + "/projects/gamejams.html")); // game jam page
 app.get("/search", (req, res) => res.sendFile(cldir + "/projects/search.html")); // Search page
-app.get("/publish", userAuth, (req, res) = res.sendFile(cldir + "/projects/publish.html")); // Publish page, users only
+app.get("/publish", userAuth, (req, res) => res.sendFile(cldir + "/projects/publish.html")); // Publish page, users only
 const Projects = require("./Database/model/Projects");
 app.get("/project/:id", checkAuth, async (req, res) => {
   // Project page with dynamic project ID
