@@ -6,7 +6,7 @@ const connectDB = require("./Database/connect");
 const app = express();
 const cookieParser = require("cookie-parser");
 const { adminAuth, userAuth, checkAuth } = require("./Middleware/auth");
-const { Turbo } = require("./Turbo/index");
+const { Turbo } = require("./Turbow/index");
 const PORT = process.env.PORT || 3000;
 const sendFileReplace = require("./Middleware/replace");
 
@@ -25,7 +25,6 @@ app.use(cookieParser()); // Parse cookies attached to the Client request
  * Serve static files from the Client directory
  */
 app.use(express.static(__dirname + "/Assets"));
-app.use("/Turbo", express.static(__dirname + "/Turbo"))
 
 /**
  * Initialize TurboWarp with static dependencies
