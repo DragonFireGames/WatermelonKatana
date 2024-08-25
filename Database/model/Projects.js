@@ -113,10 +113,10 @@ ProjectSchema.index({
   tags: "text",
 },{
   weights: {
-    name: 2, 
+    name: 5, 
     desc: 1,
-    poster: 0.75,
-    tags: 1.5,
+    poster: 2,
+    tags: 3,
   },
   name: "searchIndex"
 });
