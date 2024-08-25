@@ -26,8 +26,8 @@ async function createPost(post,data,txt,name,reload) {
   document.body.innerHTML += `
   <div id="reply">
     <div class="comment-top">
-      <img class="comment-avatar" src="${self.avatar}">
-      <p class="comment-username">${self.username}</p>
+      <img class="comment-avatar" src="${tok.user.avatar}">
+      <p class="comment-username">${tok.user.username}</p>
     </div>
     <textarea id="reply-textbox" oninput="growtextarea(this)" resize=false placeholder="Write a reply..."></textarea>
     <input type="button" class="pink-button" id="send-reply-btn" value="send" onclick="window.onreplysendclick()">
