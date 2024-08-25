@@ -1,3 +1,5 @@
-Thanks for contributing to WatermelonKatana!
+Thanks for contributing to WatermelonKatana!   
+Please make sure you follow our [style guide](LINK_GOES_HERE), and our [code of conduct](../CODE_OF_CONDUCT.md)
 
-There are many ways you can contribute to the project, besides just writing code.
+Cheers,
+- The WatermelonKatana development team
