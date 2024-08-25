@@ -29,7 +29,7 @@ app.use(express.static(__dirname + "/Assets"));
 /**
  * Initialize TurboWarp with static dependencies
  */
-const turbo = new Turbo(app, express.static("./Client/Turbo/dependencies"));
+const turbo = new Turbo(app, express.static("./Turbo/dependencies"));
 
 /**
  * Define API routes
