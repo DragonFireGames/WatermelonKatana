@@ -45,7 +45,7 @@ Will these actually get done?
 - [x] Notifications - DragonFireGames & Colack
 - [x] Media Uploading System - DragonFireGames
 - [ ] Dashboard page for users with suggested games based on what they have favorited
-- [ ] Better Search for Posts/Users/Games
+- [x] Better Search for Posts/Users/Games - DragonFireGames
 - [x] Navbar - Colack & DragonFireGames
 - [x] Community Ranking - DragonFireGames
 - [ ] Private Forums, Quick-Chats & Games
@@ -64,8 +64,8 @@ Will these actually get done?
 - [ ] Logo
 - [ ] UI Overhaul
   - [ ] Home Page
-  - [ ] Forum Page
-  - [ ] Gallery/Search Page
+  - [ ] Forum Page - Varrience
+  - [ ] Gallery/Search Page - GxBriel & Varrience
   - [ ] User Profile Page
   - [ ] Project Page
   - [ ] Discussion Page
