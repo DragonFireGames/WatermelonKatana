@@ -108,7 +108,7 @@ const ProjectSchema = new Mongoose.Schema({
 
 const Projects = Mongoose.model("project", ProjectSchema);
 
-Projects.createIndex({
+Projects.index({
   name: "text", 
   desc: "text",
   poster: "text",
