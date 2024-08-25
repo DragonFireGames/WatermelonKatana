@@ -84,7 +84,7 @@ const PostSchema = new Mongoose.Schema({
 
 const Posts = Mongoose.model("post", PostSchema);
 
-Posts.createIndex({
+Posts.index({
   name: "text", 
   content: "text",
   poster: "text",
