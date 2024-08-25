@@ -35,7 +35,7 @@
       const searchBar = document.querySelector('#searchBar');
       var params = new URLSearchParams(location.search);
       sortOptions.value = params.get("sort")||"score";
-      searchBar.value = decodeURIComponent(params.get("query")||"");
+      searchBar.value = params.get("query")||"";
     
       form.addEventListener('submit', async (e) => {
         e.preventDefault()
@@ -62,7 +62,7 @@
         const tok = await getAuth();
         var sparams = new URLSearchParams(location.search);
         sparams.set("showMature", tok.user?.mature);
-        const res = await fetch('/api/project/'+(sparams.get("query"):'search'?'list')+'+sparams);
+        const res = await fetch('/api/project/'+(sparams.get("query")?'search':'list')+'+sparams);
         const data = await res.json();
         if (!sparams.get("query")) switch (sparams.get("sort")||"score") {
           case "score": data.projects.sort((a,b)=>(b.score-a.score)||(b.views-a.views)); break;
