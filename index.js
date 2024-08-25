@@ -50,8 +50,8 @@ const cldir = __dirname + "/Pages";
  * Define route handlers for serving HTML files
  */
 app.get("/", (req, res) => res.sendFile(cldir + "/home.html")); // Home page
-app.get("/register", (req, res) => res.sendFile(cldir + "/register.html")); // Registration page
-app.get("/login", (req, res) => res.sendFile(cldir + "/login.html")); // Login page
+app.get("/register", (req, res) => res.sendFile(cldir + "/users/auth/register.html")); // Registration page
+app.get("/login", (req, res) => res.sendFile(cldir + "/users/auth/login.html")); // Login page
 app.get("/ui-tester", (req, res) => res.sendFile(cldir + "/ui-tester.html")); // UI Testing page
 
 // Logout route: clear the JWT cookie and redirect to home
@@ -64,9 +64,9 @@ app.get("/logout", (req, res) => {
 app.get("/chat", userAuth, (req, res) => res.sendFile(cldir + "/chat.html"));
 
 // Admin page, admins only
-app.get("/admin", adminAuth, (req, res) => res.sendFile(cldir + "/admin.html"));
+app.get("/admin", adminAuth, (req, res) => res.sendFile(cldir + "/users/admin.html"));
 // Basic user page, users only
-app.get("/userlist", userAuth, (req, res) => res.sendFile(cldir + "/userlist.html"));
+app.get("/userlist", userAuth, (req, res) => res.sendFile(cldir + "/users/list.html"));
 
 // Media list
 app.get("/uploadedmedia", (req, res) => res.sendFile(cldir + "/media.html"));
@@ -84,10 +84,9 @@ function makeLiteralChars(string) {
 const Users = require("./Database/model/Users"); // Users
 
 // Projects
-app.get("/search", (req, res) => res.sendFile(cldir + "/search.html")); // Search page
-app.get("/publish", userAuth, (req, res) =>
-  res.sendFile(cldir + "/publish.html"),
-); // Publish page, users only
+app.get("/gamejams", (req, res) => res.sendFile(cldir + "/projects/gamejams.html")); // game jam page
+app.get("/search", (req, res) => res.sendFile(cldir + "/projects/search.html")); // Search page
+app.get("/publish", userAuth, (req, res) = res.sendFile(cldir + "/projects/publish.html")); // Publish page, users only
 const Projects = require("./Database/model/Projects");
 app.get("/project/:id", checkAuth, async (req, res) => {
   // Project page with dynamic project ID
@@ -101,7 +100,7 @@ app.get("/project/:id", checkAuth, async (req, res) => {
   }
   if (tok && !proj.viewers.includes(tok.id)) proj.viewers.push(tok.id);
   proj.views++;
-  sendFileReplace(res, "./Pages/project.html", (s) => s.replace(
+  sendFileReplace(res, "./Pages/projects/project.html", (s) => s.replace(
     "<!--og:meta-->",
     `<meta property="og:title" content="${makeLiteralChars(proj.name)}"/>
   <meta property="og:type" content="website"/>
@@ -124,17 +123,13 @@ app.get("/project/:id/edit", userAuth, async (req, res) => {
   const tok = res.locals.userToken;
   if (!tok || (project.posterId !== tok.id && tok.role !== "Admin")) 
     return res.status(403).sendFile(__dirname+"/Middleware/403.html");
-  res.sendFile(cldir + "/edit.html");
+  res.sendFile(cldir + "/projects/edit.html");
 }); // Edit project page, users only
-app.get("/project/:id/delete", userAuth, (req, res) =>
-  res.redirect("/api/project/delete/" + req.params.id),
-); // Delete project route, users only
+app.get("/project/:id/delete", userAuth, (req, res) => res.redirect("/api/project/delete/" + req.params.id)); // Delete project route, users only
 
 // Posts
-app.get("/forum", (req, res) => res.sendFile(cldir + "/forum.html")); // Forum Home/Search
-app.get("/forum/post", userAuth, (req, res) =>
-  res.sendFile(cldir + "/post.html"),
-); // Publish page, users only
+app.get("/forum", (req, res) => res.sendFile(cldir + "/forum/home.html")); // Forum Home/Search
+app.get("/forum/post", userAuth, (req, res) => res.sendFile(cldir + "/forum/publish.html")); // Publish page, users only
 const Posts = require("./Database/model/Posts"); // Post page with dynamic post ID
 app.get("/forum/discussion/:id", checkAuth, async (req, res) => {
   var post = await Posts.findOne({ _id: req.params.id });
@@ -168,11 +163,9 @@ app.get("/forum/discussion/:id/edit", userAuth, async (req, res) => {
   const tok = res.locals.userToken;
   if (!tok || (post.posterId !== tok.id && tok.role !== "Admin")) 
     return res.status(403).sendFile(__dirname+"/Middleware/403.html");
-  res.sendFile(cldir + "/editpost.html");
+  res.sendFile(cldir + "/forum/edit.html");
 }); // Edit post page, users only
-app.get("/forum/discussion/:id/delete", userAuth, (req, res) =>
-  res.redirect("/api/project/delete/" + req.params.id),
-); // Delete post route, users only
+app.get("/forum/discussion/:id/delete", userAuth, (req, res) => res.redirect("/api/project/delete/" + req.params.id)); // Delete post route, users only
 
 // User profile page with dynamic user name
 app.get("/user/:name", async (req, res) => {
@@ -181,7 +174,7 @@ app.get("/user/:name", async (req, res) => {
     res.status(404).sendFile(cldir + "/404.html");
     return;
   }
-  sendFileReplace(res, "./Pages/user.html", (s) => s.replace(
+  sendFileReplace(res, "./Pages/users/user.html", (s) => s.replace(
     "<!--og:meta-->",
     `<meta property="og:title" content="@${user.username} on WatermelonKatana"/>
   <meta property="og:type" content="website"/>
@@ -198,11 +191,11 @@ app.get("/user/:name", async (req, res) => {
 });
 
 // User self profile page, users only
-app.get("/profile", userAuth, (req, res) => res.sendFile(cldir + "/profile.html"));
-app.get("/profile/edit", userAuth, (req, res) => res.sendFile(cldir + "/editprofile.html"));
-app.get("/profile/chpass", userAuth, (req, res) => res.sendFile(cldir + "/chpass.html"));
-app.get("/profile/verify", userAuth, (req, res) => res.sendFile(cldir + "/verification.html"));
-app.get("/verified", (req, res) => res.sendFile(cldir + "/verified.html"));
+app.get("/profile", userAuth, (req, res) => res.sendFile(cldir + "/users/profile/profile.html"));
+app.get("/profile/edit", userAuth, (req, res) => res.sendFile(cldir + "/users/profile/edit.html"));
+app.get("/profile/chpass", userAuth, (req, res) => res.sendFile(cldir + "/users/profile/chpass.html"));
+app.get("/profile/verify", userAuth, (req, res) => res.sendFile(cldir + "/users/profile/verification.html"));
+app.get("/verified", (req, res) => res.sendFile(cldir + "/users/profile/verified.html"));
 // Notification
 const { openNotification } = require("./API/Auth/auth");
 app.get("/notification/:index", userAuth, openNotification);
@@ -211,9 +204,7 @@ const { openReport } = require("./API/Admin/admin");
 app.get("/report/:id", adminAuth, openReport);
 
 // TurboWarp page
-app.get("/turbowarp", (req, res) =>
-  res.sendFile(cldir + "/turbowarp/index.html"),
-);
+//app.get("/turbowarp", (req, res) => res.sendFile(cldir + "/turbowarp/index.html"));
 
 /**
  * Start the server and listen on the specified port
