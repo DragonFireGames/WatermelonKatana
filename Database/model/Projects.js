@@ -114,7 +114,7 @@ ProjectSchema.index({
 },{
   weights: {
     name: 5, 
-    desc: 1,
+    desc: 2,
     poster: 2,
     tags: 3,
   },
