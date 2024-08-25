@@ -6,7 +6,7 @@ const connectDB = require("./Database/connect");
 const app = express();
 const cookieParser = require("cookie-parser");
 const { adminAuth, userAuth, checkAuth } = require("./Middleware/auth");
-const { Turbo } = require("./Turbow/index");
+const { Turbo } = require("./Turbo/index");
 const PORT = process.env.PORT || 3000;
 const sendFileReplace = require("./Middleware/replace");
 
