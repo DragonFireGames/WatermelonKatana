@@ -108,4 +108,19 @@ const ProjectSchema = new Mongoose.Schema({
 
 const Projects = Mongoose.model("project", ProjectSchema);
 
+Projects.createIndex({
+  name: "text", 
+  desc: "text",
+  poster: "text",
+  tags: "text",
+},{
+  weights: {
+    name: 2, 
+    desc: 1,
+    poster: 0.75,
+    tags: 1.5,
+  },
+  name: "searchIndex"
+});
+
 module.exports = Projects;
