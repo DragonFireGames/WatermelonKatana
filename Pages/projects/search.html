@@ -35,16 +35,20 @@
       const searchBar = document.querySelector('#searchBar');
       var params = new URLSearchParams(location.search);
       sortOptions.value = params.get("sort")||"score";
-      searchBar.value = (params.get("includeTags")||"").replace("+",", ");
+      searchBar.value = decodeURIComponent(params.get("query")||"");
     
       form.addEventListener('submit', async (e) => {
         e.preventDefault()
         try {
-          var taglist = searchBar.value.toLowerCase().replace(/[^,\w\d_-]/g,"").split(",");
+          var query = searchBar.value;
           const url = new URL(location);
-          if (taglist[0]) url.searchParams.set("includeTags", taglist.join("+"));
-          else url.searchParams.delete("includeTags");
-          url.searchParams.set("sort", sortOptions.value);
+          if (query) {
+            url.searchParams.set("query", taglist.join("+"));
+            url.searchParams.delete("sort");
+          } else {
+            url.searchParams.set("sort", sortOptions.value);
+            url.searchParams.delete("query");
+          }
           history.pushState({}, "", url);
           params = new URLSearchParams(location.search);
           searchProjects();
@@ -58,9 +62,9 @@
         const tok = await getAuth();
         var sparams = new URLSearchParams(location.search);
         sparams.set("showMature", tok.user?.mature);
-        const res = await fetch('/api/project/list?'+sparams);
+        const res = await fetch('/api/project/'+(sparams.get("query"):'search'?'list')+'+sparams);
         const data = await res.json();
-        switch (params.get("sort")||"score") {
+        if (!sparams.get("query")) switch (sparams.get("sort")||"score") {
           case "score": data.projects.sort((a,b)=>(b.score-a.score)||(b.views-a.views)); break;
           case "views": data.projects.sort((a,b)=>(b.views-a.views)||(b.score-a.score)); break;
           case "latest": data.projects.sort((a,b)=>(b.postedAt-a.postedAt)); break;
