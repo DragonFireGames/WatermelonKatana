@@ -85,8 +85,18 @@ const PostSchema = new Mongoose.Schema({
 const Posts = Mongoose.model("post", PostSchema);
 
 Posts.createIndex({
-  "name": "text", 
-  "content": "text"
+  name: "text", 
+  content: "text",
+  poster: "text",
+  tags: "text",
+},{
+  weights: {
+    name: 2, 
+    content: 1,
+    poster: 0.75,
+    tags: 1.5,
+  },
+  name: "searchIndex"
 });
 
 module.exports = Posts;
