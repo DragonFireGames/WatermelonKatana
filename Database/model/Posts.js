@@ -82,9 +82,7 @@ const PostSchema = new Mongoose.Schema({
   }
 });
 
-const Posts = Mongoose.model("post", PostSchema);
-
-Posts.index({
+PostSchema.index({
   name: "text", 
   content: "text",
   poster: "text",
@@ -98,5 +96,7 @@ Posts.index({
   },
   name: "searchIndex"
 });
+
+const Posts = Mongoose.model("post", PostSchema);
 
 module.exports = Posts;
