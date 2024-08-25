@@ -118,7 +118,7 @@ ProjectSchema.index({
     poster: 2,
     tags: 3,
   },
-  name: "searchIndex"
+  name: "project search"
 });
 
 const Projects = Mongoose.model("project", ProjectSchema);
