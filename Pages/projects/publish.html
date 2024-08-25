@@ -68,9 +68,9 @@
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         display.textContent = '';
-        if (!link.value.match(/^https?:\/\//)) 
-          return display.textContent = 'Link is not a vaild URL';
-        if (thumb.src && !thumb.src.match(/^https?:\/\//)) 
+        if (!link.value.match(/^https?:\/\/[^"]+$/)) 
+          return (display.textContent = "Link is not a vaild URL");
+        if (thumb.src && !thumb.src.match(/^https?:\/\/[^"]+$/) && !thumb.src.match(/^\/api\/media\/[^"]+$/)) 
           return display.textContent = 'Thumbnail is not a vaild URL';
         var taglist = tags.value.toLowerCase().replace(/[^,\w\d_-]/g,"").split(",");
         if (taglist.length < 3)
