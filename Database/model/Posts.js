@@ -84,4 +84,9 @@ const PostSchema = new Mongoose.Schema({
 
 const Posts = Mongoose.model("post", PostSchema);
 
+Posts.createIndex({
+  "name": "text", 
+  "content": "text"
+});
+
 module.exports = Posts;
