@@ -94,7 +94,7 @@ PostSchema.index({
     poster: 2,
     tags: 3,
   },
-  name: "searchIndex"
+  name: "post search"
 });
 
 const Posts = Mongoose.model("post", PostSchema);
