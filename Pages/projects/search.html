@@ -43,7 +43,7 @@
           var query = searchBar.value;
           const url = new URL(location);
           if (query) {
-            url.searchParams.set("query", taglist.join("+"));
+            url.searchParams.set("query", query);
             url.searchParams.delete("sort");
           } else {
             url.searchParams.set("sort", sortOptions.value);
