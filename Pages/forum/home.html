@@ -45,7 +45,7 @@
       const searchBar = document.querySelector('#searchBar');
       var params = new URLSearchParams(location.search);
       sortOptions.value = params.get("sort")||"featured";
-      searchBar.value = (params.get("includeTags")||"").replace("+",", ");
+      searchBar.value = params.get("query")||"";
     
       form.addEventListener('submit', async (e) => {
         e.preventDefault()
@@ -72,7 +72,7 @@
         const tok = await getAuth();
         var sparams = new URLSearchParams(location.search);
         sparams.set("showMature", tok.user?.mature);
-        const res = await fetch('/api/forum/'+(sparams.get("query"):'search'?'list')+'+sparams);
+        const res = await fetch('/api/forum/'+(sparams.get("query")?'search':'list')+'+sparams);
         const data = await res.json();
         if (!sparams.get("query")) switch (params.get("sort")||"featured") {
           case "featured": data.posts.sort((a,b)=>(Number(b.featured)-Number(a.featured))||(b.activeAt-a.activeAt)); break;
