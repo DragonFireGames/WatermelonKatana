@@ -191,9 +191,12 @@ async list(req, res, next) {
 
 async search(req, res, next) {
   try {
-    const { query } = req.query;
+    const { query, showMature, showHidden } = req.query;
+    var search = { hidden: false, mature: false, $text: { $search: query } };
+    if (showMature == "true" || showMature == "1") delete search.mature;
+    if (showHidden == "true" || showHidden == "1") delete search.hidden;
     var list = await this.model.find(
-      { $text: { $search: query } },
+      search,
       { relevance: { $meta: "textScore" } }
     ).sort({ relevance: { $meta: "textScore" } });
     list = list.map(e=>{
