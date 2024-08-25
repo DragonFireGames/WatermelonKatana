@@ -5,10 +5,10 @@ const express = require("express");
 const connectDB = require("./Database/connect");
 const app = express();
 const cookieParser = require("cookie-parser");
-const { adminAuth, userAuth, checkAuth } = require("./middleware/auth");
-const { Turbo } = require("./client/Turbo/index");
+const { adminAuth, userAuth, checkAuth } = require("./Middleware/auth");
+const { Turbo } = require("./Turbo/index");
 const PORT = process.env.PORT || 3000;
-const sendFileReplace = require("./middleware/replace");
+const sendFileReplace = require("./Middleware/replace");
 
 /**
  * Connect to the database
@@ -19,17 +19,17 @@ connectDB();
  * Middleware setup
  */
 app.use(express.json()); // Parse JSON request bodies
-app.use(cookieParser()); // Parse cookies attached to the client request
+app.use(cookieParser()); // Parse cookies attached to the Client request
 
 /**
- * Serve static files from the client directory
+ * Serve static files from the Client directory
  */
-app.use(express.static(__dirname + "/assets"));
+app.use(express.static(__dirname + "/Assets"));
 
 /**
  * Initialize TurboWarp with static dependencies
  */
-const turbo = new Turbo(app, express.static("./client/Turbo/dependencies"));
+const turbo = new Turbo(app, express.static("./Client/Turbo/dependencies"));
 
 /**
  * Define API routes
@@ -43,7 +43,7 @@ app.use("/api/admin", require("./API/Admin/route")); // Admin command routes
 /**
  * Client directory path
  */
-const cldir = __dirname + "/client";
+const cldir = __dirname + "/Pages";
 
 /**
  * Define route handlers for serving HTML files
@@ -94,13 +94,13 @@ app.get("/project/:id", checkAuth, async (req, res) => {
   if (!proj) return res.status(404).sendFile(cldir + "/404.html");
   var tok = res.locals.userToken;
   if (proj.mature) {
-    if (!tok) return res.status(403).sendFile(__dirname+"/middleware/403.html");
+    if (!tok) return res.status(403).sendFile(__dirname+"/Middleware/403.html");
     var user = await Users.findOne({ _id: tok.id });
-    if (!user || !user.mature) return res.status(403).sendFile(__dirname+"/middleware/403.html");
+    if (!user || !user.mature) return res.status(403).sendFile(__dirname+"/Middleware/403.html");
   }
   if (tok && !proj.viewers.includes(tok.id)) proj.viewers.push(tok.id);
   proj.views++;
-  sendFileReplace(res, "./client/project.html", (s) => s.replace(
+  sendFileReplace(res, "./Pages/project.html", (s) => s.replace(
     "<!--og:meta-->",
     `<meta property="og:title" content="${makeLiteralChars(proj.name)}"/>
   <meta property="og:type" content="website"/>
@@ -122,7 +122,7 @@ app.get("/project/:id/edit", userAuth, async (req, res) => {
   const project = await Projects.findOne({ _id: req.params.id });
   const tok = res.locals.userToken;
   if (!tok || (project.posterId !== tok.id && tok.role !== "Admin")) 
-    return res.status(403).sendFile(__dirname+"/middleware/403.html");
+    return res.status(403).sendFile(__dirname+"/Middleware/403.html");
   res.sendFile(cldir + "/edit.html");
 }); // Edit project page, users only
 app.get("/project/:id/delete", userAuth, (req, res) =>
@@ -140,13 +140,13 @@ app.get("/forum/discussion/:id", checkAuth, async (req, res) => {
   if (!post) return res.status(404).sendFile(cldir + "/404.html");
   var tok = res.locals.userToken;
   if (post.mature) {
-    if (!tok) return res.status(403).sendFile(__dirname+"/middleware/403.html");
+    if (!tok) return res.status(403).sendFile(__dirname+"/Middleware/403.html");
     var user = await Users.findOne({ _id: tok.id });
-    if (!user || !user.mature) return res.status(403).sendFile(__dirname+"/middleware/403.html");
+    if (!user || !user.mature) return res.status(403).sendFile(__dirname+"/Middleware/403.html");
   }
   if (tok && !post.viewers.includes(tok.id)) post.viewers.push(tok.id);
   post.views++;
-  sendFileReplace(res, "./client/discussion.html", (s) => s.replace(
+  sendFileReplace(res, "./Pages/forum/discussion.html", (s) => s.replace(
     "<!--og:meta-->",
     `<meta property="og:title" content="${makeLiteralChars(post.name)}"/>
   <meta property="og:type" content="website"/>
@@ -166,7 +166,7 @@ app.get("/forum/discussion/:id/edit", userAuth, async (req, res) => {
   const post = await Posts.findOne({ _id: req.params.id });
   const tok = res.locals.userToken;
   if (!tok || (post.posterId !== tok.id && tok.role !== "Admin")) 
-    return res.status(403).sendFile(__dirname+"/middleware/403.html");
+    return res.status(403).sendFile(__dirname+"/Middleware/403.html");
   res.sendFile(cldir + "/editpost.html");
 }); // Edit post page, users only
 app.get("/forum/discussion/:id/delete", userAuth, (req, res) =>
@@ -180,7 +180,7 @@ app.get("/user/:name", async (req, res) => {
     res.status(404).sendFile(cldir + "/404.html");
     return;
   }
-  sendFileReplace(res, "./client/user.html", (s) => s.replace(
+  sendFileReplace(res, "./Pages/user.html", (s) => s.replace(
     "<!--og:meta-->",
     `<meta property="og:title" content="@${user.username} on WatermelonKatana"/>
   <meta property="og:type" content="website"/>

@@ -7,10 +7,10 @@ const canvas = require("canvas");
 const startPath = "https://studio.code.org";
 const jsdom = require("jsdom");
 //let animations = `${startPath}/v3/animations/`;
-canvas.registerFont("./client/Turbo/dependencies/fonts/fa-brands-400.ttf", { family: "FontAwesome" });
+canvas.registerFont("./Turbo/dependencies/fonts/fa-brands-400.ttf", { family: "FontAwesome" });
 //canvas.registerFont("./fonts/fa-regular-400.ttf", {family: "FontAwesome"}) doesn't seem like this one is used??
-canvas.registerFont("./client/Turbo/dependencies/fonts/fa-solid-900.ttf", { family: "FontAwesome" })
-canvas.registerFont("./client/Turbo/dependencies/fonts/fa-v4compatibility.ttf", { family: "FontAwesome" })
+canvas.registerFont("./Turbo/dependencies/fonts/fa-solid-900.ttf", { family: "FontAwesome" })
+canvas.registerFont("./Turbo/dependencies/fonts/fa-v4compatibility.ttf", { family: "FontAwesome" })
 
 //exportProject("pNfF6pjzbWtCgdsls0ofkSpt0yxmK29_e8iGJJtXWpI")
 
