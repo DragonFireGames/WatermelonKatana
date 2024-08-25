@@ -99,4 +99,6 @@ PostSchema.index({
 
 const Posts = Mongoose.model("post", PostSchema);
 
+Posts.on('index',console.log);
+
 module.exports = Posts;
