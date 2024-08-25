@@ -90,7 +90,7 @@ PostSchema.index({
 },{
   weights: {
     name: 5, 
-    content: 1,
+    content: 2,
     poster: 2,
     tags: 3,
   },
