@@ -28,7 +28,7 @@
           <option value="views">Views</option>
           <option value="latest">Latest</option>
         </select>
-        <input type="text" id="searchBar" placeholder="Search tags here separated by a comma" style="font-size: inherit">
+        <input type="text" id="searchBar" placeholder="Search here" style="font-size: inherit">
         <input type="submit" value="Search" style="font-size: inherit">
       </form>
     </div>
@@ -50,11 +50,15 @@
       form.addEventListener('submit', async (e) => {
         e.preventDefault()
         try {
-          var taglist = searchBar.value.toLowerCase().replace(/[^,\w\d_-]/g,"").split(",");
+          var query = searchBar.value;
           const url = new URL(location);
-          if (taglist[0]) url.searchParams.set("includeTags", taglist.join("+"));
-          else url.searchParams.delete("includeTags");
-          url.searchParams.set("sort", sortOptions.value);
+          if (query) {
+            url.searchParams.set("query", taglist.join("+"));
+            url.searchParams.delete("sort");
+          } else {
+            url.searchParams.set("sort", sortOptions.value);
+            url.searchParams.delete("query");
+          }
           history.pushState({}, "", url);
           params = new URLSearchParams(location.search);
           searchPosts();
