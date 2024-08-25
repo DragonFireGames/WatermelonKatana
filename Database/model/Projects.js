@@ -106,9 +106,7 @@ const ProjectSchema = new Mongoose.Schema({
   }
 });
 
-const Projects = Mongoose.model("project", ProjectSchema);
-
-Projects.index({
+ProjectSchema.index({
   name: "text", 
   desc: "text",
   poster: "text",
@@ -122,5 +120,7 @@ Projects.index({
   },
   name: "searchIndex"
 });
+
+const Projects = Mongoose.model("project", ProjectSchema);
 
 module.exports = Projects;
