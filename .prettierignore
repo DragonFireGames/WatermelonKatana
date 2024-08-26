@@ -1,0 +1,10 @@
+# ignore
+.github
+Assets
+
+**/*.html
+**/*.css
+**/.git
+**/.svn
+**/.hg
+**/node_modules
