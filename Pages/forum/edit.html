@@ -60,7 +60,7 @@
       (async () => {
         const res = await fetch("/api/forum/data/" + pid);
         const data = await res.json();
-        name.value = data.name;
+        name.value = data.title;
         content.value = data.content;
         tags.value = data.tags.join(", ");
         mature.checked = data.mature;
@@ -83,7 +83,7 @@
           const res = await fetch("/api/forum/update/" + pid, {
             method: "PUT",
             body: JSON.stringify({
-              name: name.value,
+              title: name.value,
               content: content.value,
               tags: taglist,
               mature: mature.checked,
