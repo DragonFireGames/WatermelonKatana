@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="/styles/style.css" />
     <link rel="stylesheet" type="text/css" href="/styles/forum.css" />
     <script src="/scripts/HtmlSanitizer.js"></script>
-    <script src="/scripts/utils.js"></script>
+    <script src="/scripts/script.js"></script>
     <script src="/scripts/markdowntextbox.js"></script>
     <script src="/scripts/forum.js"></script>
   </head>
@@ -73,7 +73,6 @@
             postdiv,
             data,
             `
-                ${convertMarkdown(data.desc)} <br>
                 <b>URL</b> => <a href="${data.link}">${data.link}</a> <br>
                 <b>Platform</b>: <a href="/search?platform=${data.platform}">${
                   {

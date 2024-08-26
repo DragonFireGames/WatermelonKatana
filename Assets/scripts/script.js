@@ -101,7 +101,7 @@ function projHTML(list,tok) {
   return function (proj) {
     let div = `<a class="project-panel" href="/project/${proj.id}" ${proj.viewers.includes(tok?.user?.id)?`style="color: #b0b0b0;"`:""}>
       <div class="thumbnail-border"><img class="project-thumbnail" src="${proj.thumbnail || "/images/placeholders/PLACEHOLDER_project.png"}" alt=""></div>
-      <div class="project-link">${previewContent(proj.name, 100)}</div>
+      <div class="project-link">${previewContent(proj.title, 100)}</div>
       <div>By: <object><a href="/user/${proj.poster}"><i>${proj.poster}</i></a></object></div>
       <div>Score: ${proj.score} Views: ${proj.views}</div>
       <div class="project-tags">${tagHTML(proj.tags)}</div>
@@ -116,7 +116,7 @@ function forumHTML(list,tok) {
   return function (post) {
     let div = `<a class="post-panel" href="/forum/discussion/${post.id}" ${post.viewers.includes(tok?.user?.id)?`style="color: #b0b0b0;"`:""}>
       <div class="post-top">
-        <h2>${previewContent(post.name, 100)}</h2> 
+        <h2>${previewContent(post.title, 100)}</h2> 
         <p style="display: inline;">${previewContent(post.content,100)}
         <br>
       By: <object><a href="/user/${post.poster}"><i>${post.poster}</i></a></object> | Views: ${post.views} | Active ${relativeDate(post.activeAt)}</p>

@@ -3,7 +3,7 @@ async function createPost(post,data,txt,name,reload) {
   var u = await getUser(data.posterId);
   post.innerHTML = `
   <div id="display">
-    <h2 class="post-name">${makeLiteralChars(data.name)}</h2>
+    <h2 class="post-name">${makeLiteralChars(data.title)}</h2>
     <p class="comment-data">${new Date(data.postedAt).toUTCString()}</p>
     <div class="comment-top">
       <a href="/user/${u.username}">
@@ -11,6 +11,7 @@ async function createPost(post,data,txt,name,reload) {
         <p class="comment-username">${u.username}</p>
       </a>
     </div>
+    ${convertMarkdown(data.content)} <br>
     ${txt}
     ${data.tags.map(t=>` <a href="/search?includeTags=${t}">#${t}</a>`)} <br>
   </div>

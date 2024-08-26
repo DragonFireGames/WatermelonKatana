@@ -6,7 +6,7 @@
     <title>Edit | WatermelonKatana</title>
     <link rel="stylesheet" type="text/css" href="/styles/style.css">
     <script src="/scripts/HtmlSanitizer.js"></script>
-    <script src="/scripts/utils.js"></script>
+    <script src="/scripts/script.js"></script>
     <script src="/scripts/markdowntextbox.js"></script>
   </head>
   <body>
@@ -70,9 +70,9 @@
       (async () => {
         const res = await fetch("/api/project/data/" + pid);
         const data = await res.json();
-        name.value = data.name;
+        name.value = data.title;
         link.value = data.link;
-        desc.value = data.desc;
+        desc.value = data.content;
         thumb.src = data.thumbnail || "";
         tags.value = data.tags.join(", ");
         mature.checked = data.mature;
@@ -105,9 +105,9 @@
           const res = await fetch("/api/project/update/" + pid, {
             method: "PUT",
             body: JSON.stringify({
-              name: name.value,
+              title: name.value,
               link: link.value,
-              desc: desc.value,
+              content: desc.value,
               thumbnail: thumb.src,
               tags: taglist,
               mature: mature.checked,

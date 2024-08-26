@@ -6,7 +6,7 @@
     <title>Publish | WatermelonKatana</title>
     <link rel="stylesheet" type="text/css" href="/styles/style.css">
     <script src="/scripts/HtmlSanitizer.js"></script>
-    <script src="/scripts/utils.js"></script>
+    <script src="/scripts/script.js"></script>
     <script src="/scripts/markdowntextbox.js"></script>
   </head>
   <body>
@@ -81,9 +81,9 @@
           const res = await fetch('/api/project/publish', {
             method: 'POST',
             body: JSON.stringify({
-              name: name.value,
+              title: name.value,
               link: link.value,
-              desc: desc.value,
+              content: desc.value,
               thumbnail: thumb.src,
               tags: taglist,
               mature: mature.checked,

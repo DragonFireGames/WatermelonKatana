@@ -6,7 +6,7 @@
     <title>Post Discussion | WatermelonKatana</title>
     <link rel="stylesheet" type="text/css" href="/styles/style.css">
     <script src="/scripts/HtmlSanitizer.js"></script>
-    <script src="/scripts/utils.js"></script>
+    <script src="/scripts/script.js"></script>
     <script src="/scripts/markdowntextbox.js"></script>
   </head>
   <body>
@@ -61,7 +61,7 @@
           const res = await fetch('/api/forum/publish', {
             method: 'POST',
             body: JSON.stringify({
-              name: name.value,
+              title: name.value,
               content: content.value,
               tags: taglist,
               mature: mature.checked,

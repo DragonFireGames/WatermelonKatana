@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="/styles/style.css">
     <link rel="stylesheet" type="text/css" href="/styles/forum.css">
     <script src="/scripts/HtmlSanitizer.js"></script>
-    <script src="/scripts/utils.js"></script>
+    <script src="/scripts/script.js"></script>
     <script src="/scripts/markdowntextbox.js"></script>
     <script src="/scripts/forum.js"></script>
   </head>
@@ -27,7 +27,6 @@
           const res = await fetch('/api/forum/data/'+pid);
           const data = await res.json();
           await createPost(postdiv,data,`
-          ${convertMarkdown(data.content)} <br>
           <b>Views:</b> <span id="views">${data.views}</span> <br>
           `,"forum",()=>{
             postdiv.innerHTML = `Loading...`;
