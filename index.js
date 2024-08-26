@@ -101,19 +101,19 @@ app.get("/project/:id", checkAuth, async (req, res) => {
   proj.views++;
   sendFileReplace(res, "./Pages/projects/project.html", (s) => s.replace(
     "<!--og:meta-->",
-    `<meta property="og:title" content="${makeLiteralChars(proj.name)}"/>
+    `<meta property="og:title" content="${makeLiteralChars(proj.title)}"/>
   <meta property="og:type" content="website"/>
   <meta property="og:image" content="${proj.thumbnail}"/>
-  <meta property="og:description" content="${makeLiteralChars(proj.desc)} \n By: ${proj.poster} \n Score: ${proj.score} Views: ${proj.views}"/>
+  <meta property="og:description" content="${makeLiteralChars(proj.content)} \n By: ${proj.poster} \n Score: ${proj.score} Views: ${proj.views}"/>
   `).replace("<!--content-->",`
-    ${makeLiteralChars(proj.name)}<br>
+    ${makeLiteralChars(proj.title)}<br>
     By: ${proj.poster}<br>
-    ${makeLiteralChars(proj.desc)}<br>
+    ${makeLiteralChars(proj.content)}<br>
     <a href="${proj.link}">${proj.link}</a><br>
     ${proj.tags.map(v=>"#"+v).join(", ")}<br>
     Score: ${proj.score} Views: ${proj.views} Platform: ${proj.platform} Featured: ${proj.featured}
   `).replace("<!--title-->",`
-    <title>${makeLiteralChars(proj.name)} | WatermelonKatana</title>
+    <title>${makeLiteralChars(proj.title)} | WatermelonKatana</title>
   `));
   await proj.save();
 });
@@ -143,17 +143,17 @@ app.get("/forum/discussion/:id", checkAuth, async (req, res) => {
   post.views++;
   sendFileReplace(res, "./Pages/forum/discussion.html", (s) => s.replace(
     "<!--og:meta-->",
-    `<meta property="og:title" content="${makeLiteralChars(post.name)}"/>
+    `<meta property="og:title" content="${makeLiteralChars(post.title)}"/>
   <meta property="og:type" content="website"/>
   <meta property="og:description" content="${makeLiteralChars(post.content)} \n By: ${post.poster} \n Views: ${post.views}"/>
   `).replace("<!--content-->",`
-    ${makeLiteralChars(post.name)}<br>
+    ${makeLiteralChars(post.title)}<br>
     By: ${post.poster}<br>
     ${makeLiteralChars(post.content)}<br>
     ${post.tags.map(v=>"#"+v).join(", ")}<br>
     Views: ${post.views} Featured: ${post.featured}
   `).replace("<!--title-->",`
-    <title>${makeLiteralChars(post.name)} | WatermelonKatana</title>
+    <title>${makeLiteralChars(post.title)} | WatermelonKatana</title>
   `));
   await post.save();
 });
