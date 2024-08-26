@@ -171,7 +171,7 @@ function projHTML(list,tok) {
 
 function forumHTML(list,tok) {
   return function (post) {
-    let div = `<a class="post-panel" title="${tagTitle(proj.tags)}" href="/forum/discussion/${post.id}" ${post.viewers.includes(tok?.user?.id)?`style="color: #b0b0b0;"`:""}>
+    let div = `<a class="post-panel" title="${tagTitle(post.tags)}" href="/forum/discussion/${post.id}" ${post.viewers.includes(tok?.user?.id)?`style="color: #b0b0b0;"`:""}>
       <div class="post-top">
         <h2>${previewContent(post.title, 100)}</h2> 
         <p style="display: inline;">${previewContent(post.content,100)}
