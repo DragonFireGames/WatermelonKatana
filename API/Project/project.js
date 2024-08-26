@@ -29,7 +29,7 @@ processLink(link,thumbnail) {
 }
   
 async publish(req, res, next) {
-  var { name, link, desc, thumbnail, tags, mature, hidden, privateRecipients, platform } = req.body;
+  var { title, link, content, thumbnail, tags, mature, hidden, privateRecipients, platform } = req.body;
   console.log(name,link);
   try {
     const uid = res.locals.userToken.id;
@@ -44,9 +44,9 @@ async publish(req, res, next) {
     });
     var e = this.processLink(link,thumbnail);
     const project = await this.model.create({
-      name,
+      title,
       link: e.link,
-      desc,
+      content,
       tags,
       thumbnail: e.thumbnail,
       mature, 
@@ -64,7 +64,7 @@ async publish(req, res, next) {
     res.status(201).json({
       message: "Project successfully published",
       id: project._id,
-      name: project.name,
+      title: project.title,
     });
     console.log("done!");
   } catch(error) {
@@ -77,8 +77,8 @@ async publish(req, res, next) {
 };
 
 async update(req, res, next) {
-  var { name, link, desc, thumbnail, tags, mature, hidden, privateRecipients, platform } = req.body;
-  console.log(name,link);
+  var { title, link, content, thumbnail, tags, mature, hidden, privateRecipients, platform } = req.body;
+  console.log(title,link);
   try {
     const pid = req.params.id;
     const project = await this.model.findOne({ _id: pid });
@@ -91,9 +91,9 @@ async update(req, res, next) {
       message: "Not Authorized. You do not own this project",
     });
     var e = this.processLink(link,thumbnail);
-    project.name = name;
+    project.title = title;
     project.link = e.link;
-    project.desc = desc;
+    project.content = content;
     project.tags = tags;
     project.thumbnail = e.thumbnail;
     project.mature = mature;
@@ -105,7 +105,7 @@ async update(req, res, next) {
     res.status(201).json({
       message: "Project successfully updated",
       id: project._id,
-      name: project.name,
+      title: project.title,
     });
     console.log("done!");
   } catch(error) {
@@ -139,7 +139,7 @@ async delete(req, res, next) {
     res.status(201).json({
       message: "Project successfully deleted",
       id: project._id,
-      name: project.name,
+      title: project.title,
     });
     console.log("done!");
   } catch(error) {
@@ -183,7 +183,7 @@ async favorite(req, res, next) {
     res.status(201).json({
       message: "Project successfully updated",
       id: project._id,
-      name: project.name,
+      title: project.title,
     });
     console.log("done!");
   } catch(error) {
@@ -220,7 +220,7 @@ async unfavorite(req, res, next) {
     res.status(201).json({
       message: "Project successfully updated",
       id: project._id,
-      name: project.name,
+      title: project.title,
     });
     console.log("done!");
   } catch(error) {
