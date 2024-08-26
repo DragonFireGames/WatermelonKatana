@@ -77,6 +77,7 @@ const ProjectSchema = new Mongoose.Schema({
   },*/
   comments: [ CommentSchema ]
 },{
+  strict:false,
   methods: {
     pack: function() {
       const container = {};
