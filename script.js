@@ -7,7 +7,7 @@ var Users =  require("./Database/model/Users");
 
 (async function(){try{
 
-  var ulist = await Users.find({ });
+  /*var ulist = await Users.find({ });
   for (var u of ulist) {
     //u.avatar = "https://fakeimg.pl/300x300";
     //u.banner = "https://fakeimg.pl/720x360";
@@ -16,7 +16,7 @@ var Users =  require("./Database/model/Users");
     //u.mature = false;
     console.log(u);
     await u.save();
-  }
+  }*/
   
   //Projects.updateMany({ },{views:0,thumbnail:""}).then(console.log);
 
