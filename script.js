@@ -1,4 +1,4 @@
-const connectDB = require("./Database/db");
+const connectDB = require("./Database/connect");
 connectDB();
 
 var Projects =  require("./Database/model/Projects");
