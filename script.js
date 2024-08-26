@@ -1,9 +1,9 @@
-const connectDB = require("./db");
+const connectDB = require("./Database/db");
 connectDB();
 
-var Projects =  require("./model/Projects");
-var Posts =  require("./model/Posts");
-var Users =  require("./model/Users");
+var Projects =  require("./Database/model/Projects");
+var Posts =  require("./Database/model/Posts");
+var Users =  require("./Database/model/Users");
 
 (async function(){try{
 
