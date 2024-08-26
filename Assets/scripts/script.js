@@ -143,17 +143,7 @@ function userHTML(list) {
   };
 }
 
-function tagHTML(tags) {
-  let container = ``;
-  for(let tag of tags) {
-    if(tag !== "") {  
-     container += `<p>#${tag}</p>`;
-    }
-  }
-  return container;
-}
-
-/*/
+*/
 
 function projHTML(list,tok) {
   return function (proj) {
@@ -177,6 +167,7 @@ function forumHTML(list,tok) {
         <p style="display: inline;">${previewContent(post.content,100)}
         <br>
       By: <object><a href="/user/${post.poster}"><i>${post.poster}</i></a></object> | Views: ${post.views} | Active ${relativeDate(post.activeAt)}</p>
+      <div class="forum-tags">${tagHTML(post.tags)}</div>
       </div>
     </a>`;
     list.innerHTML += div;
@@ -201,4 +192,7 @@ function tagTitle(tags) {
   return tags.map(e=>"#"+e).join(" ");
 }
 
-//*/
+function tagHTML(tags) {
+  return tags.map(e=>"<p>#"+e+"</p>").join(" ");
+}
+
