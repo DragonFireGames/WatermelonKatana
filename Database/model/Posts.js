@@ -4,7 +4,7 @@ const Mongoose = require("mongoose");
 const CommentSchema = require("./Comments");
 
 const PostSchema = new Mongoose.Schema({
-  name: {
+  title: {
     type: String,
     minlength: 2,
     required: true,
@@ -60,7 +60,7 @@ const PostSchema = new Mongoose.Schema({
   methods: {
     pack: function() {
       const container = {};
-      container.name = this.name;
+      container.title = this.title;
       container.content = this.content;
       container.featured = this.featured;
       container.tags = this.tags || [];
@@ -83,13 +83,13 @@ const PostSchema = new Mongoose.Schema({
 });
 
 PostSchema.index({
-  name: "text", 
+  title: "text", 
   content: "text",
   poster: "text",
   tags: "text",
 },{
   weights: {
-    name: 5, 
+    title: 5, 
     content: 2,
     poster: 2,
     tags: 3,
