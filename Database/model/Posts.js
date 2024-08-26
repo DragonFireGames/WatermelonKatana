@@ -57,7 +57,7 @@ const PostSchema = new Mongoose.Schema({
   },*/
   comments: [ CommentSchema ]
 },{
-  strict: false,
+  //strict: false,
   methods: {
     pack: function() {
       const container = {};
