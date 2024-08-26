@@ -46,8 +46,8 @@ notifyUserFollowers(title,user,content,link) {
 }
   
 async publish(req, res, next) {
-  var { name, content, tags, mature, hidden, privateRecipients } = req.body;
-  console.log(name,content);
+  var { title, content, tags, mature, hidden, privateRecipients } = req.body;
+  console.log(title,content);
   try {
     const uid = res.locals.userToken.id;
     const user = await Users.findOne({ _id: uid });
@@ -56,7 +56,7 @@ async publish(req, res, next) {
       error: "User not found",
     });
     const post = await this.model.create({
-      name,
+      title,
       content,
       tags,
       mature, 
@@ -73,7 +73,7 @@ async publish(req, res, next) {
     res.status(201).json({
       message: "Post successfully published",
       id: post._id,
-      name: post.name,
+      title: post.title,
     });
     console.log("done!");
   } catch(error) {
@@ -86,8 +86,8 @@ async publish(req, res, next) {
 }
   
 async update(req, res, next) {
-  var { name, content, tags, mature, hidden, privateRecipients } = req.body;
-  console.log(name,content);
+  var { title, content, tags, mature, hidden, privateRecipients } = req.body;
+  console.log(title,content);
   try {
     const pid = req.params.id;
     const post = await this.model.findOne({ _id: pid });
@@ -99,7 +99,7 @@ async update(req, res, next) {
     if (post.posterId !== user.id && user.role !== "Admin") return res.status(403).json({
       message: "Not Authorized. You do not own this post",
     });
-    post.name = name;
+    post.title = title;
     post.content = content;
     post.tags = tags;
     post.mature = mature;
@@ -111,7 +111,7 @@ async update(req, res, next) {
     res.status(201).json({
       message: "Post successfully updated",
       id: post._id,
-      name: post.name,
+      title: post.title,
     });
     console.log("done!");
   } catch(error) {
@@ -140,7 +140,7 @@ async delete(req, res, next) {
     res.status(201).json({
       message: "Post successfully deleted",
       id: post._id,
-      name: post.name,
+      title: post.title,
     });
     console.log("done!");
   } catch(error) {
@@ -242,7 +242,7 @@ async feature(req, res, next) {
     res.status(201).json({
       message: "Post successfully updated",
       id: post._id,
-      name: post.name,
+      title: post.title,
     });
     console.log("done!");
   } catch(error) {
@@ -266,7 +266,7 @@ async unfeature(req, res, next) {
     res.status(201).json({
       message: "Post successfully updated",
       id: post._id,
-      name: post.name,
+      title: post.title,
     });
     console.log("done!");
   } catch(error) {
@@ -318,7 +318,7 @@ async comment(req, res, next) {
     res.status(201).json({
       message: "Post successfully updated",
       id: post._id,
-      name: post.name,
+      title: post.title,
     });
     console.log("done!");
   } catch(error) {
@@ -356,7 +356,7 @@ async deleteComment(req, res, next) {
     res.status(201).json({
       message: "Post successfully updated",
       id: post._id,
-      name: post.name,
+      title: post.title,
     });
     console.log("done!");
   } catch(error) {
@@ -391,7 +391,7 @@ async editComment(req, res, next) {
     res.status(201).json({
       message: "Post successfully updated",
       id: post._id,
-      name: post.name,
+      title: post.title,
     });
     console.log("done!");
   } catch(error) {
@@ -424,7 +424,7 @@ async upvoteComment(req, res, next) {
     res.status(201).json({
       message: "Post successfully updated",
       id: post._id,
-      name: post.name,
+      title: post.title,
     });
     console.log("done!");
   } catch(error) {
@@ -458,7 +458,7 @@ async downvoteComment(req, res, next) {
     res.status(201).json({
       message: "Post successfully updated",
       id: post._id,
-      name: post.name,
+      title: post.title,
     });
     console.log("done!");
   } catch(error) {
