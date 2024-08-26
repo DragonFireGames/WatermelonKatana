@@ -78,6 +78,7 @@ const UserSchema = new Mongoose.Schema({
   },
   notifications: [ NotificationSchema ],
 }, {
+  //strict: false,
   methods: {
     pack: function() {
       const container = {};
