@@ -13,7 +13,7 @@ var Users =  require("./model/Users");
     //u.banner = "https://fakeimg.pl/720x360";
     //u.biography = "This user has not added a biography yet.";
     //u.joinedAt = Date.now();
-    u.mature = false;
+    //u.mature = false;
     console.log(u);
     await u.save();
   }
@@ -34,6 +34,10 @@ var Users =  require("./model/Users");
     p.mature = false;
     p.hidden = false;
     p.privateRecipients = [];
+    p.title = p.name;
+    delete p.name;
+    p.content = p.desc;
+    delete p.desc;
     console.log(p);
     await p.save();
   }
@@ -47,6 +51,8 @@ var Users =  require("./model/Users");
     p.mature = false;
     p.hidden = false;
     p.privateRecipients = [];
+    p.title = p.name;
+    delete p.name;
     console.log(p);
     await p.save();
   }
