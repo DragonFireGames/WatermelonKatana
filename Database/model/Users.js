@@ -36,9 +36,13 @@ const UserSchema = new Mongoose.Schema({
       strength: 2
     },
     required: true,
-    maxlength: 100
+    maxlength: 100,
   },
-  email: String,
+  email: {
+    type: String,
+    unique: true,
+    maxlength: 500,
+  },
   password: {
     type: String,
     minlength: 6,
