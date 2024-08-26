@@ -202,6 +202,36 @@ app.get("/notification/:index", userAuth, openNotification);
 const { openReport } = require("./API/Admin/admin");
 app.get("/report/:id", adminAuth, openReport);
 
+app.get("/sitemap.xml", async (req, res) => {
+  const projects = await Projects.find({ hidden: false });
+  const posts = await Posts.find({ hidden: false });
+  const users = await Users.find({ });
+
+  var dynamics = `
+  ${projects.map(e=>`
+   <url>
+      <loc>https://watermelonkatana.com/project/${e.id}/</loc>
+      <changefreq>weekly</changefreq>
+      <priority>0.5</priority>
+   </url>
+  `).join('\n')}
+  ${posts.map(e=>`
+   <url>
+      <loc>https://watermelonkatana.com/forum/discussion/${e.id}/</loc>
+      <changefreq>weekly</changefreq>
+      <priority>0.5</priority>
+   </url>
+  `).join('\n')}
+  ${users.map(e=>`
+   <url>
+      <loc>https://watermelonkatana.com/user/${e.username}/</loc>
+      <changefreq>weekly</changefreq>
+      <priority>0.4</priority>
+   </url>
+  `).join('\n')}`;
+  sendFileReplace(res, "./Pages/sitemap.xml", (s) => s.replace("<!--dynamics-->",dynamics));
+});
+
 // TurboWarp page
 //app.get("/turbowarp", (req, res) => res.sendFile(cldir + "/turbowarp/index.html"));
 
