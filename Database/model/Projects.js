@@ -3,7 +3,7 @@ const Mongoose = require("mongoose");
 const CommentSchema = require("./Comments");
 
 const ProjectSchema = new Mongoose.Schema({
-  name: {
+  title: {
     type: String,
     minlength: 2,
     required: true,
@@ -18,7 +18,7 @@ const ProjectSchema = new Mongoose.Schema({
     type: String,
     default: "",
   },
-  desc: {
+  content: {
     type: String,
     default: "",
     maxlength: 15000,
@@ -80,9 +80,9 @@ const ProjectSchema = new Mongoose.Schema({
   methods: {
     pack: function() {
       const container = {};
-      container.name = this.name;
+      container.title = this.title;
       container.link = this.link;
-      container.desc = this.desc;
+      container.content = this.content;
       container.featured = this.featured;
       container.thumbnail = this.thumbnail;
       container.tags = this.tags || [];
@@ -107,14 +107,14 @@ const ProjectSchema = new Mongoose.Schema({
 });
 
 ProjectSchema.index({
-  name: "text", 
-  desc: "text",
+  title: "text", 
+  content: "text",
   poster: "text",
   tags: "text",
 },{
   weights: {
-    name: 5, 
-    desc: 2,
+    title: 5, 
+    content: 2,
     poster: 2,
     tags: 3,
   },
