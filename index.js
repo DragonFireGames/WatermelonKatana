@@ -274,43 +274,28 @@ app.get('/sitemap.xml', async (req, res) => {
     const users = await Users.find({})
 
     var dynamics = `
-  ${projects
-      .map(
-          (e) => `
+  ${projects.map((e) => `
    <url>
       <loc>https://watermelonkatana.com/project/${e.id}/</loc>
       <changefreq>weekly</changefreq>
       <priority>0.5</priority>
    </url>
-  `
-      )
-      .join('\n')}
-  ${posts
-      .map(
-          (e) => `
+  `).join('\n')}
+  ${posts.map((e) => `
    <url>
       <loc>https://watermelonkatana.com/forum/discussion/${e.id}/</loc>
       <changefreq>weekly</changefreq>
       <priority>0.5</priority>
    </url>
-  `
-      )
-      .join('\n')}
-  ${users
-      .map(
-          (e) => `
+  `).join('\n')}
+  ${users.map((e) => `
    <url>
       <loc>https://watermelonkatana.com/user/${e.username}/</loc>
       <changefreq>weekly</changefreq>
       <priority>0.4</priority>
-   </url>
-  `
-      )
-      .join('\n')}`;
+   </url>`).join('\n')}`;
     res.set('Content-Type', 'application/xml');
-    sendFileReplace(res, './Pages/sitemap.xml', (s) =>
-        s.replace('<!--dynamics-->', dynamics)
-    )
+    sendFileReplace(res, './Pages/sitemap.xml', (s) => s.replace('<!--dynamics-->', dynamics).replace(/^[^]*?<\?/,""));
 })
 
 // TurboWarp page
