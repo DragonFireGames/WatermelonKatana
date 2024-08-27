@@ -306,7 +306,8 @@ app.get('/sitemap.xml', async (req, res) => {
    </url>
   `
       )
-      .join('\n')}`
+      .join('\n')}`;
+    res.set('Content-Type', 'application/xml');
     sendFileReplace(res, './Pages/sitemap.xml', (s) =>
         s.replace('<!--dynamics-->', dynamics)
     )
