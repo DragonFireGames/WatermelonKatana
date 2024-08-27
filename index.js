@@ -295,7 +295,7 @@ app.get('/sitemap.xml', async (req, res) => {
       <priority>0.4</priority>
    </url>`).join('\n')}`;
     res.set('Content-Type', 'application/xml');
-    sendFileReplace(res, './Pages/sitemap.xml', (s) => s.replace('<!--dynamics-->', dynamics).replace(/^[^]*?(?=<\?xml)/,""));
+    sendFileReplace(res, './Pages/sitemap.xml', (s) => s.replace('<!--dynamics-->', dynamics));
 })
 
 // TurboWarp page
