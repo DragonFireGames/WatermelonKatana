@@ -9,8 +9,8 @@ Hello, I'm Colack, one of the founding members of WatermelonKatana, back when it
 I've been programming for about 8 years now, and I was inspired to start working on WatermelonKatana when my friends application "[WUT] World" was shut down.
 I wanted something that could recreate the magic that platform had, so I started working on many different projects, usually titled "OtherWorld", but eventually, with enough dedication and hardwork, WatermelonKatana took off.
 I'm excited to see what WatermelonKatana will look like in the future, and I hope everyone stays and enjoys our platform.
-- Colack/
 
+-   Colack/
 
 ## DragonFireGames
 

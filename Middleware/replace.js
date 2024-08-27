@@ -1,6 +1,5 @@
-
-const Transform = require("stream").Transform
-const fs = require("fs");
+const Transform = require('stream').Transform
+const fs = require('fs')
 
 module.exports = function(res, path, callback, xml) {
   const replacementTransform = new Transform();
