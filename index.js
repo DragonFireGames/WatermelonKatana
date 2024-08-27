@@ -291,7 +291,7 @@ app.get('/sitemap.xml', async (req, res) => {
   ${users.map((e) => `
    <url>
       <loc>https://watermelonkatana.com/user/${e.username}/</loc>
-      <changefreq>weekly</changefreq>
+      <changefreq>monthly</changefreq>
       <priority>0.4</priority>
    </url>`).join('\n')}`;
     res.set('Content-Type', 'application/xml');
