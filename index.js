@@ -99,12 +99,11 @@ app.get("/project/:id", checkAuth, async (req, res) => {
   }
   if (tok && !proj.viewers.includes(tok.id)) proj.viewers.push(tok.id);
   proj.views++;
-  sendFileReplace(res, "./Pages/projects/project.html", (s) => s.replace(
-    "<!--og:meta-->",
-    `<meta property="og:title" content="${makeLiteralChars(proj.title)}"/>
-  <meta property="og:type" content="website"/>
-  <meta property="og:image" content="${proj.thumbnail}"/>
-  <meta property="og:description" content="${makeLiteralChars(proj.content)} \n By: ${proj.poster} \n Score: ${proj.score} Views: ${proj.views}"/>
+  sendFileReplace(res, "./Pages/projects/project.html", (s) => s.replace("<!--og:meta-->",`
+    <meta property="og:title" content="${makeLiteralChars(proj.title)}"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content="${proj.thumbnail}"/>
+    <meta property="og:description" content="${makeLiteralChars(proj.content)} \n By: ${proj.poster} \n Score: ${proj.score} Views: ${proj.views}"/>
   `).replace("<!--content-->",`
     ${makeLiteralChars(proj.title)}<br>
     By: ${proj.poster}<br>
@@ -141,11 +140,10 @@ app.get("/forum/discussion/:id", checkAuth, async (req, res) => {
   }
   if (tok && !post.viewers.includes(tok.id)) post.viewers.push(tok.id);
   post.views++;
-  sendFileReplace(res, "./Pages/forum/discussion.html", (s) => s.replace(
-    "<!--og:meta-->",
-    `<meta property="og:title" content="${makeLiteralChars(post.title)}"/>
-  <meta property="og:type" content="website"/>
-  <meta property="og:description" content="${makeLiteralChars(post.content)} \n By: ${post.poster} \n Views: ${post.views}"/>
+  sendFileReplace(res, "./Pages/forum/discussion.html", (s) => s.replace("<!--og:meta-->",`
+    <meta property="og:title" content="${makeLiteralChars(post.title)}"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:description" content="${makeLiteralChars(post.content)} \n By: ${post.poster} \n Views: ${post.views}"/>
   `).replace("<!--content-->",`
     ${makeLiteralChars(post.title)}<br>
     By: ${post.poster}<br>
@@ -173,12 +171,11 @@ app.get("/user/:name", async (req, res) => {
     res.status(404).sendFile(cldir + "/404.html");
     return;
   }
-  sendFileReplace(res, "./Pages/users/user.html", (s) => s.replace(
-    "<!--og:meta-->",
-    `<meta property="og:title" content="@${user.username} on WatermelonKatana"/>
-  <meta property="og:type" content="website"/>
-  <meta property="og:image" content="${user.avatar}"/>
-  <meta property="og:description" content="${makeLiteralChars(user.biography)}"/>
+  sendFileReplace(res, "./Pages/users/user.html", (s) => s.replace("<!--og:meta-->",`
+    <meta property="og:title" content="@${user.username} on WatermelonKatana"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content="${user.avatar}"/>
+    <meta property="og:description" content="${makeLiteralChars(user.biography)}"/>
   `).replace("<!--content-->",`
     ${user.username}<br>
     ${makeLiteralChars(user.biography)}<br>
@@ -202,35 +199,35 @@ app.get("/notification/:index", userAuth, openNotification);
 const { openReport } = require("./API/Admin/admin");
 app.get("/report/:id", adminAuth, openReport);
 
-app.get("/sitemap.xml", async (req, res) => {
+app.get('/sitemap.xml', async (req, res) => {
   const projects = await Projects.find({ hidden: false });
   const posts = await Posts.find({ hidden: false });
-  const users = await Users.find({ });
+  const users = await Users.find({});
 
   var dynamics = `
-  ${projects.map(e=>`
+  ${projects.map((e) => `
    <url>
-      <loc>https://watermelonkatana.com/project/${e.id}/</loc>
-      <changefreq>weekly</changefreq>
-      <priority>0.5</priority>
+    <loc>https://watermelonkatana.com/project/${e.id}/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
    </url>
   `).join('\n')}
-  ${posts.map(e=>`
+  ${posts.map((e) => `
    <url>
-      <loc>https://watermelonkatana.com/forum/discussion/${e.id}/</loc>
-      <changefreq>weekly</changefreq>
-      <priority>0.5</priority>
+    <loc>https://watermelonkatana.com/forum/discussion/${e.id}/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
    </url>
   `).join('\n')}
-  ${users.map(e=>`
+  ${users.map((e) => `
    <url>
-      <loc>https://watermelonkatana.com/user/${e.username}/</loc>
-      <changefreq>weekly</changefreq>
-      <priority>0.4</priority>
-   </url>
-  `).join('\n')}`;
-  sendFileReplace(res, "./Pages/sitemap.xml", (s) => s.replace("<!--dynamics-->",dynamics));
-});
+    <loc>https://watermelonkatana.com/user/${e.username}/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+   </url>`).join('\n')}`;
+  res.set('Content-Type', 'application/xml');
+  sendFileReplace(res, './Pages/sitemap.xml', (s) => s.replace('<!--dynamics-->', dynamics), true);
+})
 
 // TurboWarp page
 //app.get("/turbowarp", (req, res) => res.sendFile(cldir + "/turbowarp/index.html"));
