@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Forum | WatermelonKatana</title>
+    <title>WatermelonKatana Forum</title>
     <link rel="stylesheet" type="text/css" href="/styles/style.css">
     <link rel="stylesheet" type="text/css" href="/styles/home.css">
     <script src="/scripts/HtmlSanitizer.js"></script>
@@ -18,7 +18,7 @@
       <a href="/chat">Chat</a>
     </div>
     <section class="intro">
-      <p>Post Questions, Get Help! This is your place to get help coding.</p>
+      <p>Welcome to the Forum, post your Questions, Get Help! This is your place to get help coding, make suggestions, and get feedback on your projects.</p>
     </section>
     <div id="controls">
       <form style="font-size: 25px">
@@ -43,7 +43,7 @@
       const list = document.querySelector('#list');
       const sortOptions = document.querySelector('#sortOptions');
       const searchBar = document.querySelector('#searchBar');
-      var params = new URLSearchParams(location.search);
+      var params = new URLSearchParams(__cpLocation.search);
       sortOptions.value = params.get("sort")||"featured";
       searchBar.value = params.get("query")||"";
     
@@ -51,7 +51,7 @@
         e.preventDefault()
         try {
           var query = searchBar.value;
-          const url = new URL(location);
+          const url = new URL(__cpLocation);
           if (query) {
             url.searchParams.set("query", query);
             url.searchParams.delete("sort");
@@ -60,7 +60,7 @@
             url.searchParams.delete("query");
           }
           history.pushState({}, "", url);
-          params = new URLSearchParams(location.search);
+          params = new URLSearchParams(__cpLocation.search);
           searchPosts();
         } catch (err) {
           alert(err.message);
@@ -70,7 +70,7 @@
 
       async function searchPosts() {
         const tok = await getAuth();
-        var sparams = new URLSearchParams(location.search);
+        var sparams = new URLSearchParams(__cpLocation.search);
         sparams.set("showMature", tok.user?.mature);
         const res = await fetch('/api/forum/'+(sparams.get("query")?'search':'list')+'?'+sparams);
         const data = await res.json();
