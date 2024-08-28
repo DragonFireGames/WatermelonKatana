@@ -18,6 +18,7 @@
         <option value="score">Score</option>
         <option value="views">Views</option>
         <option value="latest">Latest</option>
+        <option value="oldest">Oldest</option>
       </select>
       <input type="text" id="searchBar" placeholder="Search here" style="font-size: inherit">
       <input type="submit" value="Search" style="font-size: inherit">
@@ -33,7 +34,7 @@
       const list = document.querySelector('#list');
       const sortOptions = document.querySelector('#sortOptions');
       const searchBar = document.querySelector('#searchBar');
-      var params = new URLSearchParams(location.search);
+      var params = new URLSearchParams(__cpLocation.search);
       sortOptions.value = params.get("sort")||"score";
       searchBar.value = params.get("query")||"";
     
@@ -41,7 +42,7 @@
         e.preventDefault()
         try {
           var query = searchBar.value;
-          const url = new URL(location);
+          const url = new URL(__cpLocation);
           if (query) {
             url.searchParams.set("query", query);
             url.searchParams.delete("sort");
@@ -50,7 +51,7 @@
             url.searchParams.delete("query");
           }
           history.pushState({}, "", url);
-          params = new URLSearchParams(location.search);
+          params = new URLSearchParams(__cpLocation.search);
           searchProjects();
         } catch (err) {
           alert(err.message);
@@ -60,7 +61,7 @@
 
       async function searchProjects() {
         const tok = await getAuth();
-        var sparams = new URLSearchParams(location.search);
+        var sparams = new URLSearchParams(__cpLocation.search);
         sparams.set("showMature", tok.user?.mature);
         const res = await fetch('/api/project/'+(sparams.get("query")?'search':'list')+'?'+sparams);
         const data = await res.json();
@@ -68,6 +69,7 @@
           case "score": data.projects.sort((a,b)=>(b.score-a.score)||(b.views-a.views)); break;
           case "views": data.projects.sort((a,b)=>(b.views-a.views)||(b.score-a.score)); break;
           case "latest": data.projects.sort((a,b)=>(b.postedAt-a.postedAt)); break;
+          case "oldest": data.projects.sort((a,b)=>(a.postedAt-b.postedAt)); break;
         }
         list.innerHTML = '';
         data.projects.map(projHTML(list,tok));
