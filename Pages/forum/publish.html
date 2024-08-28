@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Post Discussion | WatermelonKatana</title>
+    <title>Post Discussion | WatermelonKatana Forum</title>
     <link rel="stylesheet" type="text/css" href="/styles/style.css">
     <script src="/scripts/HtmlSanitizer.js"></script>
     <script src="/scripts/script.js"></script>
@@ -74,7 +74,7 @@
           if (res.status === 400 || res.status === 401) {
             return display.textContent = data.message+". "+(data.error ? data.error : '');
           }
-          location.assign('/forum/discussion/'+data.id);
+          __cpLocation.assign('/forum/discussion/'+data.id);
         } catch (err) {
           console.log(err.message);
           alert(err.message);
