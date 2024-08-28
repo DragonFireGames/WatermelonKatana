@@ -74,7 +74,7 @@
           if (res.status === 400 || res.status === 401) {
             return display.textContent = data.message+". "+(data.error ? data.error : '');
           }
-          __cpLocation.assign('/forum/discussion/'+data.id);
+          location.assign('/forum/discussion/'+data.id);
         } catch (err) {
           console.log(err.message);
           alert(err.message);
