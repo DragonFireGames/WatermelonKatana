@@ -43,8 +43,8 @@
       const hidden = document.querySelector('#hidden');
       const display = document.querySelector(".error");
 
-      __cpLocation.path = __cpLocation.pathname.split("/");
-      const pid = __cpLocation.path[3];
+      location.path = location.pathname.split("/");
+      const pid = location.path[3];
 
       const deletebtn = document.querySelector("#deletebtn");
       deletebtn.onclick = async () => {
@@ -54,7 +54,7 @@
           body: JSON.stringify({ pid }),
           headers: { "Content-Type": "application/json" },
         });
-        __cpLocation.assign("/");
+        location.assign("/");
       };
 
       (async () => {
@@ -97,7 +97,7 @@
             return (display.textContent =
               data.message + ". " + (data.error ? data.error : ""));
           }
-          __cpLocation.assign("/forum/discussion/" + data.id);
+          location.assign("/forum/discussion/" + data.id);
         } catch (err) {
           console.error(err.message);
           alert(err.message);
