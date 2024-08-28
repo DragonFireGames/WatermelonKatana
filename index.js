@@ -151,7 +151,7 @@ app.get("/forum/discussion/:id", checkAuth, async (req, res) => {
     ${post.tags.map(v=>"#"+v).join(", ")}<br>
     Views: ${post.views} Featured: ${post.featured}
   `).replace("<!--title-->",`
-    <title>${makeLiteralChars(post.title)} | WatermelonKatana</title>
+    <title>${makeLiteralChars(post.title)} | WatermelonKatana Forum</title>
   `));
   await post.save();
 });
