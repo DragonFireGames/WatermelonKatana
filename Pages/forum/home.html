@@ -27,6 +27,7 @@
           <option value="active">Active</option>
           <option value="views">Views</option>
           <option value="latest">Latest</option>
+          <option value="oldest">Oldest</option>
         </select>
         <input type="text" id="searchBar" placeholder="Search here" style="font-size: inherit">
         <input type="submit" value="Search" style="font-size: inherit">
@@ -43,7 +44,7 @@
       const list = document.querySelector('#list');
       const sortOptions = document.querySelector('#sortOptions');
       const searchBar = document.querySelector('#searchBar');
-      var params = new URLSearchParams(__cpLocation.search);
+      var params = new URLSearchParams(location.search);
       sortOptions.value = params.get("sort")||"featured";
       searchBar.value = params.get("query")||"";
     
@@ -51,7 +52,7 @@
         e.preventDefault()
         try {
           var query = searchBar.value;
-          const url = new URL(__cpLocation);
+          const url = new URL(location);
           if (query) {
             url.searchParams.set("query", query);
             url.searchParams.delete("sort");
@@ -60,7 +61,7 @@
             url.searchParams.delete("query");
           }
           history.pushState({}, "", url);
-          params = new URLSearchParams(__cpLocation.search);
+          params = new URLSearchParams(location.search);
           searchPosts();
         } catch (err) {
           alert(err.message);
@@ -70,7 +71,7 @@
 
       async function searchPosts() {
         const tok = await getAuth();
-        var sparams = new URLSearchParams(__cpLocation.search);
+        var sparams = new URLSearchParams(location.search);
         sparams.set("showMature", tok.user?.mature);
         const res = await fetch('/api/forum/'+(sparams.get("query")?'search':'list')+'?'+sparams);
         const data = await res.json();
@@ -79,6 +80,7 @@
           case "active": data.posts.sort((a,b)=>(b.activeAt-a.activeAt)); break;
           case "views": data.posts.sort((a,b)=>(b.views-a.views)); break;
           case "latest": data.posts.sort((a,b)=>(b.postedAt-a.postedAt)); break;
+          case "oldest": data.posts.sort((a,b)=>(a.postedAt-b.postedAt)); break;
         }
         list.innerHTML = '';
         data.posts.map(forumHTML(list,tok));
