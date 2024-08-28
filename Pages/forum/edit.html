@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Edit Discussion | WatermelonKatana</title>
+    <title>Edit Discussion | WatermelonKatana Forum</title>
     <link rel="stylesheet" type="text/css" href="/styles/style.css">
     <script src="/scripts/HtmlSanitizer.js"></script>
     <script src="/scripts/script.js"></script>
@@ -43,8 +43,8 @@
       const hidden = document.querySelector('#hidden');
       const display = document.querySelector(".error");
 
-      location.path = location.pathname.split("/");
-      const pid = location.path[3];
+      __cpLocation.path = __cpLocation.pathname.split("/");
+      const pid = __cpLocation.path[3];
 
       const deletebtn = document.querySelector("#deletebtn");
       deletebtn.onclick = async () => {
@@ -54,7 +54,7 @@
           body: JSON.stringify({ pid }),
           headers: { "Content-Type": "application/json" },
         });
-        location.assign("/");
+        __cpLocation.assign("/");
       };
 
       (async () => {
@@ -97,7 +97,7 @@
             return (display.textContent =
               data.message + ". " + (data.error ? data.error : ""));
           }
-          location.assign("/forum/discussion/" + data.id);
+          __cpLocation.assign("/forum/discussion/" + data.id);
         } catch (err) {
           console.error(err.message);
           alert(err.message);
