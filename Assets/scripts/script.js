@@ -195,4 +195,3 @@ function tagTitle(tags) {
 function tagHTML(tags) {
   return tags.map(e=>(e.length > 0 ? "<p>#"+e+"</p>": "")).join(" ");
 }
-

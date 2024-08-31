@@ -13,7 +13,7 @@ async function createPost(post,data,txt,name,reload) {
     </div>
     ${convertMarkdown(data.content)} <br>
     ${txt}
-    ${data.tags.map(t=>` <a href="/search?includeTags=${t}">#${t}</a>`)} <br>
+    ${data.tags.map(t=>(t.length > 0 ? `<a href="/search?includeTags=${t}">#${t}</a>`: ""))} <br>
   </div>
   <div id="comments" class="comment-list">
   Comments:
