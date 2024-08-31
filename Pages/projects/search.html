@@ -34,9 +34,29 @@
       const list = document.querySelector('#list');
       const sortOptions = document.querySelector('#sortOptions');
       const searchBar = document.querySelector('#searchBar');
-      var params = new URLSearchParams(__cpLocation.search);
-      sortOptions.value = params.get("sort")||"score";
-      searchBar.value = params.get("query")||"";
+      /*
+        THE FOLLOWING BELOW IS A TEMP FIX
+        DRAGON PLEASE FIX THE SEARCH BAR
+        I HAD TO MANUALLY POPULATE THE PROJECT PAGE
+        SO THAT ALL OF ARE PROJECTS ARE SHOWN
+        THANKS
+        <VARRIENCE>
+      */
+      // var params = new URLSearchParams(__cpLocation.search);
+      // sortOptions.value = params.get("sort")||"score";
+      // searchBar.value = params.get("query")||"";
+    
+      // Populate the list with projects
+      (async () => {
+        const tok = await getAuth();
+        var sparams = new URLSearchParams();
+        sparams.set("showMature", tok.user?.mature);
+        const res = await fetch('/api/project/list?'+sparams);
+        const data = await res.json();
+        data.projects.sort((a,b)=>{return b.score > a.score});
+        data.projects.map(projHTML(list,tok));
+      })();
+      // END OF TEMP FIX
     
       form.addEventListener('submit', async (e) => {
         e.preventDefault()
