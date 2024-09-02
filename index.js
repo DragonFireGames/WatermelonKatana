@@ -162,7 +162,7 @@
               return res.status(403).sendFile(__dirname+"/Middleware/403.html");
             res.sendFile(cldir + "/forum/edit.html");
           }); // Edit post page, users only
-          app.get("/forum/discussion/:id/delete", userAuth, (req, res) => res.redirect("/api/project/delete/" + req.params.id)); // Delete post route, users only
+          app.get("/forum/discussion/:id/delete", userAuth, (req, res) => res.redirect("/api/forum/delete/" + req.params.id)); // Delete post route, users only
 
           // User profile page with dynamic user name
           app.get("/user/:name", async (req, res) => {
