@@ -48,7 +48,7 @@ module.exports = class extends PostAPI {
             privateRecipients,
             platform,
         } = req.body
-        console.log(name, link)
+        console.log(title, link)
         try {
             const uid = res.locals.userToken.id
             const user = await Users.findOne({ _id: uid })
@@ -81,13 +81,13 @@ module.exports = class extends PostAPI {
             await this.notifyUserFollowers(
                 user.username + ' published a project',
                 user,
-                name,
+                title,
                 '/project/' + project._id
             )
             await this.notifyUserMentions(
-                desc,
+                content,
                 user,
-                name,
+                title,
                 '/project/' + project._id
             )
             console.log(project)
