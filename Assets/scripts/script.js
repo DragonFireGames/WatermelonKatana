@@ -188,6 +188,24 @@ function userHTML(list) {
   };
 }
 
+// this will probably only be for the edit button tbh it's dynamic just in case we want other stuff tho
+async function createActionButton(action, permCheck) {
+  return await fetch(`${location.href}/${permCheck || action}`)
+  .then(response => {
+    if(response.status === 200) {
+      return `<button onclick="window.location.href += '/${action.toLowerCase()}'"> ${action.slice(0,1).toUpperCase() + action.slice(1)} </button>`;
+    } else {
+      return "";
+    }
+  })
+  .then(data => {
+    return data;
+  })
+  .catch(error => {
+    return error;
+  })
+}
+
 function tagTitle(tags) {
   return tags.map(e=>(e.length > 0 ? "#"+e: "")).join(" ");
 }

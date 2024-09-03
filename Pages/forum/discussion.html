@@ -26,8 +26,11 @@
           const postdiv = document.querySelector('#post');
           const res = await fetch('/api/forum/data/'+pid);
           const data = await res.json();
-          await createPost(postdiv,data,`
-          <b>Views:</b> <span id="views">${data.views}</span> <br>
+          await createPost(postdiv,data,`<div>
+          <b>Views:</b> <span id="views">${data.views}</span>
+          ${await createActionButton("edit")}
+          </div>
+          <br>
           `,"forum",()=>{
             postdiv.innerHTML = `Loading...`;
             load();

@@ -86,17 +86,7 @@
                 <div>
                 <b>Score:</b> <span id="score">${data.score}</span> 
                 <b>Views:</b> <span id="views">${data.views}</span>
-                ${await fetch(`/project/${pid}/edit`)
-                .then(res => {
-                    if (res.status == 200) {
-                      return `<button onclick="window.location.href += '/edit'"> Edit </button>`;
-                    } else {
-                      return "";
-                    }
-                  })
-                .then(data => { return data })
-                .catch(err => { return "User not authorized"})
-                }
+                ${await createActionButton("edit")}
                 </div>
                 <br>
                 `,
