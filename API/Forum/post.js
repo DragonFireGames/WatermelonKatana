@@ -89,13 +89,13 @@ module.exports = class {
             await this.notifyUserFollowers(
                 user.username + ' posted a discussion',
                 user,
-                name,
+                title,
                 '/forum/post/' + post._id
             )
             await this.notifyUserMentions(
                 content,
                 user,
-                name,
+                title,
                 '/forum/post/' + post._id
             )
             console.log(post)
