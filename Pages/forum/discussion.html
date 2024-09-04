@@ -28,7 +28,7 @@
           const data = await res.json();
           await createPost(postdiv,data,`<div>
           <b>Views:</b> <span id="views">${data.views}</span>
-          ${await createActionButton("edit")}
+          ${await createActionButton("edit", "window.location.href += '/edit'")}
           </div>
           <br>
           `,"forum",()=>{

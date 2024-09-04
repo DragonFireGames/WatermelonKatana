@@ -86,7 +86,7 @@
                 <div>
                 <b>Score:</b> <span id="score">${data.score}</span> 
                 <b>Views:</b> <span id="views">${data.views}</span>
-                ${await createActionButton("edit")}
+                ${await createActionButton("edit", "window.location.href += '/edit'")}
                 </div>
                 <br>
                 `,
