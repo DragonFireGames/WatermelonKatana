@@ -28,7 +28,15 @@
           const data = await res.json();
           await createPost(postdiv,data,`<div>
           <b>Views:</b> <span id="views">${data.views}</span>
-          ${await createActionButton("edit", "window.location.href += '/edit'")}
+          ${await createActionButton("edit", `onclick="window.location.href += '/edit'"`)}
+          ${await createActionButton("delete", `onclick="(async () => {if(!confirm('Warning, this is permanent! Are you sure you want to continue?')) return;\
+    await fetch('/api/forum/delete/${pid}', {\
+      method: 'DELETE',\
+      body: JSON.stringify({pid}),\
+      headers: {'Content-Type': 'application/json'}\
+    });\
+    location.assign('/forum');\
+})()" style="background-color: red"`, "edit")}
           </div>
           <br>
           `,"forum",()=>{
