@@ -39,14 +39,20 @@ body {
 
 .main-nav a {
 	color: #e0e0e0; /* Light text color for readability */
+	/*
 	background-color: #444; /* Dark background for links */
+	background-color: rgba(0, 0, 0, 0.5);
+	background-image: url("/images/button.png");
+	background-blend-mode: color;
 	padding: 10px 20px;
 	border-radius: 5px;
 	text-decoration: none;
 }
 
 .main-nav a:hover {
+	/*
 	background-color: #555; /* Slightly lighter hover effect */
+	background-color: rgba(0, 0, 0, 0.3)
 }
 
 .intro {
