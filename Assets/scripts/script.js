@@ -205,6 +205,17 @@ async function createActionButton(action, properties, permCheck) {
     return error;
   })
 }
+// streamline the delete button in the edit & direct delete registry
+async function createDeleteButton(topic, backpath) {
+  return await createActionButton("delete", `id="deletebtn" onclick="(async () => {if(!confirm('Warning, this is permanent! Are you sure you want to continue?')) return;\
+    await fetch('/api/${topic}/delete/${pid}', {\
+      method: 'DELETE',\
+      body: JSON.stringify({pid}),\
+      headers: {'Content-Type': 'application/json'}\
+    });\
+    location.assign('/${backpath||topic}');\
+  })()"`, "edit")
+}
 
 function tagTitle(tags) {
   return tags.map(e=>(e.length > 0 ? "#"+e: "")).join(" ");
