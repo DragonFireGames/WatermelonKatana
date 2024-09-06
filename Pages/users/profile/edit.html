@@ -39,7 +39,11 @@
       <input type="submit" value="update"/><br>
     </form>
     <br/>
-    <button id="deletebtn" style="position: relative; top: 60px; transform: translateX(-45%); background: red;">Delete Account</button>
+    <div style="position: relative; top: 60px; transform: translateX(-45%)">
+    <button id="discardbtn"> Discard Changes </button>
+    <br><br>
+    <button id="deletebtn"> Delete Account</button>
+    </div>
     <script>
       const form = document.querySelector("form");
       const name = document.querySelector("#name");
@@ -49,6 +53,13 @@
       const mature = document.querySelector("#mature");
       const display = document.querySelector(".error");
 
+      const discardbtn = document.querySelector("#discardbtn");
+      discardbtn.onclick = () => {
+        if(confirm("Are you sure you want to discard your changes?")) {
+          location.assign("/profile");
+        }
+      }
+      
       const deletebtn = document.querySelector("#deletebtn");
       deletebtn.onclick = async () => {
         var confirmationPswd = prompt("Warning, this is permanent! Enter your password to continue.");

@@ -33,7 +33,8 @@
       </label><br>
       <input type="submit" value="update"/><br/>
     </form>
-    <button id="deletebtn" style="background-color: red;">delete</button>
+    <!-- <button id="deletebtn" style="background-color: red;">delete</button> -->
+    <button id="discardbtn"> Discard Changes </button>
     <script>
       const form = document.querySelector("form");
       const name = document.querySelector("#name");
@@ -46,16 +47,22 @@
       location.path = location.pathname.split("/");
       const pid = location.path[3];
 
-      const deletebtn = document.querySelector("#deletebtn");
-      deletebtn.onclick = async () => {
-        if (!confirm("Warning, this is permanent! Are you sure you want to continue?")) return;
-        await fetch("/api/forum/delete/" + pid, {
-          method: "DELETE",
-          body: JSON.stringify({ pid }),
-          headers: { "Content-Type": "application/json" },
-        });
-        location.assign("/");
-      };
+      const discardbtn = document.querySelector("#discardbtn");
+      discardbtn.onclick = () => {
+        if(confirm("Are you sure you want to discard your changes?")) {
+          location.assign("/forum/discussion/"+pid);
+        }
+      }
+      // const deletebtn = document.querySelector("#deletebtn");
+      // deletebtn.onclick = async () => {
+      //   if (!confirm("Warning, this is permanent! Are you sure you want to continue?")) return;
+      //   await fetch("/api/forum/delete/" + pid, {
+      //     method: "DELETE",
+      //     body: JSON.stringify({ pid }),
+      //     headers: { "Content-Type": "application/json" },
+      //   });
+      //   location.assign("/");
+      // };
 
       (async () => {
         const res = await fetch("/api/forum/data/" + pid);
