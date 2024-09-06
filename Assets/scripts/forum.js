@@ -83,7 +83,7 @@ async function listComments(list,comments,self,events) {
       if (self.id == c.posterId) {
         options += `<input type="button" value="edit" onclick="window.oneditbtnclick(${i});">`;
       }
-      if (self.id == c.posterId || u.role == "Admin") {
+      if (self.id == c.posterId || self.role == "Admin") {
         options += `<input type="button" style="color:red;" value="delete" onclick="window.ondeletebtnclick(${i});">`;
       }
     }
