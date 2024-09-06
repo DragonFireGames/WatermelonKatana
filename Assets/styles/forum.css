@@ -37,6 +37,7 @@
 #reply-btn {
   color: #aaa; /* Lighter grey for visibility */
   border-color: #666; /* Darker border for consistency */
+  background-image: none;
 }
 #reply-btn:hover {
   color: #ccc; /* Light hover effect */
@@ -109,6 +110,7 @@
   border-radius: 0;
   width: 100%;
   background-color: #333; /* Consistent background */
+  background-image: none;
 }
 
 .comment-menu-options input:hover {
@@ -154,6 +156,7 @@
 }
 
 .report-btn {
+  background-image: none;
   background-color: transparent;
   padding: 0px 5px 0px 5px;
 }

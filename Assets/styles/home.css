@@ -43,7 +43,7 @@ body {
 	background-color: #444; /* Dark background for links */
 	background-color: rgba(0, 0, 0, 0.5);
 	background-image: url("/images/button.png");
-	background-blend-mode: color;
+	background-blend-mode: darken;
 	padding: 10px 20px;
 	border-radius: 5px;
 	text-decoration: none;

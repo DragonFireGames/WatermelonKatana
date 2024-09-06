@@ -108,7 +108,10 @@ a:hover, .link:hover {
 input[type=button], input[type=submit], button, select, option, .button {
 	width: var(--button-width, auto);
 	height: var(--button-height, auto);
-	background-color: var(--palette-secondary);
+	/*background-color: var(--palette-secondary);*/
+	background-color: rgba(0, 0, 0, 0.5);
+	background-image: url("/images/button.png");
+	background-blend-mode: darken;
 	color: var(--palette-white);
 	border: none;
 	border-radius: 50px;
@@ -121,8 +124,16 @@ input[type=button], input[type=submit], button, select, option, .button {
 }
 
 input[type=button]:hover, input[type=submit]:hover, button:hover, .button:hover {
-	background-color: var(--palette-secondary-hover);
+	/*background-color: var(--palette-secondary-hover);*/
+	background-color: rgba(0, 0, 0, 0.3)
 	color: var(--palette-white);
+}
+
+#deletebtn, #discardbtn {
+	background-color: rgb(255,0,0,0.8);
+}
+#deletebtn:hover, #discardbtn:hover {
+	background-color: rgb(255,0,0);
 }
 
 .pink-button {
