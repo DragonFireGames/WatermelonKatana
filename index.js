@@ -125,6 +125,9 @@
           }); // Edit project page, users only
           app.get("/project/:id/delete", userAuth, (req, res) => res.redirect("/api/project/delete/" + req.params.id)); // Delete project route, users only
 
+          // Updates
+          app.get("/updates", (req, res) => res.sendFile(cldir + "/updates.html"));
+
           // Posts
           app.get("/forum", (req, res) => res.sendFile(cldir + "/forum/home.html")); // Forum Home/Search
           app.get("/forum/post", userAuth, (req, res) => res.sendFile(cldir + "/forum/publish.html")); // Publish page, users only
