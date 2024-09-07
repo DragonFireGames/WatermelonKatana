@@ -70,23 +70,35 @@
         width: 100%;
         height: auto;
       }
+
+      .profile-settings {
+        margin-top: 20px;
+      }
+
+      .profile-settings a {
+        display: block;
+        margin: 5px 0;
+      }
     </style>
 </head>
 <body>
     <script src="/scripts/navbar.js"></script>
-    <h1>Profile Settings</h1>
+    <h1>Profile</h1>
     <div id="header" class="main-nav">
       <a href="/">Home</a>
       <a href="/logout">Log Out</a>
-      <a href="/profile/edit">Edit Profile</a>
-      <a href="/profile/chpass">Change Password</a>
-      <a href="/profile/verify">Verify Email</a>
     </div>
 
     <div id="display" class="profile-container">
       <!-- User profile content will be inserted here -->
     </div>
     
+    <div class="profile-settings">
+      <a href="/profile/edit">Edit Profile</a>
+      <a href="/profile/chpass">Change Password</a>
+      <a href="/profile/verify">Verify Email</a>
+    </div>
+
     <div class="projects-container">
       <h2>Published Projects</h2>
       <ul id="list" class="project-list"></ul>
@@ -152,7 +164,6 @@
                   <span id="followingcount" class="link">${userData.following.length}</span> Following
                   ${username !== userData.username ? `| <label><input type="checkbox" id="follow-btn" onclick="followbtnclick(this.checked);" ${userData.followers.includes(tok.user.id) ? "checked" : ""}><span class="checkbox"></span></label> Follow` : ""}
                   | <a href="/uploadedmedia?poster=${userData.username}">Uploaded Media</a>
-                  <br><i class="uidtext" title="Click to Copy">ID: ${userData.id}</i>
                 </div>`;
 
           await Promise.all(
