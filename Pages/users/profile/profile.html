@@ -78,6 +78,12 @@
       .profile-settings a {
         display: block;
         margin: 5px 0;
+        color: #007bff;
+        text-decoration: none;
+      }
+
+      .profile-settings a:hover {
+        text-decoration: underline;
       }
     </style>
 </head>
@@ -91,12 +97,11 @@
 
     <div id="display" class="profile-container">
       <!-- User profile content will be inserted here -->
-    </div>
-    
-    <div class="profile-settings">
-      <a href="/profile/edit">Edit Profile</a>
-      <a href="/profile/chpass">Change Password</a>
-      <a href="/profile/verify">Verify Email</a>
+      <div class="profile-settings">
+        <a href="/profile/edit">Edit Profile</a>
+        <a href="/profile/chpass">Change Password</a>
+        <a href="/profile/verify">Verify Email</a>
+      </div>
     </div>
 
     <div class="projects-container">
