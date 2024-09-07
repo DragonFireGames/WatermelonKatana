@@ -30,73 +30,80 @@
   </div>
   
   <script>
-      const form = document.querySelector('form')
-      const list = document.querySelector('#list');
-      const sortOptions = document.querySelector('#sortOptions');
-      const searchBar = document.querySelector('#searchBar');
-      /*
-        THE FOLLOWING BELOW IS A TEMP FIX
-        DRAGON PLEASE FIX THE SEARCH BAR
-        I HAD TO MANUALLY POPULATE THE PROJECT PAGE
-        SO THAT ALL OF ARE PROJECTS ARE SHOWN
-        THANKS
-        <VARRIENCE>
-      */
-      // var params = new URLSearchParams(__cpLocation.search);
-      // sortOptions.value = params.get("sort")||"score";
-      // searchBar.value = params.get("query")||"";
-    
-      // Populate the list with projects
-      (async () => {
-        const tok = await getAuth();
-        var sparams = new URLSearchParams();
-        sparams.set("showMature", tok.user?.mature);
-        const res = await fetch('/api/project/list?'+sparams);
-        const data = await res.json();
-        data.projects.sort((a,b)=>{return b.score > a.score});
-        data.projects.map(projHTML(list,tok));
-      })();
-      // END OF TEMP FIX
-    
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault()
-        try {
-          var query = searchBar.value;
-          const url = new URL(__cpLocation);
-          if (query) {
-            url.searchParams.set("query", query);
-            url.searchParams.delete("sort");
-          } else {
-            url.searchParams.set("sort", sortOptions.value);
-            url.searchParams.delete("query");
-          }
-          history.pushState({}, "", url);
-          params = new URLSearchParams(__cpLocation.search);
-          searchProjects();
-        } catch (err) {
-          alert(err.message);
-          console.log(err.message)
-        }
-      });
+    const form = document.querySelector('form');
+    const list = document.querySelector('#list');
+    const sortOptions = document.querySelector('#sortOptions');
+    const searchBar = document.querySelector('#searchBar');
 
-      async function searchProjects() {
+    // Function to build URL with query parameters
+    function buildUrl(params) {
+      const url = new URL(window.location);
+      url.search = new URLSearchParams(params).toString();
+      return url;
+    }
+
+    // Populate the list with projects
+    async function populateProjects() {
+      try {
         const tok = await getAuth();
-        var sparams = new URLSearchParams(__cpLocation.search);
+        const sparams = new URLSearchParams();
         sparams.set("showMature", tok.user?.mature);
-        const res = await fetch('/api/project/'+(sparams.get("query")?'search':'list')+'?'+sparams);
+        const res = await fetch('/api/project/list?' + sparams);
         const data = await res.json();
-        if (!sparams.get("query")) switch (sparams.get("sort")||"score") {
-          case "score": data.projects.sort((a,b)=>(b.score-a.score)||(b.views-a.views)); break;
-          case "views": data.projects.sort((a,b)=>(b.views-a.views)||(b.score-a.score)); break;
-          case "latest": data.projects.sort((a,b)=>(b.postedAt-a.postedAt)); break;
-          case "oldest": data.projects.sort((a,b)=>(a.postedAt-b.postedAt)); break;
+        data.projects.sort((a, b) => b.score - a.score);
+        data.projects.forEach(proj => projHTML(list, tok)(proj));
+      } catch (err) {
+        console.error('Error populating projects:', err);
+      }
+    }
+
+    populateProjects();
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      try {
+        const query = searchBar.value;
+        const params = {};
+        if (query) {
+          params.query = query;
+        } else {
+          params.sort = sortOptions.value;
+        }
+        history.pushState({}, "", buildUrl(params));
+        await searchProjects();
+      } catch (err) {
+        alert('An error occurred: ' + err.message);
+        console.error(err.message);
+      }
+    });
+
+    async function searchProjects() {
+      try {
+        const tok = await getAuth();
+        const sparams = new URLSearchParams(window.location.search);
+        sparams.set("showMature", tok.user?.mature);
+        const endpoint = sparams.get("query") ? 'search' : 'list';
+        const res = await fetch('/api/project/' + endpoint + '?' + sparams);
+        const data = await res.json();
+        if (!sparams.get("query")) {
+          const sort = sparams.get("sort") || "score";
+          switch (sort) {
+            case "score": data.projects.sort((a, b) => b.score - a.score || b.views - a.views); break;
+            case "views": data.projects.sort((a, b) => b.views - a.views || b.score - a.score); break;
+            case "latest": data.projects.sort((a, b) => new Date(b.postedAt) - new Date(a.postedAt)); break;
+            case "oldest": data.projects.sort((a, b) => new Date(a.postedAt) - new Date(b.postedAt)); break;
+          }
         }
         list.innerHTML = '';
-        data.projects.map(projHTML(list,tok));
+        data.projects.forEach(proj => projHTML(list, tok)(proj));
+      } catch (err) {
+        alert('An error occurred while searching: ' + err.message);
+        console.error(err.message);
       }
-      searchProjects();
-    
-    </script>
-  </body>
+    }
+
+    // Initial search when the page loads
+    searchProjects();
+  </script>
 </body>
 </html>
