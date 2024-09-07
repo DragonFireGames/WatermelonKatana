@@ -149,43 +149,34 @@ exports.update = async (req, res, next) => {
     }
 }
 
-exports.updateRole = async (req, res, next) => {
-    const { role, id } = req.body
-    // Verifying if role and id is presnt
-    if (!role || !id)
-        return res.status(400).json({
-            message: 'Role or Id not present',
-        })
+exports.updateRole = async (req, res) => {
+    const { role, id } = req.body;
+    if (!role || !id) return res.status(400).json({ message: 'Role or Id not present' });
+
     try {
-        // Finds the user with the id
-        var user = await Users.findById(id)
-        // Verifies the user is not an admin
-        /*if (user.role === "Admin") return res.status(400).json({
-      message: "User is already an Admin"
-    });*/
-        user.role = role
-        await user.save()
-        res.status(201).json({
-            message: 'Update successful',
-            user,
-        })
+        const user = await Users.findById(id);
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        user.role = role;
+        await user.save();
+
+        res.status(200).json({ message: 'Role updated successfully', user });
     } catch (error) {
-        res.status(400).json({
-            message: 'An error occurred',
-            error: error.message,
-        })
+        res.status(500).json({ message: 'Error updating role', error: error.message });
     }
-}
+};
 
 async function cleanDeleteUser(res, user) {
-    for (var id of user.favorites) {
-        var p = await Projects.findOne({ _id: id })
-        p.score--
-        await p.save()
+    for (const id of user.favorites) {
+        const p = await Projects.findById(id);
+        if (p) {
+            p.score--;
+            await p.save();
+        }
     }
-    user = await user.remove()
-    res.status(201).json({ message: 'User successfully deleted', user })
-    return
+
+    await user.remove();
+    res.status(200).json({ message: 'User successfully deleted', user });
 }
 
 exports.deleteSelf = async (req, res, next) => {
@@ -214,18 +205,20 @@ exports.deleteSelf = async (req, res, next) => {
     }
 }
 
-exports.deleteUser = async (req, res, next) => {
-    const { id } = req.body
+
+exports.deleteUser = async (req, res) => {
+    const { id } = req.body;
+    if (!id) return res.status(400).json({ message: 'User ID not present' });
+
     try {
-        var user = await Users.findById(id)
-        await cleanDeleteUser(res, user)
+        const user = await Users.findById(id);
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        await cleanDeleteUser(res, user);
     } catch (error) {
-        res.status(400).json({
-            message: 'An error occurred',
-            error: error.message,
-        })
+        res.status(500).json({ message: 'Error deleting user', error: error.message });
     }
-}
+};
 
 exports.listUsers = async (req, res, next) => {
     try {

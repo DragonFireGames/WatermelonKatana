@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,68 +8,87 @@
     <link rel="stylesheet" type="text/css" href="/styles/style.css">
     <script src="/scripts/HtmlSanitizer.js"></script>
     <script src="/scripts/script.js"></script>
-  </head>
-  <body>
+</head>
+<body>
     <script src="/scripts/navbar.js"></script>
-    <div class="display" style="background-color: red;"></div>
+    <div class="display" style="background-color: red; padding: 10px;"></div>
     <h1>Users</h1>
-    <ul></ul>
+    <ul id="userList"></ul>
     <script>
-      const ul = document.querySelector('ul')
-      const display = document.querySelector('.display')
-  
-      const getUsers = async () => {
-        const res = await fetch('/api/auth/listUsers')
-        const data = await res.json()
-        data.user.map((mappedUser) => {
-          if(mappedUser.username !== 'admin'){
-            let li = `<li> <b>Username</b> => ${mappedUser.username} <br> <b>Role</b> => ${mappedUser.role} </li> <button class="edit">Edit Role</button> <button class="delete">Delete User</button>`
-            ul.innerHTML += li
-          }else{
-            return null
-          }
-        });
-        const editRole = document.querySelectorAll('.edit')
-        const deleteUser = document.querySelectorAll('.delete')
-        editRole.forEach((button, i) => {
-          button.addEventListener('click', async() => {
-            display.textContent= ''
-            const id = data.user[i].id;
-            const role = data.user[i].role === "Admin" ? "Basic" : "Admin";
-            const res = await fetch('/api/auth/updateRole', {
-              method: 'PUT',
-              body: JSON.stringify({ role, id}),
-              headers: { 'Content-Type': 'application/json' }
-            });
-            const dataUpdate = await res.json()
-            if (res.status === 400 || res.status === 401) {
-              document.body.scrollTop = 0
-              document.documentElement.scrollTop = 0
-             return display.textContent = `${dataUpdate.message}. ${dataUpdate.error ? dataUpdate.error : ''}`
-             }
-             location.assign('/admin')            
-          })
-        });
-        deleteUser.forEach((button, i)=> {
-          button.addEventListener('click', async ()=> {
-            display.textContent =''
-            const id = data.user[i].id
-            const res = await fetch('/api/auth/deleteUser', {
-              method: 'DELETE',
-              body: JSON.stringify({id}),
-              headers: {'Content-Type': 'application/json'}
-            })
-            const dataDelete = await res.json()
-            if (res.status === 401){
-              document.body.scrollTop = 0
-              document.documentElement.scrollTop = 0
-              return display.textContent = `${dataUpdate.message}. ${dataUpdate.error ? dataUpdate.error : ''}`
+        const ul = document.querySelector('#userList');
+        const display = document.querySelector('.display');
+
+        const getUsers = async () => {
+            try {
+                const res = await fetch('/api/auth/listUsers');
+                const data = await res.json();
+                if (!data.user) throw new Error('No users found');
+
+                ul.innerHTML = '';
+                data.user.forEach((user) => {
+                    if (user.username !== 'admin') {
+                        const li = document.createElement('li');
+                        li.innerHTML = `
+                            <b>Username:</b> ${user.username} <br>
+                            <b>Role:</b> ${user.role}
+                            <button class="edit" data-id="${user.id}">Edit Role</button>
+                            <button class="delete" data-id="${user.id}">Delete User</button>
+                        `;
+                        ul.appendChild(li);
+                    }
+                });
+
+                attachEventListeners();
+            } catch (error) {
+                display.textContent = `Error: ${error.message}`;
             }
-            location.assign('/admin')
-          })
-        })
-      }
-      getUsers()
+        };
+
+        const attachEventListeners = () => {
+            document.querySelectorAll('.edit').forEach(button => {
+                button.addEventListener('click', async () => {
+                    const id = button.getAttribute('data-id');
+                    const role = prompt('Enter new role (Admin/Basic):');
+                    if (role !== 'Admin' && role !== 'Basic') {
+                        alert('Invalid role');
+                        return;
+                    }
+                    try {
+                        const res = await fetch('/api/auth/updateRole', {
+                            method: 'PUT',
+                            body: JSON.stringify({ role, id }),
+                            headers: { 'Content-Type': 'application/json' }
+                        });
+                        const result = await res.json();
+                        if (!res.ok) throw new Error(result.message);
+                        getUsers();
+                    } catch (error) {
+                        display.textContent = `Error: ${error.message}`;
+                    }
+                });
+            });
+
+            document.querySelectorAll('.delete').forEach(button => {
+                button.addEventListener('click', async () => {
+                    const id = button.getAttribute('data-id');
+                    if (!confirm('Are you sure you want to delete this user?')) return;
+                    try {
+                        const res = await fetch('/api/auth/deleteUser', {
+                            method: 'DELETE',
+                            body: JSON.stringify({ id }),
+                            headers: { 'Content-Type': 'application/json' }
+                        });
+                        const result = await res.json();
+                        if (!res.ok) throw new Error(result.message);
+                        getUsers();
+                    } catch (error) {
+                        display.textContent = `Error: ${error.message}`;
+                    }
+                });
+            });
+        };
+
+        getUsers();
     </script>
-  </body>
+</body>
 </html>
