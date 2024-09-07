@@ -13,30 +13,26 @@
   <body>
     <script src="/scripts/navbar.js"></script>
     <h1>GameJams</h1>
-    Start a jam, join an active jam, or view a previously active jam.
+    Start a jam, join an active jam, or view previously active jams.
 
     <h2>Active Jams</h2>
     <div sytle="background-color: #111;">
       <strong>HEADER.NAME</strong><br>
       HEADER.ABOUT
-      <button>Info</button>
+      <br><button>Info</button>
     </div>
     
-    <br /><button>More</button>
->>>>>>> 443c37b (`Mis.` : Others)
+    <br/><button>Load More</button>
     <script>
-      //todo: get backend to return active jams
+      //todo: get the backend to return active jams
       var activeJams = document.querySelector("active-Jams");
+
+      activeJams.innerHTML = "";
     </script>
 
     <h2>Archived Jams</h2>
-    <button>View Info</button>
-<<<<<<< HEAD
-    <br><button>More</button>
-    
-    <br /><button>More</button>
     <script>
-      //todo: get backend to return ended jams
+      //todo: get the backend to return ended jams
       var archivedJams = document.querySelector("archived-Jams");
 >>>>>>> 443c37b (`Mis.` : Others)
     </script>
