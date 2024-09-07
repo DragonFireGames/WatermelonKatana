@@ -23,6 +23,18 @@ body {
   border-radius: 10px 10px 0 0;
 }
 
+#profile-actions {
+  justify-content: left;
+}
+
+#profile-actions a {
+  background-color: rgba(245, 39, 145, 1);
+}
+
+#profile-actions a:hover {
+  background-color: rgba(252, 0, 130, 1)
+}
+
 .namecontainer {
   display: flex;
   align-items: center;

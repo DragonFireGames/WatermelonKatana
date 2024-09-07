@@ -66,10 +66,10 @@
         margin-bottom: 20px;
       }
 
-      .profile-container img.banner {
+      /* .profile-container img.banner {
         width: 100%;
         height: auto;
-      }
+      } */
 
       .profile-settings {
         margin-top: 20px;
@@ -89,11 +89,6 @@
 </head>
 <body>
     <script src="/scripts/navbar.js"></script>
-    <h1>Profile</h1>
-    <div id="header" class="main-nav">
-      <a href="/">Home</a>
-      <a href="/logout">Log Out</a>
-    </div>
 
     <div id="display" class="profile-container">
       <!-- User profile content will be inserted here -->
@@ -156,20 +151,23 @@
           }
 
           display.innerHTML = `
-                <div class="profile ${userData.role.toLowerCase()}">
-                  <img class="banner" src="${userData.banner}">
-                  <div class="namecontainer">
-                    <img class="avatar" style="${roleBorderCSS}" src="${userData.avatar}">
-                    <p class="${nameCSSClass}" style="${nameCSS}">${userData.username}</p>
-                  </div>
-                  <p class="biography">${convertMarkdown(userData.biography)}</p>
-                  <p class="role">${userData.role}</p>
-                  Joined on ${new Date(userData.joinedAt).toUTCString().replace(/\d\d:[^]+$/, "")} |
-                  <span id="followercount" class="link">${userData.followers.length}</span> Followers | 
-                  <span id="followingcount" class="link">${userData.following.length}</span> Following
-                  ${username !== userData.username ? `| <label><input type="checkbox" id="follow-btn" onclick="followbtnclick(this.checked);" ${userData.followers.includes(tok.user.id) ? "checked" : ""}><span class="checkbox"></span></label> Follow` : ""}
-                  | <a href="/uploadedmedia?poster=${userData.username}">Uploaded Media</a>
-                </div>`;
+          <div class="profile ${userData.role.toLowerCase()}">
+            <img class="banner" src="${userData.banner}">
+            <div class="namecontainer">
+              <img class="avatar" style="${roleBorderCSS}" src="${userData.avatar}">
+              <div id="profile-actions" class="main-nav">
+                <span class="${nameCSSClass}" style="${nameCSS}; margin-top: 35px; width: 100%">${userData.username}</span>
+                <a href="/">Home</a><a href="/logout">Log Out</a><a>Edit</a><a>Change Password</a><a>Delete Account</a>
+              </div>
+            </div>
+            <p class="biography">${convertMarkdown(userData.biography)}</p>
+            <p class="role">${userData.role}</p>
+            Joined on ${new Date(userData.joinedAt).toUTCString().replace(/\d\d:[^]+$/, "")} |
+            <span id="followercount" class="link">${userData.followers.length}</span> Followers | 
+            <span id="followingcount" class="link">${userData.following.length}</span> Following
+            ${username !== userData.username ? `| <label><input type="checkbox" id="follow-btn" onclick="followbtnclick(this.checked);" ${userData.followers.includes(tok.user.id) ? "checked" : ""}><span class="checkbox"></span></label> Follow` : ""}
+            | <a href="/uploadedmedia?poster=${userData.username}">Uploaded Media</a>
+          </div>`;
 
           await Promise.all(
             userData.favorites.map(async (pid) => {
