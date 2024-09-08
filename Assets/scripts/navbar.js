@@ -306,7 +306,7 @@ document.addEventListener("DOMContentLoaded", async function() {
       <a class="nav-btn" href="/search">Project Gallery</a>
       <a class="nav-btn" href="/forum">Forum</a>
       ${window.location.pathname.startsWith("/project") ? `
-      <a class="nav-btn" onclick="l=document.getElementById('game').contentWindow.location; l.href=l.href"> 
+      <a class="nav-btn" onclick="l=document.getElementById('game'); l.src=l.src"> 
       Replay
       </a>`: ""}
     </div>
