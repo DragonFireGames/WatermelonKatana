@@ -28,7 +28,7 @@ const TurboDB = async function (id) {
         db._data = await ProjectData.create({ _id: id })
     }
     db.getKeyValue = function (key) {
-        return this._data.keyvalues[key]
+        return this._data.keyvalues[key] || JSON.stringify(null)
     }
     db.getAllKeyValues = function () {
         return this._data.keyvalues
