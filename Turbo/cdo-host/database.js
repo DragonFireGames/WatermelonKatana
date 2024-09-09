@@ -28,26 +28,26 @@ const TurboDB = async function (id) {
         db._data = await ProjectData.create({ _id: id })
     }
     db.getKeyValue = function (key) {
-        return this._data.keyvalues[key] || JSON.stringify(null)
+        return this._data.keyvalues[key] !== undefined ? this._data.keyvalues[key]: JSON.stringify(null)
     }
     db.getAllKeyValues = function () {
         return this._data.keyvalues
     }
     db.setKeyValue = function (key, value) {
         this._data.keyvalues[key] = value
-        this._changed = true
+        this._data.markModified(`keyvalues.${key}`)
         return true
     }
     db.populateKeyValues = function (map) {
         for (i in map) {
-            this._data.keyvalues[i] = map[i]
+            this._data.keyvalues[i] = map[i];
+            this.markModified(`keyvalues.${i}`)
         }
-        this._changed = true
         return true
     }
     db.deleteKeyValue = function (key) {
         delete this._data.keyvalues[key]
-        this._changed = true
+        this.markModified(`keyvalues.${key}`)
         return true
     }
     // table paths
@@ -62,7 +62,7 @@ const TurboDB = async function (id) {
             table[table_name] = { records: [], nextId: 1 }
         record_json.id = table[table_name].nextId++
         table[table_name].records.push(record_json)
-        this._changed = true
+        this.markModified(`tables.${table_name}`)
         return { table_name, record_json }
     }
     db.createTable = function (table_name) {
@@ -71,7 +71,7 @@ const TurboDB = async function (id) {
         let table = this._data.tables
         if (table[table_name] === undefined)
             table[table_name] = { records: [], nextId: 1 }
-        this._changed = true
+        this.markModified(`tables.${table_name}`)
         return true
     }
     db.addColumn = function (column_name, table_name) {
@@ -83,7 +83,7 @@ const TurboDB = async function (id) {
         for (let record of table.records) {
             record[column_name] = null
         }
-        this._changed = true
+        this.markModified(`tables.${table_name}.records`)
         return true
     }
     /*db.add_shared_table = function(table_name) {
@@ -110,8 +110,8 @@ const TurboDB = async function (id) {
                 table[t].records[i].id = i
             }
             table[t].nextId = table[t].records.length + 1
+            this.markModified(`tables.${t}`)
         }
-        this._changed = true
         return true
     }
     db.updateRecord = function (table_name, record_json) {
@@ -126,10 +126,10 @@ const TurboDB = async function (id) {
             let record = table.records[i]
             if (record.id === record_json.id) {
                 table.records[i] = record_json
+                this.markModified(`tables.${table_name}.records`)
                 break
             }
         }
-        this._changed = true
         return table.records
     }
     db.renameColumn = function (table_name, old_column_name, new_column_name) {
@@ -144,7 +144,7 @@ const TurboDB = async function (id) {
             record[new_column_name] = record[old_column_name]
             delete record[old_column_name]
         }
-        this._changed = true
+        this.markModified(`tables.${table_name}.records`);
         return true
     }
     db.coerceColumn = function (table_name, column_name, column_type) {
@@ -171,7 +171,7 @@ const TurboDB = async function (id) {
                 }
             }
         }
-        this._changed = true
+        this.markModified(`tables.${table_name}.records`)
         return true
     }
     db.getColumnsForTable = function () {
@@ -203,7 +203,7 @@ fs.writeFileSync(`${self.csvPath}/${table_name}.csv`, self.jsonToCSV(table.recor
         if (table[table_name] === undefined)
             throw `failed to clear table "${table_name}"`
         table[table_name] = { records: [], nextId: 1 }
-        this._changed = true
+        this.markModified(`tables.${table_name}`)
         return true
     }
     db.deleteRecord = function (table_name, record_id) {
@@ -219,7 +219,7 @@ fs.writeFileSync(`${self.csvPath}/${table_name}.csv`, self.jsonToCSV(table.recor
         }
         if (!c)
             throw `failed to remove record on table "${table_name}" at id "${record_id}"`
-        this._changed = true
+        this.markModified(`tables.${table_name}.records`)
         return true
     }
     db.deleteColumn = function (table_name, column_name) {
@@ -231,7 +231,7 @@ fs.writeFileSync(`${self.csvPath}/${table_name}.csv`, self.jsonToCSV(table.recor
                 delete record[column_name]
             }
         }
-        this._changed = true
+        this.markModified(`tables.${table_name}.records`)
         return { table_name, column_name }
     }
     db.deleteTable = function (table_name) {
@@ -239,7 +239,7 @@ fs.writeFileSync(`${self.csvPath}/${table_name}.csv`, self.jsonToCSV(table.recor
         if (table[table_name] === undefined)
             throw `failed to delete the table "${table_name}"`
         delete table[table_name]
-        this._changed = true
+        this.markModified(`tables.${table_name}`)
         return true
     }
     db.getTableNames = function () {
@@ -257,7 +257,8 @@ fs.writeFileSync(`${self.csvPath}/${table_name}.csv`, self.jsonToCSV(table.recor
     db.clearAllData = function () {
         this._data.keyvalues = {}
         this._data.tables = {}
-        this._changed = true
+        this.markModified("keyvalues")
+        this.markModified("tables")
         return true
     }
     return db
@@ -267,7 +268,7 @@ fs.writeFileSync(`${self.csvPath}/${table_name}.csv`, self.jsonToCSV(table.recor
 var TurboDBList = {}
 setInterval(() => {
     for (var i in TurboDBList) {
-        if (TurboDBList[i]._changed) {
+        if (TurboDBList[i]._data.isModified()) {
             console.log('Saving changes to ' + i)
             TurboDBList[i]._data.save()
         }
