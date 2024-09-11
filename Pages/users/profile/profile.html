@@ -92,11 +92,6 @@
 
     <div id="display" class="profile-container">
       <!-- User profile content will be inserted here -->
-      <div class="profile-settings">
-        <a href="/profile/edit">Edit Profile</a>
-        <a href="/profile/chpass">Change Password</a>
-        <a href="/profile/verify">Verify Email</a>
-      </div>
     </div>
 
     <div class="projects-container">
@@ -157,7 +152,11 @@
               <img class="avatar" style="${roleBorderCSS}" src="${userData.avatar}">
               <div id="profile-actions" class="main-nav">
                 <span class="${nameCSSClass}" style="${nameCSS}; margin-top: 35px; width: 100%">${userData.username}</span>
-                <a href="/">Home</a><a href="/logout">Log Out</a><a>Edit</a><a>Change Password</a><a>Delete Account</a>
+                <a href="/">Home</a>
+                <a href="/logout">Log Out</a>
+                <a href="/profile/edit">Edit Profile</a>
+                <a href="/profile/chpass">Change Password</a>
+                <a href="/profile/verify">Verify Email</a>
               </div>
             </div>
             <p class="biography">${convertMarkdown(userData.biography)}</p>
