@@ -29,7 +29,3 @@ We plan on changing our license, but for now, WatermelonKatana is licensed under
 ### Star History
 
 ![Star History Chart](https://api.star-history.com/svg?repos=dragonfiregames/watermelonkatana&type=Date&theme=dark)
-
-### Forks
-
-![Forkers repo roster for @dragonfiregames/watermelonkatana](https://reporoster.com/forks/dark/dragonfiregames/watermelonkatana)
