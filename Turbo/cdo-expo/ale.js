@@ -96,7 +96,9 @@ async function getHTML(html, id, code) {
               let width = "320px";
               let height = "450px";
               let scaling = "scale(" + (Math.min(window.innerWidth, window.innerHeight) / 450) + ")";
-              element.style["transform"] = scaling;
+              if(element.style.width === width && element.style.height === height) {
+                element.style["transform"] = scaling;
+              }
               element.style["transform-origin"] = "top left";
               const observer = new MutationObserver((mutations, observe) => {
                 for(let mutation of mutations) {
