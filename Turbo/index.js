@@ -9,7 +9,7 @@ class Turbo {
         new Host(app)
         app.get('/turbowarp', async (req, res) => {
             let project = req.query.u || ''
-            let link = new RegExp(`[^/]{43}`)
+            let link = new RegExp(`(?<=(applab|gamelab)/)[^/]+`)
             let id = project.match(link)
             if (id !== null) {
                 project = await customExport(id[0])
