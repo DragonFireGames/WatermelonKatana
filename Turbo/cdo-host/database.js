@@ -39,30 +39,27 @@ const TurboDB = async function (id) {
         return true
     }
     db.populateKeyValues = function (map) {
+        map = typeof map === "string" ? JSON.parse(map): map;
         for (i in map) {
             this._data.keyvalues[i] = map[i];
-            this.markModified(`keyvalues.${i}`)
+            this._data.markModified(`keyvalues.${i}`)
         }
         return true
     }
     db.deleteKeyValue = function (key) {
         delete this._data.keyvalues[key]
-        this.markModified(`keyvalues.${key}`)
+        this._data.markModified(`keyvalues.${key}`)
         return true
     }
     // table paths
     db.createRecord = function (table_name, record_json) {
-        if (
-            typeof table_name !== 'string' ||
-            (typeof record_json !== 'object' && record_json !== null)
-        )
-            throw `invalid argument table "${table_name}" or record "${record_json}"`
+        if(typeof table_name !== "string") { throw "invalid argument table"}
         let table = this._data.tables
         if (table[table_name] === undefined)
             table[table_name] = { records: [], nextId: 1 }
-        record_json.id = table[table_name].nextId++
+        table[table_name].id = table[table_name].nextId++
         table[table_name].records.push(record_json)
-        this.markModified(`tables.${table_name}`)
+        this._data.markModified(`tables.${table_name}`)
         return { table_name, record_json }
     }
     db.createTable = function (table_name) {
@@ -71,7 +68,7 @@ const TurboDB = async function (id) {
         let table = this._data.tables
         if (table[table_name] === undefined)
             table[table_name] = { records: [], nextId: 1 }
-        this.markModified(`tables.${table_name}`)
+        this._data.markModified(`tables.${table_name}`)
         return true
     }
     db.addColumn = function (column_name, table_name) {
@@ -83,7 +80,7 @@ const TurboDB = async function (id) {
         for (let record of table.records) {
             record[column_name] = null
         }
-        this.markModified(`tables.${table_name}.records`)
+        this._data.markModified(`tables.${table_name}.records`)
         return true
     }
     /*db.add_shared_table = function(table_name) {
@@ -103,30 +100,27 @@ const TurboDB = async function (id) {
   };*/
     db.populateTables = function (map) {
         let table = this._data.tables
+        map = typeof map === "string" ? JSON.parse(map): map;
         for (var t in map) {
             if (table[t] === undefined) table[t] = { records: [], nextId: 1 }
-            table[t].records = map[t]
+            table[t].records = map[t].records
             for (let i = 1; i < table[t].records.length + 1; i++) {
                 table[t].records[i].id = i
             }
             table[t].nextId = table[t].records.length + 1
-            this.markModified(`tables.${t}`)
+            this._data.markModified(`tables.${t}`)
         }
         return true
     }
     db.updateRecord = function (table_name, record_json) {
-        if (
-            typeof table_name !== 'string' ||
-            (typeof record_json !== 'object' && record_json !== null)
-        )
-            throw `unable to update table ${table_name} at id ${table_id}`
+        if(typeof table_name !== "string") { throw "invalid argument table"}
         let table = this._data.tables
         table = table[table_name]
         for (let i = 0; i < table.records.length; i++) {
             let record = table.records[i]
             if (record.id === record_json.id) {
                 table.records[i] = record_json
-                this.markModified(`tables.${table_name}.records`)
+                this._data.markModified(`tables.${table_name}.records`)
                 break
             }
         }
@@ -144,7 +138,7 @@ const TurboDB = async function (id) {
             record[new_column_name] = record[old_column_name]
             delete record[old_column_name]
         }
-        this.markModified(`tables.${table_name}.records`);
+        this._data.markModified(`tables.${table_name}.records`);
         return true
     }
     db.coerceColumn = function (table_name, column_name, column_type) {
@@ -171,8 +165,17 @@ const TurboDB = async function (id) {
                 }
             }
         }
-        this.markModified(`tables.${table_name}.records`)
+        this._data.markModified(`tables.${table_name}.records`)
         return true
+    }
+    db.getColumn = function (table_name, column_name) {
+        let table = this._data.tables[table_name];
+        let column = [];
+        for(let record of table.records) {
+            record = JSON.parse(record);
+            column.push((record[column_name] !== undefined ? record[column_name]: null))
+        }
+        return(column);
     }
     db.getColumnsForTable = function () {
         const columns = ['id']
@@ -203,7 +206,7 @@ fs.writeFileSync(`${self.csvPath}/${table_name}.csv`, self.jsonToCSV(table.recor
         if (table[table_name] === undefined)
             throw `failed to clear table "${table_name}"`
         table[table_name] = { records: [], nextId: 1 }
-        this.markModified(`tables.${table_name}`)
+        this._data.markModified(`tables.${table_name}`)
         return true
     }
     db.deleteRecord = function (table_name, record_id) {
@@ -219,7 +222,7 @@ fs.writeFileSync(`${self.csvPath}/${table_name}.csv`, self.jsonToCSV(table.recor
         }
         if (!c)
             throw `failed to remove record on table "${table_name}" at id "${record_id}"`
-        this.markModified(`tables.${table_name}.records`)
+        this._data.markModified(`tables.${table_name}.records`)
         return true
     }
     db.deleteColumn = function (table_name, column_name) {
@@ -231,7 +234,7 @@ fs.writeFileSync(`${self.csvPath}/${table_name}.csv`, self.jsonToCSV(table.recor
                 delete record[column_name]
             }
         }
-        this.markModified(`tables.${table_name}.records`)
+        this._data.markModified(`tables.${table_name}.records`)
         return { table_name, column_name }
     }
     db.deleteTable = function (table_name) {
@@ -239,7 +242,7 @@ fs.writeFileSync(`${self.csvPath}/${table_name}.csv`, self.jsonToCSV(table.recor
         if (table[table_name] === undefined)
             throw `failed to delete the table "${table_name}"`
         delete table[table_name]
-        this.markModified(`tables.${table_name}`)
+        this._data.markModified(`tables.${table_name}`)
         return true
     }
     db.getTableNames = function () {
@@ -257,8 +260,8 @@ fs.writeFileSync(`${self.csvPath}/${table_name}.csv`, self.jsonToCSV(table.recor
     db.clearAllData = function () {
         this._data.keyvalues = {}
         this._data.tables = {}
-        this.markModified("keyvalues")
-        this.markModified("tables")
+        this._data.markModified("keyvalues")
+        this._data.markModified("tables")
         return true
     }
     return db
@@ -283,7 +286,7 @@ setInterval(() => {
 }, 60 * 1000)
 function createLink(app, method, name, callback) {
     app[method]('/datablock_storage/:id/' + name, async (req, res) => {
-        console.log(method, name, req.params.id, req.query, req.body)
+        // console.log(method, name, req.params.id, req.query, req.body)
         try {
             const id = req.params.id
             var db = TurboDBList[id]
@@ -292,9 +295,9 @@ function createLink(app, method, name, callback) {
                 TurboDBList[id] = db
             }
             db._read = true
-            console.log(db)
+            // console.log(db)
             var ret = await callback(db, req)
-            console.log(ret)
+            // console.log(ret)
             res.status(200).send(ret)
         } catch (e) {
             console.log(e)
@@ -312,7 +315,7 @@ module.exports = {
             db.setKeyValue(req.body.key, req.body.value)
         )
         c(a, 'post', 'populate_key_values', (db, req) =>
-            db.setKeyValue(req.body.key_values_json)
+            db.populateKeyValues(req.body.key_values_json)
         )
         c(a, 'delete', 'delete_key_value', (db, req) =>
             db.setKeyValue(req.body.key)
@@ -348,12 +351,13 @@ module.exports = {
                 req.body.column_type
             )
         )
+        c(a, 'get', 'get_column', (db, req) => db.getColumn(req.query.table_name, req.query.column_name))
         c(a, 'get', 'get_columns_for_table', (db, req) =>
             db.getColumnsForTable(req.query.table_name)
         )
         //c(a,"get","export_csv", (db,req) => db.export_csv(req.query.table_name));
         c(a, 'get', 'read_records', (db, req) =>
-            db.readRecords(req.body.table_name)
+            db.readRecords(req.query.table_name)
         )
         c(a, 'delete', 'delete_record', (db, req) =>
             db.deleteRecord(req.body.table_name, req.body.record_id)
