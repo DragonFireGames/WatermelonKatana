@@ -55,6 +55,7 @@ const TurboDB = async function (id) {
     db.createRecord = function (table_name, record_json) {
         if(typeof table_name !== "string") { throw "invalid argument table"}
         let table = this._data.tables
+        record_json = typeof record_json === "string" ? JSON.parse(record_json): record_json;
         if (table[table_name] === undefined)
             table[table_name] = { records: [], nextId: 1 }
         table[table_name].id = table[table_name].nextId++
@@ -172,7 +173,6 @@ const TurboDB = async function (id) {
         let table = this._data.tables[table_name];
         let column = [];
         for(let record of table.records) {
-            record = JSON.parse(record);
             column.push((record[column_name] !== undefined ? record[column_name]: null))
         }
         return(column);
