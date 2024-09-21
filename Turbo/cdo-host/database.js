@@ -53,12 +53,14 @@ const TurboDB = async function (id) {
     }
     // table paths
     db.createRecord = function (table_name, record_json) {
-        if(typeof table_name !== "string") { throw "invalid argument table"}
+        if(typeof table_name !== "string") { throw "invalid argument table" }
         let table = this._data.tables
         record_json = typeof record_json === "string" ? JSON.parse(record_json): record_json;
-        if (table[table_name] === undefined)
+        if (table[table_name] === undefined) {
             table[table_name] = { records: [], nextId: 1 }
-        table[table_name].id = table[table_name].nextId++
+        }
+        // table[table_name].id = table[table_name].nextId++
+        record_json.id = table[table_name].nextId++;
         table[table_name].records.push(record_json)
         this._data.markModified(`tables.${table_name}`)
         return { table_name, record_json }
@@ -211,17 +213,10 @@ fs.writeFileSync(`${self.csvPath}/${table_name}.csv`, self.jsonToCSV(table.recor
     }
     db.deleteRecord = function (table_name, record_id) {
         let table = this._data.tables[table_name]
-        var c = false
-        for (let i = 0; i < table.records.length; i++) {
-            let record = table.records[i]
-            if (record.id === record_id) {
-                table.records.splice(i)
-                c = true
-                break
-            }
-        }
-        if (!c)
+        let index = table.records.findIndex(o=>o.id===record_id)
+        if (table === undefined || index < 0) { 
             throw `failed to remove record on table "${table_name}" at id "${record_id}"`
+        }
         this._data.markModified(`tables.${table_name}.records`)
         return true
     }
