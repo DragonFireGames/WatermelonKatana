@@ -139,8 +139,13 @@ async function getHTML(html, id, code) {
     let icons = page.window.document.querySelectorAll('[data-canonical-image-url]')
     icons.forEach((icon) => {
         if (icon.getAttribute('data-image-type') === 'icon') {
-            icon.style['background-image'] =
-                `url('${renderIconToString(icon.getAttribute('data-canonical-image-url'), icon)}')`
+            if(icon.matches("button")) {
+              icon.style['background-image'] =
+                  `url('${renderIconToString(icon.getAttribute('data-canonical-image-url'), icon)}')`
+            }
+            if(icon.matches("img")) {
+              icon.src = `${renderIconToString(icon.getAttribute('data-canonical-image-url'), icon)}`
+            }
         }
     })
     return page.serialize()
