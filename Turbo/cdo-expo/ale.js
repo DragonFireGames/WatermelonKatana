@@ -136,11 +136,11 @@ async function getHTML(html, id, code) {
   </body>
   </html>`
     let page = new jsdom.JSDOM(html)
-    let buttons = page.window.document.querySelectorAll('button')
-    buttons.forEach((button) => {
-        if (button.getAttribute('data-image-type') === 'icon') {
-            button.style['background-image'] =
-                `url('${renderIconToString(button.getAttribute('data-canonical-image-url'), button)}')`
+    let icons = page.window.document.querySelectorAll('[data-canonical-image-url]')
+    icons.forEach((icon) => {
+        if (icon.getAttribute('data-image-type') === 'icon') {
+            icon.style['background-image'] =
+                `url('${renderIconToString(icon.getAttribute('data-canonical-image-url'), icon)}')`
         }
     })
     return page.serialize()
