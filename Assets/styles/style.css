@@ -322,6 +322,16 @@ input[type=checkbox]:checked + .checkbox::after {
 	align-items: center;         
 }
 
+.thumbnail-border.favorited {
+	background-image: linear-gradient(to right, white, red);
+	box-shadow: 0px 0px 10px lightcoral;
+}
+
+.thumbnail-border.published {
+	background-image: linear-gradient(to right, skyblue, blue);
+	box-shadow: 0px 0px 10px rgb(46, 141, 230);
+}
+
 .thumbnail-border.featured {
 	background-image: linear-gradient(to right, white, yellow);
 	box-shadow: 0px 0px 10px yellow;

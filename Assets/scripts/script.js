@@ -147,8 +147,9 @@ function userHTML(list) {
 
 function projHTML(list,tok) {
   return function (proj) {
+    let classes = (proj.featured?" featured":"")+(proj.posterId==tok?.user?.id?" published":"")+(tok?.user?.favorites.includes(proj.id)?" favorited":"");
     let div = `<a class="project-panel" title="${tagTitle(proj.tags)}" href="/project/${proj.id}" style="${proj.viewers.includes(tok?.user?.id)?`"color: #b0b0b0;"`:""}">
-      <div class="thumbnail-border ${proj.featured ? "featured":""}"><img class="project-thumbnail" src="${proj.thumbnail || "/images/placeholders/PLACEHOLDER_project.png"}" alt=""></div>
+      <div class="thumbnail-border ${classes}"><img class="project-thumbnail" src="${proj.thumbnail || "/images/placeholders/PLACEHOLDER_project.png"}" alt=""></div>
       <div class="project-link">${previewContent(proj.title, 100)}</div>
       <div>By: <object><a href="/user/${proj.poster}"><i>${proj.poster}</i></a></object></div>
       <div>Score: ${proj.score} Views: ${proj.views}</div>
