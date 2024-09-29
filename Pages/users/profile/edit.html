@@ -78,30 +78,34 @@
         const user = data.user;
         name.value = user.username;
         bio.value = user.biography || "";
+        avatar.value = user.avatar || "";
         avatar.src = user.avatar || "";
+        banner.value = user.banner || "";
         banner.src = user.banner || "";
         mature.checked = user.mature;
         markdownTextbox('#bio');
       })();
 
       async function uploadAvatar() {
-        var url = await getFileUpload(avatar.src);
+        var url = await getFileUpload(avatar.value);
         if (!url) return;
+        avatar.value = url;
         avatar.src = url;
       }
       
       async function uploadBanner() {
-        var url = await getFileUpload(banner.src);
+        var url = await getFileUpload(banner.value);
         if (!url) return;
+        banner.value = url;
         banner.src = url;
       }
 
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
         display.textContent = "";
-        if (avatar.src && !avatar.src.match(/^https?:\/\/[^"]+$/) && !avatar.src.match(/^\/api\/media\/[^"]+$/)) 
+        if (avatar.value && !avatar.value.match(/^https?:\/\/[^"]+$/) && !avatar.value.match(/^\/api\/media\/[^"]+$/)) 
           return display.textContent = 'Avatar is not a vaild URL';
-        if (banner.src && !banner.src.match(/^https?:\/\/[^"]+$/) && !banner.src.match(/^\/api\/media\/[^"]+$/)) 
+        if (banner.value && !banner.value.match(/^https?:\/\/[^"]+$/) && !banner.value.match(/^\/api\/media\/[^"]+$/)) 
           return display.textContent = 'Banner is not a vaild URL';
         try {
           const res = await fetch("/api/auth/update", {
@@ -109,8 +113,8 @@
             body: JSON.stringify({
               username: name.value,
               biography: bio.value,
-              avatar: avatar.src,
-              banner: banner.src,
+              avatar: avatar.value,
+              banner: banner.value,
               mature: mature.checked,
             }),
             headers: { "Content-Type": "application/json" },

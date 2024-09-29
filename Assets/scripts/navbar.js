@@ -332,7 +332,7 @@ document.addEventListener("DOMContentLoaded", async function() {
       `;
     }
     const notificationCount = auth.user.notifications.length;
-    var notifs = await Promise.all(auth.user.notifications.sort((a,b)=>a.postedAt-b.postedAt).map(notificationHTML));
+    var notifs = await Promise.all(auth.user.notifications.sort((a,b)=>b.postedAt-a.postedAt).map(notificationHTML));
     navbarHtml += `
     <div id="notification-icon" class="dropdown-icon" data-count="${notificationCount}" onclick="notificationbtnclick()">
       <svg viewBox="0 0 448 512" id="bellsvg" class="iconsvg">

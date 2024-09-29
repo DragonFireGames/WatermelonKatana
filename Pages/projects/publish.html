@@ -60,9 +60,10 @@
       })();
 
       async function uploadThumb() {
-        var url = await getFileUpload(thumb.src);
+        var url = await getFileUpload(thumb.value);
         if (!url) return;
         thumb.src = url;
+        thumb.value = url;
       }
       
       form.addEventListener('submit', async (e) => {
@@ -70,7 +71,7 @@
         display.textContent = '';
         if (!link.value.match(/^https?:\/\/[^"]+$/)) 
           return (display.textContent = "Link is not a vaild URL");
-        if (thumb.src && !thumb.src.match(/^https?:\/\/[^"]+$/) && !thumb.src.match(/^\/api\/media\/[^"]+$/)) 
+        if (thumb.value && !thumb.value.match(/^https?:\/\/[^"]+$/) && !thumb.value.match(/^\/api\/media\/[^"]+$/)) 
           return display.textContent = 'Thumbnail is not a vaild URL';
         var taglist = tags.value.toLowerCase().replace(/[^,\w\d_-]/g,"").split(",");
         if (taglist.length < 3)
@@ -84,7 +85,7 @@
               title: name.value,
               link: link.value,
               content: desc.value,
-              thumbnail: thumb.src,
+              thumbnail: thumb.value,
               tags: taglist,
               mature: mature.checked,
               hidden: hidden.checked,
