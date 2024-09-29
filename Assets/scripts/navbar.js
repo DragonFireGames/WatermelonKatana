@@ -1,4 +1,5 @@
-document.addEventListener("DOMContentLoaded", async function() {
+
+(async function() {
   const style = document.createElement("style");
   style.textContent = `
     @import url('https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap');
@@ -364,7 +365,7 @@ document.addEventListener("DOMContentLoaded", async function() {
   navbarContainer.innerHTML = navbarHtml;
 
   document.body.prepend(navbarContainer);
-});
+})();
 
 async function notificationHTML(notif,index) {
   var user = await getUser(notif.posterId);
@@ -400,7 +401,7 @@ function openreportbtnclick() {
   dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
 }
 
-setTimeout(()=>{
+document.addEventListener("DOMContentLoaded", ()=>{
   window.addEventListener("click", function(e) {
     const notificationIcon = document.querySelector("#notification-icon");
     if (!notificationIcon.contains(e.target)) {
@@ -413,5 +414,5 @@ setTimeout(()=>{
       dropdown.style.display = "none";
     }
   });
-},1000);
+});
   
