@@ -92,9 +92,10 @@
       
       async function uploadThumb() {
         var url = await getFileUpload(thumb.src);
-        alert(url);
         if (!url) return;
+        alert(url);
         thumb.src = url;
+        alert(thumb.src);
       }
 
       form.addEventListener("submit", async (e) => {
@@ -102,6 +103,7 @@
         display.textContent = "";
         if (!link.value.match(/^https?:\/\/[^"]+$/)) 
           return (display.textContent = "Link is not a vaild URL");
+        alert(thumb.src);
         if (thumb.src && !thumb.src.match(/^https?:\/\/[^"]+$/) && !thumb.src.match(/^\/api\/media\/[^"]+$/)) 
           return display.textContent = 'Thumbnail is not a vaild URL';
         var taglist = tags.value.toLowerCase().replace(/[^,\w\d_-]/g,"").split(",");

@@ -30,7 +30,7 @@ processLink(link,thumbnail) {
   
 async publish(req, res, next) {
   var { title, link, content, thumbnail, tags, mature, hidden, privateRecipients, platform } = req.body;
-  console.log(title,link);
+  console.log(title,link,thumbnail);
   try {
     const uid = res.locals.userToken.id;
     const user = await Users.findOne({ _id: uid });
@@ -78,7 +78,7 @@ async publish(req, res, next) {
 
 async update(req, res, next) {
   var { title, link, content, thumbnail, tags, mature, hidden, privateRecipients, platform } = req.body;
-  console.log(title,link);
+  console.log(title,link,thumbnail);
   try {
     const pid = req.params.id;
     const project = await this.model.findOne({ _id: pid });
