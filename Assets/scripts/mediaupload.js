@@ -75,6 +75,7 @@ async function uploadMedia() {
     });
     var data = await res.json();
     if (res.status > 206) throw data;
+    alert(data.media.url);
     fileUploaded(data.media.url);
   } catch (error) {
     alert(JSON.stringify(error));

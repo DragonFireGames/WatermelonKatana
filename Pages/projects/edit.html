@@ -92,6 +92,7 @@
       
       async function uploadThumb() {
         var url = await getFileUpload(thumb.src);
+        alert(url);
         if (!url) return;
         thumb.src = url;
       }
