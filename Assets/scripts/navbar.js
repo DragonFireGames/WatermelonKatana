@@ -312,7 +312,21 @@
       </a>`: ""}
     </div>
     <div class="navbar-right">
+    </div>
+  </div>
+  <div id="block"></div>
   `;
+
+  const navbarContainer = document.createElement("div");
+  navbarContainer.innerHTML = navbarHtml;
+
+  document.body.prepend(navbarContainer);
+
+})();
+
+document.addEventListener("DOMContentLoaded", async ()=>{
+
+  var nhtml = "";
 
   var auth = await getAuth();
   if (auth.user) {
@@ -321,7 +335,7 @@
       const data = await res.json();
       const reportCount = data.report.length;
       var reports = await Promise.all(data.report.map(reportHTML));
-      navbarHtml += `
+      nhtml += `
       <div id="report-icon" class="dropdown-icon" data-count="${reportCount}" onclick="openreportbtnclick()">
         <svg viewBox="0 0 448 512" id="flagsvg" class="iconsvg">
            <path d="M48 24C48 10.7 37.3 0 24 0S0 10.7 0 24V64 350.5 400v88c0 13.3 10.7 24 24 24s24-10.7 24-24V388l80.3-20.1c41.1-10.3 84.6-5.5 122.5 13.4c44.2 22.1 95.5 24.8 141.7 7.4l34.7-13c12.5-4.7 20.8-16.6 20.8-30V66.1c0-23-24.2-38-44.8-27.7l-9.6 4.8c-46.3 23.2-100.8 23.2-147.1 0c-35.1-17.6-75.4-22-113.5-12.5L48 52V24zm0 77.5l96.6-24.2c27-6.7 55.5-3.6 80.4 8.8c54.9 27.4 118.7 29.7 175 6.8V334.7l-24.4 9.1c-33.7 12.6-71.2 10.7-103.4-5.4c-48.2-24.1-103.3-30.1-155.6-17.1L48 338.5v-237z"></path>
@@ -333,8 +347,8 @@
       `;
     }
     const notificationCount = auth.user.notifications.length;
-    var notifs = await Promise.all(auth.user.notifications.sort((a,b)=>b.postedAt-a.postedAt).map(notificationHTML));
-    navbarHtml += `
+    var notifs = await Promise.all(auth.user.notifications.sort((a,b)=>a.postedAt-b.postedAt).map(notificationHTML));
+    nhtml += `
     <div id="notification-icon" class="dropdown-icon" data-count="${notificationCount}" onclick="notificationbtnclick()">
       <svg viewBox="0 0 448 512" id="bellsvg" class="iconsvg">
          <path d="M224 0c-17.7 0-32 14.3-32 32V49.9C119.5 61.4 64 124.2 64 200v33.4c0 45.4-15.5 89.5-43.8 124.9L5.3 377c-5.8 7.2-6.9 17.1-2.9 25.4S14.8 416 24 416H424c9.2 0 17.6-5.3 21.6-13.6s2.9-18.2-2.9-25.4l-14.9-18.6C399.5 322.9 384 278.8 384 233.4V200c0-75.8-55.5-138.6-128-150.1V32c0-17.7-14.3-32-32-32zm0 96h8c57.4 0 104 46.6 104 104v33.4c0 47.9 13.9 94.6 39.7 134.6H72.3C98.1 328 112 281.3 112 233.4V200c0-57.4 46.6-104 104-104h8zm64 352H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7s18.7-28.3 18.7-45.3z"></path>
@@ -348,24 +362,17 @@
       <p class="signedin-username">${auth.user.username}</p>
     </a>
     `;
-  } else if (window.location.pathname.match(/^\/(register|login)/i) === null){
-    navbarHtml += `
+  } else if (window.location.pathname.match(/^\/(register|login)/i) === null) {
+    nhtml += `
     <a class="nav-btn" href="/login">Login</a>
     <a class="nav-btn" href="/register">Create Account</a>
     `;
   }
 
-  navbarHtml += `
-    </div>
-  </div>
-  <div id="block"></div>
-  `;
+  const navbarright = document.querySelector(".navbar-right")
+  navbarright.insertAdjacentHTML("afterbegin",nhtml);
 
-  const navbarContainer = document.createElement("div");
-  navbarContainer.innerHTML = navbarHtml;
-
-  document.body.prepend(navbarContainer);
-})();
+});
 
 async function notificationHTML(notif,index) {
   var user = await getUser(notif.posterId);
