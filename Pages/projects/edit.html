@@ -81,6 +81,7 @@
         link.value = data.link;
         desc.value = data.content;
         thumb.src = data.thumbnail || "";
+        thumb.value = data.thumbnail || "";
         tags.value = data.tags.join(", ");
         mature.checked = data.mature;
         hidden.checked = data.hidden;
@@ -91,11 +92,11 @@
       })();
       
       async function uploadThumb() {
-        var url = await getFileUpload(thumb.src);
+        var url = await getFileUpload(thumb.value);
         if (!url) return;
-        alert(url);
         thumb.src = url;
-        alert(thumb.src);
+        thumb.value = url;
+        alert(thumb.value);
       }
 
       form.addEventListener("submit", async (e) => {
@@ -103,8 +104,7 @@
         display.textContent = "";
         if (!link.value.match(/^https?:\/\/[^"]+$/)) 
           return (display.textContent = "Link is not a vaild URL");
-        alert(thumb.src);
-        if (thumb.src && !thumb.src.match(/^https?:\/\/[^"]+$/) && !thumb.src.match(/^\/api\/media\/[^"]+$/)) 
+        if (thumb.value && !thumb.value.match(/^https?:\/\/[^"]+$/) && !thumb.value.match(/^\/api\/media\/[^"]+$/)) 
           return display.textContent = 'Thumbnail is not a vaild URL';
         var taglist = tags.value.toLowerCase().replace(/[^,\w\d_-]/g,"").split(",");
         if (taglist.length < 3)
@@ -118,7 +118,7 @@
               title: name.value,
               link: link.value,
               content: desc.value,
-              thumbnail: thumb.src,
+              thumbnail: thumb.value,
               tags: taglist,
               mature: mature.checked,
               hidden: hidden.checked,
