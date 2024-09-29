@@ -68,7 +68,7 @@ Will these actually get done?
 -   [ ] Game Verification
 -   [ ] Improve Security (XSS, SQL Injection, etc.) - toodols & DragonFireGames & Letti
 -   [x] Email Verification - DragonFireGames
--   [ ] Forgot Password emails - DragonFireGames
+-   [x] Forget and Reset Password using emails - DragonFireGames
 
 ### Step 3 - Better UI
 

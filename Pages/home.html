@@ -1,110 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home | WatermelonKatana</title>
-  <meta property="og:title" content="WatermelonKatana"/>
-  <meta property="og:type" content="profile"/>
-  <meta property="og:description" content="Post your projects, Interact with other peoples' projects, Chat with your friends & More! We have a large gallery of games and a growing user base, help us out by either posting your browser game here or playing other peoples' games!"/>
-  <link rel="stylesheet" type="text/css" href="/styles/style.css">
-  <link rel="stylesheet" type="text/css" href="/styles/home.css">
-  <script src="/scripts/HtmlSanitizer.js"></script>
-  <script src="/scripts/script.js"></script>
-</head>
-<body>
-  <div class="container">
-    <header class="main-header">
-      <h1>Welcome to <strong class="logo-text">WatermelonKatana</strong></h1>
-      <h2 id="username" style="color: #777777"></h2>
-      <nav id="header" class="main-nav">
-        <a href="/register">Register</a>
-        <a href="/login">Login</a>
-        <a href="/chat">Chat</a>
-        <a href="/search">Project Gallery</a>
-        <a href="/forum">Forum</a>
-        <a href="/updates">Announcements</a>
-      </nav>
-    </header>
-    <section class="intro">
-      <p>Post your projects, interact with other people's projects, chat with your friends, and more! We have a large gallery of games and a growing user base. Help us out by either posting your browser game here or playing other people's games!</p>
-      <a class="discord-link" href="https://discord.gg/S8XTzKEz5f">Join our Discord!</a>
-    </section>
-    <section class="featured-projects">
-      <h2>Featured Projects</h2>
-      <div id="featuredList" class="project-list"></div>
-    </section>
-    <section class="featured-projects">
-      <h2>Latest Projects</h2>
-      <div id="latestList" class="project-list"></div>
-    </section>
-    <section class="featured-projects">
-      <h2>Hot Forum Topics</h2>
-      <div id="postlist" class="post-list"></div>
-    </section>
-    <footer id="footer" class="main-footer">
-      <p>&copy; 2024 WatermelonKatana. All rights reserved.</p>
-    </footer>
-  </div>
-  
-  <script>
-    const featuredList = document.querySelector('#featuredList');
-    const latestList = document.querySelector('#latestList');
-    const postlist = document.querySelector('#postlist');
-
-    (async () => {
-      const tok = await getAuth();
-      var sparams = new URLSearchParams();
-      sparams.set("showMature", tok.user?.mature);
-      sparams.set("featured", 1);
-      const res = await fetch('/api/project/list?'+sparams);
-      const data = await res.json();
-      data.projects.sort((a,b)=>(b.score-a.score)||(b.views-a.views));
-      data.projects.map(projHTML(featuredList,tok));
-    })();
-
-    (async () => {
-      const tok = await getAuth();
-      var sparams = new URLSearchParams();
-      sparams.set("showMature", tok.user?.mature);
-      const res = await fetch('/api/project/list?'+sparams);
-      const data = await res.json();
-      data.projects.sort((a,b)=>(b.postedAt-a.postedAt));
-      data.projects.slice(0, 5).map(projHTML(latestList,tok));
-    })();
-
-    (async () => {
-      const tok = await getAuth();
-      var sparams = new URLSearchParams();
-      sparams.set("showMature", tok.user?.mature);
-      const res = await fetch('/api/forum/list?'+sparams);
-      const data = await res.json();
-      data.posts.sort((a,b)=>(Number(b.featured)-Number(a.featured))||(b.activeAt-a.activeAt));
-      data.posts = data.posts.slice(0,5);
-      data.posts.map(forumHTML(postlist,tok));
-    })();
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | WatermelonKatana</title>
+    <meta property="og:title" content="WatermelonKatana"/>
+    <meta property="og:type" content="profile"/>
+    <meta property="og:description" content="Post your projects, Interact with other peoples' projects, Chat with your friends & More! We have a large gallery of games and a growing user base, help us out by either posting your browser game here or playing other peoples' games!"/>
+    <link rel="stylesheet" type="text/css" href="/styles/style.css">
+    <link rel="stylesheet" type="text/css" href="/styles/home.css">
+    <script src="/scripts/HtmlSanitizer.js"></script>
+    <script src="/scripts/script.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <header class="main-header">
+        <h1>Welcome to <strong class="logo-text">WatermelonKatana</strong></h1>
+        <h2 id="username" style="color: #777777"></h2>
+        <nav id="header" class="main-nav">
+          <a href="/register">Register</a>
+          <a href="/login">Login</a>
+          <a href="/chat">Chat</a>
+          <a href="/search">Project Gallery</a>
+          <a href="/forum">Forum</a>
+          <a href="/updates">Announcements</a>
+        </nav>
+      </header>
+      <section class="intro">
+        <p>Post your projects, interact with other people's projects, chat with your friends, and more! We have a large gallery of games and a growing user base. Help us out by either posting your browser game here or playing other people's games!</p>
+        <a class="discord-link" href="https://discord.gg/S8XTzKEz5f">Join our Discord!</a>
+      </section>
+      <section class="featured-projects">
+        <h2>Featured Projects</h2>
+        <div id="featuredList" class="project-list"></div>
+      </section>
+      <section class="featured-projects">
+        <h2>Latest Projects</h2>
+        <div id="latestList" class="project-list"></div>
+      </section>
+      <section class="featured-projects">
+        <h2>Hot Forum Topics</h2>
+        <div id="postlist" class="post-list"></div>
+      </section>
+      <footer id="footer" class="main-footer">
+        <p>&copy; 2024 WatermelonKatana. All rights reserved.</p>
+      </footer>
+    </div>
     
-    const header = document.querySelector('#header');
-    const footer = document.querySelector('#footer');
-    const user = document.getElementById('username');
-    (async () => {
-      const data = await getAuth();
-      if (!data.auth) return;
-      //<p>Signed in as ${data.user.username}</p><br/>
-      user.innerHTML = `<p>Signed in as <strong class="logo-text">${data.user.username}</strong></p>`;
-      header.innerHTML = `
-        <a href="/publish">Publish</a>
-        <a href="/profile">Profile</a>
-        <a href="/chat">Chat</a>
-        <a href="/search">Project Gallery</a>
-        <a href="/forum">Forum</a>
-        <a href="/updates">Announcements</a>
-        <a href="/userlist">User List</a>
-      `;
-      if (data.user.role === "Admin") {
-        header.innerHTML += `<a href="/admin">Admin List</a>`;
-      }
-    })();
-  </script>
-</body>
+    <script>
+      const featuredList = document.querySelector('#featuredList');
+      const latestList = document.querySelector('#latestList');
+      const postlist = document.querySelector('#postlist');
+
+      (async () => {
+        const tok = await getAuth();
+        var sparams = new URLSearchParams();
+        sparams.set("showMature", tok.user?.mature);
+        sparams.set("featured", 1);
+        const res = await fetch('/api/project/list?'+sparams);
+        const data = await res.json();
+        data.projects.sort((a,b)=>(b.score-a.score)||(b.views-a.views));
+        data.projects.map(projHTML(featuredList,tok));
+      })();
+
+      (async () => {
+        const tok = await getAuth();
+        var sparams = new URLSearchParams();
+        sparams.set("showMature", tok.user?.mature);
+        const res = await fetch('/api/project/list?'+sparams);
+        const data = await res.json();
+        data.projects.sort((a,b)=>(b.postedAt-a.postedAt));
+        data.projects.slice(0, 5).map(projHTML(latestList,tok));
+      })();
+
+      (async () => {
+        const tok = await getAuth();
+        var sparams = new URLSearchParams();
+        sparams.set("showMature", tok.user?.mature);
+        const res = await fetch('/api/forum/list?'+sparams);
+        const data = await res.json();
+        data.posts.sort((a,b)=>(Number(b.featured)-Number(a.featured))||(b.activeAt-a.activeAt));
+        data.posts = data.posts.slice(0,5);
+        data.posts.map(forumHTML(postlist,tok));
+      })();
+      
+      const header = document.querySelector('#header');
+      const footer = document.querySelector('#footer');
+      const user = document.getElementById('username');
+      (async () => {
+        const data = await getAuth();
+        if (!data.auth) return;
+        //<p>Signed in as ${data.user.username}</p><br/>
+        user.innerHTML = `<p>Signed in as <strong class="logo-text">${data.user.username}</strong></p>`;
+        header.innerHTML = `
+          <a href="/publish">Publish</a>
+          <a href="/profile">Profile</a>
+          <a href="/chat">Chat</a>
+          <a href="/search">Project Gallery</a>
+          <a href="/forum">Forum</a>
+          <a href="/updates">Announcements</a>
+          <a href="/userlist">User List</a>
+        `;
+        if (data.user.role === "Admin") {
+          header.innerHTML += `<a href="/admin">Admin List</a>`;
+        }
+      })();
+    </script>
+  </body>
 </html>

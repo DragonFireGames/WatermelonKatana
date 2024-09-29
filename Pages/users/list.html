@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User List | WatermelonKatana</title>
-  <link rel="stylesheet" type="text/css" href="/styles/style.css">
-  <link rel="stylesheet" type="text/css" href="/styles/forum.css">
-  <script src="/scripts/HtmlSanitizer.js"></script>
-  <script src="/scripts/script.js"></script>
-</head>
-<body>
-  <script src="/scripts/navbar.js"></script>
-  <h1>User List</h1>
-  <ul id="list" class="user-list"></ul>
-  <script>
-    const list = document.querySelector('#list')
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List | WatermelonKatana</title>
+    <link rel="stylesheet" type="text/css" href="/styles/style.css">
+    <link rel="stylesheet" type="text/css" href="/styles/forum.css">
+    <script src="/scripts/HtmlSanitizer.js"></script>
+    <script src="/scripts/script.js"></script>
+  </head>
+  <body>
+    <script src="/scripts/navbar.js"></script>
+    <h1>User List</h1>
+    <ul id="list" class="user-list"></ul>
+    <script>
+      const list = document.querySelector('#list')
 
-    const getUsers = async() => {
-      const res = await fetch('/api/auth/listUsers');
-      const data = await res.json();
-      data.user.map(userHTML(list));
-    }
-    getUsers()
-  </script>
-</body>
+      const getUsers = async() => {
+        const res = await fetch('/api/auth/listUsers');
+        const data = await res.json();
+        data.user.map(userHTML(list));
+      }
+      getUsers()
+    </script>
+  </body>
 </html>
