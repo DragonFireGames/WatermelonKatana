@@ -125,7 +125,7 @@ input[type=button], input[type=submit], button, select, option, .button {
 
 input[type=button]:hover, input[type=submit]:hover, button:hover, .button:hover {
 	/*background-color: var(--palette-secondary-hover);*/
-	background-color: rgba(0, 0, 0, 0.3)
+	background-color: rgba(0, 0, 0, 0.3);
 	color: var(--palette-white);
 }
 
@@ -320,6 +320,11 @@ input[type=checkbox]:checked + .checkbox::after {
 	transition: box-shadow 0.3s;
 	display: flex;          
 	align-items: center;         
+}
+
+.thumbnail-border .featured {
+	background-image: linear-gradient(to right, white, yellow);
+	box-shadow: 0px 0px 10px yellow;
 }
 
 .project-link, .post-top {
