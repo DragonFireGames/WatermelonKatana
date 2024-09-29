@@ -327,10 +327,17 @@ input[type=checkbox]:checked + .checkbox::after {
 	box-shadow: 0px 0px 10px red;
 }
 
+/** 
 .thumbnail-border.published {
-	background-image: linear-gradient(to right, lightgreen, lime);
-	box-shadow: 0px 0px 10px lime;
+	background-image: linear-gradient(to right, skyblue, blue);
+	box-shadow: 0px 0px 10px blue;
 }
+/*/
+.thumbnail-border.published {
+	background-image: linear-gradient(to right, lightgreen, limegreen);
+	box-shadow: 0px 0px 10px limegreen;
+}
+/**/
 
 .thumbnail-border.featured {
 	background-image: linear-gradient(to right, white, yellow);
