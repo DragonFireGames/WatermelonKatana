@@ -193,7 +193,10 @@ app.get("/user/:name", async (req, res) => {
 app.get("/profile", userAuth, (req, res) => res.sendFile(cldir + "/users/profile/profile.html"));
 app.get("/profile/edit", userAuth, (req, res) => res.sendFile(cldir + "/users/profile/edit.html"));
 app.get("/profile/chpass", userAuth, (req, res) => res.sendFile(cldir + "/users/profile/chpass.html"));
-app.get("/profile/verify", userAuth, (req, res) => res.sendFile(cldir + "/users/profile/verification.html"));
+app.get("/profile/verify", (req, res) => res.sendFile(cldir + "/users/profile/verification.html"));
+app.get("/verified", (req, res) => res.sendFile(cldir + "/users/profile/verified.html"));
+app.get("/resetpass/email", (req, res) => res.sendFile(cldir + "/users/profile/emailresetpass.html"));
+app.get("/resetpass", (req, res) => res.sendFile(cldir + "/users/profile/resetpass.html"));
 app.get("/verified", (req, res) => res.sendFile(cldir + "/users/profile/verified.html"));
 // Notification
 const { openNotification } = require("./API/Auth/auth");
