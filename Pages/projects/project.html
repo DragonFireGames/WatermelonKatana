@@ -71,27 +71,25 @@
           const data = await res.json();
           await createPost(
             postdiv,
-            data,
-            `
-                <b>URL</b> => <a href="${data.link}">${data.link}</a> <br>
-                <b>Platform</b>: <a href="/search?platform=${data.platform}">${
-                  {
-                    cdo: "code.org",
-                    khan: "Khan Academy",
-                    scratch: "Scratch",
-                    embed: "Unknown",
-                  }[data.platform]
-                }</a>
-                <br>
-                <div>
-                <b>Score:</b> <span id="score">${data.score}</span> 
-                <b>Views:</b> <span id="views">${data.views}</span>
-                ${await createActionButton("edit", `onclick="window.location.href += '/edit'"`)}
-                ${await createDeleteButton("project", "search")}
-                </div>
-                <br>
-                `,
-            "project",
+            data,`   
+            <b>URL</b> => <a href="${data.link}">${data.link}</a> <br>
+            <b>Platform</b>: <a href="/search?platform=${data.platform}">${
+              {
+                cdo: "code.org",
+                khan: "Khan Academy",
+                scratch: "Scratch",
+                embed: "Unknown",
+              }[data.platform]
+            }</a>
+            <br>
+            <div>
+            <b>Score:</b> <span id="score">${data.score}</span> 
+            <b>Views:</b> <span id="views">${data.views}</span>
+            ${await createActionButton("edit", `onclick="window.location.href += '/edit'"`)}
+            ${await createDeleteButton("project", "search")}
+            </div>
+            <br>
+            `, "project",
             () => {
               postdiv.innerHTML = `Loading...`;
               load(true);

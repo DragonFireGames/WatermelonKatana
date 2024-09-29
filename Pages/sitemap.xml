@@ -20,5 +20,10 @@
       <changefreq>monthly</changefreq>
       <priority>0.2</priority>
    </url>
+   <url>
+      <loc>https://watermelonkatana.com/updates/</loc>
+      <changefreq>monthly</changefreq>
+      <priority>0.2</priority>
+   </url>
    <!--dynamics-->
 </urlset> 
