@@ -1,7 +1,7 @@
 
 function markdownTextbox(sel,nobr) {
   var markbox = document.querySelector(sel);
-  if (markbox.parent.innerHTML.includes('title="Pick Emoji"')) return;
+  if (markbox.parentElement.innerHTML.includes('title="Pick Emoji"')) return;
   markbox.insertAdjacentHTML("afterend", `
     ${nobr?"":"<br>"}
     <button type="button" title="Bold" onclick="replaceSelectedText(document.querySelector('${sel}'),t=>'**'+t+'**')">
