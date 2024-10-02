@@ -118,11 +118,12 @@ const TurboDB = async function (id) {
     db.updateRecord = function (table_name, record_json) {
         if(typeof table_name !== "string") { throw "invalid argument table"}
         let table = this._data.tables
-        t = table[table_name]
-        for (let i = 0; i < t.records.length; i++) {
-            let record = t.records[i]
+        table = table[table_name]
+        record_json = typeof record_json === "string" ? JSON.parse(record_json): record_json;
+        for (let i = 0; i < table.records.length; i++) {
+            let record = table.records[i]
             if (record.id === record_json.id) {
-                table[table_name].records[i] = record_json
+                table.records[i] = record_json
                 this._data.markModified(`tables.${table_name}.records`)
                 break
             }
