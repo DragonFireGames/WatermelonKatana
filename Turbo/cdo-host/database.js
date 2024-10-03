@@ -218,6 +218,7 @@ fs.writeFileSync(`${self.csvPath}/${table_name}.csv`, self.jsonToCSV(table.recor
         if (table === undefined || index < 0) { 
             throw `failed to remove record on table "${table_name}" at id "${record_id}"`
         }
+        table.records.splice(index, 1)
         this._data.markModified(`tables.${table_name}.records`)
         return true
     }
