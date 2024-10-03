@@ -149,7 +149,7 @@ const TurboDB = async function (id) {
         let table = this._data.tables[table_name]
         if (
             typeof column_name !== 'string' ||
-            column_type.match(/string|number|boolean/)[0] === null ||
+            column_type.match(/string|number|boolean/) === null ||
             table === undefined
         )
             throw `invalid argument on table "${table_name}" column "${column_name}" type "${column_type}"`
