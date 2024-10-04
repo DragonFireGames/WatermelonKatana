@@ -2308,7 +2308,7 @@ div.WireframeButtons_active {
 #divApplab .chart .loading,
 #designModeViz .chart .loading,
 .draggingParent .chart .loading {
-  background: url("assets/blockly/media/applab/spinner-big.gif") no-repeat center center;
+  background: url("../assets/blockly/media/applab/spinner-big.gif") no-repeat center center;
 }
 #divApplab .design-mode-hidden,
 #designModeViz .design-mode-hidden,
