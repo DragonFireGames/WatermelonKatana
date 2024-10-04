@@ -2347,13 +2347,13 @@ div.WireframeButtons_active {
 #divApplab.appModern button:hover,
 #designModeViz.appModern button:hover,
 .draggingParent button:hover {
-  background-image: url("assets/blockly/media/applab/brighter.png");
+  background-image: url("../assets/blockly/media/applab/brighter.png");
   box-shadow: none;
 }
 #divApplab.appModern button:active,
 #designModeViz.appModern button:active,
 .draggingParent button:active {
-  background-image: url("assets/blockly/media/applab/darker.png");
+  background-image: url("../assets/blockly/media/applab/darker.png");
   border: 0 !important;
 }
 #divApplab.appModern input[type=text],
@@ -2446,17 +2446,17 @@ _:-ms-fullscreen select,
 #designModeViz.appModern img[data-canonical-image-url=""],
 .draggingParent img[data-canonical-image-url=""] {
   display: block;
-  background: #bdc3c7 url("assets/blockly/media/applab/placeholder_img.png") center center no-repeat !important;
+  background: #bdc3c7 url("../assets/blockly/media/applab/placeholder_img.png") center center no-repeat !important;
 }
 #divApplab.notRunning canvas:not(#turtleCanvas),
 #designModeViz.appModern canvas:not(#turtleCanvas),
 .draggingParent canvas:not(#turtleCanvas) {
-  background: #bdc3c7 url("assets/blockly/media/applab/placeholder_canvas.png") center center no-repeat;
+  background: #bdc3c7 url("../assets/blockly/media/applab/placeholder_canvas.png") center center no-repeat;
 }
 #divApplab.notRunning .chart,
 #designModeViz.appModern .chart,
 .draggingParent .chart {
-  background: #bdc3c7 url("assets/blockly/media/applab/placeholder_chart.png") center center no-repeat;
+  background: #bdc3c7 url("../assets/blockly/media/applab/placeholder_chart.png") center center no-repeat;
 }
 
 div#visualization {
@@ -2876,7 +2876,7 @@ div#visualizationResizeBar {
 .icon21 {
   height: 21px;
   width: 21px;
-  background-image: url("assets/blockly/media/applab/icons.png");
+  background-image: url("../assets/blockly/media/applab/icons.png");
   background-size: 42px 147px;
   margin-bottom: -3px;
 }
