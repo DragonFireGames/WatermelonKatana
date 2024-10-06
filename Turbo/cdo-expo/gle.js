@@ -1,76 +1,68 @@
 // const fs = require("fs");
-const request = require("./requests");
-const startPath = "https://studio.code.org";
-let animations = `${startPath}/v3/animations/`;
+const request = require('./requests')
+const startPath = 'https://studio.code.org'
+let animations = `${startPath}/v3/animations/`
 
 async function exportProject(id) {
-  animations = `${startPath}/v3/animations/`;
-  assets = `${startPath}/v3/assets/`;
-  return new Promise(async (resolve, reject) => {
-    animations += id + "/";
-    let source = await getJSON(id);
-    resolve(await getHTML(id, getCode(source)));
-  });
+    animations = `${startPath}/v3/animations/`
+    assets = `${startPath}/v3/assets/`
+    return new Promise(async (resolve, reject) => {
+        animations += id + '/'
+        let source = await getJSON(id)
+        resolve(await getHTML(id, getCode(source)))
+    })
 }
 
 async function getJSON(id) {
-  return new Promise((resolve, reject) => {
-    request
-      .send(`${startPath}/v3/sources/${id}/main.json`, "json")
-      .then((data) => {
-        resolve(data);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
+    return new Promise((resolve, reject) => {
+        request
+            .send(`${startPath}/v3/sources/${id}/main.json`, 'json')
+            .then((data) => {
+                resolve(data)
+            })
+            .catch((err) => {
+                reject(err)
+            })
+    })
 }
 
 function getCode(json) {
-  let animationList = json.animations;
-  let libraries = ``;
-  let requisites = ``;
-  json.libraries = json.libraries || [];
-  json.libraries.forEach((library) => {
-    let lib = library.name;
-    let src = library.source;
-    let funcs = library.functions.join("|");
-    let pattern = new RegExp(`(?<!\\(\\s*|(?<!\\/\\/.*|\\/\\*[^\\*\\/]*|["'][^'"]*)function\\s+[\\S]+\\s*\\(\\)\\s*{[^}]+)function\\s+(${funcs})\\s*(?=\\()`, "g");
-    src = src.replace(pattern, `var $1 = this.$1 = function`);
-    libraries += `var ${lib} = window[${JSON.stringify(lib)}] || {};
-(function ${lib}() {\n${src}\nreturn(this)\n}).bind(${lib})();\n`;
-  });
-  animationList.orderedKeys.forEach((key) => {
-    let animation = animationList.propsByKey[key];
-    animation.rootRelativePath = `${animation.sourceUrl
-        ? `/media?u=${startPath}/${animation.sourceUrl}`
-        : `/media?u=${animations + key}.png`
-      }`;
-  });
-  if (animationList.orderedKeys.length < 1) {
-    let prerequisites = {
-      preload: "function preload(){}",
-      setup: "function setup(){window.preload = null;}"
-    };
-    for (let req in prerequisites) {
-      if (json.source.match(new RegExp(`^(\\s*function\\s*${req})`, "gm")) === null) {
-        requisites += `${prerequisites[req]}\n`;
-      }
-    }
-  }
-  // modified all load functions to use the API for calls
-  // if this breaks anything tell me
-  // if (assetList.length > 0) {
-  //   json.source = json.source.replace(
-  //     new RegExp(`["|'](?:sound://)(${assetList.join("|")})["|']`, "g"),
-  //     `"/media?u=${soundLibrary}$1"`,
-  //   );
-  //   json.source = json.source.replace(
-  //     new RegExp(`["|'](${assetList.join("|")})["|']`, "g"),
-  //     `"/media?u=${assets}$1"`,
-  //   );
-  // }
-  return `var p5Inst = new p5(null, 'sketch');
+    let animationList = json.animations
+    let libraries = ``
+    // let requisites = ``
+    json.libraries = json.libraries || []
+    json.libraries.forEach((library) => {
+        let lib = library.name
+        let src = library.source
+        let funcs = library.functions.join('|')
+        let pattern = new RegExp(
+            `(?<!\\(\\s*|(?<!\\/\\/.*|\\/\\*[^\\*\\/]*|["'][^'"]*)function\\s+[\\S]+\\s*\\(\\)\\s*{[^}]+)function\\s+(${funcs})\\s*(?=\\()`,
+            'g'
+        )
+        src = src.replace(pattern, `var $1 = this.$1 = function`)
+        libraries += `var ${lib} = window[${JSON.stringify(lib)}] || {};
+(function ${lib}() {\n${src}\nreturn(this)\n}).bind(${lib})();\n`
+    })
+    animationList.orderedKeys.forEach((key) => {
+        let animation = animationList.propsByKey[key]
+        animation.rootRelativePath = `${
+            animation.sourceUrl
+                ? `/media?u=${startPath}/${animation.sourceUrl}`
+                : `/media?u=${animations + key}.png`
+        }`
+    })
+    // if (animationList.orderedKeys.length < 1) {
+    //     let prerequisites = {
+    //         preload: 'function preload(){}',
+    //         setup: 'function setup(){window.preload = null;}',
+    //     }
+    //     for (let req in prerequisites) {
+    //         if (json.source.match(new RegExp(`^(\\s*function\\s*${req})`, 'gm')) === null) {
+    //             requisites += `${prerequisites[req]}\n`
+    //         }
+    //     }
+    // }
+    return `var p5Inst = new p5(null, 'sketch');
 
 window.preload = function () {
   initMobileControls(p5Inst);
@@ -314,7 +306,13 @@ window.preload = function () {
     writable: true
   }
 })
-${requisites}
+// \${requisites}
+function preload() {
+    (window.preload||this.preload||function(){})()
+}
+function setup() {
+    (window.setup||this.setup||function(){window.preload=null})()
+}
 ;(function() {
     return fetch("/api/auth/check").then(r => {
         if (r.status === 200) {
@@ -358,18 +356,18 @@ ${requisites}
 window.setup = function () {
   window.wrappedExportedCode('setup');
 };
-  `;
+  `
 }
 
 //* Old Code
 
 async function getHTML(id, code) {
-  return Promise.resolve(
-    await request
-      .send(`${startPath}/v3/channels/${id}`, "json")
-      .then(async (data) => {
-        const dependency = "/turbowarp/gamelab";
-        return `<html>
+    return Promise.resolve(
+        await request
+            .send(`${startPath}/v3/channels/${id}`, 'json')
+            .then(async (data) => {
+                const dependency = '/turbowarp/gamelab'
+                return `<html>
   <head>
     <title> ${data.name} </title>
       <meta charset="utf-8" />
@@ -444,11 +442,11 @@ async function getHTML(id, code) {
   <div id="studio-dpad-container" style="position:absolute; width:400px; bottom:5px; height:157px; overflow-y:hidden;z-index: -1;">
   </div>
 </body>
-</html>`;
-      }),
-  );
+</html>`
+            })
+    )
 }
 
 module.exports = {
-  exportProject,
-};
+    exportProject,
+}
