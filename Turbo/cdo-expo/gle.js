@@ -29,7 +29,6 @@ async function getJSON(id) {
 function getCode(json) {
     let animationList = json.animations
     let libraries = ``
-    // let requisites = ``
     json.libraries = json.libraries || []
     json.libraries.forEach((library) => {
         let lib = library.name
@@ -51,17 +50,6 @@ function getCode(json) {
                 : `/media?u=${animations + key}.png`
         }`
     })
-    // if (animationList.orderedKeys.length < 1) {
-    //     let prerequisites = {
-    //         preload: 'function preload(){}',
-    //         setup: 'function setup(){window.preload = null;}',
-    //     }
-    //     for (let req in prerequisites) {
-    //         if (json.source.match(new RegExp(`^(\\s*function\\s*${req})`, 'gm')) === null) {
-    //             requisites += `${prerequisites[req]}\n`
-    //         }
-    //     }
-    // }
     return `var p5Inst = new p5(null, 'sketch');
 
 window.preload = function () {
@@ -306,7 +294,6 @@ window.preload = function () {
     writable: true
   }
 })
-// \${requisites}
 ;(function() {
     return fetch("/api/auth/check").then(r => {
         if (r.status === 200) {
