@@ -319,19 +319,19 @@ window.preload = function () {
         document.body.appendChild(__script);
         __script.onload = function() {
           try { window.draw = draw; } catch (e) {}
+          }
           switch (stage) {
             case 'preload':
               if (__oldPreload !== window.preload) { preload(); }
               break;
             case 'setup':
               if (__oldSetup !== window.setup) { 
-                //if(__oldPreload !== window.prelaod) { preload(); }
+                if(__oldPreload !== window.prelaod) { preload(); }
                 setup(); 
               }
               break;
             }
-          }
-          })
+    })
     .catch(err => {
         throw new Error(err);
     })
