@@ -328,19 +328,22 @@ window.preload = function () {
         let __script = document.createElement("script");
         __script.text = ${JSON.stringify(libraries + json.source)};
         document.body.appendChild(__script);
-        try { window.draw = draw; } catch (e) {}
-        switch (stage) {
-          case 'preload':
-            if (preload !== window.preload) { preload(); }
-            break;
-          case 'setup':
-            if (setup !== window.setup) { setup(); } else { window.preload = null; }
-              break;
-        }
-    }).catch(err => {
-       throw new Error(err);
+        if(typeof preload === "function" && typeof setup === "function") { preload() }
+        if(typeof setup === "function") { setup() }
+    })
+    .catch(err => {
+        throw new Error(err);
     })
 })();
+    try { window.draw = draw; } catch (e) {}
+    switch (stage) {
+      case 'preload':
+        if (preload !== window.preload) { preload(); window.preload = null; }
+        break;
+      case 'setup':
+        if (setup !== window.setup) { setup(); window.setup = null; }
+        break;
+    }
   }
   window.wrappedExportedCode = wrappedExportedCode;
   wrappedExportedCode('preload');
