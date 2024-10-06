@@ -325,16 +325,18 @@ window.preload = function () {
           localStorage.userId = id;
         }
         // Better than eval but still unsafe;
+        let __oldPreload = window.preload;
+        let __oldSetup = window.setup;
         let __script = document.createElement("script");
         __script.text = ${JSON.stringify(libraries + json.source)};
         document.body.appendChild(__script);
         try { window.draw = draw; } catch (e) {}
         switch (stage) {
           case 'preload':
-            if (preload !== window.preload) { preload(); }
+            if (__oldPreload !== window.preload) { preload(); }
             break;
           case 'setup':
-            if (setup !== window.setup) { setup(); }
+            if (__oldSetup !== window.setup) { setup(); }
             break;
         }
         })
