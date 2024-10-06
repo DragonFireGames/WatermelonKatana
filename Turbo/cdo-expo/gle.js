@@ -307,12 +307,6 @@ window.preload = function () {
   }
 })
 // \${requisites}
-function preload() {
-    (this.preload||function(){})()
-}
-function setup() {
-    (this.setup||function(){window.preload=null})()
-}
 ;(function() {
     return fetch("/api/auth/check").then(r => {
         if (r.status === 200) {
@@ -345,7 +339,7 @@ function setup() {
         if (preload !== window.preload) { preload(); }
         break;
       case 'setup':
-        if (setup !== window.setup) { setup(); }
+        if (setup !== window.setup) { setup(); } else { window.preload = null; }
         break;
     }
   }
