@@ -308,10 +308,10 @@ window.preload = function () {
 })
 // \${requisites}
 function preload() {
-    (window.preload||this.preload||function(){})()
+    (this.preload||function(){})()
 }
 function setup() {
-    (window.setup||this.setup||function(){window.preload=null})()
+    (this.setup||function(){window.preload=null})()
 }
 ;(function() {
     return fetch("/api/auth/check").then(r => {
