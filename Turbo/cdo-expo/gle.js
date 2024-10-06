@@ -325,7 +325,7 @@ window.preload = function () {
               break;
             case 'setup':
               if (__oldSetup !== window.setup) { 
-                i//f(__oldPreload !== window.prelaod) { preload(); }
+                //if(__oldPreload !== window.prelaod) { preload(); }
                 setup(); 
               }
               break;
