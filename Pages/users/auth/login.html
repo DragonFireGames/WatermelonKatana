@@ -18,10 +18,18 @@
     <input type="text" id="username" required/><br>
     <label for="password">Password</label><br>
     <input type="password" id="password" required><br>
-    <input type="submit" value="login"><br>
+    <input type="submit" value="Login"><br>
   </form>
-  <a style="position: relative; top: 20px" href="/register">Don't have an account? Register</a>
-  <a style="position: relative; top: 20px" href="/resetpass/email">Forgot Password? Reset it</a>
+
+  <div style="position: relative; top: 20px">
+    Don't have an account?
+    <a href="/register">Register</a>
+  </div>
+
+  <div style="position: relative; top: 20px">
+    Forgot Password?
+    <a href="/resetpass/email">Reset it</a>
+  </div>
 
   <script>
     const form = document.querySelector('form');
