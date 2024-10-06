@@ -336,8 +336,10 @@ window.preload = function () {
             if (__oldPreload !== window.preload) { preload(); }
             break;
           case 'setup':
-            if(__oldPreload !== window.prelaod) { preload(); }
-            if (__oldSetup !== window.setup) { setup(); }
+            if (__oldSetup !== window.setup) { 
+              if(__oldPreload !== window.prelaod) { preload(); }
+              setup(); 
+            }
             break;
         }
         })
