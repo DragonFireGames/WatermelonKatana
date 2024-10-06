@@ -317,21 +317,21 @@ window.preload = function () {
         let __script = document.createElement("script");
         __script.text = ${JSON.stringify(libraries + json.source)};
         document.body.appendChild(__script);
-        try { window.draw = draw; } catch (e) {}
         __script.onload = function() {
+          try { window.draw = draw; } catch (e) {}
           switch (stage) {
             case 'preload':
               if (__oldPreload !== window.preload) { preload(); }
               break;
             case 'setup':
               if (__oldSetup !== window.setup) { 
-                //if(__oldPreload !== window.prelaod) { preload(); }
+                i//f(__oldPreload !== window.prelaod) { preload(); }
                 setup(); 
               }
               break;
+            }
           }
           })
-        }
     .catch(err => {
         throw new Error(err);
     })
