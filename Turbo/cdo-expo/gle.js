@@ -338,10 +338,12 @@ window.preload = function () {
     try { window.draw = draw; } catch (e) {}
     switch (stage) {
       case 'preload':
-        if (preload !== window.preload) { preload(); window.preload = null; }
+        if (preload !== window.preload) { preload(); }
+        window.preload = null; 
         break;
       case 'setup':
-        if (setup !== window.setup) { setup(); window.setup = null; }
+        if (setup !== window.setup) { setup(); }
+        window.setup = null;
         break;
     }
   }
