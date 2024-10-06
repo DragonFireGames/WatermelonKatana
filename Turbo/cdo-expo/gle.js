@@ -333,9 +333,10 @@ window.preload = function () {
         try { window.draw = draw; } catch (e) {}
         switch (stage) {
           case 'preload':
-            if (__oldPreload !== window.preload) { preload(); console.log("ran")}
+            if (__oldPreload !== window.preload) { preload(); }
             break;
           case 'setup':
+            if(__oldPreload !== window.prelaod) { preload(); }
             if (__oldSetup !== window.setup) { setup(); }
             break;
         }
