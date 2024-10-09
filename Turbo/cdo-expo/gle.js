@@ -355,50 +355,9 @@ async function getHTML(id, code) {
                 localStorage.userId = id;
             }
             await loadScripts(["${dependency}/p5.js", "${dependency}/p5.play.js"]);
-            ;(function(){
-              let __IFRRAME__ = document.createElement("iframe");
-              __IFRRAME__.srcdoc = \`<script> window.fconfig = { channel: "${id}", useDatablockStorage: true };
-              function setExportConfig(config) { fconfig = Object.assign(fconfig, config) }
-              <\\/script>
-              <script src="https://studio.code.org/projects/gamelab/${id}/export_config?script_call=setExportConfig"><\\/script>
-              <script src="https://code.jquery.com/jquery-1.12.1.min.js"><\\/script>
-              <script src="${dependency}/gamelab-api.js"><\\/script>\`;
-              document.head.appendChild(__IFRRAME__);
-              __IFRRAME__.contentWindow.p5 = window.p5;
-              __IFRRAME__.addEventListener("load", () => {
-                const globalExports = ["fconfig", "getUserId", "setKeyValue", "getKeyValue", "getTime", "promptNum", "playSound", "playSpeech", "randomNumber", "stopSound", "initMobileControls", "showMobileControls", "timedLoop", "stopTimedLoop", "appendItem", "insertItem", "removeItem"];
-                for (let global of globalExports) {
-                  window[global] = __IFRRAME__.contentWindow[global];
-                };
-                fconfig.url = (function(){var url="https://studio.code.org/projects/gamelab/${id}";var params=location.search;if(params.startsWith("?u=")){params=params.slice(3)}var re=/[?&]([^&=]+)(?:[&=])([^&=]+)/gim;var m;while((m=re.exec(params))!=null){if(m.index===re.lastIndex){re.lastIndex+=1}url+=m[0]}return url})();
-                fconfig.pathname = "projects/gamelab/${id}";
-                __IFRRAME__.contentDocument.getElementById = function (id) {
-                  return document.getElementById(id);
-                }
-                __IFRRAME__.contentDocument.addEventListener = function (element, event, callback) {
-                  return document.addEventListener(element, event, callback);
-                }
-                __IFRRAME__.contentDocument.body.addEventListener = function (element, event, callback) {
-                  return document.body.addEventListener(element, event, callback);
-                }
-                __IFRRAME__.contentDocument.removeEventListener = function (element, event) {
-                  return document.removeEventListener(element, event);
-                }
-                __IFRRAME__.contentDocument.body.removeEventListener = function (element, event) {
-                  return document.body.removeEventListener(element, event);
-                }
-                let script = document.createElement("script");
-                script.text = ${JSON.stringify(code)};
-                document.head.appendChild(script);
-                // scaler
-                const element = document.getElementById("sketch")
-                element.style["transform"] = "scale(" + (Math.min(window.innerWidth, window.innerHeight) / 400) + ")";
-                element.style["transform-origin"] = "top left";
-            })();
-              }).catch(err => {
+        }).catch(err => {
                 throw new Error(err);
-              })
-          })
+        })
 
         function loadScripts(scripts) {
           return new Promise((resolve, reject) => {
