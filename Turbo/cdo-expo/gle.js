@@ -371,7 +371,6 @@ async function getHTML(id, code) {
       <script src="https://studio.code.org/projects/gamelab/${id}/export_config?script_call=setExportConfig"><\\/script>
       <script src="https://code.jquery.com/jquery-1.12.1.min.js"><\\/script>
       <script src="${dependency}/gamelab-api.js"><\\/script>\`;
-        document.head.appendChild(__IFRRAME__);
         __IFRRAME__.contentWindow.p5 = window.p5;
         __IFRRAME__.addEventListener("load", () => {
         const globalExports = ["fconfig", "getUserId", "setKeyValue", "getKeyValue", "getTime", "promptNum", "playSound", "playSpeech", "randomNumber", "stopSound", "initMobileControls", "showMobileControls", "timedLoop", "stopTimedLoop", "appendItem", "insertItem", "removeItem"];
@@ -396,7 +395,8 @@ async function getHTML(id, code) {
           return document.body.removeEventListener(element, event);
         }
         document.head.innerHTML += \`\n<script src="${dependency}/p5.js" defer><\\/script>
-      <script src="${dependency}/p5.play.js" defer><\\/script>\`
+      <script src="${dependency}/p5.play.js" defer><\\/script>\`;
+        document.head.appendChild(__IFRRAME__);
         let script = document.createElement("script");
         script.text = ${JSON.stringify(code)};
         document.head.appendChild(script);
