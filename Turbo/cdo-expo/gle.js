@@ -348,7 +348,7 @@ async function getHTML(id, code) {
             if (d.user !== undefined) {
                 return "accountUser:" + d.user.id;
             } else {
-                return getUserId();
+                return "" //getUserId(); fix it later
             }
         }).then(async id => {
             if (localStorage.userId === undefined || id.startsWith("accountUser:")) {
