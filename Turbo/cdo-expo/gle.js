@@ -403,7 +403,7 @@ async function getHTML(id, code) {
               let loadedScripts = 0;
               (function syncScripts() {
                   const scriptTag = document.createElement('script');
-                  scriptTag.src = script[loadedScripts];
+                  scriptTag.src = scripts[loadedScripts];
                   scriptTag.onload = () => {
                       if (++loadedScripts === scripts.length) {
                           resolve();
