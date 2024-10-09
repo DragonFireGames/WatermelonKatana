@@ -395,8 +395,8 @@ async function getHTML(id, code) {
         __IFRRAME__.contentDocument.body.removeEventListener = function (element, event) {
           return document.body.removeEventListener(element, event);
         }
-        document.head.write(\`<script src="${dependency}/p5.js" defer><\\/script>
-      <script src="${dependency}/p5.play.js" defer><\\/script>\`)
+        document.head.innerHTML += \`\n<script src="${dependency}/p5.js" defer><\\/script>
+      <script src="${dependency}/p5.play.js" defer><\\/script>\`
         let script = document.createElement("script");
         script.text = ${JSON.stringify(code)};
         document.head.appendChild(script);
