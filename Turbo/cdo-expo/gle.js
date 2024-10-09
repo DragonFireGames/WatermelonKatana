@@ -350,11 +350,12 @@ async function getHTML(id, code) {
             } else {
                 return "" //getUserId(); fix it later
             }
-        }).then(id => {
+        }).then(async id => {
             if (localStorage.userId === undefined || id.startsWith("accountUser:")) {
                 localStorage.userId = id;
             }
-            loadScripts(["${dependency}/p5.js", "${dependency}/p5.play.js"]).then(()=>{
+            await loadScripts(["${dependency}/p5.js", "${dependency}/p5.play.js"]);
+            ;(function(){
               let __IFRRAME__ = document.createElement("iframe");
               __IFRRAME__.srcdoc = \`<script> window.fconfig = { channel: "${id}", useDatablockStorage: true };
               function setExportConfig(config) { fconfig = Object.assign(fconfig, config) }
@@ -393,10 +394,10 @@ async function getHTML(id, code) {
                 const element = document.getElementById("sketch")
                 element.style["transform"] = "scale(" + (Math.min(window.innerWidth, window.innerHeight) / 400) + ")";
                 element.style["transform-origin"] = "top left";
-                }).catch(err => {
-                  throw new Error(err);
-                })
-            })
+            })();
+              }).catch(err => {
+                throw new Error(err);
+              })
           })
 
         function loadScripts(scripts) {
