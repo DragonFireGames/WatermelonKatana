@@ -399,21 +399,23 @@ async function getHTML(id, code) {
           })
 
         function loadScripts(scripts) {
-            return new Promise((resolve, reject) => {
-                let loadedScripts = 0;
-                scripts.forEach((script) => {
-                    const scriptTag = document.createElement('script');
-                    scriptTag.src = script;
-                    scriptTag.onload = () => {
-                        if (++loadedScripts === scripts.length) {
-                            resolve();
-                        }
-                    };
-                    scriptTag.onerror = reject;
-                    document.head.appendChild(scriptTag);
-                });
-            });
-        }
+          return new Promise((resolve, reject) => {
+              let loadedScripts = 0;
+              (function syncScripts() {
+                  const scriptTag = document.createElement('script');
+                  scriptTag.src = script[loadedScripts];
+                  scriptTag.onload = () => {
+                      if (++loadedScripts === scripts.length) {
+                          resolve();
+                      } else {
+                          syncScripts();           
+                      }
+                  };
+                  scriptTag.onerror = reject;
+                  document.head.appendChild(scriptTag);
+              })(0)
+          });
+      }
     </script>
   <style>
     body.expo {
