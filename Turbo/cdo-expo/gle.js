@@ -338,6 +338,7 @@ async function getHTML(id, code) {
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link href="${dependency}/gamelab.css" rel="stylesheet" type="text/css">
       <script>
+        let __IFRRAME__ = document.createElement("iframe");
         fetch("/api/auth/check").then(r => {
           if (r.status === 200) {
               return r.json();
@@ -355,7 +356,7 @@ async function getHTML(id, code) {
                 localStorage.userId = id;
             }
             await loadScripts(["${dependency}/p5.js", "${dependency}/p5.play.js"])
-            let __IFRRAME__ = document.createElement("iframe");
+            //let __IFRRAME__ = document.createElement("iframe");
             __IFRRAME__.srcdoc = \`<script> window.fconfig = { channel: "${id}", useDatablockStorage: true };
             function setExportConfig(config) { fconfig = Object.assign(fconfig, config) }
             <\\/script>
