@@ -359,11 +359,10 @@ async function getHTML(id, code) {
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link href="${dependency}/gamelab.css" rel="stylesheet" type="text/css">
-      <!--
       <script src="${dependency}/p5.js"></script>
       <script src="${dependency}/p5.play.js"></script>
-      -->
       <script>
+        p5Inst.noLoop();
         let __IFRRAME__ = document.createElement("iframe");
         __IFRRAME__.srcdoc = \`<script> window.fconfig = { channel: "${id}", useDatablockStorage: true };
         function setExportConfig(config) { fconfig = Object.assign(fconfig, config) }
@@ -371,6 +370,7 @@ async function getHTML(id, code) {
       <script src="https://studio.code.org/projects/gamelab/${id}/export_config?script_call=setExportConfig"><\\/script>
       <script src="https://code.jquery.com/jquery-1.12.1.min.js"><\\/script>
       <script src="${dependency}/gamelab-api.js"><\\/script>\`;
+        document.head.appendChild(__IFRRAME__);
         __IFRRAME__.contentWindow.p5 = window.p5;
         __IFRRAME__.addEventListener("load", () => {
         const globalExports = ["fconfig", "getUserId", "setKeyValue", "getKeyValue", "getTime", "promptNum", "playSound", "playSpeech", "randomNumber", "stopSound", "initMobileControls", "showMobileControls", "timedLoop", "stopTimedLoop", "appendItem", "insertItem", "removeItem"];
@@ -394,9 +394,6 @@ async function getHTML(id, code) {
         __IFRRAME__.contentDocument.body.removeEventListener = function (element, event) {
           return document.body.removeEventListener(element, event);
         }
-        document.head.innerHTML += \`\n<script src="${dependency}/p5.js" defer><\\/script>
-      <script src="${dependency}/p5.play.js" defer><\\/script>\`;
-        document.head.appendChild(__IFRRAME__);
         let script = document.createElement("script");
         script.text = ${JSON.stringify(code)};
         document.head.appendChild(script);
