@@ -315,7 +315,7 @@ window.preload = function () {
         let __oldPreload = window.preload;
         let __oldSetup = window.setup;
         let __script = document.createElement("script");
-        __script.text = ${JSON.stringify(libraries + json.source)};
+        __script.text = ${JSON.stringify(libraries + "\np5Inst._startTime = Date.now();\np5Inst.frameCount = 0;\n" + json.source)};
         document.body.appendChild(__script);
         try { window.draw = draw; } catch (e) {}
         switch (stage) {
@@ -326,8 +326,6 @@ window.preload = function () {
             if (__oldSetup !== window.setup) { 
               if(__oldPreload !== window.prelaod) { preload(); }
               setup();
-              p5Inst._startTime = Date.now();
-              p5Inst.frameCount = 0;
             }
             break;
           }
