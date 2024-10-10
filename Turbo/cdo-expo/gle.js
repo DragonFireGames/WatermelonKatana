@@ -294,24 +294,48 @@ window.preload = function () {
     writable: true
   }
 })
-  // Better than eval but still unsafe;
-  let __oldPreload = window.preload;
-  let __oldSetup = window.setup;
-  let __script = document.createElement("script");
-  __script.text = ${JSON.stringify(libraries + json.source)};
-  document.body.appendChild(__script);
-  try { window.draw = draw; } catch (e) {}
-  switch (stage) {
-    case 'preload':
-      if (__oldPreload !== window.preload) { preload(); }
-      break;
-    case 'setup':
-      if (__oldSetup !== window.setup) { 
-        if(__oldPreload !== window.prelaod) { preload(); }
-        setup(); 
-      }
-      break;
-    }
+;(function() {
+    return fetch("/api/auth/check").then(r => {
+        if (r.status === 200) {
+            return r.json();
+        } else {
+            return {auth: false};
+        }
+    }).then(d => {
+        if(d.user !== undefined) {
+            return "accountUser:" + d.user.id;
+        } else {
+            return getUserId();
+        }
+    }).then(id => {
+        if(localStorage.userId === undefined || id.startsWith("accountUser:")) {
+          localStorage.userId = id;
+        }
+        // Better than eval but still unsafe;
+        let __oldPreload = window.preload;
+        let __oldSetup = window.setup;
+        let __script = document.createElement("script");
+        __script.text = ${JSON.stringify(libraries + json.source)};
+        document.body.appendChild(__script);
+        try { window.draw = draw; } catch (e) {}
+        switch (stage) {
+          case 'preload':
+            if (__oldPreload !== window.preload) { preload(); }
+            break;
+          case 'setup':
+            if (__oldSetup !== window.setup) { 
+              if(__oldPreload !== window.prelaod) { preload(); }
+              setup();
+              p5Inst._startTime = Date.now();
+              p5Inst.frameCount = 0;
+            }
+            break;
+          }
+    })
+    .catch(err => {
+        throw new Error(err);
+    })
+})();
   }
   window.wrappedExportedCode = wrappedExportedCode;
   wrappedExportedCode('preload');
@@ -337,92 +361,48 @@ async function getHTML(id, code) {
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link href="${dependency}/gamelab.css" rel="stylesheet" type="text/css">
-      <!--
       <script src="${dependency}/p5.js"></script>
       <script src="${dependency}/p5.play.js"></script>
-      -->
       <script>
-        ;(async function () {
-    await fetch("/api/auth/check").then(r => {
-        if (r.status === 200) {
-            return r.json();
-        } else {
-            return { auth: false };
-        }
-    }).then(d => {
-        if (d.user !== undefined) {
-            return "accountUser:" + d.user.id;
-        } else {
-            return ""//getUserId();
-        }
-    }).then(id => {
-        if (localStorage.userId === undefined || id.startsWith("accountUser:")) {
-            localStorage.userId = id;
-        }
-    }).catch(err => {
-        throw new Error(err);
-    })
-    await loadScripts(["${dependency}/p5.js", "${dependency}/p5.play.js"])
-    let __IFRRAME__ = document.createElement("iframe");
-    __IFRRAME__.srcdoc = \`<script> window.fconfig = { channel: "${id}", useDatablockStorage: true };
-            function setExportConfig(config) { fconfig = Object.assign(fconfig, config) }
-          <\\/script>
-          <script src="https://studio.code.org/projects/gamelab/${id}/export_config?script_call=setExportConfig"><\\/script>
-          <script src="https://code.jquery.com/jquery-1.12.1.min.js"><\\/script>
-          <script src="${dependency}/gamelab-api.js"><\\/script>\`;
-    document.head.appendChild(__IFRRAME__);
-    __IFRRAME__.contentWindow.p5 = window.p5;
-    __IFRRAME__.addEventListener("load", () => {
+        let __IFRRAME__ = document.createElement("iframe");
+        __IFRRAME__.srcdoc = \`<script> window.fconfig = { channel: "${id}", useDatablockStorage: true };
+        function setExportConfig(config) { fconfig = Object.assign(fconfig, config) }
+      <\\/script>
+      <script src="https://studio.code.org/projects/gamelab/${id}/export_config?script_call=setExportConfig"><\\/script>
+      <script src="https://code.jquery.com/jquery-1.12.1.min.js"><\\/script>
+      <script src="${dependency}/gamelab-api.js"><\\/script>\`;
+        document.head.appendChild(__IFRRAME__);
+        __IFRRAME__.contentWindow.p5 = window.p5;
+        __IFRRAME__.addEventListener("load", () => {
         const globalExports = ["fconfig", "getUserId", "setKeyValue", "getKeyValue", "getTime", "promptNum", "playSound", "playSpeech", "randomNumber", "stopSound", "initMobileControls", "showMobileControls", "timedLoop", "stopTimedLoop", "appendItem", "insertItem", "removeItem"];
         for (let global of globalExports) {
-            window[global] = __IFRRAME__.contentWindow[global];
+          window[global] = __IFRRAME__.contentWindow[global];
         };
-        fconfig.url = (function () { var url = "https://studio.code.org/projects/gamelab/${id}"; var params = location.search; if (params.startsWith("?u=")) { params = params.slice(3) } var re = /[?&]([^&=]+)(?:[&=])([^&=]+)/gim; var m; while ((m = re.exec(params)) != null) { if (m.index === re.lastIndex) { re.lastIndex += 1 } url += m[0] } return url })();
+        fconfig.url = (function(){var url="https://studio.code.org/projects/gamelab/${id}";var params=location.search;if(params.startsWith("?u=")){params=params.slice(3)}var re=/[?&]([^&=]+)(?:[&=])([^&=]+)/gim;var m;while((m=re.exec(params))!=null){if(m.index===re.lastIndex){re.lastIndex+=1}url+=m[0]}return url})();
         fconfig.pathname = "projects/gamelab/${id}";
         __IFRRAME__.contentDocument.getElementById = function (id) {
-            return document.getElementById(id);
+          return document.getElementById(id);
         }
         __IFRRAME__.contentDocument.addEventListener = function (element, event, callback) {
-            return document.addEventListener(element, event, callback);
+          return document.addEventListener(element, event, callback);
         }
         __IFRRAME__.contentDocument.body.addEventListener = function (element, event, callback) {
-            return document.body.addEventListener(element, event, callback);
+          return document.body.addEventListener(element, event, callback);
         }
         __IFRRAME__.contentDocument.removeEventListener = function (element, event) {
-            return document.removeEventListener(element, event);
+          return document.removeEventListener(element, event);
         }
         __IFRRAME__.contentDocument.body.removeEventListener = function (element, event) {
-            return document.body.removeEventListener(element, event);
+          return document.body.removeEventListener(element, event);
         }
         let script = document.createElement("script");
-        script.text = ${ JSON.stringify(code) };
+        script.text = ${JSON.stringify(code)};
         document.head.appendChild(script);
         // scaler
         const element = document.getElementById("sketch")
         element.style["transform"] = "scale(" + (Math.min(window.innerWidth, window.innerHeight) / 400) + ")";
         element.style["transform-origin"] = "top left";
-    })
-})();
-
-
-function loadScripts(scripts) {
-    return new Promise((resolve, reject) => {
-        let loadedScripts = 0;
-        (function syncScripts() {
-            const scriptTag = document.createElement('script');
-            scriptTag.src = scripts[loadedScripts];
-            scriptTag.onload = () => {
-                if (++loadedScripts === scripts.length) {
-                    resolve();
-                } else {
-                    syncScripts();
-                }
-            };
-            scriptTag.onerror = reject;
-            document.head.appendChild(scriptTag);
-        })();
-    });
-}
+      })
   </script>
   <style>
     body.expo {
