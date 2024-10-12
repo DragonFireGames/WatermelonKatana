@@ -125,6 +125,9 @@ app.get("/project/:id/edit", userAuth, async (req, res) => {
 }); // Edit project page, users only
 app.get("/project/:id/delete", userAuth, (req, res) => res.redirect("/api/project/delete/" + req.params.id)); // Delete project route, users only
 
+// Authors
+app.get("/authors", (req, res) => { res.sendFile(cldir + "/authors.html") });
+
 // Updates
 app.get("/updates", (req, res) => res.sendFile(cldir + "/updates.html"));
 
