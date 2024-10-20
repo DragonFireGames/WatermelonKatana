@@ -21484,7 +21484,7 @@
                         var keyReleased = this.keyReleased || window.keyReleased
                         this._setProperty('isKeyPressed', false)
                         this._setProperty('keyIsPressed', false)
-                        this._setProperty('_lastKeyCodeTyped', null)
+                        this._setProperty('_lastKeyCodeTyped', null, false);
                         downKeys[e.which] = false
                         //delete this._downKeys[e.which];
                         var key = String.fromCharCode(e.which)
@@ -21545,7 +21545,7 @@
                             return
                         }
                         this._setProperty('keyCode', e.which)
-                        this._setProperty('_lastKeyCodeTyped', e.which) // track last keyCode
+                        this._setProperty('_lastKeyCodeTyped', null, false); // track last keyCode
                         this._setProperty('key', String.fromCharCode(e.which), false)
                         var keyTyped = this.keyTyped || window.keyTyped
                         if (typeof keyTyped === 'function') {
@@ -22194,8 +22194,8 @@
                     p5.prototype._onmousedown = function (e) {
                         var context = this._isGlobal ? window : this
                         var executeDefault
-                        this._setProperty('isMousePressed', true)
-                        this._setProperty('mouseIsPressed', true)
+                        this._setProperty('isMousePressed', true, false);
+                        this._setProperty('isMousePressed', true, false);
                         this._setMouseButton(e)
                         this._updateNextMouseCoords(e)
                         this._updateNextTouchCoords(e)
