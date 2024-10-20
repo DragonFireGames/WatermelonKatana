@@ -22194,8 +22194,8 @@
                     p5.prototype._onmousedown = function (e) {
                         var context = this._isGlobal ? window : this
                         var executeDefault
-                        this._setProperty('isMousePressed', true, false);
-                        this._setProperty('isMousePressed', true, false);
+                        this._setProperty('isMousePressed', true, false)
+                        this._setProperty('mouseIsPressed', true)
                         this._setMouseButton(e)
                         this._updateNextMouseCoords(e)
                         this._updateNextTouchCoords(e)
@@ -22262,7 +22262,7 @@
                     p5.prototype._onmouseup = function (e) {
                         var context = this._isGlobal ? window : this
                         var executeDefault
-                        this._setProperty('isMousePressed', false)
+                        this._setProperty('isMousePressed', false, false)
                         this._setProperty('mouseIsPressed', false)
                         if (typeof context.mouseReleased === 'function') {
                             executeDefault = context.mouseReleased(e)
