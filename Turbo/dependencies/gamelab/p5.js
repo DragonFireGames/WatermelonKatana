@@ -23945,13 +23945,13 @@
                         if (path.indexOf('data:image/') !== 0) {
                             img.crossOrigin = 'Anonymous'
                             path =
-                                path.match(/^(assets|\/media)/) !== null
+                                encodeURIComponent(path.match(/^(assets|\/media)/) !== null
                                     ? path
                                     : path.match(
                                             /(https?:\/\/|www\.|ftp:\/\/|sftp:\/\/|ftps:\/\/|mailto:|git:\/\/)/i
                                         )
                                       ? '/media?u=' + path
-                                      : `/media?u=https://studio.code.org/v3/assets/${fconfig.channel}/${path}`
+                                      : `/media?u=https://studio.code.org/v3/assets/${fconfig.channel}/${path}`)
                         }
 
                         //start loading the image
@@ -25862,13 +25862,13 @@
                             arguments
                         )
                         path =
-                            path.match(/^(assets|\/media)/) !== null
+                            encodeURIComponent(path.match(/^(assets|\/media)/) !== null
                                 ? path
                                 : path.match(
                                         /(https?:\/\/|www\.|ftp:\/\/|sftp:\/\/|ftps:\/\/|mailto:|git:\/\/)/i
                                     )
                                   ? '/media?u=' + path
-                                  : `/media?u=https://studio.code.org/v3/assets/${fconfig.channel}/${path}`
+                                  : `/media?u=https://studio.code.org/v3/assets/${fconfig.channel}/${path}`)
 
                         opentype.load(path, function (err, font) {
                             if (err) {
@@ -26164,9 +26164,9 @@
                         )
                         if (typeof path === 'string') {
                             path =
-                                path.match(/^(assets|\/xhr)/) !== null
+                                encodeURIComponent(path.match(/^(assets|\/xhr)/) !== null
                                     ? path
-                                    : '/xhr?u=' + path
+                                    : '/xhr?u=' + path)
                         }
 
                         req.addEventListener('error', function (resp) {
@@ -26315,9 +26315,9 @@
                             arguments
                         )
                         path =
-                            path.match(/^(assets|\/xhr)/) !== null
+                            encodeURIComponent(path.match(/^(assets|\/xhr)/) !== null
                                 ? path
-                                : '/xhr?u=' + path
+                                : '/xhr?u=' + path)
 
                         for (var i = 1; i < arguments.length; i++) {
                             if (
@@ -26601,9 +26601,9 @@
                             arguments
                         )
                         path =
-                            path.match(/^(assets|\/xhr)/) !== null
+                            encodeURIComponent(path.match(/^(assets|\/xhr)/) !== null
                                 ? path
-                                : '/xhr?u=' + path
+                                : '/xhr?u=' + path)
                         reqwest({
                             url: path,
                             type: 'xml',
